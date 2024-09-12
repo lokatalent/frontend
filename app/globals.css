@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer utilities {
+/* @layer utilities {
 	.text-balance {
 		text-wrap: balance;
 	}
-}
+} */
 .contained {
 	@apply mx-auto px-5 lg:w-[960px] lg:px-0 xl:w-[1210px];
 }

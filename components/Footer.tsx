@@ -28,7 +28,7 @@ const Footer = () => {
 							<FaTwitterSquare />
 							<FaFacebookSquare />
 						</div>
-						<p className="capitalize">HAVE ANY QUESTIONS ? REACH OUT TO US</p>
+						<p className="mt-4 md:mt-0">HAVE ANY QUESTIONS ? REACH OUT TO US</p>
 					</div>
 
 					<div className="flex flex-col md:flex-row  md:justify-between items-start py-3">

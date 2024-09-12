@@ -5,8 +5,8 @@ const Testimonial = () => {
 				What Customers Say <br /> About Us
 			</h1>
 
-			<div className="bg-primaryBlue rounded-lg p-12 flex flex-col md:flex-row  ">
-				<div className="basis-1/2 md:pr-4">
+			<div className="bg-primaryBlue rounded-lg p-6 md:p-12 flex flex-col lg:flex-row  ">
+				<div className="basis-1/2 lg:pr-4">
 					<div className="text-white ">
 						<p className="text-2xl md:text-3xl lg:text-4xl font-bold pb-7 text-center md:text-start">
 							Ready to Lorem ipsum lorem ip
@@ -23,7 +23,7 @@ const Testimonial = () => {
 						</p>
 					</div>
 				</div>
-				<div className=" flex flex-col pt-3 md:pt-0 md:flex-row space-y-3 md:space-y-0 md:space-x-3 items-center justify-center  basis-1/2">
+				<div className=" flex flex-col pt-4 lg:pt-0 md:flex-row space-y-3 md:space-y-0 md:space-x-3 items-center justify-center  basis-1/2">
 					<div className=" w-full ">
 						<button className="bg-white w-full md:w-[241px] text-primaryBlue  py-5 px-8">
 							Sign up

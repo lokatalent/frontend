@@ -27,8 +27,8 @@ const HowItWorks = () => {
 		<div className=" ">
 			<h2 className="sub-heading">How it works</h2>
 			<div className=" flex items-center justify-center pb-14">
-				<div className="contained  flex flex-col md:flex-row md:space-x-10  justify-center ">
-					<div>
+				<div className="contained flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-10 items-center  justify-center ">
+					<div className=" w-full flex justify-center">
 						<Image
 							src="/Images/works.png"
 							width={478}
@@ -36,7 +36,7 @@ const HowItWorks = () => {
 							alt="lady holding a phone"
 						/>
 					</div>
-					<div className="flex flex-col  justify-center">
+					<div className="w-full flex flex-col  justify-center">
 						<div>
 							{steps.map((step) => (
 								<div
