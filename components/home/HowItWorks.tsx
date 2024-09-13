@@ -58,7 +58,7 @@ const HowItWorks = () => {
 						</div>
 
 						<div>
-							<button className="bg-primaryBlue hover:bg-blue-700 text-white w-6/12 py-5 px-8 ">
+							<button className="bg-primaryBlue hover:bg-blue-700 text-white w-full  md:w-[339px] py-5 px-8 ">
 								Make a Booking
 							</button>
 						</div>
