@@ -11,10 +11,10 @@ function DropDownElement() {
           <option value="" selected>
             What service do you need
           </option>
-          <option value="" selected>
+          <option value="student" selected>
             Student
           </option>
-          <option value="" selected>
+          <option value="teacher" selected>
             Teacher
           </option>
         </select>
