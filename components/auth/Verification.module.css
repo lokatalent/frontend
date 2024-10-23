@@ -1,0 +1,26 @@
+/* inputStyles.css */
+
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.input {
+  -moz-appearance: textfield;
+} 
+
+/* Applies to all browsers */
+/* .input {
+  -webkit-appearance: none; 
+  -moz-appearance: textfield; 
+  appearance: none; 
+}
+
+/* Remove spin buttons for Chrome, Safari, Edge, Opera */
+.input::-webkit-outer-spin-button,
+.input::-webkit-inner-spin-button {
+  /* -webkit-appearance: none; */
+  /* margin: 0; */
+}
+

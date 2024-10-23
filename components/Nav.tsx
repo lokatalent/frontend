@@ -31,9 +31,9 @@ function Navbar() {
 							>
 								Sign Up
 							</Link>
-							<button className="border border-white  hover:bg-blue-700 text-white generalButton">
+							<Link href="/talent" className="border border-white  hover:bg-blue-700 text-white generalButton">
 								Register as a Talent
-							</button>
+							</Link>
 						</div>
 					</div>
 				</div>

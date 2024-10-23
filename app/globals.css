@@ -16,6 +16,10 @@
 .generalButton {
 	@apply px-6 py-2  rounded-sm flex items-center justify-center whitespace-nowrap text-sm mt-2 md:mt-0;
 }
+
+.contactButton {
+	@apply   font-normal leading-6 w-[20rem] sm:w-[30rem] md:w-[32rem] lg:w-[35rem] rounded h-12 flex items-center justify-center;
+}
 @layer base {
   :root {
 		--background: 0 0% 100%;
