@@ -10,7 +10,11 @@ import { ChangeEvent, useState } from "react";
 import styles from './Verification.module.css';
 
 
-function Verification({ isCorrect }: boolean) {
+interface VerificationProps {
+  isCorrect: boolean;
+}
+
+const Verification: React.FC<VerificationProps> = ({ isCorrect }) => {
   const [isResend, setIsResend] = useState(false);  
   const router = useRouter();
   const pathname = usePathname();

@@ -9,7 +9,6 @@ import Typography from "@mui/material/Typography";
 import Form from "@/components/ui/form";
 import Image from "next/image";
 import dp from "../../../public/Images/dp.png"
-import dpEmpty from "../../../public/Images/dp-empty.png";
 
 const steps = [
   "Personal Information",
@@ -199,9 +198,9 @@ export default function ProfileStep() {
   const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set<number>());
 
-  const isStepOptional = (step: number) => {
-    return step === 1;
-  };
+  // const isStepOptional = (step: number) => {
+  //   return step === 1;
+  // };
 
   const isStepSkipped = (step: number) => {
     return skipped.has(step);
@@ -222,20 +221,20 @@ export default function ProfileStep() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
 
-  const handleSkip = () => {
-    if (!isStepOptional(activeStep)) {
-      // You probably want to guard against something like this,
-      // it should never occur unless someone's actively trying to break something.
-      throw new Error("You can't skip a step that isn't optional.");
-    }
+  // const handleSkip = () => {
+  //   if (!isStepOptional(activeStep)) {
+  //     // You probably want to guard against something like this,
+  //     // it should never occur unless someone's actively trying to break something.
+  //     throw new Error("You can't skip a step that isn't optional.");
+  //   }
 
-    setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setSkipped((prevSkipped) => {
-      const newSkipped = new Set(prevSkipped.values());
-      newSkipped.add(activeStep);
-      return newSkipped;
-    });
-  };
+  //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
+  //   setSkipped((prevSkipped) => {
+  //     const newSkipped = new Set(prevSkipped.values());
+  //     newSkipped.add(activeStep);
+  //     return newSkipped;
+  //   });
+  // };
 
   const handleReset = () => {
     setActiveStep(0);
@@ -252,7 +251,7 @@ export default function ProfileStep() {
       }}
     >
       <Stepper activeStep={activeStep} className="w-[44rem]">
-        {steps.map((label, index) => {
+        {steps.map((label) => {
           const stepProps: { completed?: boolean } = {};
           const labelProps: {
             optional?: React.ReactNode;
