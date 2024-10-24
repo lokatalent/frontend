@@ -1,4 +1,3 @@
-import Link from "next/link";
 import {
 	Sheet,
 	SheetClose,
@@ -6,6 +5,7 @@ import {
 	SheetTrigger,
 } from "@/components/ui/sheet";
 import Image from "next/image";
+import Link from "next/link";
 
 function Navbar() {
 	return (
@@ -21,17 +21,20 @@ function Navbar() {
 						<div className="flex items-center space-x-8">
 							<Link
 								href="/login"
-								className="text-white hover:text-primaryBlue hover:bg-white"
+								className="text-white hover:text-primaryBlue hover:bg-white :hover:px-3 :hover:py-1"
 							>
 								Log In
 							</Link>
 							<Link
 								href="/signup"
-								className="text-white hover:text-primaryBlue hover:bg-white"
+								className="text-white hover:text-primaryBlue hover:bg-white :hover:px-3 :hover:py-1"
 							>
 								Sign Up
 							</Link>
-							<Link href="/talent" className="border border-white  hover:bg-blue-700 text-white generalButton">
+							<Link
+								href="/talent"
+								className="border border-white  hover:bg-blue-700 text-white generalButton"
+							>
 								Register as a Talent
 							</Link>
 						</div>

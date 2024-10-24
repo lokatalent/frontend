@@ -6,6 +6,20 @@ import { usePathname } from "next/navigation";
 
 import fileUpload from "../../public/Images/upload.png";
 
+interface DataItem {
+	label: string;
+	error: string;
+	type: string;
+	isImportant: boolean;
+	selection: boolean;
+	width: string;
+}
+
+type FormProps = {
+	dataInput: DataItem[];
+	isFormValid: boolean;
+	children: any;
+};
 function Selection({ width }: any) {
 	return (
 		<div className="flex gap-2 ">
@@ -40,7 +54,11 @@ function Selection({ width }: any) {
 	);
 }
 
-function Form({ isFormValid, dataInput, children }: any) {
+const Form: React.FC<FormProps> = ({
+	isFormValid,
+	dataInput,
+	children,
+}: any) => {
 	const pathname = usePathname();
 	console.log(pathname);
 
@@ -51,7 +69,7 @@ function Form({ isFormValid, dataInput, children }: any) {
 
 				<form className="flex flex-row flex-wrap justify-center">
 					<div className="flex flex-wrap items-center justify-center gap-10">
-						{dataInput.map((data, index) => (
+						{dataInput.map((data: DataItem, index: number) => (
 							<div
 								className="flex flex-col gap-[0.5rem]"
 								key={index}
@@ -114,6 +132,6 @@ function Form({ isFormValid, dataInput, children }: any) {
       </div> */}
 		</div>
 	);
-}
+};
 
 export default Form;
