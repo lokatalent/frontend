@@ -46,7 +46,57 @@ function Form({ isFormValid, dataInput, children }) {
       <div className="flex gap-4 items-center flex-col justify-center">
         {children}
 
-      
+        {/* <form className="flex flex-row flex-wrap justify-center">
+          <div className="flex flex-wrap items-center justify-center gap-10">
+            {dataInput.map((data: DataItem, index: number) => (
+              <div className="flex flex-col gap-[0.5rem]" key={index}>
+                <label>
+                  {data.label}
+                  <span className="text-sm">
+                    {data.isImportant ? "*" : "  (optional)"}
+                  </span>
+                </label>
+                {!data.selection ? (
+                  <>
+                    {data.type === "input" && (
+                      <input
+                        type={data.type}
+                        className={`${data.width} bg-white h-[3rem] text-[#3377FF] rounded px-[1rem]`}
+                      />
+                    )}
+                    {data.type === "file" && (
+                      <div
+                        className={`${data.width} bg-white text-[#3377FF] rounded px-[1rem] flex items-center justify-content flex-col`}
+                      >
+                        <div>
+                          <Image
+                            src={fileUpload}
+                            alt="File Upload"
+                            className="w-10"
+                          />
+                        </div>
+                        <p className="text-[11px] text-[#CD1B78]">
+                          Click to upload{" "}
+                          <span className="text-black">or drag and drop</span>
+                        </p>
+                        <p className="text-[11px] text-black">
+                          SVG, HEIC, PNG, JPG
+                        </p>
+                      </div>
+                    )}
+                  </>
+                ) : (
+                  <Selection width={data.width} />
+                )}
+                {!isFormValid ? (
+                  <div className="text-[10px] text-[#FFB82E]">{data.error}</div>
+                ) : (
+                  ""
+                )}
+              </div>
+            ))}
+          </div>
+        </form> */}
       </div>
       {/* <div className="flex justify-center">
         <Link

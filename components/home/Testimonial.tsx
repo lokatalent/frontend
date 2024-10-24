@@ -1,7 +1,4 @@
 import Image from "next/image";
-import hero1 from "../../public/Images/hero1.png";
-import hero2 from "../../public/Images/hero2.png";
-import hero3 from "../../public/Images/hero3.png";
 
 const Testimonial = () => {
   return (
@@ -16,15 +13,22 @@ const Testimonial = () => {
 
       <div className="Imageslide flex flex-col gap-8 mb-8">
         <div className="flex gap-2 sm:gap-4 md:gap-4 lg:gap-4 ">
-          <div className="w-[250px] h-[200px] md:w-[350px] md:h-[300px] lg:w-[400px] lg:h-[350px]">
-            <Image src={hero1} alt="" className="w-full h-full object-cover" />
+          <div className="w-[250px] h-[170px] md:w-[350px] md:h-[300px] lg:w-[400px] lg:h-[350px]">
+            <div className="relative w-full h-full">
+              <Image src="/Images/hero1.png" alt="Hero 1" layout="fill" objectFit="cover" />
+            </div>
           </div>
-          <div className="w-[250px] h-[200px] md:w-[350px] md:h-[300px] lg:w-[400px] lg:h-[350px]">
-            <Image src={hero2} alt="" className="w-full h-full object-cover" />
+          <div className="w-[250px] h-[170px] md:w-[350px] md:h-[300px] lg:w-[400px] lg:h-[350px]">
+            <div className="relative w-full h-full">
+              <Image src="/Images/hero2.png" alt="Hero 2" layout="fill" objectFit="cover" />
+            </div>
           </div>
-          <div className="w-[250px] h-[200px] md:w-[350px] md:h-[300px] lg:w-[400px] lg:h-[350px]">
-            <Image src={hero3} alt="" className="w-full h-full object-cover" />
+          <div className="w-[250px] h-[170px] md:w-[350px] md:h-[300px] lg:w-[400px] lg:h-[350px]">
+            <div className="relative w-full h-full">
+              <Image src="/Images/hero3.png" alt="Hero 3" layout="fill" objectFit="cover" />
+            </div>
           </div>
+          
         </div>
         <div className="flex gap-2 self-center">
           <div className="w-5 h-1.5 bg-[#2A4AF4] rounded-[5px]"></div>

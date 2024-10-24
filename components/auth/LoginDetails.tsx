@@ -87,9 +87,9 @@ function LoginDetails({ isFormValid }: boolean) {
                     This password is not valid
                   </div>
                 ) : (
-                  ""
+                  <div></div>
                 )}
-                <p className="text-[14px] text-primaryBlue">Forgot Password?</p>
+                <p className="text-[14px] text-primaryBlue self-end">Forgot Password?</p>
               </div>
             </div>
           </div>

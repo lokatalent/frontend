@@ -2,11 +2,19 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import React from 'react'
+import React, { useState } from 'react'
+import { FaEye, FaEyeSlash } from 'react-icons/fa';
 
 function FormDetails({ isFormValid }) {
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const pathname = usePathname();
   console.log(pathname);
+
+  // Toggle the visibility
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible);
+  };
+
 
   return (
     <div className="sm:px-[4rem] lg:px-[5rem] md:px-[6rem] lg:px-[7rem] py-12 flex justify-cnter flex-col items-cener gap-12 bg-[#FAF8F4]">
@@ -45,54 +53,85 @@ function FormDetails({ isFormValid }) {
         <form className="flex flex-row flex-wrap justify-center">
           <div className="flex flex-wrap items-center justify-center gap-10">
             <div className="flex flex-col gap-[0.5rem]">
-              <label>Name</label>
+              <label>First Name</label>
               <input
                 type="text"
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem] bg-white h-[3rem] text-[#3377FF] rounded px-[1rem]"
               />
-              {!isFormValid ? <div className="text-[10px] text-[#FFB82E]">
-                Enter a valid name
-              </div> : ''}
+              {!isFormValid ? (
+                <div className="text-[10px] text-[#FFB82E]">
+                  Enter a valid name
+                </div>
+              ) : (
+                ""
+              )}
             </div>
             <div className="flex flex-col gap-[0.5rem]">
-              <label>Phone number</label>
+              <label>Last name</label>
               <input
                 type="text"
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem] bg-white h-[3rem] text-[#3377FF] rounded px-[1rem] placeholder"
               />
-              {!isFormValid ? <div className="text-[10px] text-[#FFB82E]">
-                This phone number is not valid
-              </div> : ''}
+              {!isFormValid ? (
+                <div className="text-[10px] text-[#FFB82E]">
+                  Enter a valid name
+                </div>
+              ) : (
+                ""
+              )}
+            </div>
+
+            <div className="flex flex-col gap-[0.5rem]">
+              <div className="relative flex flex-col">
+                <label>Password</label>
+                <input
+                  type={passwordVisible ? "text" : "password"}
+                  className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem] bg-white h-[3rem] text-black rounded px-[1rem]"
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="toggle-password-button absolute right-5 top-1/2"
+                >
+                  {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+
+              <div className="flex justify-between">
+                {!isFormValid ? (
+                  <div className="text-[10px] text-[#FFB82E]">
+                    This password is not valid
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
             <div className="flex flex-col gap-[0.5rem]">
-              <label>Email Address</label>
-              <input
-                type="email"
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem] bg-white h-[3rem] text-[#3377FF] rounded px-[1rem]"
-              />
-              {!isFormValid ? <div className="text-[10px] text-[#FFB82E]">
-                This email doesnt exist
-              </div> : ''}
-            </div>
-            <div className="flex flex-col gap-[0.5rem]">
-              <label>Password</label>
-              <input
-                type="password"
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem] bg-white h-[3rem] text-[#3377FF] rounded px-[1rem]"
-              />
-              {!isFormValid ? <div className="text-[10px] text-[#FFB82E]">
-                This password is not valid
-              </div> : ''}
-            </div>
-            <div className="flex flex-col gap-[0.5rem] self-start justify-items-start justify-self-start">
-              <label>Confirm Password</label>
-              <input
-                type="password"
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem] bg-white h-[3rem] text-[#3377FF] rounded px-[1rem]"
-              />
-              {!isFormValid ? <div className="text-[10px] text-[#FFB82E]">
-                This password is not the same
-              </div> : ''}
+              <div className="relative flex flex-col">
+                <label>Password</label>
+                <input
+                  type={passwordVisible ? "text" : "password"}
+                  className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem] bg-white h-[3rem] text-black rounded px-[1rem]"
+                />
+                <button
+                  type="button"
+                  onClick={togglePasswordVisibility}
+                  className="toggle-password-button absolute right-5 top-1/2"
+                >
+                  {passwordVisible ? <FaEyeSlash /> : <FaEye />}
+                </button>
+              </div>
+
+              <div className="flex justify-between">
+                {isFormValid ? (
+                  <div className="text-[10px] text-[#FFB82E]">
+                    Passwords does not match
+                  </div>
+                ) : (
+                  <></>
+                )}
+              </div>
             </div>
           </div>
         </form>
