@@ -6,7 +6,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 
-type titleProp = {title :string, text: string, to?: string}
+type titleProp = {title :string, text: string, to: string}
 
 function VerifiedPage({ title, text, to }: titleProp) {
   const router = useRouter();

@@ -1,4 +1,5 @@
-import ProfileStep from "@/components/home/profile/ProfileStep";
+import ProfileStep from "@/components/talent/profile/ProfileStep";
+import Form from "@/components/ui/form";
 import React from "react";
 
 function Profile() {

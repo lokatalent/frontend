@@ -9,7 +9,7 @@ export default function Home() {
 	return (
 		<div>
 			<Hero />
-			<Preview />
+			{/* <Preview /> */}
 			<HowItWorks />
 			<ApplyHere />
 			<Testimonial />
