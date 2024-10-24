@@ -9,7 +9,7 @@ const Hero = () => {
 					<p className="font-semibold lg:text-xl leading-7 pb-7">
 						WELCOME TO LOKATALENT
 					</p>
-					<h2 className="text-3xl md:text-4xl lg:text-6xl font-bold">
+					<h2 className="text-2xl md:text-3xl lg:text-5xl font-bold leading-loose ">
 						Quality Home Service On Demand
 					</h2>
 
@@ -18,13 +18,13 @@ const Hero = () => {
 						consectetur adipiscing commodo euismod condimentum nunc.
 					</p>
 					<DropDownElement />
-					<div className="flex gap-[2px]">
-						<p className=" opacity-80">
+					<div className="flex space-x-2 text-lg">
+						<p className=" ">
 							Want to sign up as a service provider?{" "}
+							<span className=" text-white underline underline-offset-8 whitespace-nowrap">
+								Apply Here
+							</span>
 						</p>
-						<span className="opacity-100 text-white underline underline-offset-8">
-							Apply Here
-						</span>
 					</div>
 				</div>
 				<div className="w-full flex items-end justify-center md:justify-end">

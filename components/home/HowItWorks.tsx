@@ -44,7 +44,7 @@ const HowItWorks = () => {
 									className="pb-12"
 								>
 									<div className="flex space-x-3">
-										<p className=" rounded-full bg-primaryBlue h-7 w-8  text-white flex items-center justify-center">
+										<p className=" rounded-full bg-primaryBlue h-6 w-12  text-white flex items-center justify-center">
 											{step.id}
 										</p>
 

@@ -43,10 +43,10 @@ const FormDetails: React.FC<FormDetailsProps> = ({ isFormValid }) => {
 				</div>
 
 				<div>
-					<h4 className="font-nunito text-4xl font-bold leading-[50.4px] tracking-tighter text-center">
+					<h4 className="font-nunito text-4xl font-bold leading-[50.4px] tracking-tighter text-center mb-3">
 						Hi there
 					</h4>
-					<p className="font-nunito text-xl text-center">
+					<p className="font-nunito text-lg text-center">
 						Please enter your details to be able to lorem ipsum <br />
 						lorem ipsum lorem ipsium
 					</p>
@@ -106,13 +106,13 @@ const FormDetails: React.FC<FormDetailsProps> = ({ isFormValid }) => {
 										This password is not valid
 									</div>
 								) : (
-									<></>
+									""
 								)}
 							</div>
 						</div>
 						<div className="flex flex-col gap-[0.5rem]">
 							<div className="relative flex flex-col">
-								<label>Password</label>
+								<label>Confirm Password</label>
 								<input
 									type={passwordVisible ? "text" : "password"}
 									className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem] bg-white h-[3rem] text-black rounded px-[1rem]"
@@ -127,12 +127,12 @@ const FormDetails: React.FC<FormDetailsProps> = ({ isFormValid }) => {
 							</div>
 
 							<div className="flex justify-between">
-								{isFormValid ? (
+								{!isFormValid ? (
 									<div className="text-[10px] text-[#FFB82E]">
-										Passwords does not match
+										Password does not match
 									</div>
 								) : (
-									<></>
+									""
 								)}
 							</div>
 						</div>

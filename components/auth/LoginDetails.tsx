@@ -46,8 +46,9 @@ const LoginDetails: React.FC<LoginDetailsProps> = ({ isFormValid }) => {
 					<h4 className="font-nunito text-4xl font-bold leading-[50.4px] tracking-tighter text-center">
 						Welcome Back
 					</h4>
-					<p className="font-nunito text-xl text-center">
-						Please enter your details to be able to lorem ipsum <br />
+					<p className="font-nunito text-md py-4 text-center">
+						Please enter your details to be able to lorem ipsum{" "}
+						<br className="hidden md:flex" />
 						lorem ipsum lorem ipsium
 					</p>
 				</div>
