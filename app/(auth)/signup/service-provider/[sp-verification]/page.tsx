@@ -1,9 +1,9 @@
 // "use client";
-import Verification from "@/components/auth/Verification";
+import Verify from "@/components/auth/Verify";
 
 const SpVerification = () => {
-	// return <Verification location="phone-verification" isCorrect={false} />;
-	return <Verification isCorrect={false} />;
-};
+  return <Verify />;
+
+}; 
 
 export default SpVerification;
