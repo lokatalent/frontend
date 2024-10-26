@@ -1,8 +1,9 @@
 // "use client";
-import FormDetails from "@/components/auth/FormDetails";
+import AuthForm from "@/components/auth/AuthForm";
 
 const ServiceProvider = () => {
-	return <FormDetails />;
+    return <AuthForm type="sign-up" />;
+
 
 };
 

@@ -1,9 +1,9 @@
-import Verification from "@/components/auth/Verification";
-// "use client";
+
+import Verify from "@/components/auth/Verify";
+
 
 const UserVerification = () => {
-	return <Verification isCorrect={false} />;
-	// return <Verification location='phone' isCorrect={false} />;
+  return <Verify />
 };
 
 export default UserVerification;
