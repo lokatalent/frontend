@@ -1,8 +1,5 @@
-import { Button } from "@/components/ui/button";
 import {
-	Form,
 	FormControl,
-	FormDescription,
 	FormField,
 	FormItem,
 	FormLabel,
@@ -11,7 +8,6 @@ import {
 import { Input } from "@/components/ui/input";
 import type { Control, FieldPath } from "react-hook-form";
 import type { z } from "zod";
-
 
 const formSchema = authFormSchema("sign-up");
 interface CustomInput {
@@ -22,7 +18,7 @@ interface CustomInput {
 }
 const CustomInput = ({ control, input, label, placeholder }: CustomInput) => {
 	return (
-		<div >
+		<div>
 			<FormField
 				control={control}
 				name={input}
