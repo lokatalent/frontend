@@ -1,25 +1,57 @@
 "use client";
+
 import ResetDialog from "@/components/auth/ResetDialog";
+import DynamicForm from "@/components/ui/form/DynamicForm";
+import { FieldConfig, passwordFormSchema } from "@/lib/utils";
 import Link from "next/link";
-import React, { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa";
+import React from "react";
 
 
 function NewPassword() {
-  const [newPasswordVisible, setNewPasswordVisible] = useState<boolean>(false);
-  const [confirmPasswordVisible, setConfirmPasswordVisible] =
-    useState<boolean>(false);
-  const [formIsValid, setFormIsValid] = useState<boolean>(true);
+ const fields: FieldConfig[] = [
+   {
+     name: "newPassword",
+     type: "password",
+     label: "New Password",
+     validation: {
+        required: 'Password is required',
+        minLength: {
+          value: 6,
+          message: 'Password must be at least 6 characters'
+        },
+        pattern: {
+          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+          message: 'Password must contain at least one letter and one number'
+        }
+      }
+   },
+   {
+     name: "confirmPassword",
+     type: "password",
+     label: "Confirm Password",
+     validation: {
+        required: 'Password is required',
+        minLength: {
+          value: 6,
+          message: 'Password must be at least 6 characters'
+        },
+        pattern: {
+          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+          message: 'Password must contain at least one letter and one number'
+        }
+      }
+   },
+ ];
 
-  // Toggle the visibility
-  const toggleNewPasswordVisibility = () => {
-    setNewPasswordVisible((isShow) => !isShow);
-  };
-  const toggleConfirmPasswordVisibility = () => {
-    setConfirmPasswordVisible((isShow) => !isShow);
-  };
+ const defaultValues = {
+   newPassword : "aaa",
+   confirmPassword :"bbbbb",
+ };
+
+  const schemaType = passwordFormSchema;
+
   return (
-    <div className="sm:px-[4rem] lg:px-[5rem] md:px-[6rem] lg:px-[7rem] py-12 flex justify-cnter h-screen flex-col items-cener gap-12 bg-[#FAF8F4]">
+    <div className="sm:px-[4rem] lg:px-[5rem] md:px-[6rem] lg:px-[7rem] py-12 flex justify-cnter h-scree flex-col items-cener gap-12 bg-[#FAF8F4]">
       <div className="flex justify-center relative">
         <div className="self-start cursor-pointer absolute top-[1%] left-[1%] h-12 w-12">
           <Link href="./">
@@ -53,7 +85,7 @@ function NewPassword() {
         </div>
       </div>
       <div className="flex gap-4 items-center justify-center">
-        <form className="flex flex-wrap justify-center">
+        {/* <form className="flex flex-wrap justify-center">
           <div className="flex flex-col flex-wrap items-center justify-center gap-10">
             <div className="flex flex-col gap-[0.5rem]">
               <div className="relative flex flex-col">
@@ -111,10 +143,17 @@ function NewPassword() {
               </div>
             </div>
           </div>
-        </form>
+        </form> */}
+        {/* <PasswordForm type="pass-word"/> */}
+        <DynamicForm
+          fields={fields}
+          defaultValues={defaultValues}
+          schemaType={passwordFormSchema}
+          buttonAction="password"
+        />
       </div>
       <div className="flex justify-center">
-        <ResetDialog />
+        {/* <ResetDialog /> */}
       </div>
     </div>
   );

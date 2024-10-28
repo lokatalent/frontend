@@ -1,12 +1,40 @@
 "use client";
 import EmailForm from "@/components/auth/EmailForm";
+import StraightForm from "@/components/ui/dynamic-form";
+import DynamicForm from "@/components/ui/form/DynamicForm";
+import { emailFormSchema, FieldConfig } from "@/lib/utils";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 
+type defaultValues = {
+  email: string
+}
+
 
 function ResetPassword() {
   const router = useRouter();  
+
+   const fields: FieldConfig[] = [
+    {
+      name: "email",
+      type: "email",
+      label: "Email",
+      validation: {
+        required: "Email is required",
+        pattern: {
+          value: /\S+@\S+\.\S+/,
+          message: "Invalid email format",
+        },
+      },
+    },
+  ];
+
+  const defaultValues = {
+      email: "",
+    }
+
+  const schemaType = emailFormSchema;
 
   return (
     <>
@@ -51,7 +79,9 @@ function ResetPassword() {
             </p>
           </div>
           <div className="self-center">
-           <EmailForm type="email-input" />
+            {/* <EmailForm type="email-input" /> */}
+            <DynamicForm fields={fields} defaultValues={defaultValues} schemaType={emailFormSchema} buttonAction="reset-passowrd" />
+            {/* <StraightForm /> */}
           </div>
         </div>
         
