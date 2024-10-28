@@ -2,11 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
-/* @layer utilities {
-	.text-balance {
-		text-wrap: balance;
+@layer utilities {
+	.header {
+		@apply text-2xl md:text-4xl lg:text-6xl font-bold leading-4;
 	}
-} */
+}
 .contained {
 	@apply mx-auto px-5 lg:w-[960px] lg:px-0 xl:w-[1210px];
 }
@@ -18,7 +18,7 @@
 }
 
 .contactButton {
-	@apply   font-normal leading-6 w-[20rem] sm:w-[30rem] md:w-[32rem] lg:w-[35rem] rounded h-12 flex items-center justify-center;
+	@apply font-normal leading-6 w-[20rem] sm:w-[30rem] md:w-[32rem] lg:w-[35rem] rounded h-12 flex items-center justify-center;
 }
 
 .verifyButton {
@@ -36,7 +36,7 @@
 } 
 
 @layer base {
-  :root {
+	:root {
 		--background: 0 0% 100%;
 		--foreground: 0 0% 3.9%;
 		--card: 0 0% 100%;
@@ -61,9 +61,9 @@
 		--chart-3: 197 37% 24%;
 		--chart-4: 43 74% 66%;
 		--chart-5: 27 87% 67%;
-		--radius: 0.5rem
+		--radius: 0.5rem;
 	}
-  .dark {
+	.dark {
 		--background: 0 0% 3.9%;
 		--foreground: 0 0% 98%;
 		--card: 0 0% 3.9%;
@@ -87,14 +87,18 @@
 		--chart-2: 160 60% 45%;
 		--chart-3: 30 80% 55%;
 		--chart-4: 280 65% 60%;
-		--chart-5: 340 75% 55%
+		--chart-5: 340 75% 55%;
 	}
 }
 @layer base {
-  * {
-    @apply border-border;
+	* {
+		@apply border-border;
 	}
-  body {
-    @apply bg-background text-foreground;
+	body {
+		@apply bg-background text-foreground;
 	}
+}
+
+body {
+	font-family: "Nunito Sans", sans-serif;
 }
