@@ -20,21 +20,6 @@
 .contactButton {
 	@apply   font-normal leading-6 w-[20rem] sm:w-[30rem] md:w-[32rem] lg:w-[35rem] rounded h-12 flex items-center justify-center;
 }
-
-.verifyButton {
-	@apply font-normal leading-6 w-[15rem] sm:w-[15rem] md:w-[15rem] lg:w-[15rem] rounded h-12 flex items-center justify-center
-}
-
-.input::-webkit-outer-spin-button,
-.input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.input {
-  -moz-appearance: textfield;
-} 
-
 @layer base {
   :root {
 		--background: 0 0% 100%;
