@@ -4,19 +4,26 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import {
-  Form
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
 } from "@/components/ui/formNew";
 
-import { authFormSchema } from "@/lib/utils";
+import { authFormSchema, SignUpFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { log } from "console";
 import CustomInput from "./CustomInput";
 
 export default function AuthForm({ type }: { type: string }) {
   const [loading, setLoading] = useState(false);
-  // const router = useRouter();
+  const router = useRouter();
 
   const formSchema = authFormSchema(type);
   console.log(formSchema, type)
@@ -31,16 +38,16 @@ export default function AuthForm({ type }: { type: string }) {
   console.log(form);  
 
 
-  // function navigateTo(path: string) {
-  //   router.push(path);
-  // }
+  function navigateTo(path: string) {
+    router.push(path);
+  }
 
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setLoading(true);
-    console.log(values);
+    console.log('values');
     // type === "log-in" ? console.log('mama') : router.push("/signup/verify-email");
     setLoading(false);
   }
@@ -57,7 +64,7 @@ export default function AuthForm({ type }: { type: string }) {
             : "Please enter your details to be able to lorem ipsum lorem ipsum lorem ipsium"}
         </p>
       </div>
-      {/* <Form {...form}>
+      <Form {...form}>
         <div className="flex flex-col items-center justify-center">
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             {type === "log-in" && (
@@ -100,7 +107,6 @@ export default function AuthForm({ type }: { type: string }) {
                   control={form.control}
                   input="text"
                   label="First Name"
-                  name=""
                   placeholder=" "
                   width="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
                 />
@@ -108,7 +114,6 @@ export default function AuthForm({ type }: { type: string }) {
                   control={form.control}
                   input="text"
                   label="Last Name"
-                  name=""
                   placeholder=" "
                   width="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
                 />
@@ -116,7 +121,6 @@ export default function AuthForm({ type }: { type: string }) {
                   control={form.control}
                   input="password"
                   label="Password"
-                  name=""
                   placeholder=" "
                   width="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
                 />
@@ -124,7 +128,6 @@ export default function AuthForm({ type }: { type: string }) {
                   control={form.control}
                   input="password"
                   label="Confirm Password"
-                  name=""
                   placeholder=" "
                   width="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
                 />
@@ -152,29 +155,21 @@ export default function AuthForm({ type }: { type: string }) {
             </div>
           </form>
         </div>
-      </Form> */}
-      <DynamicForm
-        fields={fields}
-        defaultValues={defaultValues}
-        schemaType={passwordFormSchema}
-        buttonAction="password"
-      />
+      </Form>
 
-      {type == "log-in" && (
-        <footer className="flex justify-center gap-2 ">
-          <p className="text-sm font-normal text-gray-600">
-            {type === "log-in"
-              ? "Dont have an account?"
-              : "Already have an account?"}
-          </p>
-          <Link
-            href={type === "log-in" ? "/signup" : "/login"}
-            className="text-primaryBlue text-sm"
-          >
-            {type === "log-in" ? " Sign Up" : " Log In"}
-          </Link>
-        </footer>
-      )}
+      {type == 'log-in' && (<footer className="flex justify-center gap-2 ">
+        <p className="text-sm font-normal text-gray-600">
+          {type === "log-in"
+            ? "Dont have an account?"
+            : "Already have an account?"}
+        </p>
+        <Link
+          href={type === "log-in" ? "/signup" : "/login"}
+          className="text-primaryBlue text-sm"
+        >
+          {type === "log-in" ? " Sign Up" : " Log In"}
+        </Link>
+      </footer>)}
     </div>
   );
 }

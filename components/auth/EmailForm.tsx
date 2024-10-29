@@ -15,7 +15,7 @@ export default function EmailForm({ type }: { type: string }) {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
-  const formSchema = emailFormSchema();
+  const formSchema = emailFormSchema(type);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -29,27 +29,34 @@ export default function EmailForm({ type }: { type: string }) {
     router.push(path);
   }
 
-  
+  // function onSubmit(data: z.infer<typeof formSchema>) {
+  //   // Do something with the form values.
+  //   // ✅ This will be type-safe and validated.
+  //   setLoading(true);
+  //   console.log('valuesss');
+  //   console.log(data);
+  //   // type === "log-in" ? console.log('mama') : router.push("/signup/verify-email");
+  //   // setLoading(false);
+  // }
 
   const onSubmit = (data, e) => {
     console.log(data, e);
     console.log('data')
     router.push("reset-password/mail-verification");
   };
-  const onError = (errors, e) => console.log(errors, e);
+  // const onError = (errors, e) => console.log(errors, e);
 
   return (
     <div className="w-8/12 mx-auto mt-20 mb-6 space-y-6">
       <Form {...form}>
         <div className="flex flex-col items-center justify-center">
-          <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-8">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div>
               <div className="space-y-8">
                 <CustomInput
                   control={form.control}
                   input="email"
                   label="Email"
-                  name="Email"
                   placeholder=" "
                   width="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[35rem]"
                 />
