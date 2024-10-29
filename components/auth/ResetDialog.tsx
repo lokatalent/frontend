@@ -12,7 +12,7 @@ import Link from "next/link";
 function ResetDialog() {
   return (
     <Dialog>
-      <DialogTrigger type="submit" className="font-nunito text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[70%] mx-auto rounded h-14 flex items-center justify-center hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] transition transition-all duration-[500ms]">
+      <DialogTrigger className="font-nunito text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[20rem] sm:w-[30rem] md:w-[32rem] lg:w-[30rem] rounded h-14 flex items-center justify-center hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] transition transition-all duration-[500ms]">
         Continue
       </DialogTrigger>
       <DialogContent className="w-full p-[3rem] sm:max-w-[30rem] lg:max-w-[40rem]">
