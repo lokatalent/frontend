@@ -1,8 +1,8 @@
-import AuthForm from "@/components/auth/AuthForm";
+import LoginDetails from "@/components/auth/LoginDetails";
 import React from "react";
 
 const LogIn = () => {
-    return <AuthForm type="log-in" />;
+	return <LoginDetails isFormValid={true} />;
 };
 
 export default LogIn;

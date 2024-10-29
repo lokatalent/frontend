@@ -8,8 +8,6 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { ChangeEvent, useState } from "react";
 import styles from './Verification.module.css';
-import { InputOTP, InputOTPGroup } from "../ui/input-otp";
-import InputOTPDemo from "./InputOTP";
 
 
 interface VerificationProps {
@@ -18,7 +16,6 @@ interface VerificationProps {
 
 const Verification: React.FC<VerificationProps> = ({ isCorrect }) => {
   const [isResend, setIsResend] = useState(false);  
-  const [value, setValue] = useState("");
   const router = useRouter();
   const pathname = usePathname();
   console.log(pathname);
@@ -79,7 +76,7 @@ const Verification: React.FC<VerificationProps> = ({ isCorrect }) => {
         </div>
         <div className="flex gap-4 items-center justify-center">
           <div>
-            {/* <form className="flex gap-2 sm:gap-4 md:gap-4 lg:gap-4">
+            <form className="flex gap-2 sm:gap-4 md:gap-4 lg:gap-4">
               <div className="">
                 <input
                   type="number"
@@ -142,8 +139,7 @@ const Verification: React.FC<VerificationProps> = ({ isCorrect }) => {
                 />
                
               </div>
-            </form> */}
-            <InputOTPDemo value={value} setValue={setValue} />
+            </form>
           </div>
         </div>
         {isCorrect && (

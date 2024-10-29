@@ -1,9 +1,9 @@
 // "use client";
-import AuthForm from "@/components/auth/AuthForm"
+import FormDetails from "@/components/auth/FormDetails"
 
 const user = () => {
   return (
-    <AuthForm type='sign-up' />
+    <FormDetails isFormValid={true} />
   )
 }
 
