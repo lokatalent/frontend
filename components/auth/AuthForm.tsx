@@ -153,12 +153,7 @@ export default function AuthForm({ type }: { type: string }) {
           </form>
         </div>
       </Form> */}
-      <DynamicForm
-        fields={fields}
-        defaultValues={defaultValues}
-        schemaType={passwordFormSchema}
-        buttonAction="password"
-      />
+     
 
       {type == "log-in" && (
         <footer className="flex justify-center gap-2 ">

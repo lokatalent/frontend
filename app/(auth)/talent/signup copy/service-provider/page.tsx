@@ -1,8 +1,8 @@
 "use client";
-import DynamicForm from "@/components/ui/form/DynamicForm";
+import AuthForm from "@/components/auth/AuthForm"
+import DynamicForm from "@/components/ui/form/DynamicForm"
 import { FieldConfig, SignUpFormSchema } from "@/lib/utils";
-import Link from "next/link";
-
+import Link from "next/link"
 
 const user = () => {
   const fields: FieldConfig[] = [
@@ -48,6 +48,7 @@ const user = () => {
       label: "Phone Number",
       validation: {
         required: "Phone number is required",
+       
       },
     },
     {
@@ -87,9 +88,7 @@ const user = () => {
   const defaultValues = {
     firstName: "",
     lastName: "",
-    email: "",
-    number: "",
-    newPassword: "",
+    password: "",
     confirmPassword: "",
   };
 
@@ -98,8 +97,9 @@ const user = () => {
     <div className="w-9/12 mx-auto pt-20 pb-[2rem] space-y-6 bg-primaryBg">
       <div className="text-center space-y-2">
         <h1 className="font-bold text-4xl text-textColor py-4">Hi there</h1>
-        <p className=" mx-auto">
-          Please create your account to book the best services for your needs
+        <p className="w-1/2 mx-auto">
+          Please enter your details to be able to lorem ipsum lorem ipsum lorem
+          ipsium
         </p>
       </div>
 
@@ -107,20 +107,20 @@ const user = () => {
         fields={fields}
         defaultValues={defaultValues}
         schemaType={schemaType}
-        buttonAction="sign-up"
+        buttonAction="userDetails"
         width="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
       />
 
       <footer className="flex justify-center gap-2 ">
-        <p className="text-sm font-bold text-gray-600">
+        <p className="text-sm font-normal text-gray-600">
           Already have an account?
         </p>
-        <Link href={"/login"} className="text-primaryBlue font-bold text-sm">
+        <Link href={"/login"} className="text-primaryBlue text-sm">
           Log In
         </Link>
       </footer>
     </div>
   );
-};
+}
 
-export default user;
+export default user

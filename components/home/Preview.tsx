@@ -1,5 +1,5 @@
 import Image from "next/image";
-import preview from "../../public/Images/preview.png";
+import preview from "@/public/Images/preview.png";
 
 const Preview = () => {
   return (
