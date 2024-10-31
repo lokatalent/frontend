@@ -18,8 +18,8 @@ const Testimonial = () => {
 							<Image
 								src="/Images/hero1.png"
 								alt="Hero 1"
-								layout="fill"
-								objectFit="cover"
+								fill
+								style={{ objectFit: "cover" }}
 							/>
 						</div>
 					</div>
@@ -28,8 +28,8 @@ const Testimonial = () => {
 							<Image
 								src="/Images/hero2.png"
 								alt="Hero 2"
-								layout="fill"
-								objectFit="cover"
+								fill
+								style={{ objectFit: "cover" }}
 							/>
 						</div>
 					</div>
@@ -38,8 +38,8 @@ const Testimonial = () => {
 							<Image
 								src="/Images/hero3.png"
 								alt="Hero 3"
-								layout="fill"
-								objectFit="cover"
+								fill
+								style={{ objectFit: "cover" }}
 							/>
 						</div>
 					</div>

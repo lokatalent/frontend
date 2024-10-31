@@ -9,11 +9,14 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-function ResetDialog() {
+function ResetDialog({ isDialog, closeDialog}) {
   return (
-    <Dialog>
-      <DialogTrigger type="submit" className="font-nunito text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[70%] mx-auto rounded h-14 flex items-center justify-center hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] transition transition-all duration-[500ms]">
-        Continue
+    <Dialog open={isDialog} onOpenChange={closeDialog}>
+      <DialogTrigger
+        type="submit"
+        className="font-nunito text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[23rem] mx-auto rounded h-14 flex items-center justify-center hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] transition transition-all duration-[500ms]"
+      >
+        Update Password
       </DialogTrigger>
       <DialogContent className="w-full p-[3rem] sm:max-w-[30rem] lg:max-w-[40rem]">
         <DialogHeader>
@@ -23,7 +26,8 @@ function ResetDialog() {
         </DialogHeader>
         <div className="w-full gap-6 flex flex-col justify-center items-center gap-[2rem]">
           <p>
-            Your password has been updated successfully. <br/> Click continue to Login
+            Your password has been updated successfully. <br /> Click continue
+            to Login
           </p>
           <div>
             <Image src="/Images/mark.png" alt="Mark" width={150} height={150} />

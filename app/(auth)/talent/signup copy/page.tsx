@@ -10,14 +10,14 @@ const SignUpType = () => {
 
       <div className="flex flex-col md:flex-row md:space-x-10 justify-center ">
         <Card
-          info="Book trusted home services quickly and easily"
+          info="As a user, you will be able to lorem ipsumlo lorem ipsum"
           userType="User"
           buttonText="Sign Up"
           path="signup/user"
         />
 
         <Card
-          info="Offer your expertise and earn flexible income by joining our network"
+          info="As a service provider, you will be able to lorem ipsumlo lorem ipsum "
           userType="Service Provider"
           buttonText="Sign Up"
           path="signup/service-provider"

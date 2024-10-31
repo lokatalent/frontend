@@ -40,25 +40,7 @@ function ResetPassword() {
     <>
       <div className="px-[2rem] sm:px-[4rem] md:px-[5.5rem] lg:px-[7rem] h-screen py-12 flex justify-center flex-col items-cener gap-12 bg-[#FAF8F4]">
         <div className="flex flex-col justify-center relative">
-          <div className="self-start cursor-pointer absolute top-[-50%] sm:top-[1%] md:top-[1%] lg:top-[1%] left-[1%] h-12 w-12">
-            <div onClick={() => router.back()}>
-              <svg
-                width="35"
-                height="35"
-                viewBox="0 0 35 35"
-                fill="none"
-                xmlns="http://www.w3.org/2000/svg"
-              >
-                <path
-                  d="M19.6924 9.16754L13.458 17.7485L22.0389 23.9829"
-                  stroke="#212121"
-                  strokeWidth="2"
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                />
-              </svg>
-            </div>
-          </div>
+          
 
           <div className="flex justify-center">
             <Image
@@ -73,18 +55,23 @@ function ResetPassword() {
             <h4 className="font-nunito text-4xl font-bold leading-[50.4px] tracking-tighter text-center">
               Forgot Password
             </h4>
-            <p className="font-nunito text-sm text-[#6C727F] text-center w-[50%] mx-auto">
+            <p className="font-nunito text-sm text-[#6C727F] text-center w-[90%] mx-auto">
               Enter the email address associated with your account and we’ll
-              send you a link to reset your password
+              send you a link to <br /> reset your password
             </p>
           </div>
           <div className="self-center">
             {/* <EmailForm type="email-input" /> */}
-            <DynamicForm fields={fields} defaultValues={defaultValues} schemaType={emailFormSchema} buttonAction="reset-passowrd" />
+            <DynamicForm
+              fields={fields}
+              defaultValues={defaultValues}
+              schemaType={emailFormSchema}
+              buttonAction="reset-password"
+              width="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[35rem]"
+            />
             {/* <StraightForm /> */}
           </div>
         </div>
-        
       </div>
     </>
   );

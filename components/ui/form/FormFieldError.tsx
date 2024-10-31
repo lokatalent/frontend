@@ -1,4 +1,4 @@
-
+import { IoWarningOutline } from "react-icons/io5";
 
 // FormFieldError.tsx
 interface FormFieldErrorProps {
@@ -6,11 +6,12 @@ interface FormFieldErrorProps {
 }
 
 export const FormFieldError: React.FC<FormFieldErrorProps> = ({ error }) => {
-  console.log(error)
+  console.log(error);
   if (!error) return null;
 
   return (
-    <p className="text-red-500 text-sm" role="alert">
+    <p className="text-[#14141699] text-[10px] items-center flex mt-1" role="alert">
+      <IoWarningOutline color="ed" size={16} className="text-[#FFB82E] mr-1" />
       {error.message}
     </p>
   );

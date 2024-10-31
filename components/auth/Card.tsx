@@ -14,10 +14,10 @@ const Card = ({ info, buttonText, userType, path }: CardProps) => {
 					color="#3377FF"
 					size={48}
 				/>
-				<p className="text-xl md:text-3xl font-semibold py-4 text-center">
+				<p className="text-xl md:text-3xl font-semibold py-5 text-center">
 					{userType}
 				</p>
-				<p className="text-base font-normal text-textGray mb-5 text-center">
+				<p className="text-base font-normal text-textGray mb-6 text-center">
 					{info}
 				</p>
 				<Link

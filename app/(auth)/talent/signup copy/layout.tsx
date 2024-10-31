@@ -3,5 +3,5 @@ export default function SignupLayout({
 }: {
 	children: React.ReactNode;
 }) {
-	return <section>{children}</section>;
+	return <section className="bg-primaryBg">{children}</section>;
 }
