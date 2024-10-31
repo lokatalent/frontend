@@ -1,13 +1,15 @@
-"use client";
-import LogInAuth from "@/components/auth/LogInAuth";
+"use client"
 import { useRouter } from "next/navigation";
 
-const LogIn = () => {
-  const router = useRouter();  
-
-  return (
-    <section className="bg-primaryBg bg-red relative">
-      <div className="self-start cursor-pointer absolute top-[10%] sm:top-[1%] md:top-[1%] lg:top-[10%] left-[3%] h-12 w-12">
+export default function SignupLayout({
+  children,
+}: {
+  children: React.ReactNode;
+	}) {
+	const router = useRouter();
+	return (
+    <section className="bg-primaryBg relative h-screen">
+      <div className="self-start cursor-pointer absolute top-[5%] sm:top-[10%] md:top-[10%] lg:top-[10%] left-[3%] h-12 w-12">
         <div onClick={() => router.back()}>
           <svg
             width="35"
@@ -26,9 +28,7 @@ const LogIn = () => {
           </svg>
         </div>
       </div>
-      <LogInAuth />
+      {children}
     </section>
   );
-};
-
-export default LogIn;
+}
