@@ -1,13 +1,7 @@
-import LocationTrack from "@/components/location/LocationTrack";
 import { Spacer } from "@/components/Spacer";
+import { FaCircleCheck } from "react-icons/fa6";
 import { RxCaretRight } from "react-icons/rx";
-import {
-	TbCircleNumber1,
-	TbCircleNumber2Filled,
-	TbCircleNumber3Filled,
-} from "react-icons/tb";
-
-import { Input } from "@/components/ui/input";
+import { TbCircleNumber2, TbCircleNumber3Filled } from "react-icons/tb";
 
 const page = () => {
 	return (
@@ -18,9 +12,9 @@ const page = () => {
 					<div className="flex flex-row justify-center space-x-4 items-center">
 						<p className="flex flex-row  space-x-3 items-center">
 							<span>
-								<TbCircleNumber1
+								<FaCircleCheck
 									size={28}
-									style={{ color: "#3377FF", borderColor: "#3377FF" }}
+									style={{ fill: "#3377FF" }}
 								/>
 							</span>
 							<span>Location</span>
@@ -28,12 +22,12 @@ const page = () => {
 						<RxCaretRight size={20} />
 						<p className="flex flex-row  space-x-3 items-center">
 							<span>
-								<TbCircleNumber2Filled
+								<TbCircleNumber2
 									size={28}
-									style={{ color: "#9EA3AEF", fill: "#3377FF99" }}
+									style={{ color: "#3377FF", borderColor: "#3377FF" }}
 								/>
 							</span>
-							<span className="text-textGray3">Details</span>
+							<span className="">Details</span>
 						</p>
 						<RxCaretRight size={20} />
 						<p className="flex flex-row  space-x-3 items-center">
@@ -47,24 +41,11 @@ const page = () => {
 						</p>
 					</div>
 				</div>
-				<Spacer size={50} />
-				<div className="my-8   ">
-					<h1 className="header my-5  text-center">Where do you need help?</h1>
-					<Spacer size={40} />
-					<Input
-						type="email"
-						placeholder="Enter Location"
-						className="input-class w-10/12 mx-auto placeholder:text-textGray2"
-					/>
+			</div>
 
-					<div className="flex justify-center mt-8">
-						<div className="contactButton btnOne my-5 max-w-[499px]">
-							Continue
-						</div>
-					</div>
-
-					<LocationTrack />
-				</div>
+			<div className="my-8   ">
+				<h1 className="header my-5  text-center">Make a Booking Now</h1>
+				<p className="text-center">Enter details about your booking</p>
 			</div>
 		</div>
 	);
