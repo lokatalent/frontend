@@ -6,15 +6,51 @@
 	.header {
 		@apply text-2xl md:text-4xl lg:text-6xl font-bold leading-4;
 	}
-}
-.contained {
-	@apply mx-auto px-5 lg:w-[960px] lg:px-0 xl:w-[1210px];
-}
-.sub-heading {
-	@apply text-center text-3xl md:text-5xl lg:text-6xl font-bold py-14;
-}
-.generalButton {
-	@apply px-6 py-2  rounded-sm flex items-center justify-center whitespace-nowrap text-sm mt-2 md:mt-0;
+
+	.text-balance {
+		text-wrap: balance;
+	}
+
+	.input-class {
+		@apply text-base p-6 placeholder:text-base rounded-lg  text-gray-900 placeholder:text-gray-500 bg-white;
+	}
+	.form-item {
+		@apply flex flex-col gap-1.5 my-14;
+	}
+
+	.form-label {
+		@apply text-lg w-full max-w-[280px] font-medium text-gray-700;
+	}
+
+	.form-message {
+		@apply text-xs text-red-500;
+	}
+
+	.btnOne {
+		@apply bg-primaryBlue hover:bg-blue-700 text-white w-full   p-3 text-lg;
+	}
+	.btnTwo {
+		@apply bg-bgWhite hover:bg-blue-100 text-primaryBlue w-full    p-3 text-lg;
+	}
+	.card {
+		@apply shadow-lg p-12  border border-neutral-50 rounded-lg bg-white;
+	}
+	.card2 {
+		@apply shadow-lg p-8  border border-neutral-50 rounded-lg bg-white;
+	}
+	.contained {
+		@apply mx-auto px-5 lg:w-[960px] lg:px-0 xl:w-[1210px];
+	}
+	.sub-heading {
+		@apply text-center text-3xl md:text-5xl lg:text-6xl font-bold py-14;
+	}
+	.generalButton {
+		@apply px-6 py-2  rounded-sm flex items-center justify-center whitespace-nowrap text-sm mt-2 md:mt-0;
+	}
+
+	.contactButton {
+		@apply font-normal leading-6 w-[20rem] sm:w-[30rem] md:w-[32rem] lg:w-[35rem] rounded h-12 flex items-center justify-center;
+	}
 }
 
 .contactButton {
@@ -101,4 +137,5 @@
 
 body {
 	font-family: "Nunito Sans", sans-serif;
+	background-color: "#FAF8F4";
 }
