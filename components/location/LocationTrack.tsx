@@ -9,96 +9,123 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import enableLoc from "@/public/Images/enable-loc.png";
-import { GoogleMap, Marker, useLoadScript } from "@react-google-maps/api";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { MdLocationSearching } from "react-icons/md";
 
-const LocationTrack = () => {
-	const [location, setLocation] = useState(null);
+const LocationTrack = ({ mapping, setMapping }) => {
+	const [streetName, setStreetName] = useState("");
+	const [locationError, setLocationError] = useState(false);
 	const router = useRouter();
-	const defaultMapOptions = {
-		zoomControl: true,
-		tilt: 0,
-		gestureHandling: "auto",
-		mapTypeId: "satellite",
-	};
-	const { isLoaded } = useLoadScript({
-		googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY,
-	});
 
 	const handleLocationRequest = () => {
-		router.push("/make-booking");
-		console.log("API Key:", process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY);
-
+		setMapping(true);
 		if (navigator.geolocation) {
 			navigator.geolocation.getCurrentPosition(
 				(position) => {
-					setLocation({
-						lat: position.coords.latitude,
-						lng: position.coords.longitude,
-					});
-					console.log("position", position.coords.latitude);
+					const { latitude, longitude } = position.coords;
+					console.log("LATITUDE", latitude);
+
+					// Use Google Maps Geocoding API to get the address;
+					const geocodingUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
+
+					fetch(geocodingUrl)
+						.then((response) => response.json())
+						.then((data) => {
+							const addressComponents = data.results[0].address_components;
+							const streetNumber = addressComponents.find((component) =>
+								component.types.includes("street_number"),
+							);
+							const route = addressComponents.find((component) =>
+								component.types.includes("route"),
+							);
+
+							setStreetName(`${streetNumber?.long_name} ${route?.long_name}`);
+						})
+						.catch((error) => {
+							console.error("Error fetching address:", error);
+						});
 				},
 				(error) => {
-					
-					console.error("Error fetching location", error);
+					console.error("Error getting user location:", error);
 				},
 			);
 		} else {
-			alert("Geolocation is not supported by this browser.");
+			console.error("Geolocation is not supported by this browser.");
 		}
+
+		setTimeout(() => {
+			if (!streetName) {
+				setLocationError(true);
+			}
+		}, 10000);
 	};
-	if (!isLoaded) return <div>Loading...</div>;
 
 	return (
 		<div className="flex justify-center mt-8">
-			<Dialog>
-				<DialogTrigger className="text-primaryBlue underline underline-offset-4 font-semibold">
-					Track location
-				</DialogTrigger>
-				<DialogContent className=" ">
-					<DialogHeader>
-						<DialogTitle className="text-lg md:text-3xl mt-5 text-center">
-							Grant Permission to Use Location
-						</DialogTitle>
-						<DialogDescription className=" flex flex-col justify-center items-center">
-							<Image
-								src={enableLoc}
-								height={132}
-								width={151}
-								alt="track location"
-							/>
-							<p>Lorem ipsum dolor, sit</p>
-						</DialogDescription>
-					</DialogHeader>
-					<div className="flex flex-row justify-center space-x-3 w-full">
-						<DialogClose asChild>
-							<button className="btnTwo">Enter Location Manually</button>
-						</DialogClose>
-						<button
-							className="btnOne"
-							onClick={handleLocationRequest}
-						>
-							Accept
-						</button>
+			{mapping ? (
+				<div className="bg-map h-svh w-full">
+					<div className="flex h-full items-center justify-center">
+						{streetName ? (
+							<p>Your street: {streetName}</p>
+						) : locationError ? (
+							<div className="flex flex-col items-center ">
+								<p className="text-3xl mb-4">Couldn't find location</p>
+								<button
+									className="btnOne mt-4 w-8/12"
+									onClick={() => router.push("/make-booking")}
+								>
+									Proceed
+								</button>
+							</div>
+						) : (
+							<p className="text-3xl flex flex-row ">
+								<span className="bg-white h-10 w-10 rounded-full flex items-center justify-center">
+									<MdLocationSearching
+										width={28}
+										height={28}
+									/>
+								</span>
+								{"  "}
+								<span>Tracking location please wait...</span>
+							</p>
+						)}
 					</div>
-				</DialogContent>
-			</Dialog>
-
-			{location && (
-				<GoogleMap
-					zoom={15}
-					center={location}
-					options={defaultMapOptions}
-					mapContainerStyle={{
-						width: "100%",
-						height: "80vh",
-						borderRadius: "15px 0px 0px 15px",
-					}}
-				>
-					<Marker position={location} />
-				</GoogleMap>
+				</div>
+			) : (
+				<Dialog>
+					<DialogTrigger className="text-primaryBlue underline underline-offset-4 font-semibold">
+						Track location
+					</DialogTrigger>
+					<DialogContent className=" ">
+						<DialogHeader>
+							<DialogTitle className="text-lg md:text-3xl mt-5 text-center">
+								Grant Permission to Use Location
+							</DialogTitle>
+							<DialogDescription className=" flex flex-col justify-center items-center">
+								<Image
+									src={enableLoc}
+									height={132}
+									width={151}
+									alt="track location"
+								/>
+								<p>Lorem ipsum dolor, sit</p>
+							</DialogDescription>
+						</DialogHeader>
+						<div className="flex flex-row justify-center space-x-3 w-full">
+							<DialogClose asChild>
+								<button className="btnTwo">Enter Location Manually</button>
+							</DialogClose>
+							<button
+								className="btnOne"
+								onClick={handleLocationRequest}
+							>
+								Accept
+							</button>
+						</div>
+					</DialogContent>
+				</Dialog>
 			)}
 		</div>
 	);
