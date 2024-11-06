@@ -91,9 +91,9 @@ const NotificationPanel = async () => {
               )}
 
               <div className="flex-1">
-                <div className="flex items-start justify-between">
+                <div className="flex flex-col sm:flex-row items-start justify-between">
                   <div>
-                    <p className="font-medium text-gray-900">
+                    <p className="text-[0.9rem] sm:text-md font-medium text-gray-900">
                       {notification.title}
                     </p>
                     <p className="text-sm text-gray-500">
@@ -135,7 +135,7 @@ const NotificationsDropdown = () => {
         </div>
       </PopoverTrigger>
 
-      <PopoverContent className="absolute right-[-165px] mt-2 w-96 transform">
+      <PopoverContent className="absolute bg-white p-0 right-[-165px] rounded-md mt-2 w-[15rem] sm:w-96 transform">
         <NotificationPanel />
       </PopoverContent>
     </Popover>

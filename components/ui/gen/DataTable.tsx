@@ -25,6 +25,9 @@ import { BookingOptions } from "@/components/overview/SortData";
 import SortList from "@/components/overview/SortList";
 import RoleSwitch from "@/components/overview/RoleSwitch";
 import Image from "next/image";
+interface RoleSwitchProps {
+  roleHandler: (role: string) => void; // Assuming roleHandler is a function that accepts a role as a string
+}
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -33,7 +36,6 @@ interface DataTableProps<TData, TValue> {
   path: string;
   isSort: boolean;
   isRole: boolean;
-  
 }
 interface GlobalFilter {
   globalFilter: any;
@@ -82,16 +84,16 @@ export function DataTable<TData, TValue>({
     router.push(`${path}/${id}`);
   };
 
-  // const roleHandler = (role) => {
-    
-  // }
+  const roleHandler = (role: string) => {
+    console.log(role)
+  }
 
   return (
     <div>
       <div className="mb-5">
         {/* <h1 className="font-medium text-2xl">{title}</h1> */}
-        <div className="flex flex-col sm:flex-row gap-5 justify-between items-center">
-          {isRole ? <RoleSwitch /> : null}
+        <div className="flex flex-col sm:flex-row gap-5 justify-between items-start sm:items-center">
+          {isRole ? <RoleSwitch roleHandler={roleHandler} /> : null}
           {isSort ? <SortList options={BookingOptions} /> : null}
         </div>
       </div>

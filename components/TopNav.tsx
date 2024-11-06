@@ -1,8 +1,6 @@
 // components/TopNav.tsx
-// To navigate if needed
-import PopoverExample from "./ui/gen/PopOver";
+import PopoverExample from "./nav/Menu";
 import NotificationsDropdown from "./nav/NotificationPopover";
-// import profilePic from '@/assets/images/success.png'
 
 const TopNav = () => {
   const username = "John Doe";
@@ -13,15 +11,13 @@ const TopNav = () => {
 
       {/* Right Side: Notification Bell and User Profile */}
       <div className="flex items-center space-x-6 mr-8">
-        {/* Notification Bell */}
+        {/* Notification*/}
         <NotificationsDropdown />
 
         <div className="h-10 w-[1px] bg-black"></div>
 
         {/* User Profile */}
-        
-          <PopoverExample username={username} />
-
+        <PopoverExample username={username} />
       </div>
     </nav>
   );
