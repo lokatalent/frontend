@@ -1,5 +1,4 @@
 "use client";
-import AuthForm from "@/components/auth/AuthForm"
 import DynamicForm from "@/components/ui/form/DynamicForm"
 import { FieldConfig, SignUpFormSchema } from "@/lib/utils";
 import Link from "next/link"
