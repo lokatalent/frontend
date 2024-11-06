@@ -30,6 +30,7 @@ async function getData(): Promise<BookingType[]> {
   ];
 }
 
+
 export default async function Dashboard() {
   const BookingData = await getData();
   return (
@@ -48,14 +49,14 @@ export default async function Dashboard() {
         <h1 className="font-medium text-2xl">Bookings</h1>
       <div>
         <div className="card">
-          <DataTable
-            columns={BookingColumns}
-            title="Bookings"
-            data={BookingData}
-            isRole={true}
-            isSort={true}
-            path="/"
-          />
+            <DataTable
+              columns={BookingColumns}
+              title="Bookings"
+              data={BookingData}
+              isRole={true}
+              isSort={true}
+              path="/"
+            />
 
           <div className="flex justify-center mt-5">
             <Link href="/dashboard/bookings" className="px-10 py-4 text-white bg-blue-500 rounded-md hover:bg-blue-600">
