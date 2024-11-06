@@ -11,16 +11,15 @@ export default function Home() {
   return (
     <div>
       {/* {loggedIn && ( */}
-        <div>
-          <Hero />
-          <Preview />
-          <HowItWorks />
-          <ApplyHere />
-          <Testimonial />
-          <Footer />
-        </div>
+      <div>
+        <Hero />
+        <Preview />
+        <HowItWorks />
+        <ApplyHere />
+        <Testimonial />
+        <Footer />
+      </div>
       {/* )} */}
-      
     </div>
   );
 }
