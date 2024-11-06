@@ -32,7 +32,7 @@ const Page = () => {
 	const handleLocationSelect = (place: string) => {
 		setSelectedLocation(place);
 		setIsDisabled(false);
-		console.log("Selected Place Details:", place);
+		console.log("Selected Place Details:", selectedLocation);
 	};
 	return (
 		<>

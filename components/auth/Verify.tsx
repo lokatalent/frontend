@@ -9,7 +9,6 @@ import InputOTPDemo from "@/components/auth/InputOTP";
 import { Button } from "@/components/ui/button";
 import SuccessScreen from "@/components/auth/SuccessScreen";
 import { useRouter } from "next/navigation";
-import Link from "next/link";
 
 interface Verify {
   title: string;

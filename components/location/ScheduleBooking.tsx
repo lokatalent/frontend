@@ -39,8 +39,6 @@ const ScheduleBooking = () => {
 	const [count, setCount] = useState(3.5);
 	const [showDuration, setShowDutration] = useState(false);
 	const [isDialogOpen, setIsDialogOpen] = useState(false);
-	const [selectedDate, setSelectedDate] = useState(null);
-	const [date, setDate] = useState<Date>();
 
 	const onSubmit = (data: FormValues) => {
 		console.log(data);
@@ -86,10 +84,7 @@ const ScheduleBooking = () => {
 			>
 				<div className=" flex flex-row space-x-5">
 					{/* Start Date Input */}
-					<Controller
-						name="startDate"
-						control={control}
-						render={({ field: { onChange, value } }) => (
+					
 							<Controller
 								name="startDate"
 								control={control}
@@ -130,8 +125,8 @@ const ScheduleBooking = () => {
 									</div>
 								)}
 							/>
-						)}
-					/>
+						
+				
 
 					{/* End Date Input */}
 					<Controller

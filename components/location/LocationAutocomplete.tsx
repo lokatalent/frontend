@@ -23,7 +23,7 @@ const LocationAutocomplete = ({ onSelect }) => {
 				}
 			});
 		}
-	}, []);
+	}, [onSelect]);
 
 	return (
 		<input

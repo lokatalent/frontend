@@ -39,9 +39,14 @@ function NewPassword() {
 		},
 	];
 
-	const defaultValues = {
-		newPassword: "aaaaaaa",
-		confirmPassword: "aaaaaaa",
+	interface Default{
+		newPassword:string,
+		confirmPassword:string
+	}
+
+	const defaultValues: Default = {
+		newPassword: "",
+		confirmPassword: "",
 	};
 
 	// const schemaType = passwordFormSchema;
