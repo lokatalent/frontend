@@ -1,13 +1,13 @@
 import { clsx, type ClassValue } from "clsx";
 import { RegisterOptions } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
-import { number, z } from "zod";
+import { z } from "zod";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export const SignUpFormSchema1 = (type: string) =>
+export const SignUpFormSchema1 = () =>
   z.object({
     text: z.string().min(2),
     newText: z.string().min(2),
@@ -15,7 +15,7 @@ export const SignUpFormSchema1 = (type: string) =>
     password2: z.string().min(8),
   });
 
-export const authFormSchema = (type: string) =>
+export const authFormSchema = () =>
   z.object({
     email: z.string().email(),
     password: z.string().min(8),
@@ -27,7 +27,7 @@ export const emailFormSchema1 = () =>
     email: z.string().email(),
   });
 
-export const passwordFormSchema1 = (type: string) =>
+export const passwordFormSchema1 = () =>
   z.object({
     newPassword: z.string().min(8),
     confirmPassword: z.string().min(8),

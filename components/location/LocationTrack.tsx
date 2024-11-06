@@ -10,7 +10,6 @@ import {
 } from "@/components/ui/dialog";
 import enableLoc from "@/public/Images/enable-loc.png";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaArrowLeft } from "react-icons/fa";
 import { MdLocationSearching } from "react-icons/md";
@@ -18,7 +17,6 @@ import { MdLocationSearching } from "react-icons/md";
 const LocationTrack = ({ mapping, setMapping }) => {
 	const [streetName, setStreetName] = useState("");
 	const [locationError, setLocationError] = useState(false);
-	const router = useRouter();
 
 	const handleLocationRequest = () => {
 		setMapping(true);

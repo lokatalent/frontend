@@ -24,7 +24,7 @@ type FormValues = {
 };
 
 const MakeBookingTime = () => {
-	const { handleSubmit, control, register, setValue } = useForm<FormValues>({
+	const { handleSubmit, control, register } = useForm<FormValues>({
 		defaultValues: {
 			startTime: "",
 			endTime: "",
@@ -65,34 +65,29 @@ const MakeBookingTime = () => {
 			>
 				<div className=" flex flex-row space-x-2">
 					{/* Start Time Input */}
+
 					<Controller
 						name="startTime"
 						control={control}
 						render={({ field: { onChange, value } }) => (
-							<Controller
-								name="startTime"
-								control={control}
-								render={({ field }) => (
-									<div className="flex flex-col w-full">
-										<Label
-											htmlFor="description"
-											className="text-md pb-3"
-										>
-											Start Time*
-										</Label>
-										<div className="flex items-center  bg-white">
-											<div className="relative w-full">
-												<Input
-													type="time"
-													onChange={onChange}
-													value={value}
-													className="w-full p-6 pl-10"
-												/>
-											</div>
-										</div>
+							<div className="flex flex-col w-full">
+								<Label
+									htmlFor="description"
+									className="text-md pb-3"
+								>
+									Start Time*
+								</Label>
+								<div className="flex items-center  bg-white">
+									<div className="relative w-full">
+										<Input
+											type="time"
+											onChange={onChange}
+											value={value}
+											className="w-full p-6 pl-10"
+										/>
 									</div>
-								)}
-							/>
+								</div>
+							</div>
 						)}
 					/>
 

@@ -11,7 +11,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import CustomInput from "./CustomInput";
 
-export default function EmailForm({ type }: { type: string }) {
+export default function EmailForm() {
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -25,16 +25,18 @@ export default function EmailForm({ type }: { type: string }) {
   });
   // console.log(form);
 
-  function navigateTo(path: string) {
-    router.push(path);
-  }
+  // function navigateTo(path: string) {
+  //   router.push(path);
+  // }
 
   
 
   const onSubmit = (data, e) => {
+    setLoading(true)
     console.log(data, e);
     console.log('data')
     router.push("reset-password/mail-verification");
+    setLoading(false)
   };
   const onError = (errors, e) => console.log(errors, e);
 
