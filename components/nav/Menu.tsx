@@ -6,7 +6,7 @@ import Link from "next/link";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
 
-const PopoverExample: React.FC<{ username: string }> = ({ username }) => {
+const Menu: React.FC<{ username: string }> = ({ username }) => {
   return (
     <Popover>
       <PopoverTrigger>
@@ -48,4 +48,4 @@ const PopoverExample: React.FC<{ username: string }> = ({ username }) => {
   );
 };
 
-export default PopoverExample;
+export default Menu;

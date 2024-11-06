@@ -33,7 +33,7 @@
 		@apply bg-bgWhite hover:bg-blue-100 text-primaryBlue w-full    p-3 text-lg;
 	}
 	.card {
-		@apply shadow-lg p-12  border border-neutral-50 rounded-lg bg-white;
+		@apply shadow-lg md:p-12 p-3  border border-neutral-50 rounded-lg bg-white;
 	}
 	.card2 {
 		@apply shadow-lg p-8  border border-neutral-50 rounded-lg bg-white;
