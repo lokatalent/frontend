@@ -49,23 +49,8 @@ const LocationTrack = ({ mapping, setMapping }) => {
 						});
 				},
 				(error) => {
-					switch (error.code) {
-						case error.PERMISSION_DENIED:
-							console.error("Location permission denied.");
-							break;
-						case error.POSITION_UNAVAILABLE:
-							console.error("Position information is unavailable.");
-							break;
-						case error.TIMEOUT:
-							console.error("The request to get user location timed out.");
-							break;
-						default:
-							console.error("An unknown error occurred.");
-							break;
-					}
-					setLocationError(true); // Set error state if location fails
+					setLocationError(error?.message);
 				},
-				{ timeout: 10000 },
 			);
 		} else {
 			console.error("Geolocation is not supported by this browser.");

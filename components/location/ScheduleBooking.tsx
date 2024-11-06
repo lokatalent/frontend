@@ -1,7 +1,6 @@
 "use client";
-import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-
+import { Button } from "@/components/ui/button";
+import { Calendar } from "@/components/ui/calendar";
 import {
 	Dialog,
 	DialogClose,
@@ -12,7 +11,17 @@ import {
 	DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { Label } from "@/components/ui/label";
+import {
+	Popover,
+	PopoverContent,
+	PopoverTrigger,
+} from "@/components/ui/popover";
+import { Textarea } from "@/components/ui/textarea";
+import { cn } from "@/lib/utils";
+import { format } from "date-fns";
+import { Calendar as CalendarIcon } from "lucide-react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { Spacer } from "../Spacer";
@@ -20,26 +29,23 @@ import { Spacer } from "../Spacer";
 type FormValues = {
 	startTime: string;
 	endTime: string;
+	startDate: Date;
+	endDate: Date;
 	description: string;
+	duration: number;
 };
 
-const MakeBookingTime = () => {
-	const { handleSubmit, control, register, setValue } = useForm<FormValues>({
-		defaultValues: {
-			startTime: "",
-			endTime: "",
-			description: "",
-		},
-	});
+const ScheduleBooking = () => {
+	const [count, setCount] = useState(3.5);
+	const [showDuration, setShowDutration] = useState(false);
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
+	const [selectedDate, setSelectedDate] = useState(null);
+	const [date, setDate] = useState<Date>();
 
 	const onSubmit = (data: FormValues) => {
 		console.log(data);
 		// handle submission logic here
 	};
-
-	const [count, setCount] = useState(3.5);
-	const [showDuration, setShowDutration] = useState(false);
-	const [isDialogOpen, setIsDialogOpen] = useState(false);
 
 	const increase = () => {
 		if (count < 10) {
@@ -57,22 +63,126 @@ const MakeBookingTime = () => {
 		setShowDutration(true);
 	};
 
+	const { handleSubmit, control, register, setValue } = useForm<FormValues>({
+		defaultValues: {
+			startTime: "",
+			endDate: "",
+			startDate: "",
+			endTime: "",
+			description: "",
+			duration: count,
+		},
+	});
+
+	useEffect(() => {
+		setValue("duration", count);
+	}, [count, setValue]);
+
 	return (
 		<div className="p-6 ">
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				className=""
 			>
-				<div className=" flex flex-row space-x-2">
+				<div className=" flex flex-row space-x-5">
+					{/* Start Date Input */}
+					<Controller
+						name="startDate"
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<Controller
+								name="startDate"
+								control={control}
+								render={({ field: { onChange, value } }) => (
+									<div className="flex flex-col w-full">
+										<Label
+											htmlFor="description"
+											className="text-md pb-3"
+										>
+											Start Date*
+										</Label>
+										<div className="flex items-center  bg-white">
+											<div className="relative w-full">
+												<Popover>
+													<PopoverTrigger asChild>
+														<Button
+															variant={"outline"}
+															className={cn(
+																"w-full justify-start text-left font-normal p-6 pl-10",
+																!value && "text-muted-foreground",
+															)}
+														>
+															<CalendarIcon className="mr-2 h-4 w-4" />
+															{value && format(value, "PPP")}
+														</Button>
+													</PopoverTrigger>
+													<PopoverContent className="w-auto p-0">
+														<Calendar
+															mode="single"
+															selected={value}
+															onSelect={onChange}
+															initialFocus
+														/>
+													</PopoverContent>
+												</Popover>
+											</div>
+										</div>
+									</div>
+								)}
+							/>
+						)}
+					/>
+
+					{/* End Date Input */}
+					<Controller
+						name="endDate"
+						control={control}
+						render={({ field: { onChange, value } }) => (
+							<div className="flex flex-col w-full">
+								<Label
+									htmlFor="description"
+									className="text-md pb-3"
+								>
+									End Date*
+								</Label>
+								<div className="flex items-center  bg-white">
+									<div className="relative w-full">
+										<Popover>
+											<PopoverTrigger asChild>
+												<Button
+													variant={"outline"}
+													className={cn(
+														"w-full justify-start text-left font-normal p-6 pl-10",
+														!value && "text-muted-foreground",
+													)}
+												>
+													<CalendarIcon className="mr-2 h-4 w-4" />
+													{value && format(value, "PPP")}
+												</Button>
+											</PopoverTrigger>
+											<PopoverContent className="w-auto p-0">
+												<Calendar
+													mode="single"
+													selected={value}
+													onSelect={onChange}
+													initialFocus
+												/>
+											</PopoverContent>
+										</Popover>
+									</div>
+								</div>
+							</div>
+						)}
+					/>
+				</div>
+				<Spacer size={40} />
+				<div className=" flex flex-row space-x-5">
 					{/* Start Time Input */}
 					<Controller
 						name="startTime"
 						control={control}
 						render={({ field: { onChange, value } }) => (
-							<Controller
-								name="startTime"
-								control={control}
-								render={({ field }) => (
+							
 									<div className="flex flex-col w-full">
 										<Label
 											htmlFor="description"
@@ -93,8 +203,8 @@ const MakeBookingTime = () => {
 									</div>
 								)}
 							/>
-						)}
-					/>
+						
+				
 
 					{/* End Time Input */}
 					<Controller
@@ -126,12 +236,12 @@ const MakeBookingTime = () => {
 					Click on the clock icon to set time
 				</p>
 
-				<Spacer size={30} />
+				<Spacer size={40} />
 				{/* Description Text Area */}
 				<div>
 					<Label
 						htmlFor="description"
-						className="text-md pb-3"
+						className="text-md py-3"
 					>
 						Describe Your Task*
 					</Label>
@@ -210,6 +320,7 @@ const MakeBookingTime = () => {
 					<button
 						type="submit"
 						className="btnOne max-w-[567px] p-4"
+						onClick={handleSubmit(onSubmit)}
 					>
 						{" "}
 						Proceed
@@ -220,4 +331,4 @@ const MakeBookingTime = () => {
 	);
 };
 
-export default MakeBookingTime;
+export default ScheduleBooking;
