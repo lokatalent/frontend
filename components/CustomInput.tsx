@@ -4,12 +4,12 @@ import {
 	FormItem,
 	FormLabel,
 	FormMessage,
-} from "@/components/ui/form";
+} from "@/components/ui/formNew";
 import { Input } from "@/components/ui/input";
 import type { Control, FieldPath } from "react-hook-form";
 import type { z } from "zod";
 
-const formSchema = authFormSchema("sign-up");
+const formSchema = authFormSchema();
 interface CustomInput {
 	control: Control<z.infer<typeof formSchema>>;
 	input: FieldPath<z.infer<typeof formSchema>>;

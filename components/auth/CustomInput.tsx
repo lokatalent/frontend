@@ -15,7 +15,7 @@ interface CustomInput {
 	control: Control<z.infer<typeof formSchema>>;
 	input: FieldPath<z.infer<typeof formSchema>>;
 	label: string;
-	name: string;
+	name: any;
 	placeholder: string;
 	width: string;
 }
