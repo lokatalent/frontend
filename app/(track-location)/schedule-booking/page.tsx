@@ -1,4 +1,4 @@
-import MakeBookingTime from "@/components/location/MakeBookingTime";
+import ScheduleBooking from "@/components/location/ScheduleBooking";
 import { Spacer } from "@/components/Spacer";
 import { FaCircleCheck } from "react-icons/fa6";
 import { RxCaretRight } from "react-icons/rx";
@@ -43,10 +43,10 @@ const page = () => {
 					</div>
 				</div>
 				<div className="my-8   ">
-					<h1 className="header my-5  text-center">Make a Booking Now</h1>
+					<h1 className="header my-5  text-center">Schedule a Booking Now</h1>
 					<p className="text-center">Enter details about your booking</p>
 				</div>
-				<MakeBookingTime />
+				<ScheduleBooking />
 			</div>
 		</div>
 	);
