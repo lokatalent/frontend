@@ -12,6 +12,7 @@ import enableLoc from "@/public/Images/enable-loc.png";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { FaArrowLeft } from "react-icons/fa";
 import { MdLocationSearching } from "react-icons/md";
 
 const LocationTrack = ({ mapping, setMapping }) => {
@@ -48,8 +49,23 @@ const LocationTrack = ({ mapping, setMapping }) => {
 						});
 				},
 				(error) => {
-					console.error("Error getting user location:", error);
+					switch (error.code) {
+						case error.PERMISSION_DENIED:
+							console.error("Location permission denied.");
+							break;
+						case error.POSITION_UNAVAILABLE:
+							console.error("Position information is unavailable.");
+							break;
+						case error.TIMEOUT:
+							console.error("The request to get user location timed out.");
+							break;
+						default:
+							console.error("An unknown error occurred.");
+							break;
+					}
+					setLocationError(true); // Set error state if location fails
 				},
+				{ timeout: 10000 },
 			);
 		} else {
 			console.error("Geolocation is not supported by this browser.");
@@ -63,9 +79,15 @@ const LocationTrack = ({ mapping, setMapping }) => {
 	};
 
 	return (
-		<div className="flex justify-center mt-8">
+		<div className="flex justify-center ">
 			{mapping ? (
 				<div className="bg-map h-svh w-full">
+					<button
+						onClick={() => setMapping(false)}
+						className="m-8"
+					>
+						<FaArrowLeft />
+					</button>
 					<div className="flex h-full items-center justify-center">
 						{streetName ? (
 							<p>Your street: {streetName}</p>
@@ -74,9 +96,9 @@ const LocationTrack = ({ mapping, setMapping }) => {
 								<p className="text-3xl mb-4">Couldn't find location</p>
 								<button
 									className="btnOne mt-4 w-8/12"
-									onClick={() => router.push("/make-booking")}
+									onClick={() => setMapping(false)}
 								>
-									Proceed
+									Add location Manually
 								</button>
 							</div>
 						) : (

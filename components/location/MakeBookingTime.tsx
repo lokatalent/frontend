@@ -1,60 +1,205 @@
 "use client";
+import { Label } from "@/components/ui/label";
+import { Textarea } from "@/components/ui/textarea";
 
-import { useForm } from "react-hook-form";
+import {
+	Dialog,
+	DialogClose,
+	DialogContent,
+	DialogDescription,
+	DialogHeader,
+	DialogTitle,
+	DialogTrigger,
+} from "@/components/ui/dialog";
+import { useState } from "react";
+import "react-clock/dist/Clock.css";
+import { Controller, useForm } from "react-hook-form";
+import { FaMinus, FaPlus } from "react-icons/fa6";
+import TimePicker from "react-time-picker"; // Import the time picker
+import "react-time-picker/dist/TimePicker.css";
+import { Spacer } from "../Spacer";
 
-function MakeBookingTime() {
-	const { register, handleSubmit } = useForm();
+type FormValues = {
+	startTime: string;
+	endTime: string;
+	description: string;
+};
 
-	const onSubmit = (data) => {
-		console.log("Selected Times:", data);
+const MakeBookingTime = () => {
+	const { handleSubmit, control, register, setValue } = useForm<FormValues>({
+		defaultValues: {
+			startTime: "",
+			endTime: "",
+			description: "",
+		},
+	});
+
+	const onSubmit = (data: FormValues) => {
+		console.log(data);
+		// handle submission logic here
+	};
+
+	const [count, setCount] = useState(3.5);
+	const [showDuration, setShowDutration] = useState(false);
+	const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+	const increase = () => {
+		if (count < 10) {
+			setCount((prev) => Math.min(prev + 0.5, 10));
+		}
+	};
+
+	const decrease = () => {
+		if (count > 3.5) {
+			setCount((prev) => Math.max(prev - 0.5, 3.5));
+		}
+	};
+
+	const setDuration = () => {
+		setShowDutration(true);
 	};
 
 	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			className="flex flex-col gap-4 w-full"
-		>
-			<div className="flex flex-row gap-4 w-full">
-				{/* Start Time Picker */}
-				<div className="flex flex-col w-full">
-					<label
-						htmlFor="startTime"
-						className="mb-2 font-semibold"
-					>
-						Start Time:
-					</label>
-					<input
-						type="time"
-						id="startTime"
-						{...register("startTime")}
-						className="p-2 border border-gray-300 rounded w-full"
+		<div className="p-6 ">
+			<h2 className="text-xl font-semibold mb-4">Make a Booking Time</h2>
+			<form
+				onSubmit={handleSubmit(onSubmit)}
+				className="space-y-4"
+			>
+				<div className="">
+					{/* Start Time Input */}
+					<Controller
+						name="startTime"
+						control={control}
+						render={({ field }) => (
+							<Controller
+								name="startTime"
+								control={control}
+								render={({ field }) => (
+									<div className=" bg-white ">
+										<TimePicker
+											onChange={(value) => setValue("startTime", value || "")}
+											value={field.value || ""}
+											className=" "
+											disableClock
+											format="HH:mm"
+										/>
+									</div>
+								)}
+							/>
+						)}
+					/>
+
+					{/* End Time Input */}
+					<Controller
+						name="endTime"
+						control={control}
+						render={({ field }) => (
+							<div className=" bg-white ">
+								<TimePicker
+									onChange={(value) => setValue("endTime", value || "")}
+									value={field.value || ""}
+									className=" "
+									disableClock
+									format="HH:mm"
+								/>
+							</div>
+						)}
 					/>
 				</div>
 
-				{/* End Time Picker */}
-				<div className="flex flex-col w-full">
-					<label
-						htmlFor="endTime"
-						className="mb-2 font-semibold"
+				<Spacer size={30} />
+				{/* Description Text Area */}
+				<div>
+					<Label
+						htmlFor="description"
+						className="text-md py-3"
 					>
-						End Time:
-					</label>
-					<input
-						type="time"
-						id="endTime"
-						{...register("endTime")}
-						className="p-2 border border-gray-300 rounded w-full"
+						Describe Your Task*
+					</Label>
+					<Textarea
+						className="bg-white h-40"
+						{...register("description")}
 					/>
 				</div>
-			</div>
-			<button
-				type="submit"
-				className="p-3 bg-blue-500 text-white rounded font-semibold w-full hover:bg-blue-600"
-			>
-				Submit
-			</button>
-		</form>
+
+				<Spacer size={30} />
+				<div>
+					<Dialog
+						open={isDialogOpen}
+						onOpenChange={setIsDialogOpen}
+					>
+						<DialogTrigger className=" underline underline-offset-4 text-md ">
+							Set Hours Duration*
+						</DialogTrigger>
+						<DialogContent className="px-5 md:px-16 ">
+							<DialogHeader>
+								<DialogTitle className="text-lg md:text-3xl mt-5 text-center font-semibold">
+									Booking Duration
+								</DialogTitle>
+								<DialogDescription className=" flex flex-col justify-center items-center">
+									<p className="text-lg text-center py-3">
+										Set the number of hours you want to book this talent for the
+										job
+									</p>
+								</DialogDescription>
+							</DialogHeader>
+							<Spacer />
+							<div className="flex flex-row justify-between shadow-lg rounded-full py-4 px-8 m-w-[496px]">
+								<button
+									onClick={decrease}
+									disabled={count <= 3.5}
+								>
+									<FaMinus size={24} />
+								</button>
+								<h1 className="text-2xl">{count}</h1>
+								<button
+									onClick={increase}
+									disabled={count >= 10}
+								>
+									<FaPlus size={24} />
+								</button>
+							</div>
+							<Spacer />
+							<div className="flex flex-row justify-center space-x-3 w-full">
+								<DialogClose asChild>
+									<button
+										className="btnOne"
+										onClick={setDuration}
+									>
+										Accept
+									</button>
+								</DialogClose>
+							</div>
+						</DialogContent>
+					</Dialog>
+
+					{showDuration && (
+						<div className="flex flex-row space-x-6 bg-white p-5 rounded-sm my-5">
+							<p>{count} hrs</p>
+
+							<button
+								className="text-primaryBlue cursor-pointer"
+								onClick={() => setIsDialogOpen(true)}
+							>
+								Edit Hours Duration
+							</button>
+						</div>
+					)}
+				</div>
+				<Spacer size={30} />
+				<div className="w-full flex justify-center mt-8">
+					<button
+						type="submit"
+						className="btnOne max-w-[567px] p-4"
+					>
+						{" "}
+						Proceed
+					</button>
+				</div>
+			</form>
+		</div>
 	);
-}
+};
 
 export default MakeBookingTime;
