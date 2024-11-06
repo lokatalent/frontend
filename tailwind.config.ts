@@ -8,11 +8,21 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    screens: {
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+    },
     extend: {
       colors: {
         primaryBlue: "#3377FF",
         navBlue: "#2659BF",
         textGray: "#141416",
+        textGray2: "#212121",
+        textGray3: "#9EA3AE",
+        bgWhite: "#FAF8F4",
         primaryBg: "#FAF8F4",
         accept: "#AAFFE5",
         yellow: "#FCEA83",
@@ -50,15 +60,16 @@ const config: Config = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         chart: {
-          "1": "hsl(var(--chart-1))",
-          "2": "hsl(var(--chart-2))",
-          "3": "hsl(var(--chart-3))",
-          "4": "hsl(var(--chart-4))",
-          "5": "hsl(var(--chart-5))",
+          1: "hsl(var(--chart-1))",
+          2: "hsl(var(--chart-2))",
+          3: "hsl(var(--chart-3))",
+          4: "hsl(var(--chart-4))",
+          5: "hsl(var(--chart-5))",
         },
       },
       backgroundImage: {
         "design-home": "url('/Images/bgDesign.svg')",
+        map: "url('/Images/map-bg.png')",
         "balance-card": "url('/Images/balanceBg.png')",
         "booking-card": "url('/Images/bookingBg.png')",
       },
@@ -71,6 +82,7 @@ const config: Config = {
   },
   plugins: [require("tailwindcss-animate")],
 };
+
 export default config;
 
 // sm	--- 640px	@media (min-width: 640px) { ... }

@@ -6,7 +6,6 @@ import {
 	FormMessage,
 } from "@/components/ui/formNew";
 import { Input } from "@/components/ui/input";
-import { authFormSchema } from "@/lib/utils";
 import type { Control, FieldPath } from "react-hook-form";
 import type { z } from "zod";
 
@@ -15,30 +14,21 @@ interface CustomInput {
 	control: Control<z.infer<typeof formSchema>>;
 	input: FieldPath<z.infer<typeof formSchema>>;
 	label: string;
-	name: any;
 	placeholder: string;
-	width: string;
 }
-const CustomInput = ({
-	control,
-	input,
-	name,
-	label,
-	placeholder,
-	width,
-}: CustomInput) => {
+const CustomInput = ({ control, input, label, placeholder }: CustomInput) => {
 	return (
 		<div>
 			<FormField
 				control={control}
-				name={name}
+				name={input}
 				render={({ field }) => (
 					<FormItem className="form-item">
 						<FormLabel className="form-label">{label}</FormLabel>
 						<FormControl>
 							<Input
 								placeholder={placeholder}
-								className={`input-class ${width}  bg-white h-[3rem]`}
+								className="input-class"
 								type={input === "password" ? "password" : "text"}
 								{...field}
 							/>
