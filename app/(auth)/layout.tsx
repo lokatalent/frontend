@@ -27,10 +27,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       {/* {loggedIn && ( */}
-        <div className={nunito.className}>
+        <body className={nunito.className}>
           <Navbar />
           {children}
-        </div>
+        </body>
       {/* )} */}
     </html>
   );
