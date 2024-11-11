@@ -32,7 +32,7 @@ function Navbar() {
 								Sign Up
 							</Link>
 							<Link
-								href="/talent"
+								href="/signup/service-provider"
 								className="border border-white  hover:bg-blue-700 text-white generalButton"
 							>
 								Register as a Talent
@@ -93,7 +93,7 @@ function Navbar() {
 
 							<SheetClose asChild>
 								<Link
-									href="/talent"
+									href="/signup/service-provider"
 									className="border border-white  hover:bg-blue-700 text-white generalButton"
 								>
 									Register as a Talent

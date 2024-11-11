@@ -22,6 +22,7 @@ const config: Config = {
 				textGray: "#141416",
 				textGray2: "#212121",
 				textGray3: "#9EA3AE",
+				textGray4: "#2D2D2D8F",
 				bgWhite: "#FAF8F4",
 				background: "hsl(var(--background))",
 				foreground: "hsl(var(--foreground))",
@@ -66,6 +67,8 @@ const config: Config = {
 			},
 			backgroundImage: {
 				"design-home": "url('/Images/bgDesign.svg')",
+				"balance-card": "url('/Images/balanceBg.png')",
+				"booking-card": "url('/Images/bookingBg.png')",
 				map: "url('/Images/map-bg.png')",
 			},
 			borderRadius: {

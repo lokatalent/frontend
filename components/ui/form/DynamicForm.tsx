@@ -73,7 +73,7 @@ const DynamicForm = ({
 			router.push(`${pathname}/verify`);
 		}
 		if (buttonAction === "log-in") {
-			router.push("/dashboard");
+			router.push("/user/dashboard");
 		}
 		setError(null);
 
@@ -91,7 +91,7 @@ const DynamicForm = ({
 	};
 
 	return (
-		<div className="w-full wmax mx-auto p-6">
+		<div className="w-full mx-auto p-6 ">
 			<form
 				onSubmit={handleSubmit(onSubmit, onError)}
 				className={`flex flex-col justify-center items-center gap-12`}
@@ -100,7 +100,7 @@ const DynamicForm = ({
 					<div
 						className={`flex ${
 							fields.length > 3
-								? "flex-row flex-wrap justify-center"
+								? "flex-row flex-wrap justify-center  w-full"
 								: "flex-col"
 						}  justify-center items-center gap-12`}
 					>

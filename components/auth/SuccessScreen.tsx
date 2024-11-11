@@ -1,7 +1,6 @@
-import React from "react";
-import Image from "next/image";
-import successImage from "@/public/Images/mark.png";
 import { Button } from "@/components/ui/button";
+import successImage from "@/public/Images/mark.png";
+import Image from "next/image";
 
 interface SuccessProps {
 	head: string;
@@ -19,12 +18,14 @@ const SuccessScreen = ({ head, content, btn, onClick }: SuccessProps) => {
 				alt="success icon"
 			/>
 
-			<p className="font-bold text-textColor text-center text-xl md:text-4xl py-3">{head}</p>
+			<p className="font-bold text-textColor text-center text-xl md:text-4xl py-3">
+				{head}
+			</p>
 			<p className="text-textColor pb-5">{content}</p>
 
 			<Button
 				onClick={onClick}
-				className="btnOne hover:bg-bgWhite hover:text-primaryBlue my-14"
+				className=" bg-primaryBlue hover:bg-blue-700 text-white w-8/12  text-lg p-4 md:p-8 my-14"
 			>
 				{btn}
 			</Button>
