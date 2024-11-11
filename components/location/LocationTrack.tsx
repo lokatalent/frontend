@@ -18,6 +18,9 @@ const LocationTrack = ({ mapping, setMapping }) => {
 	const [streetName, setStreetName] = useState("");
 	const [locationError, setLocationError] = useState(false);
 
+	//TODO: Location autocomplete only works when i refresh the location screen on the browser
+	//TODO: Track location is not tracking my particular location, ive not tracked it with another location
+
 	const handleLocationRequest = () => {
 		setMapping(true);
 		if (navigator.geolocation) {
