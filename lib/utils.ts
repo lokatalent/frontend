@@ -135,7 +135,7 @@ interface FormData {
 
 export interface FieldConfig {
   name: keyof FormData;
-  type: "text" | "email" | "password" | "number" | "select";
+  type: "text" | "email" | "password" | "number" | "select" | "date";
   label: string;
   validation: RegisterOptions;
   options?: string[];

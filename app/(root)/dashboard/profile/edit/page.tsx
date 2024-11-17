@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import React, { useRef, useState } from "react";
+import React, { ChangeEvent, useRef, useState } from "react";
 import dp from "@/public/Images/dp.png";
 import { useRouter } from "next/navigation";
 import han from "@/public/Images/hamburger.svg";
@@ -90,18 +90,19 @@ function Edit() {
    const dispatch = useDispatch();
    const fileInputRef = useRef(null);
 
-   const handleImageSelect = (event) => {
-     const file = event.target.files?.[0];
-     if (file) {
-       const imageUrl = URL.createObjectURL(file);
-       setSelectedImage(imageUrl);
-       dispatch(setProfilePics(imageUrl));
-     }
-   };
+  
+  const handleImageSelect = (event: ChangeEvent<HTMLInputElement>): void => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const imageUrl: string = URL.createObjectURL(file);
+      setSelectedImage(imageUrl); // Make sure setSelectedImage is defined in your component
+      dispatch(setProfilePics(imageUrl));
+    }
+  };
 
-   const handleButtonClick = () => {
-     fileInputRef.current?.click();
-   };
+  const handleButtonClick = (): void => {
+    fileInputRef.current?.click();
+  };
   const router = useRouter();
 
   const defaultValues = {

@@ -46,7 +46,7 @@ function Navbar() {
         <Sheet>
           <div className="flex justify-between mx-4">
             <Link href="/">
-              <span className="text-lg font-bold text-white">LokassTalent</span>
+              <span className="text-lg font-bold text-white">LokaTalent</span>
             </Link>
 
             <SheetTrigger>

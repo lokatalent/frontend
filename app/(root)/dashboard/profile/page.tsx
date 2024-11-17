@@ -50,25 +50,7 @@ export default async function Profile() {
       value: profileDetails.address.length > 0 ? profileDetails.address : "-",
     },
   ];
-  // <div className="relative w-32 h-32 rounded-full">
-  //   <div className="flex items-center justify-center bg-[#C4C4C424] shadow-lg p-2 w-full h-full rounded-full">
-  //     {selectedImage ? (
-  //       <Image
-  //         src={selectedImage}
-  //         alt="Profile"
-  //         layout="fill"
-  //         className="object-cover rounded-[100px]"
-  //       />
-  //     ) : (
-  //       <Image
-  //         src="/Images/camera.png"
-  //         alt="Notification Bing"
-  //         width={20}
-  //         height={20}
-  //       />
-  //     )}
-  //   </div>
-  // </div>;
+  
 
   return (
     <div className="ml-8 h-screen sm:ml-0">
