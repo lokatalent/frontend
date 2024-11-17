@@ -33,7 +33,8 @@ export const passwordFormSchema1 = () =>
     confirmPassword: z.string().min(8),
   });
 
-export const SignUpFormSchema = z
+ // For the Sign up  
+export const SignUpFormSchema = z 
   .object({
     firstName: z.string().min(2),
     lastName: z.string().min(2),
@@ -59,14 +60,22 @@ export const SignUpFormSchema = z
     path: ["confirmPassword"], // Error will show up on confirmPassword
   });
 
+  // For the login page
 export const LogInFormSchema = z.object({
   email: z.string().email("Email is required").min(4, "Invalid email format"),
   password: z.string().min(8),
 });
 
+// for the email veirification page
 export const emailFormSchema = z.object({
   email: z.string().email("Invalid email format").min(4, "Email is required"),
 });
+
+export const addressVerificationFormSchema = z.object({
+  addressVerify: z.string().min(1, "You must select a valid address verification"),
+});
+
+// for the password reset page
 export const passwordFormSchema = z
   .object({
     newPassword: z
@@ -85,6 +94,32 @@ export const passwordFormSchema = z
     message: "Passwords do not match",
     path: ["confirmPassword"], // Error will show up on confirmPassword
   });
+
+export const allowedCountries = ["Nigeria", "India", "Senegal", "Australia"];
+export const profileFormSchema = z.object({
+  // dateOfBirth: z
+  //   .string()
+  //   .nonempty("Date of birth is required")
+  //   .regex(
+  //     /^\d{2}-\d{2}-\d{4}$/,
+  //     "Date of birth must be in the format MM-DD-YYYY"
+  //   ),
+  // dateofBirth: z
+  //   .string()
+  //   .min(1, "Date of birth must be in the format MM-DD-YYYY"),
+  dateofBirth: z.date({
+    required_error: "Date of birth is required",
+  }),
+  city: z.string().min(2, "City must be at least 3 characters"),
+  state: z.string().min(2, "State must be at least 3 characters"),
+  // country: z.string(),
+  // gender: z.string(),
+  // country: z.string().min(1, "You must select a valid country"),
+  // gender: z.string().min(1, "You must select a gender"),
+  address: z.string().min(5, "Address must be at least 5 characters"),
+});
+
+
 // username: z
 //   .string()
 //   .min(3, "Username must be at least 3 characters")
@@ -100,7 +135,8 @@ interface FormData {
 
 export interface FieldConfig {
   name: keyof FormData;
-  type: "text" | "email" | "password" | "number";
+  type: "text" | "email" | "password" | "number" | "select";
   label: string;
   validation: RegisterOptions;
+  options?: string[];
 }

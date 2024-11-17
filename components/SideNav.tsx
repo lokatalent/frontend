@@ -7,11 +7,10 @@ import {
   // IoPieChartOutline,
   IoSettingsOutline,
 } from "react-icons/io5";
+import { HiArrowRightEndOnRectangle } from "react-icons/hi2";
 import { FaRegUser } from "react-icons/fa";
 // import { RiExchange2Line } from "react-icons/ri";
 import { usePathname } from "next/navigation";
-import { HiOutlineLogout } from "react-icons/hi";
-import { Button } from "./ui/button";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet";
 import Image from "next/image";
 
@@ -44,7 +43,8 @@ const links = [
 
 const SideNav = () => {
   const pathname = usePathname();
-
+  console.log(pathname)
+  
   return (
     <div>
       <div className="bg-primaryBlue w-[200px] h-screen fixed text-white p-8 flex-col justify-between hidden md:flex">
@@ -58,12 +58,15 @@ const SideNav = () => {
               <Link
                 href={link.link}
                 key={link.id}
+                // className={`${
+                //   (pathname === "/dashboard" && link.link === "/dashboard")
+                //   (link.link !== "/" && pathname.startsWith(link.link))
+                //     ? "bg-white/30"
+                //     : ""
+                // } text-white flex space-x-3 items-center font-semibold p-3 hover:p-3 focus:p-3 hover:bg-white/30 focus:bg-white/30 rounded-lg`}
                 className={`${
-                  (pathname === "/" && link.link === "/") ||
-                  (link.link !== "/" && pathname.startsWith(link.link))
-                    ? "bg-white/30"
-                    : ""
-                } text-white flex space-x-3 items-center font-semibold p-3 hover:p-3 focus:p-3 hover:bg-white/30 focus:bg-white/30 rounded-lg`}
+                  pathname === link.link ? "bg-white/30" : ""
+                } text-white flex space-x-3 items-center font-semibold p-3 hover:p-3 focus:p-3 hover:bg-white/30 ocus:bg-white/30 rounded-lg`}
               >
                 {link.icon}
                 <p>{link.name}</p>
@@ -81,7 +84,7 @@ const SideNav = () => {
           </Link>
           <div className="font-semibold p-3 hover:p-3 focus:p-3 hover:text-white hover:bg-white/30 focus:bg-white/30 rounded-lg">
             <button className="flex space-x-3 items-center">
-              <HiOutlineLogout />
+              <HiArrowRightEndOnRectangle />
               <p>Logout</p>
             </button>
           </div>
@@ -147,7 +150,7 @@ const SideNav = () => {
                   </Link>
                   <div className="font-semibold p-3 hover:p-3 focus:p-3 hover:text-white hover:bg-white/30 focus:bg-white/30 rounded-lg">
                     <button className="flex space-x-3 items-center">
-                      <HiOutlineLogout />
+                      <HiArrowRightEndOnRectangle />
                       <p>Logout</p>
                     </button>
                   </div>

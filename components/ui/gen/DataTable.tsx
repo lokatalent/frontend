@@ -77,10 +77,10 @@ export function DataTable<TData, TValue>({
     },
     onGlobalFilterChange: setGlobalFilter,
   });
-  console.log(path);
+  // console.log(path);
   const handleNavigate = (id: number) => {
-    console.log(id);;
-    console.log(path);
+    // console.log(id);;
+    // console.log(path);
     router.push(`${path}/${id}`);
   };
 

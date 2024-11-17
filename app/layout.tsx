@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Nunito_Sans } from "next/font/google";
 import "./globals.css";
 import Navbar from "@/components/Nav";
+import { Providers } from "./Provider";
+
 
 const nunito = Nunito_Sans({
   weight: ["400", "700"],
@@ -25,8 +27,8 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={nunito.className}>
+        <Providers>{children}</Providers>
         {/* {loggedIn && <Navbar />} */}
-        {children}
       </body>
     </html>
   );

@@ -49,8 +49,6 @@ function NewPassword() {
 		confirmPassword: "",
 	};
 
-	// const schemaType = passwordFormSchema;
-
 	return (
 		<div className="sm:px-[4rem]  md:px-[6rem] lg:px-[7rem] py-12 flex justify-center h-screen flex-col items-cener gap-12 bg-[#FAF8F4]">
 			<div className="flex justify-center relative">
@@ -64,71 +62,11 @@ function NewPassword() {
 				</div>
 			</div>
 			<div className="flex gap-4 items-center justify-center">
-				{/* <form className="flex flex-wrap justify-center">
-          <div className="flex flex-col flex-wrap items-center justify-center gap-10">
-            <div className="flex flex-col gap-[0.5rem]">
-              <div className="relative flex flex-col">
-                <label>New Password</label>
-                <input
-                  type={newPasswordVisible ? "text" : "password"}
-                  className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[35rem] bg-white h-[3rem] text-black rounded px-[1rem]"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={toggleNewPasswordVisibility}
-                  className="toggle-password-button absolute right-5 top-1/2"
-                >
-                  {newPasswordVisible ? <FaEyeSlash /> : <FaEye />}
-                </button>
-              </div>
-
-              <div className="flex justify-between">
-                {!formIsValid ? (
-                  <div className="text-[10px] text-[#FFB82E]">
-                    This password is not valid
-                  </div>
-                ) : (
-                  <div></div>
-                )}
-              </div>
-            </div>
-
-            <div className="flex flex-col gap-[0.5rem]">
-              <div className="relative flex flex-col">
-                <label>Confirm Password</label>
-                <input
-                  type={confirmPasswordVisible ? "text" : "password"}
-                  className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[35rem] bg-white h-[3rem] text-black rounded px-[1rem]"
-                  required
-                />
-                <button
-                  type="button"
-                  onClick={toggleConfirmPasswordVisibility}
-                  className="toggle-password-button absolute right-5 top-1/2"
-                >
-                  {confirmPasswordVisible ? <FaEyeSlash /> : <FaEye />}
-                </button>
-              </div>
-
-              <div className="flex justify-between">
-                {!formIsValid ? (
-                  <div className="text-[10px] text-[#FFB82E]">
-                    Passwords are not the same
-                  </div>
-                ) : (
-                  <div></div>
-                )}
-              </div>
-            </div>
-          </div>
-        </form> */}
-				{/* <PasswordForm type="pass-word"/> */}
 				<DynamicForm
 					fields={fields}
 					defaultValues={defaultValues}
 					schemaType={passwordFormSchema}
-					buttonAction="password"
+					buttonAction="new-password"
 					width="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[35rem]"
 				/>
 			</div>
