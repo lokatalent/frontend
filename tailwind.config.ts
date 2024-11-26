@@ -23,6 +23,7 @@ const config: Config = {
 				textGray2: "#212121",
 				textGray3: "#9EA3AE",
 				textGray4: "#2D2D2D8F",
+				textGray5: "#4B5563",
 				bgWhite: "#FAF8F4",
 				background: "hsl(var(--background))",
 				foreground: "hsl(var(--foreground))",

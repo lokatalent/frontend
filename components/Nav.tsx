@@ -42,14 +42,14 @@ function Navbar() {
 				</div>
 			</nav>
 
-			<div className="md:hidden bg-navBlue p-4">
+			<div className="md:hidden bg-navBlue h-[70px] md:h-20 flex items-center">
 				<Sheet>
 					<div className="flex justify-between mx-4">
 						<Link href="/">
 							<span className="text-lg font-bold text-white">LokaTalent</span>
 						</Link>
 
-						<SheetTrigger>
+						{/* <SheetTrigger>
 							<Image
 								src="/Images/hamburger.svg"
 								width={30}
@@ -57,7 +57,7 @@ function Navbar() {
 								alt="menu"
 								className="cursor-pointer"
 							/>
-						</SheetTrigger>
+						</SheetTrigger> */}
 					</div>
 
 					<SheetContent

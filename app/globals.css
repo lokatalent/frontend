@@ -135,8 +135,13 @@ body {
 	background-color: "#FAF8F4";
 }
 
+.wrap {
+	padding-left: 5%;
+	padding-right: 5%;
+}
+
 .waitlist_bg {
-	background-image: linear-gradient(rgba(0, 10, 48, 0.324), rgba(0, 10, 48, 0.324)), url("../public/Images/waitlist.png");
+	background-image: linear-gradient(rgba(1, 33, 54, 0.75), rgba(1, 33, 54, 0.75)), url("../public/Images/waitlist.png");
 	background-size: cover;
 	background-repeat: no-repeat;
 }
