@@ -15,7 +15,7 @@ function Navbar() {
 					<div className="flex justify-between">
 						<div className="flex items-center">
 							<Link href="/">
-								<span className="text-lg font-bold text-white">LokaTalent</span>
+								<span className="text-2xl font-bold text-white">LokaTalent</span>
 							</Link>
 						</div>
 						<div className="hidden flex items-center space-x-8">
@@ -46,7 +46,7 @@ function Navbar() {
 				<Sheet>
 					<div className="flex justify-between mx-4">
 						<Link href="/">
-							<span className="text-lg font-bold text-white">LokaTalent</span>
+							<span className="text-xl font-bold text-white">LokaTalent</span>
 						</Link>
 
 						{/* <SheetTrigger>
