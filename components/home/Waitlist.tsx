@@ -20,7 +20,7 @@ export default function Waitlist() {
   }, [toast]);
 
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [email, setEmail] = useState("");
 
   const addUserEmail = async () => {
