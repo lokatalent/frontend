@@ -134,3 +134,13 @@ body {
 	font-family: "Nunito Sans", sans-serif;
 	background-color: "#FAF8F4";
 }
+
+.waitlist_bg {
+	background-image: linear-gradient(rgba(0, 10, 48, 0.324), rgba(0, 10, 48, 0.324)), url("../public/Images/waitlist.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.waitlist_input::placeholder {
+	color: white;
+  }

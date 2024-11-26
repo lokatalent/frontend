@@ -9,16 +9,16 @@ import Link from "next/link";
 
 function Navbar() {
 	return (
-		<div>
-			<nav className="bg-navBlue shadow-lg hidden md:block ">
-				<div className="max-w-10/12 mx-auto px-4 ">
-					<div className="flex justify-between p-5">
+		<div className="absolute w-full top-0">
+			<nav className="bg-navBlue shadow-lg hidden w-full md:flex items-center h-20">
+				<div className="w-full max-w-10/12 mx-auto px-[5%]">
+					<div className="flex justify-between">
 						<div className="flex items-center">
 							<Link href="/">
 								<span className="text-lg font-bold text-white">LokaTalent</span>
 							</Link>
 						</div>
-						<div className="flex items-center space-x-8">
+						<div className="hidden flex items-center space-x-8">
 							<Link
 								href="/login"
 								className="text-white hover:text-primaryBlue hover:bg-white px-3 py-1"
