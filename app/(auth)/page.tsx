@@ -4,6 +4,7 @@ import Hero from "@/components/home/Hero";
 import HowItWorks from "@/components/home/HowItWorks";
 import Testimonial from "@/components/home/Testimonial";
 import Preview from "@/components/home/Preview";
+import Waitlist from "@/components/home/Waitlist";
 
 export default function Home() {
   const loggedIn = false; // Replace with actual authentication logic
@@ -12,12 +13,13 @@ export default function Home() {
     <div>
       {/* {loggedIn && ( */}
       <div>
-        <Hero />
+        <Waitlist />
+        {/* <Hero />
         <Preview />
         <HowItWorks />
         <ApplyHere />
         <Testimonial />
-        <Footer />
+        <Footer /> */}
       </div>
       {/* )} */}
     </div>

@@ -31,7 +31,7 @@ const Hero = () => {
 					<div className="w-full md:w-auto">
 						<Image
 							src="/Images/hero.png"
-							className="w-full h-auto md:w-[378px] " // Apply fixed width and height for md and larger
+							className="w-full h-auto md:w-[378px]"
 							width={378}
 							height={174}
 							alt="driver"
