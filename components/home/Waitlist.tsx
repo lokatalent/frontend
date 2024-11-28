@@ -20,7 +20,7 @@ export default function Waitlist() {
   }, [toast]);
 
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(true);
   const [email, setEmail] = useState("");
 
   const addUserEmail = async () => {
@@ -54,7 +54,7 @@ export default function Waitlist() {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen waitlist_bg wrap">
+    <div className="flex flex-col items-center justify-center pt-24 pb-14 min-h-screen waitlist_bg wrap">
       <div className="waitlist_wrap max-w-[760px] xl:max-w-[840px] mx-auto text-center">
         <p className="text-white md:text:lg xl:text-xl font-semibold">
           WELCOME TO LOKATALENT
@@ -87,10 +87,10 @@ export default function Waitlist() {
         </div>
       </div>
       {showModal && (
-        <div className="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-70 modal overflow-y-scroll z-10">
-          <div className="w-full flex justify-center overflow-scroll py-5 md:py-10 wrap">
-            <div className="bg-white w-full max-w-[650px] rounded-md px-5 md:px-10 py-8">
-              <div className="flex justify-end mb-5">
+        <div className="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-70 z-10">
+          <div className="w-full h-full flex items-center md:items-start justify-center py-5 md:py-10 wrap">
+            <div className="bg-white w-full max-w-[560px] rounded-md px-5 md:px-10 py-8">
+              <div className="hidden fle justify-end mb-5">
                 <FaTimes onClick={() => setShowModal(false)} />
               </div>
               <div className="text-center max-w-[470px] mx-auto">
