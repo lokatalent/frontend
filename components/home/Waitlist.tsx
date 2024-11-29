@@ -21,7 +21,23 @@ export default function Waitlist() {
 
   const [loading, setLoading] = useState(false);
   const [showModal, setShowModal] = useState(true);
+  const [showModal2, setShowModal2] = useState(false);
+  const [showModal3, setShowModal3] = useState(false);
   const [email, setEmail] = useState("");
+
+  const closeModal = () => {
+    setShowModal(false)
+    setShowModal2(true)
+  }
+
+  const closeModal2 = () => {
+    setShowModal2(false)
+    setShowModal3(true)
+  }
+
+  const closeModal3 = () => {
+    setShowModal3(false)
+  }
 
   const addUserEmail = async () => {
     if (!email) {
@@ -86,6 +102,7 @@ export default function Waitlist() {
           </button>
         </div>
       </div>
+
       {showModal && (
         <div className="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-70 z-10">
           <div className="w-full h-full flex items-center md:items-start justify-center py-5 md:py-10 wrap">
@@ -97,7 +114,7 @@ export default function Waitlist() {
                 <h1 className="text-xl md:text-2xl xl:text-3xl text-textGray5">
                   You have been added to the Waitlist!
                 </h1>
-                <div className="flex justify-center mt-8 md:mt-14 mb-6">
+                <div className="flex justify-center mt-8 md:mt-10 mb-6">
                   <div className="relative aspect-[117/97] h-14 md:h-24">
                     <Image
                       src={`/Images/waitlist-modal.svg`}
@@ -112,8 +129,8 @@ export default function Waitlist() {
                   get started{" "}
                 </p>
                 <button
-                  onClick={() => setShowModal(false)}
-                  className="bg-primaryBlue text-white h-12 md:h-20 w-full"
+                  onClick={closeModal}
+                  className="bg-primaryBlue text-white h-12 md:h-14 w-full"
                 >
                   Done
                 </button>
@@ -122,6 +139,80 @@ export default function Waitlist() {
           </div>
         </div>
       )}
+      {showModal2 && (
+        <div className="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-70 z-10">
+          <div className="w-full h-full flex items-center md:items-start justify-center py-5 md:py-10 wrap">
+            <div className="bg-white w-full max-w-[560px] rounded-md px-5 md:px-10 py-8">
+              <div className="hidden fle justify-end mb-5">
+                <FaTimes onClick={() => setShowModal(false)} />
+              </div>
+              <div className="text-center max-w-[470px] mx-auto">
+                <h1 className="text-xl md:text-2xl xl:text-3xl text-textGray5">
+                  You can see waitlist 2
+                </h1>
+                <div className="flex justify-center mt-8 md:mt-10 mb-6">
+                  <div className="relative aspect-[117/97] h-14 md:h-24">
+                    <Image
+                      src={`/Images/waitlist-modal.svg`}
+                      fill
+                      className="object-contain"
+                      alt="waitlist-modal"
+                    />
+                  </div>
+                </div>
+                <p className="md:text-lg xl:text-xl mb-6 text-textGray5 md:px-4">
+                  We’ll notify you as soon as the platform is ready for you to
+                  get started{" "}
+                </p>
+                <button
+                  onClick={closeModal2}
+                  className="bg-primaryBlue text-white h-12 md:h-14 w-full"
+                >
+                  Done
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showModal3 && (
+        <div className="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-70 z-10">
+          <div className="w-full h-full flex items-center md:items-start justify-center py-5 md:py-10 wrap">
+            <div className="bg-white w-full max-w-[560px] rounded-md px-5 md:px-10 py-8">
+              <div className="hidden fle justify-end mb-5">
+                <FaTimes onClick={() => setShowModal(false)} />
+              </div>
+              <div className="text-center max-w-[470px] mx-auto">
+                <h1 className="text-xl md:text-2xl xl:text-3xl text-textGray5">
+                  You can see waitlist 3
+                </h1>
+                <div className="flex justify-center mt-8 md:mt-10 mb-6">
+                  <div className="relative aspect-[117/97] h-14 md:h-24">
+                    <Image
+                      src={`/Images/waitlist-modal.svg`}
+                      fill
+                      className="object-contain"
+                      alt="waitlist-modal"
+                    />
+                  </div>
+                </div>
+                <p className="md:text-lg xl:text-xl mb-6 text-textGray5 md:px-4">
+                  We’ll notify you as soon as the platform is ready for you to
+                  get started{" "}
+                </p>
+                <button
+                  onClick={closeModal3}
+                  className="bg-primaryBlue text-white h-12 md:h-14 w-full"
+                >
+                  Done
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* toast */}
       <div>
         {toast && (
