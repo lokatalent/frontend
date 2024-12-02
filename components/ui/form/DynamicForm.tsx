@@ -91,18 +91,18 @@ const DynamicForm = ({
 	};
 
 	return (
-		<div className="w-full mx-auto p-6 ">
+		<div className="w-full max-w-xl mx-auto px-6 ">
 			<form
 				onSubmit={handleSubmit(onSubmit, onError)}
-				className={`flex flex-col justify-center items-center gap-12`}
+				className={`flex flex-col justify-center items-center gap-6`}
 			>
-				<div>
+				<div className="w-full">
 					<div
 						className={`flex ${
 							fields.length > 3
 								? "flex-row flex-wrap justify-center  w-full"
 								: "flex-col"
-						}  justify-center items-center gap-12`}
+						}  justify-center items-center gap-6`}
 					>
 						{fields.map((field) => (
 							// <div key={field.name}>
@@ -133,7 +133,7 @@ const DynamicForm = ({
 						</div>
 					)}
 				</div>
-				<div>
+				<div className="w-full">
 					{buttonAction == "password" ? (
 						<ResetDialog isDialog={isDialogOpen} />
 					) : (
@@ -141,7 +141,7 @@ const DynamicForm = ({
 							<button
 								type="submit"
 								// disabled={true}
-								className="w-[10rem] md:w-[15rem] lg:w-[30rem] bg-blue-500 text-white p-2 py-3 rounded-sm hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+								className="w-full bg-blue-500 text-white p-2 py-3 rounded-sm hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
 							>
 								{buttonAction === "log-in"
 									? "Login"
@@ -151,7 +151,7 @@ const DynamicForm = ({
 							</button>
 
 							{buttonAction === "log-in" || buttonAction === "sign-up" ? (
-								<button className="w-max md:w-[15rem] lg:w-[30rem] bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
+								<button className="w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
 									<FcGoogle
 										size={24}
 										className="mr-2"

@@ -32,7 +32,7 @@ const HowItWorks = () => {
   ];
   return (
     <div className="contained px-5">
-      <h2 className="sub-heading">How it works</h2>
+      <h2 className="text-2xl md:text-4xl lg:text-5xl text-center font-bold mb-8">How it works</h2>
       <div className=" flex items-center justify-center pb-14">
         <div className="contain flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-10 items-center  justify-center ">
           <div className=" w-full flex justify-center">

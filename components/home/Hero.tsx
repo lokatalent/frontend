@@ -3,9 +3,9 @@ import DropDownElement from "../ui/DropDownElement";
 
 const Hero = () => {
   return (
-    <div className="bg-primaryBlue min-h-[600px] md:h-screen max-h-[800px] flex items-center pt-24">
-      <div className="contained flex justify-between flex-col md:flex-row gap-10 space-y-8 md:space-y-0">
-        <div className="w-full max-w-[750px] text-white">
+    <div className="bg-primaryBlue min-h-[600px] md:h-screen md:max-h-[800px] flex items-center pt-24 pb-10 md:pb:0">
+      <div className="contained flex justify-between flex-col md:flex-row gap-6 xl:gap-10 space-y-8 md:space-y-0">
+        <div className="w-full max-w-[400px] lg:max-w-[600px] xl:max-w-[750px] text-white">
           <p className="font-semibold lg:text-xl leading-7 pb-5">
             WELCOME TO LOKATALENT
           </p>
@@ -13,13 +13,13 @@ const Hero = () => {
             Quality Home Service On Demand
           </h2>
 
-          <p className="py-5 text-xl">
+          <p className="py-5 lg:text-xl">
             Get professional services at your doorstep within hours
           </p>
           <div className="w-full max-w-3xl">
             <DropDownElement />
           </div>
-          <div className="flex space-x-2 text-lg">
+          <div className="flex space-x-2 xl:text-lg">
             <p className=" ">
               Want to sign up as a service provider?{" "}
               <span className=" text-white underline underline-offset-8 whitespace-nowrap">

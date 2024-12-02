@@ -7,7 +7,7 @@ const LogIn = () => {
 
   return (
     <section className="bg-primaryBg bg-red relative">
-      <div className="self-start cursor-pointer absolute top-[10%] sm:top-[1%] md:top-[1%] lg:top-[10%] left-[3%] h-12 w-12">
+      <div className="self-start cursor-pointer absolute top-6 sm:top-[1%] md:top-[1%] lg:top-[10%] left-[3%] h-12 w-12">
         <div onClick={() => router.back()}>
           <svg
             width="35"
