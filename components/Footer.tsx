@@ -45,7 +45,7 @@ const Footer = () => {
     // 		</div>
     // 	</div>
     // </div>
-    <div className="bg-[#3377ff] px-[2rem] sm:px-[3rem] md:px-[4rem] lg:px-[5rem] text-white flex flex-col gap-8 py-20">
+    <div className="px-[2rem] sm:px-[3rem] md:px-[4rem] lg:px-[5rem] flex flex-col gap-8 py-20">
       <div>
         <div className="">
           <div className="flex flex-col sm:flex-row md:flex-row lg:flex-row justify-between gap-2 sm:gap-0 md:gap-0 lg:gap-0 items-start sm:items-center md:items-center lg:items-center">
@@ -80,7 +80,7 @@ const Footer = () => {
         </p>
         <div className="flex justify-between flex-col-reverse sm:flex-row md:flex-row lg:flew-row gap-4 sm:gap-0 md:gap-0 lg:gap-0 mt-12">
           <p>2024 Lokatalent. All Rights Reserved</p>
-          <button className="font-nunito text-xl !text-[#3377FF] font-normal leading-6 bg-white buttonds w-[12rem] h-[2.5rem] lg:w-[14rem] lg:h-[3rem]">
+          <button className="font-nunito text-xl !text-[#3377FF] font-normal leading-6 bg-white button w-[12rem] lg:w-[14rem]">
             Contact Us
           </button>
         </div>

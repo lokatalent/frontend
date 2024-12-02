@@ -20,8 +20,12 @@ export default function Waitlist() {
   }, [toast]);
 
   const [loading, setLoading] = useState(false);
-  const [showModal, setShowModal] = useState(true);
+  const [showModal, setShowModal] = useState(false);
   const [email, setEmail] = useState("");
+
+  const closeModal = () => {
+    setShowModal(false)
+  }
 
   const addUserEmail = async () => {
     if (!email) {
@@ -86,6 +90,7 @@ export default function Waitlist() {
           </button>
         </div>
       </div>
+
       {showModal && (
         <div className="fixed top-0 left-0 w-full h-screen bg-black bg-opacity-70 z-10">
           <div className="w-full h-full flex items-center md:items-start justify-center py-5 md:py-10 wrap">
@@ -97,7 +102,7 @@ export default function Waitlist() {
                 <h1 className="text-xl md:text-2xl xl:text-3xl text-textGray5">
                   You have been added to the Waitlist!
                 </h1>
-                <div className="flex justify-center mt-8 md:mt-14 mb-6">
+                <div className="flex justify-center mt-8 md:mt-10 mb-6">
                   <div className="relative aspect-[117/97] h-14 md:h-24">
                     <Image
                       src={`/Images/waitlist-modal.svg`}
@@ -112,8 +117,8 @@ export default function Waitlist() {
                   get started{" "}
                 </p>
                 <button
-                  onClick={() => setShowModal(false)}
-                  className="bg-primaryBlue text-white h-12 md:h-20 w-full"
+                  onClick={closeModal}
+                  className="bg-primaryBlue text-white h-12 md:h-14 w-full"
                 >
                   Done
                 </button>
@@ -122,6 +127,7 @@ export default function Waitlist() {
           </div>
         </div>
       )}
+
       {/* toast */}
       <div>
         {toast && (
