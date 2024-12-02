@@ -21,7 +21,7 @@ function DropDownElement() {
 	};
 
 	return (
-		<div className="flex gap-2 my-5 xl:my-8 max-w-xl">
+		<div className="flex gap-2 my-4 md:my-5 xl:my-8 max-w-xl">
 			<div className="flex-1">
 				<Select
 					value={selectedService}
