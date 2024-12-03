@@ -149,3 +149,8 @@ body {
 .waitlist_input::placeholder {
 	color: white;
   }
+
+  .wrap {
+	padding-left: 5%;
+	padding-right: 5%;
+  }

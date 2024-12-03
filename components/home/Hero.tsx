@@ -1,5 +1,6 @@
 import Image from "next/image";
 import DropDownElement from "../ui/DropDownElement";
+import Link from "next/link";
 
 const Hero = () => {
   return (
@@ -9,7 +10,7 @@ const Hero = () => {
           <p className="font-semibold text-sm md:text-base lg:text-xl leading-7 pb-2 md:pb-5">
             WELCOME TO LOKATALENT
           </p>
-          <h2 className="lg:leading-[1.2] xl:leading-[1.2] text-3xl md:text-4xl lg:text-5xl xl:text-7xl font-semibold ">
+          <h2 className="lg:leading-[1.1] xl:leading-[1.1] text-3xl md:text-4xl lg:text-5xl xl:text-7xl font-semibold ">
             Quality Home Service On Demand
           </h2>
 
@@ -22,9 +23,11 @@ const Hero = () => {
           <div className="flex space-x-2 xl:text-lg">
             <p className=" ">
               Want to sign up as a service provider?{" "}
-              <span className=" text-white underline underline-offset-8 whitespace-nowrap">
-                Apply Here
-              </span>
+              <Link href={"/signup/service-provider"}>
+                <span className=" text-white underline underline-offset-8 whitespace-nowrap">
+                  Apply Here
+                </span>
+              </Link>
             </p>
           </div>
         </div>

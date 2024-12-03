@@ -3,7 +3,7 @@ import React from "react";
 
 const SignUpType = () => {
 	return (
-    <div className="py-14 bg-primaryBg">
+    <div className="bg-primaryBg">
       <h1 className="font-bold text-center text-2xl md:text-4xl mb-8">
         What do you want to <br /> sign up as?
       </h1>

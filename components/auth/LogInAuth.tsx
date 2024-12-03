@@ -42,8 +42,8 @@ const LogInAuth = () => {
 
   const schemaType = LogInFormSchema;
   return (
-    <div className="bg-bgWhite min-h-screen pb-10">
-      <div className="xl:w-8/12 mx-auto pt-10 lg:pt-20 pb-6 space-y-6  ">
+    <div className="">
+      <div className="w-full max-w-2xl mx-auto">
         <div className="text-center space-y-1">
           <h1 className="font-bold text-2xl md:text-3xl lg:text-4xl text-textColor py-2">
             Welcome Back
@@ -58,9 +58,9 @@ const LogInAuth = () => {
           defaultValues={defaultValues}
           schemaType={schemaType}
           buttonAction="log-in"
-          width="w-full max-w-xl mx-auto"
+          width="w-full"
         />
-        <footer className="flex justify-center gap-2 ">
+        <footer className="flex justify-center gap-2 mt-5">
           <p className="text-sm font-bold text-gray-600">
             Dont have an account?
           </p>
