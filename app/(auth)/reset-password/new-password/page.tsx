@@ -52,18 +52,18 @@ function NewPassword() {
 	// const schemaType = passwordFormSchema;
 
 	return (
-		<div className="sm:px-[4rem]  md:px-[6rem] lg:px-[7rem] py-12 flex justify-center h-screen flex-col items-cener gap-12 bg-[#FAF8F4]">
+		<div className="flex-col items-cener gap-12 bg-[#FAF8F4]">
 			<div className="flex justify-center relative">
 				<div>
 					<h4 className="font-nunito text-xl md:text-4xl font-bold leading-[50.4px] tracking-tighter text-center">
 						Set Your New Password
 					</h4>
-					<p className="font-nunito text-sm text-[#989898] text-center">
+					<p className="font-nunito text-[#989898] text-center mt-2">
 						Enter a new password for your account
 					</p>
 				</div>
 			</div>
-			<div className="flex gap-4 items-center justify-center">
+			<div className="flex gap-4 items-center justify-center mt-6">
 				{/* <form className="flex flex-wrap justify-center">
           <div className="flex flex-col flex-wrap items-center justify-center gap-10">
             <div className="flex flex-col gap-[0.5rem]">
@@ -129,7 +129,7 @@ function NewPassword() {
 					defaultValues={defaultValues}
 					schemaType={passwordFormSchema}
 					buttonAction="password"
-					width="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[35rem]"
+					width="w-full max-w-xl mx-auto"
 				/>
 			</div>
 			<div className="flex justify-center">{/* <ResetDialog /> */}</div>

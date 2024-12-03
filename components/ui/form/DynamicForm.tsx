@@ -91,22 +91,21 @@ const DynamicForm = ({
 	};
 
 	return (
-		<div className="w-full max-w-xl mx-auto px-6 ">
+		<div className="w-full md:px-6 mt-5">
 			<form
 				onSubmit={handleSubmit(onSubmit, onError)}
-				className={`flex flex-col justify-center items-center gap-6`}
+				className={`flex flex-col justify-center items-center gap-6 w-full`}
 			>
 				<div className="w-full">
 					<div
-						className={`flex ${
+						className={`grid w-full ${
 							fields.length > 3
-								? "flex-row flex-wrap justify-center  w-full"
-								: "flex-col"
-						}  justify-center items-center gap-6`}
+								? "md:grid-cols-2 w-full"
+								: "grid-cols-1"
+						}  justify-center items-center gap-4`}
 					>
 						{fields.map((field) => (
 							// <div key={field.name}>
-
 							<FormField
 								key={field.name}
 								name={field.name}

@@ -1,13 +1,14 @@
-"use client"
+"use client";
+import Navbar from "@/components/Nav";
 import { useRouter } from "next/navigation";
 
-export default function SignupLayout({
+export default function LoginLayout({
   children,
 }: {
   children: React.ReactNode;
-	}) {
-	const router = useRouter();
-	return (
+}) {
+  const router = useRouter();
+  return (
     <section className="pt-24 pb-10 bg-bgWhite wrap relative min-h-screen flex items-center wrap justify-center w-full">
       <div className="self-start cursor-pointer absolute top-24 md:top-28 left-[5%] h-12 w-12">
         <div onClick={() => router.back()}>
@@ -28,7 +29,7 @@ export default function SignupLayout({
           </svg>
         </div>
       </div>
-      <div className="w-full">{children}</div>
+      {children}
     </section>
   );
 }

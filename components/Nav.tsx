@@ -9,7 +9,7 @@ import Link from "next/link";
 
 function Navbar({ waitlist }: { waitlist?: boolean }) {
   return (
-    <div className="absolute w-full top-0">
+    <div className="absolute w-full top-0 z-10">
       <nav className="bg-navBlue shadow-lg hidden w-full md:flex items-center h-20">
         <div className="w-full max-w-10/12 mx-auto px-[5%]">
           <div className="flex justify-between">
