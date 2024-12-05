@@ -75,71 +75,7 @@ const Verification: React.FC<VerificationProps> = ({ isCorrect }) => {
 					/>
 				</div>
 				<div className="flex gap-4 items-center justify-center">
-					<div>
-						{/* <form className="flex gap-2 sm:gap-4 md:gap-4 lg:gap-4">
-              <div className="">
-                <input
-                  type="number"
-                  min={1}
-                  max={9}
-                  maxLength={1}
-                  onInput={handleInput}
-                 className={`appearance:none p-[0.6rem] flex items-center justify-center border-2 border-[#3377ff] text-[#3377ff] ${styles.input}`}
-                />
-              </div>
-              <div className="">
-                <input
-                  type="number"
-                  min={1}
-                  max={9}
-                  maxLength={1}
-                  onInput={handleInput}
-                 className={`appearance:none p-[0.6rem] flex items-center justify-center border-2 border-[#3377ff] text-[#3377ff] ${styles.input}`}
-                />
-              </div>
-              <div className="">
-                <input
-                  type="number"
-                  min={1}
-                  max={9}
-                  maxLength={1}
-                  onInput={handleInput}
-                 className={`appearance:none p-[0.6rem] flex items-center justify-center border-2 border-[#3377ff] text-[#3377ff] ${styles.input}`}
-                />
-              </div>
-              <div className="h-1 w-2 bg-black self-center"></div>
-              <div className="">
-                <input
-                  type="number"
-                  min={1}
-                  max={9}
-                  maxLength={1}
-                  onInput={handleInput}
-                 className={`appearance:none p-[0.6rem] flex items-center justify-center border-2 border-[#3377ff] text-[#3377ff] ${styles.input}`}
-                />
-              </div>
-              <div className="">
-                <input
-                  type="number"
-                  min={1}
-                  max={9}
-                  maxLength={1}
-                  onInput={handleInput}
-                 className={`appearance:none p-[0.6rem] flex items-center justify-center border-2 border-[#3377ff] text-[#3377ff] ${styles.input}`}
-                />
-              </div>
-              <div className="">
-                <input
-                  type="number"
-                  min={1}
-                  max={9}
-                  maxLength={1}
-                  onInput={handleInput}
-                  className={`appearance:none p-[0.6rem] flex items-center justify-center border-2 border-[#3377ff] text-[#3377ff] ${styles.input}`}
-                />
-               
-              </div>
-            </form> */}
+					<div>			
 						<InputOTPDemo
 							value={value}
 							setValue={setValue}

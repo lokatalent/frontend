@@ -6,7 +6,7 @@ interface FormFieldErrorProps {
 }
 
 export const FormFieldError: React.FC<FormFieldErrorProps> = ({ error }) => {
-  console.log(error);
+  // console.log(error);
   if (!error) return null;
 
   return (

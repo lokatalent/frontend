@@ -54,6 +54,12 @@
 	.verifyButton {
 		@apply font-normal leading-6 w-[15rem] sm:w-[15rem] md:w-[15rem] lg:w-[15rem] rounded h-12 flex items-center justify-center;
 	}
+	.transition-normal {
+		@apply transition transition-all duration-500;
+	}
+	.flex-center {
+		@apply flex items-center justify-center;
+	}
 }
 
 .input::-webkit-outer-spin-button,
