@@ -67,7 +67,7 @@ const LocationTrack = ({ mapping, setMapping }) => {
 	return (
 		<div className="flex justify-center ">
 			{mapping ? (
-				<div className="bg-map h-svh w-full">
+				<div className="bg-map h-svh max-h-[700px] w-full">
 					<button
 						onClick={() => setMapping(false)}
 						className="m-8"

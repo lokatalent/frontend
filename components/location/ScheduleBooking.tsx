@@ -25,6 +25,7 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { Spacer } from "../Spacer";
+import { useRouter } from "next/navigation";
 
 type FormValues = {
   startTime: string;
@@ -36,6 +37,7 @@ type FormValues = {
 };
 
 const ScheduleBooking = () => {
+  const router = useRouter()
   const [count, setCount] = useState(3.5);
   const [showDuration, setShowDutration] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -43,6 +45,7 @@ const ScheduleBooking = () => {
   const onSubmit = (data: FormValues) => {
     console.log(data);
     // handle submission logic here
+    router.push("talents")
   };
 
   const increase = () => {
@@ -96,7 +99,7 @@ const ScheduleBooking = () => {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-full justify-end text-left font-normal p-6 pl-10",
+                            "w-full justify-start text-left font-normal p-6 pl-10",
                             !value && "text-muted-foreground"
                           )}
                         >
@@ -135,7 +138,7 @@ const ScheduleBooking = () => {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-full justify-end text-left font-normal p-6 pl-10",
+                            "w-full justify-start text-left font-normal p-6 pl-10",
                             !value && "text-muted-foreground"
                           )}
                         >
@@ -273,6 +276,7 @@ const ScheduleBooking = () => {
         </div>
         <Spacer size={20} />
         <div className="w-full flex justify-center mt-8">
+
           <button
             type="submit"
             className="btnOne max-w-[567px] p-4"

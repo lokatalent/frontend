@@ -22,7 +22,7 @@ const BookingCard = ({ bookingPage }: { bookingPage?: boolean }) => {
           <p className={`text-2xl pt-0  font-bold text-white`}>
             Make a booking
           </p>
-          <p className="text-sm  text-white pr-8">
+          <p className="text-sm  text-white pr-8 mt-4">
             Choose from a variety of trusted services whether you need a skilled
             driver, professional cleaners, or other reliable solutions
           </p>
