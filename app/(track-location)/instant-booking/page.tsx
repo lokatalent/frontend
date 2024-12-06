@@ -42,8 +42,8 @@ const page = () => {
 						</p>
 					</div>
 				</div>
-				<div className="my-8   ">
-					<h1 className="header my-5  text-center">Make a Booking Now</h1>
+				<div className="my-8">
+					<h1 className="text-4xl font-semibold my-5 text-center">Make a Booking Now</h1>
 					<p className="text-center">Enter details about your booking</p>
 				</div>
 				<MakeBookingTime />

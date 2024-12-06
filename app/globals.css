@@ -160,3 +160,7 @@ body {
 	padding-left: 5%;
 	padding-right: 5%;
   }
+
+  .talent_gradient {
+	background-image: linear-gradient(to right, #6B705C, #CCD6B0);
+  }

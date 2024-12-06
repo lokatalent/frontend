@@ -45,7 +45,6 @@ const Page = () => {
         {!mapping && (
           <div className="flex flex-col justify-center mx-auto">
             <div className="my-4">
-              <Spacer size={30} />
               <div className="flex flex-row justify-center space-x-4 items-center">
                 <p className="flex flex-row space-x-3 items-center">
                   <span>
@@ -78,18 +77,18 @@ const Page = () => {
                 </p>
               </div>
             </div>
-            {/* <Spacer size={50} /> */}
-            <div className="my-8">
+            <Spacer size={10} />
+            <div className="">
               <h1 className="font-semibold text-3xl my-5 text-center">
                 Where do you need help?
               </h1>
-              <Spacer size={40} />
+              <Spacer size={10} />
 
               <LocationAutocomplete onSelect={handleLocationSelect} />
 
               <Dialog>
                 <DialogTrigger asChild className="w-full">
-                  <div className="flex justify-center mt-8">
+                  <div className="flex justify-center my-8">
                     <button
                       disabled={isDisabled}
                       className={`dialog-trigger ${

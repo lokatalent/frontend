@@ -25,6 +25,8 @@ const config: Config = {
 				textGray4: "#2D2D2D8F",
 				textGray5: "#4B5563",
 				bgWhite: "#FAF8F4",
+				orangeLight: "#DF86000F",
+				orangeDark: "#DF8600",
 				background: "hsl(var(--background))",
 				foreground: "hsl(var(--foreground))",
 				card: {

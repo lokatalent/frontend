@@ -9,7 +9,6 @@ const page = () => {
 		<div className="bg-bgWhite  ">
 			<div className="flex flex-col justify-center mx-auto ">
 				<div className="my-4">
-					<Spacer size={30} />
 					<div className="flex flex-row justify-center space-x-4 items-center">
 						<p className="flex flex-row  space-x-3 items-center">
 							<span>
@@ -42,8 +41,8 @@ const page = () => {
 						</p>
 					</div>
 				</div>
-				<div className="my-8   ">
-					<h1 className="font-semibold text-3xl my-5  text-center">Schedule a Booking Now</h1>
+				<div className="">
+					<h1 className="font-semibold text-3xl mt-5 mb-2 text-center">Schedule a Booking Now</h1>
 					<p className="text-center">Enter details about your booking</p>
 				</div>
 				<ScheduleBooking />

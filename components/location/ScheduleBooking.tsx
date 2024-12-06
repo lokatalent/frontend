@@ -25,17 +25,19 @@ import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { Spacer } from "../Spacer";
+import { useRouter } from "next/navigation";
 
 type FormValues = {
   startTime: string;
   endTime: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | "";
+  endDate: Date | "";
   description: string;
   duration: number;
 };
 
 const ScheduleBooking = () => {
+  const router = useRouter()
   const [count, setCount] = useState(3.5);
   const [showDuration, setShowDutration] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
@@ -43,6 +45,7 @@ const ScheduleBooking = () => {
   const onSubmit = (data: FormValues) => {
     console.log(data);
     // handle submission logic here
+    router.push("talents")
   };
 
   const increase = () => {
@@ -77,11 +80,10 @@ const ScheduleBooking = () => {
   }, [count, setValue]);
 
   return (
-    <div className="p-6 ">
+    <div className="p-6 w-full max-w-5xl mx-auto">
       <form onSubmit={handleSubmit(onSubmit)} className="">
         <div className=" flex flex-row space-x-5">
           {/* Start Date Input */}
-
           <Controller
             name="startDate"
             control={control}
@@ -105,7 +107,7 @@ const ScheduleBooking = () => {
                           {value && format(value, "PPP")}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
+                      <PopoverContent className="w-auto p-0 bg-white">
                         <Calendar
                           mode="single"
                           selected={value}
@@ -144,7 +146,7 @@ const ScheduleBooking = () => {
                           {value && format(value, "PPP")}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
+                      <PopoverContent className="w-auto p-0 bg-white">
                         <Calendar
                           mode="single"
                           selected={value}
@@ -159,7 +161,7 @@ const ScheduleBooking = () => {
             )}
           />
         </div>
-        <Spacer size={40} />
+        <Spacer size={20} />
         <div className=" flex flex-row space-x-5">
           {/* Start Time Input */}
           <Controller
@@ -211,7 +213,7 @@ const ScheduleBooking = () => {
           Click on the clock icon to set time
         </p>
 
-        <Spacer size={40} />
+        <Spacer size={20} />
         {/* Description Text Area */}
         <div>
           <Label htmlFor="description" className="text-md py-3">
@@ -220,7 +222,7 @@ const ScheduleBooking = () => {
           <Textarea className="bg-white h-40" {...register("description")} />
         </div>
 
-        <Spacer size={30} />
+        <Spacer size={20} />
         <div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger className=" underline underline-offset-4 text-md ">
@@ -272,8 +274,9 @@ const ScheduleBooking = () => {
             </div>
           )}
         </div>
-        <Spacer size={30} />
+        <Spacer size={20} />
         <div className="w-full flex justify-center mt-8">
+
           <button
             type="submit"
             className="btnOne max-w-[567px] p-4"
