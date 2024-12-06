@@ -122,7 +122,7 @@ async function NotificationsData(): Promise<NotificationResponse> {
 }
 
 export default async function Notification() {
-  const { isNotified, notification } = await NotificationsData();;
+  const { isNotified, notification } = await NotificationsData();
 
   return (
     

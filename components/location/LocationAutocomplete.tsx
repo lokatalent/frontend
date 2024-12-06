@@ -26,14 +26,15 @@ const LocationAutocomplete = ({ onSelect }) => {
 	}, [onSelect]);
 
 	return (
+		<div className="w-full">
 		<input
 			id="autocomplete-input"
 			type="text"
-			className="input-class w-full mx-auto placeholder:text-textGray2 mb-4"
+			className="input-class block w-full mx-auto placeholder:text-textGray2 mb-4 max-w-4xl"
 			placeholder="Enter a location"
 			value={inputValue}
 			onChange={(e) => setInputValue(e.target.value)}
-		/>
+		/></div>
 	);
 };
 
