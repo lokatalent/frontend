@@ -41,9 +41,9 @@ const Page = () => {
         strategy="beforeInteractive"
       />
 
-      <div className="bg-bgWhite h-svh">
+      <div className="bg-bgWhite">
         {!mapping && (
-          <div className="flex flex-col justify-center contained mx-auto">
+          <div className="flex flex-col justify-center mx-auto">
             <div className="my-4">
               <Spacer size={30} />
               <div className="flex flex-row justify-center space-x-4 items-center">
@@ -78,9 +78,9 @@ const Page = () => {
                 </p>
               </div>
             </div>
-            <Spacer size={50} />
+            {/* <Spacer size={50} /> */}
             <div className="my-8">
-              <h1 className="header my-5 text-center">
+              <h1 className="font-semibold text-3xl my-5 text-center">
                 Where do you need help?
               </h1>
               <Spacer size={40} />
@@ -123,7 +123,7 @@ const Page = () => {
                     <DialogClose asChild>
                       <button
                         className="btnTwo border border-primaryBlue"
-                        onClick={() => router.push("/schedule-booking")}
+                        onClick={() => router.push("/dashboard/bookings/schedule-booking")}
                       >
                         Schedule a Booking
                       </button>
@@ -131,7 +131,7 @@ const Page = () => {
                     <DialogClose asChild>
                       <button
                         className="btnOne"
-                        onClick={() => router.push("/instant-booking")}
+                        onClick={() => router.push("/dashboard/bookings/instant-booking")}
                       >
                         Instant Booking
                       </button>

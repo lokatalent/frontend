@@ -165,7 +165,7 @@ export function DataTable<TData, TValue>({
                     className="mx-auto"
                   />
                   <p>You havent made any booking yet</p>
-                  <p>Book a talent to lorem ipsum lorem ipsum lorem</p>
+                  <p>Explore our services and book what you need in just a few taps</p>
                 </TableCell>
               </TableRow>
             )}

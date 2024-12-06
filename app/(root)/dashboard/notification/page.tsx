@@ -33,7 +33,7 @@ type NotificationResponse = {
 
 async function NotificationsData(): Promise<NotificationResponse> {
   return {
-    isNotified: false, // Set to true if there are notifications
+    isNotified: true, // Set to true if there are notifications
     notification: [
       {
         id: "1",
@@ -122,7 +122,7 @@ async function NotificationsData(): Promise<NotificationResponse> {
 }
 
 export default async function Notification() {
-  const { isNotified, notification } = await NotificationsData();;
+  const { isNotified, notification } = await NotificationsData();
 
   // const bookingRoles = [
   //   { value: "all", label: "All" },
