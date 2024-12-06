@@ -32,7 +32,7 @@ interface FormFieldProps {
   type: string;
   error?: FieldError;
   register: UseFormRegister<FormData>;
-  control: ControllerProps<FormData, any, any>;
+  control?: ControllerProps<FormData, any, any>;
   disabled?: boolean;
   validation: RegisterOptions;
   width?: string;

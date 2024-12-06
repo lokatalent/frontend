@@ -17,6 +17,12 @@ interface DefaultValues {
 	number?: string;
 	newPassword?: string;
 	confirmPassword?: string;
+	gender?: string,
+    dateOfBirth?: string,
+    country?: string,
+    state?: string,
+    city?: string,
+    address?: string,
 }
 interface DynamicForm {
 	fields: FieldConfig[];
@@ -44,7 +50,7 @@ const DynamicForm = ({
 		handleSubmit,
 		formState: { isSubmitting },
 		reset,
-	} = useForm<FormData>({
+	} = useForm<any>({
 		resolver: zodResolver(schemaType),
 		defaultValues,
 	});
