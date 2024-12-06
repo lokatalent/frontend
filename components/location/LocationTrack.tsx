@@ -30,7 +30,7 @@ const LocationTrack = ({ mapping, setMapping }) => {
 					console.log("LATITUDE", latitude);
 
 					// Use Google Maps Geocoding API to get the address;
-					const geocodingUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
+					const geocodingUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
 
 					fetch(geocodingUrl)
 						.then((response) => response.json())
@@ -67,7 +67,7 @@ const LocationTrack = ({ mapping, setMapping }) => {
 	return (
 		<div className="flex justify-center ">
 			{mapping ? (
-				<div className="bg-map h-svh w-full">
+				<div className="bg-map h-svh max-h-[700px] w-full">
 					<button
 						onClick={() => setMapping(false)}
 						className="m-8"

@@ -8,8 +8,8 @@ export default function SignupLayout({
 	}) {
 	const router = useRouter();
 	return (
-    <section className="bg-primaryBg relative h-screen">
-      <div className="self-start cursor-pointer absolute top-[5%] sm:top-[10%] md:top-[10%] lg:top-[10%] left-[3%] h-12 w-12">
+    <section className="pt-24 pb-10 bg-bgWhite wrap relative min-h-screen flex items-center wrap justify-center w-full">
+      <div className="self-start cursor-pointer absolute top-24 md:top-28 left-[5%] h-12 w-12">
         <div onClick={() => router.back()}>
           <svg
             width="35"
@@ -28,7 +28,7 @@ export default function SignupLayout({
           </svg>
         </div>
       </div>
-      {children}
+      <div className="w-full">{children}</div>
     </section>
   );
 }

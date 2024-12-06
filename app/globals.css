@@ -140,3 +140,27 @@ body {
 	font-family: "Nunito Sans", sans-serif;
 	background-color: "#FAF8F4";
 }
+
+.wrap {
+	padding-left: 5%;
+	padding-right: 5%;
+}
+
+.waitlist_bg {
+	background-image: linear-gradient(rgba(1, 33, 54, 0.75), rgba(1, 33, 54, 0.75)), url("../public/Images/waitlist.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.waitlist_input::placeholder {
+	color: white;
+  }
+
+  .wrap {
+	padding-left: 5%;
+	padding-right: 5%;
+  }
+
+  .talent_gradient {
+	background-image: linear-gradient(to right, #6B705C, #CCD6B0);
+  }
