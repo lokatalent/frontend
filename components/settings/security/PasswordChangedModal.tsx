@@ -4,6 +4,7 @@ import {
   DialogContent,
   DialogHeader,
   DialogTrigger,
+  DialogClose
 } from "@/components/ui/dialog";
 import { IoIosSend } from "react-icons/io";
 import { Button } from "@/components/ui/button";
@@ -40,7 +41,9 @@ const   PasswordChangedModal = () => {
             </div>
           </div>
           <div className="mt-5 sm:mt-6">
+            <DialogClose asChild>
             <Button className="px-16 py-6">Done</Button>
+            </DialogClose>
           </div>
         </div>
       </DialogContent>
