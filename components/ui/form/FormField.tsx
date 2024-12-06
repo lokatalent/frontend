@@ -27,7 +27,7 @@ type Option = {
 };
 
 interface FormFieldProps {
-  name: keyof FormData;
+  name: keyof FormData | string;
   label: string;
   type: string;
   error?: FieldError;
