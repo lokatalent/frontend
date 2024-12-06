@@ -150,7 +150,7 @@ export const FormField: React.FC<FormFieldProps> = ({
         <button
           type="button"
           onClick={togglePasswordVisibility}
-          className="absolute right-[2%] top-[50%] -ranslate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
+          className="absolute right-[2%] top-[60%] -ranslate-y-1/2 text-gray-500 hover:text-gray-700 focus:outline-none"
           aria-label={showPassword ? "Hide password" : "Show password"}
         >
           {showPassword ? (

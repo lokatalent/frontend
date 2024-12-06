@@ -78,7 +78,7 @@ function Security() {
   ];
 
   const defaultValues = {
-    currentPassword: "12345678",
+    currentPassword: "",
     newPassword: "",
     confirmPassword: "",
   };

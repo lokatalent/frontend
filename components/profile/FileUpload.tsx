@@ -140,7 +140,10 @@ const FileUpload = () => {
                 <Button
                   variant="ghost"
                   className="text-blue-600 hover:text-blue-700"
-                  onClick={() => document.getElementById("fileInput")?.click()}
+                  onClick={(event) => {
+                    event.preventDefault(); // Prevent default button behavior
+                    document.getElementById("fileInput")?.click();
+                  }}
                 >
                   Click to upload
                   <span className="text-gray-500"> or drag and drop</span>
@@ -169,9 +172,7 @@ const FileUpload = () => {
         )}
       </div>
 
-      {!files && (
-        <FormFieldError error={error} />
-      )}
+      {!files && <FormFieldError error={error} />}
     </div>
   );
 };
