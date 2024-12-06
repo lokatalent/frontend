@@ -27,12 +27,12 @@ type Option = {
 };
 
 interface FormFieldProps {
-  name: keyof FormData;
+  name: keyof FormData | string;
   label: string;
   type: string;
   error?: FieldError;
   register: UseFormRegister<FormData>;
-  control: ControllerProps<FormData, any, any>;
+  control?: ControllerProps<FormData, any, any>;
   disabled?: boolean;
   validation: RegisterOptions;
   width?: string;

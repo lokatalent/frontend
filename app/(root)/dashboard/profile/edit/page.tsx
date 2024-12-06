@@ -19,18 +19,18 @@ import { useDispatch } from "react-redux";
        required: "Select a gender",
      },
    },
-   {
-     name: "dateofBirth",
-     type: "date",
-     label: "Date of Birth*",
-     validation: {
-       required: "Date of Birth is required",
-        minLength: {
-          value: 1,
-          message: "Date of Birth must be at least 6 characters",
-        },
-     },
-   },
+  //  {
+  //    name: "dateofBirth",
+  //    type: "date",
+  //    label: "Date of Birth*",
+  //    validation: {
+  //      required: "Date of Birth is required",
+  //       minLength: {
+  //         value: 1,
+  //         message: "Date of Birth must be at least 6 characters",
+  //       },
+  //    },
+  //  },
    {
      name: "country",
      type: "select",
@@ -86,9 +86,9 @@ import { useDispatch } from "react-redux";
 
 
 function Edit() {
-   const [selectedImage, setSelectedImage] = useState(null);
+   const [selectedImage, setSelectedImage] = useState<any>(null);
    const dispatch = useDispatch();
-   const fileInputRef = useRef(null);
+   const fileInputRef = useRef<any>(null);
 
   
   const handleImageSelect = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -100,7 +100,7 @@ function Edit() {
     }
   };
 
-  const handleButtonClick = (): void => {
+  const handleButtonClick = () => {
     fileInputRef.current?.click();
   };
   const router = useRouter();
