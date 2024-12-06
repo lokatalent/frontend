@@ -11,7 +11,9 @@ import { FcGoogle } from "react-icons/fc";
 import { FormField } from "./FormField";
 import ReviewModal from "@/components/profile/ReviewModal";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setProfileDetails } from "@/store/profile/profileSlice";
+import { RootStateProfile, setInformation, setProfileDetails } from "@/store/profile/profileSlice";
+import PasswordChangedModal from "@/components/settings/security/PasswordChangedModal";
+import PhoneNumberVerification from "@/components/settings/security/PhoneVerificationModal";
 
 interface DefaultValues {
   firstName?: string;
@@ -34,6 +36,7 @@ interface DynamicForm {
   buttonAction: string;
   schemaType: any;
   width: string;
+  styles?: string
 }
 
 const DynamicForm = ({
@@ -42,24 +45,23 @@ const DynamicForm = ({
   schemaType,
   buttonAction,
   width,
+  styles
 }: DynamicForm) => {
   const router = useRouter();
   const pathname = usePathname();
   const [savedData, setSavedData] = useState<FormData | null>(null);
   const [error, setError] = useState<string[] | null | string>("");
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const [fileValue, setFileValue] = useState<string>('');
+  const [fileValue, setFileValue] = useState<string>("");
   const [inputValue, setInputValue] = useState<File | null>(null);
   const verificationResult = useSelector(
     (state: RootState) => state.profile.verification
-	);
-	const file = useSelector(
-    (state: RootState) => state.profile.file
   );
-	console.log(file);
+  const file = useSelector((state: RootState) => state.profile.file);
+  console.log(file);
   const dispatch = useDispatch();
 
-	// const file = sessionStorage.getItem("selectedFile"); 
+  // const file = sessionStorage.getItem("selectedFile");
 
   const {
     register,
@@ -86,8 +88,19 @@ const DynamicForm = ({
       router.push("/dashboard");
     }
     if (buttonAction === "profile-edit") {
-      dispatch(setProfileDetails(data))
+      dispatch(setProfileDetails(data));
+      dispatch(
+        setInformation({
+          state: data.state,
+          address: data.address,
+          city: data.city,
+          dateOfBirth: data.dateofBirth,
+        })
+      );
       router.push("/dashboard/profile/verify");
+    }
+    if (buttonAction === 'edit-address') {
+      dispatch(setInformation({ state: data.state, address: data.address, city: data.city}))
     }
     setError(null);
 
@@ -97,7 +110,7 @@ const DynamicForm = ({
     closeDialog();
     reset();
   };
-
+  
 	return (
 		<div className="w-full md:px-6 mt-5">
 			<form

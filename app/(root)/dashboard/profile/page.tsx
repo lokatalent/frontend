@@ -18,16 +18,19 @@ export default async function Profile() {
   const profilePics = useSelector(
     (state: RootState) => state.profile.profilePics
   );
+  const profileInformation = useSelector(
+    (state: RootState) => state.profile.information
+  );
 
   // Fetch user profile data from the server
   const data: DataItem[] = [
     {
       title: "Name",
-      value: "Gabriel Daramola",
+      value: profileInformation.name,
     },
     {
       title: "Email Address",
-      value: "Amazingab26@gmail.com",
+      value: profileInformation.email,
     },
     {
       title: "Phone Number",

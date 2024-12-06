@@ -24,6 +24,7 @@ interface InputDropdownProps {
 function InputDropdown({ options, error, buttonAction }: InputDropdownProps) {
   const [selectedService, setSelectedService] = useState<string>("");
   const dispatch = useDispatch();
+  console.log(buttonAction);
 
   const handleServiceChange = (value: string) => {
     setSelectedService(value);
@@ -32,18 +33,17 @@ function InputDropdown({ options, error, buttonAction }: InputDropdownProps) {
   };
 
   // const fileHandler = (file: File) => {
-    // console.log(file);
-    // console.log(selectedService);
-    // uploadFileHandler(selectedService, file);
+  // console.log(file);
+  // console.log(selectedService);
+  // uploadFileHandler(selectedService, file);
   // };
 
-  const uploadHandler = () => {
-  };
+  const uploadHandler = () => {};
 
   return (
     <div className="space-y-5">
       <div>
-        <Select  value={selectedService} onValueChange={handleServiceChange}>
+        <Select value={selectedService} onValueChange={handleServiceChange}>
           <SelectTrigger className="appearance-none w-full h-[3rem] px-3 py-1 text-sm bg-white border-2 border-white rounded-md focus:outline-none">
             {selectedService ? (
               <SelectValue>{selectedService}</SelectValue>
@@ -67,8 +67,9 @@ function InputDropdown({ options, error, buttonAction }: InputDropdownProps) {
         </Select>
         {error && <FormFieldError error={error} />}
       </div>
-      {selectedService && buttonAction === "addressVerification" ? (
-        <FileUpload/>
+      {selectedService && (buttonAction === "addressVerification" ||
+      buttonAction === "edit-address") ? (
+        <FileUpload />
       ) : null}
     </div>
   );

@@ -124,36 +124,8 @@ async function NotificationsData(): Promise<NotificationResponse> {
 export default async function Notification() {
   const { isNotified, notification } = await NotificationsData();
 
-  // const bookingRoles = [
-  //   { value: "all", label: "All" },
-  //   { value: "Unread", label: "Unread" },
-  // ];
-
-  // // const filterNotifications = notification.filter(notification => notification.statusNotification !==
-
-  // const handleRoleChange = (role: string) => {
-  //   console.log("Selected role:", role);
-    
-  //   // Your role change logic here
-  // };
-
   return (
-    // <div className="ml-8 h-screen">
-    //   {isNotified ? (
-    //     <div className="space-y-6">
-    //       <div className="">
-    //         <RoleSwitch
-    //           roles={bookingRoles}
-    //           initialRole="all"
-    //           onRoleChange={handleRoleChange}
-    //         />
-    //       </div>
-    //       <NotificationsBar notifications={notification} />
-    //     </div>
-    //   ) : (
-    //     <EmptyNotification />
-    //   )}
-    // </div>
+    
     <OverallNotification isNotified={isNotified} notifications={notification} />
   );
 }

@@ -9,7 +9,11 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-function ReviewModal() {
+interface ReviewModalProps  {
+  linkTo: string;
+}
+
+function ReviewModal({ linkTo }: ReviewModalProps) {
   return (
     <Dialog>
       <DialogTrigger
@@ -39,7 +43,7 @@ function ReviewModal() {
           </p>
           <div>
             <Link
-              href="/dashboard/profile"
+              href={linkTo}
               className="font-nunito text-[14px] !text-[#fff] bg-[#3377FF]  font-normal leading-6 w-[11rem] sm:w-[15rem] md:w-[15rem] lg:w-[15rem] rounded h-12 flex items-center justify-center"
             >
               Continue

@@ -36,6 +36,7 @@ interface FormFieldProps {
   disabled?: boolean;
   validation: RegisterOptions;
   width?: string;
+  styles?: string;
   options: Option;
   buttonAction: string;
   // fileHandlerOptions;
@@ -53,6 +54,7 @@ export const FormField: React.FC<FormFieldProps> = ({
   width,
   buttonAction,
   options,
+  styles
   // fileHandlerOptions,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -70,7 +72,9 @@ export const FormField: React.FC<FormFieldProps> = ({
     e.preventDefault();
     setShowPassword((prev) => !prev);
   };
+ 
 
+  
   // const FileForm = (inputValue, file) => {
     // console.log(inputValue, file);
     // fileHandlerOptions(inputValue, file);
@@ -135,7 +139,7 @@ export const FormField: React.FC<FormFieldProps> = ({
           id={name as string}
           {...register(name, validation)}
           type={type}
-          className={` flex w-full rounded-md bg-white h-[3rem] px-3 py-1 text-sm shadow-s transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+          className={` ${styles} flex w-full rounded-md bg-white h-[3rem] px-3 py-1 text-sm shadow-s transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
           ${error ? "border-red-500" : "border-gray-300"}`}
           aria-invalid={error ? "true" : "false"}
           disabled={disabled}
