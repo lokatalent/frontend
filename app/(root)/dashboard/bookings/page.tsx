@@ -30,7 +30,7 @@ async function getData(): Promise<BookingType[]> {
       id: "12456256565",
       date: "24/4/2022",
       time: "11:35 AM",
-      location: "14, Asherifa Juncti.hfhfhf vhf dds hdd dfsd...",
+      location: "14, Asherifa Juncti...",
       status: "Pending",
     },
     {
@@ -74,7 +74,7 @@ export default async function Bookings() {
             data={BookingData}
             isRole={true}
             isSort={true}
-            path="/"
+            path="/dashboard/bookings/"
           />
         </div>
       </div>
