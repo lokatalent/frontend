@@ -9,9 +9,10 @@ import {
 import Image from "next/image";
 import Link from "next/link";
 
-function ResetDialog({ isDialog, closeDialog}) {
+function ResetDialog() {
   return (
-    <Dialog open={isDialog} onOpenChange={closeDialog}>
+    // <Dialog open={isDialog} onOpenChange={closeDialog}>
+    <Dialog>
       <DialogTrigger
         type="submit"
         className="font-nunito text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[23rem] mx-auto rounded h-14 flex items-center justify-center hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] transition transition-all duration-[500ms]"

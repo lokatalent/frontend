@@ -49,8 +49,6 @@ function NewPassword() {
 		confirmPassword: "",
 	};
 
-	// const schemaType = passwordFormSchema;
-
 	return (
 		<div className="flex-col items-cener gap-12 bg-[#FAF8F4]">
 			<div className="flex justify-center relative">

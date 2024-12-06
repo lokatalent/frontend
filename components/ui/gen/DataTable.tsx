@@ -77,10 +77,10 @@ export function DataTable<TData, TValue>({
     },
     onGlobalFilterChange: setGlobalFilter,
   });
-  console.log(path);
+  // console.log(path);
   const handleNavigate = (id: number) => {
-    console.log(id);;
-    console.log(path);
+    // console.log(id);;
+    // console.log(path);
     router.push(`${path}/${id}`);
   };
 
@@ -88,12 +88,23 @@ export function DataTable<TData, TValue>({
     console.log(role)
   }
 
+   const bookingRoles = [
+     { value: "all", label: "All" },
+     { value: "instant-bookings", label: "Instant Bookings" },
+     { value: "schedule-bookings", label: "Schedule Bookings" },
+   ];
+
+   const handleRoleChange = (role: string) => {
+     console.log("Selected role:", role);
+     // Your role change logic here
+   };
+
   return (
     <div>
       <div className="mb-5">
         {/* <h1 className="font-medium text-2xl">{title}</h1> */}
         <div className="flex flex-col sm:flex-row gap-5 justify-between items-start sm:items-center">
-          {isRole ? <RoleSwitch roleHandler={roleHandler} /> : null}
+          {isRole ? <RoleSwitch initialRole="all" roles={bookingRoles}  onRoleChange={roleHandler} /> : null}
           {isSort ? <SortList options={BookingOptions} /> : null}
         </div>
       </div>
@@ -154,7 +165,7 @@ export function DataTable<TData, TValue>({
                     className="mx-auto"
                   />
                   <p>You havent made any booking yet</p>
-                  <p>Book a talent to lorem ipsum lorem ipsum lorem</p>
+                  <p>Explore our services and book what you need in just a few taps</p>
                 </TableCell>
               </TableRow>
             )}

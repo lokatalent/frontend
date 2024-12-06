@@ -32,8 +32,8 @@ const Page = () => {
   const handleLocationSelect = (place: string) => {
     setSelectedLocation(place);
     setIsDisabled(false);
-    console.log("Selected Place Details:", selectedLocation);
   };
+
   return (
     <>
       <Script
@@ -104,7 +104,7 @@ const Page = () => {
                 </DialogTrigger>
                 <DialogContent className="px-12 ">
                   <DialogHeader>
-                    <DialogTitle className="text-lg md:text-3xl mt-5 px-3 text-center font-semibold">
+                    <DialogTitle className="text-lg md:text-3xl mt-5 px-3 text-center font-medium">
                       Instant Booking or Schedule a Booking?
                     </DialogTitle>
                     <DialogDescription className=" flex flex-col justify-center items-center">
@@ -115,14 +115,14 @@ const Page = () => {
                         alt="track location"
                       />
                       <p className="text-lg p-4 text-center">
-                        You can decide to lorem ipsum lorem ipsum lorem ipsum
+                        Whether you need it now or later, we’ve got you covered
                       </p>
                     </DialogDescription>
                   </DialogHeader>
                   <div className="flex flex-row justify-center space-x-3 w-full">
                     <DialogClose asChild>
                       <button
-                        className="btnTwo"
+                        className="btnTwo border border-primaryBlue"
                         onClick={() => router.push("/schedule-booking")}
                       >
                         Schedule a Booking

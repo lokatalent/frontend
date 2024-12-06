@@ -10,6 +10,19 @@ const Dialog = DialogPrimitive.Root;
 
 const DialogTrigger = DialogPrimitive.Trigger;
 
+// type DialogTriggerElement = React.ElementRef<typeof DialogPrimitive.Trigger>;
+// interface DialogTriggerProps
+//   extends React.ComponentPropsWithoutRef<typeof DialogPrimitive.Trigger> {}
+// const DialogTrigger = React.forwardRef<
+//   DialogTriggerElement,
+//   DialogTriggerProps
+// >(({ children, ...props }, forwardedRef) => (
+//   <DialogPrimitive.Trigger {...props} ref={forwardedRef} asChild>
+//     (children)
+//   </DialogPrimitive.Trigger>
+// ));
+// DialogTrigger.displayName = DialogPrimitive.Trigger.displayName;
+
 const DialogPortal = DialogPrimitive.Portal;
 
 const DialogClose = DialogPrimitive.Close;
