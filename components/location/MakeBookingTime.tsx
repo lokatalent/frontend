@@ -58,7 +58,7 @@ const MakeBookingTime = () => {
 	};
 
 	return (
-		<div className="p-6 ">
+		<div className="p-6 w-full max-w-5xl mx-auto">
 			<form
 				onSubmit={handleSubmit(onSubmit)}
 				className=""
@@ -121,7 +121,7 @@ const MakeBookingTime = () => {
 					Click on the clock icon to set time
 				</p>
 
-				<Spacer size={30} />
+				<Spacer size={20} />
 				{/* Description Text Area */}
 				<div>
 					<Label
@@ -136,7 +136,7 @@ const MakeBookingTime = () => {
 					/>
 				</div>
 
-				<Spacer size={30} />
+				<Spacer size={20} />
 				<div>
 					<Dialog
 						open={isDialogOpen}
@@ -200,7 +200,7 @@ const MakeBookingTime = () => {
 						</div>
 					)}
 				</div>
-				<Spacer size={30} />
+				<Spacer size={20} />
 				<div className="w-full flex justify-center mt-8">
 					<button
 						type="submit"

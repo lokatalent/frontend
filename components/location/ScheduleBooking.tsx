@@ -29,8 +29,8 @@ import { Spacer } from "../Spacer";
 type FormValues = {
   startTime: string;
   endTime: string;
-  startDate: Date;
-  endDate: Date;
+  startDate: Date | "";
+  endDate: Date | "";
   description: string;
   duration: number;
 };
@@ -77,11 +77,10 @@ const ScheduleBooking = () => {
   }, [count, setValue]);
 
   return (
-    <div className="p-6 ">
+    <div className="p-6 w-full max-w-5xl mx-auto">
       <form onSubmit={handleSubmit(onSubmit)} className="">
         <div className=" flex flex-row space-x-5">
           {/* Start Date Input */}
-
           <Controller
             name="startDate"
             control={control}
@@ -97,7 +96,7 @@ const ScheduleBooking = () => {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-full justify-start text-left font-normal p-6 pl-10",
+                            "w-full justify-end text-left font-normal p-6 pl-10",
                             !value && "text-muted-foreground"
                           )}
                         >
@@ -105,7 +104,7 @@ const ScheduleBooking = () => {
                           {value && format(value, "PPP")}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
+                      <PopoverContent className="w-auto p-0 bg-white">
                         <Calendar
                           mode="single"
                           selected={value}
@@ -136,7 +135,7 @@ const ScheduleBooking = () => {
                         <Button
                           variant={"outline"}
                           className={cn(
-                            "w-full justify-start text-left font-normal p-6 pl-10",
+                            "w-full justify-end text-left font-normal p-6 pl-10",
                             !value && "text-muted-foreground"
                           )}
                         >
@@ -144,7 +143,7 @@ const ScheduleBooking = () => {
                           {value && format(value, "PPP")}
                         </Button>
                       </PopoverTrigger>
-                      <PopoverContent className="w-auto p-0">
+                      <PopoverContent className="w-auto p-0 bg-white">
                         <Calendar
                           mode="single"
                           selected={value}
@@ -159,7 +158,7 @@ const ScheduleBooking = () => {
             )}
           />
         </div>
-        <Spacer size={40} />
+        <Spacer size={20} />
         <div className=" flex flex-row space-x-5">
           {/* Start Time Input */}
           <Controller
@@ -211,7 +210,7 @@ const ScheduleBooking = () => {
           Click on the clock icon to set time
         </p>
 
-        <Spacer size={40} />
+        <Spacer size={20} />
         {/* Description Text Area */}
         <div>
           <Label htmlFor="description" className="text-md py-3">
@@ -220,7 +219,7 @@ const ScheduleBooking = () => {
           <Textarea className="bg-white h-40" {...register("description")} />
         </div>
 
-        <Spacer size={30} />
+        <Spacer size={20} />
         <div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger className=" underline underline-offset-4 text-md ">
@@ -272,7 +271,7 @@ const ScheduleBooking = () => {
             </div>
           )}
         </div>
-        <Spacer size={30} />
+        <Spacer size={20} />
         <div className="w-full flex justify-center mt-8">
           <button
             type="submit"
