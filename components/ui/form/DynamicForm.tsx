@@ -73,7 +73,7 @@ const DynamicForm = ({
 			router.push(`${pathname}/verify`);
 		}
 		if (buttonAction === "log-in") {
-			router.push("/user/dashboard");
+			router.push("/dashboard");
 		}
 		setError(null);
 
