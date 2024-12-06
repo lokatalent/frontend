@@ -5,7 +5,6 @@ import DynamicForm from "@/components/ui/form/DynamicForm";
 import {
   changePasswordFormSchema,
   FieldConfig,
-  TwoStepVerificationFormSchema,
 } from "@/lib/utils";
 import { RootStateProfile } from "@/store/profile/profileSlice";
 import {
@@ -78,7 +77,7 @@ function Security() {
   ];
 
   const defaultValues = {
-    currentPassword: "12345678",
+    currentPassword: "",
     newPassword: "",
     confirmPassword: "",
   };
@@ -96,7 +95,6 @@ function Security() {
     } else {
       dispatch(setActiveTwoStepVerification(true));
     }
-    // dispatch(setActiveTwoStepVerification(true))
   };
 
   const savedCurrentPassword = "12345678"; // Replace with actual saved password value

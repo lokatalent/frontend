@@ -55,9 +55,9 @@ const DynamicForm = ({
   const [fileValue, setFileValue] = useState<string>("");
   const [inputValue, setInputValue] = useState<File | null>(null);
   const verificationResult = useSelector(
-    (state: RootState) => state.profile.verification
+    (state: RootStateProfile) => state.profile.verification
   );
-  const file = useSelector((state: RootState) => state.profile.file);
+  const file = useSelector((state: RootStateProfile) => state.profile.file);
   console.log(file);
   const dispatch = useDispatch();
 

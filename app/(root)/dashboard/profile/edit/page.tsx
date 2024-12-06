@@ -1,10 +1,8 @@
 "use client";
 import Image from "next/image";
-import React, { ChangeEvent, useRef, useState } from "react";
-import dp from "@/public/Images/dp.png";
+import React, { ChangeEvent, useRef, useState } from "react";;
 import { useRouter } from "next/navigation";
-import han from "@/public/Images/hamburger.svg";
-import { allowedCountries, FieldConfig, profileFormSchema } from "@/lib/utils";
+import {  FieldConfig, profileFormSchema } from "@/lib/utils";
 import DynamicForm from "@/components/ui/form/DynamicForm";
 import { setProfilePics } from "@/store/profile/profileSlice";
 import { useDispatch } from "react-redux";
@@ -86,9 +84,9 @@ import { useDispatch } from "react-redux";
 
 
 function Edit() {
-   const [selectedImage, setSelectedImage] = useState(null);
+   const [selectedImage, setSelectedImage] = useState<any>(null);
    const dispatch = useDispatch();
-   const fileInputRef = useRef(null);
+   const fileInputRef = useRef<HTMLInputElement | null>(null);
 
   
   const handleImageSelect = (event: ChangeEvent<HTMLInputElement>): void => {
@@ -102,6 +100,7 @@ function Edit() {
 
   const handleButtonClick = (): void => {
     fileInputRef.current?.click();
+
   };
   const router = useRouter();
 
