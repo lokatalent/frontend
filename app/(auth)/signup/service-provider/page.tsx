@@ -3,7 +3,6 @@ import DynamicForm from "@/components/ui/form/DynamicForm";
 import { FieldConfig, SignUpFormSchema } from "@/lib/utils";
 import Link from "next/link";
 
-
 const user = () => {
   const fields: FieldConfig[] = [
     {
@@ -95,11 +94,11 @@ const user = () => {
 
   const schemaType = SignUpFormSchema;
   return (
-    <div className="w-9/12 mx-auto pt-20 pb-[2rem] space-y-6 bg-primaryBg">
-      <div className="text-center space-y-2">
-        <h1 className="font-bold text-4xl text-textColor py-4">Hi there</h1>
+    <div className="w-full max-w-2xl mx-auto">
+      <div className="text-center">
+        <h1 className="font-bold text-2xl md:text-3xl lg:text-4xl text-textColor py-4">Hi there</h1>
         <p className=" mx-auto">
-          Please create your account to book the best services for your needs
+          Please create your account and start offering your services
         </p>
       </div>
 
@@ -108,10 +107,10 @@ const user = () => {
         defaultValues={defaultValues}
         schemaType={schemaType}
         buttonAction="sign-up"
-        width="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+        width="w-full max-w-xl mx-auto"
       />
 
-      <footer className="flex justify-center gap-2 ">
+      <footer className="flex justify-center gap-2 mt-5">
         <p className="text-sm font-bold text-gray-600">
           Already have an account?
         </p>

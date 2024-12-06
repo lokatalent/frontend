@@ -1,25 +1,24 @@
 "use client";
-import React, { useEffect, useState } from "react";
 import Image from "next/image";
+import { useEffect, useState } from "react";
 // import email from "@/assets/images/verify.png";
 // import number from "@/assets/images/phone.png";
+import InputOTPDemo from "@/components/auth/InputOTP";
+import SuccessScreen from "@/components/auth/SuccessScreen";
+import { Button } from "@/components/ui/button";
 import email from "@/public/Images/email.png";
 import number from "@/public/Images/number.png";
-import InputOTPDemo from "@/components/auth/InputOTP";
-import { Button } from "@/components/ui/button";
-import SuccessScreen from "@/components/auth/SuccessScreen";
 import { useRouter } from "next/navigation";
 
 interface Verify {
   title: string;
   comment: string;
-
 }
 
 const Verify = () => {
-	const router = useRouter();
-	const [value, setValue] = useState("");
-	const [isEmail, setIsEmail] = useState(true);
+  const router = useRouter();
+  const [value, setValue] = useState("");
+  const [isEmail, setIsEmail] = useState(true);
   const [isError, setIsError] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isResend, setIsResend] = useState<boolean>(false);
@@ -28,7 +27,6 @@ const Verify = () => {
     // setIsResend((resend) => !resend);
     setIsResend(true);
   }
-
 
   useEffect(() => {
     setTimeout(() => {
@@ -42,7 +40,7 @@ const Verify = () => {
     }, 2000);
   }, [isResend]);
 
-	const handleVerify = () => {
+  const handleVerify = () => {
     // if ()
     if (value.length !== 6) {
       setIsError(true);
@@ -51,20 +49,17 @@ const Verify = () => {
     setIsError(false);
     setIsSuccess(true);
     // router.push('./verified')
-	};
-	return (
-    <div className="h-screen lg:h-max">
+  };
+  return (
+    <div className="">
       <div
         className={`${
           isSuccess ? "hidden" : "block"
-        } w-10/12 mx-auto flex flex-col items-center justify-center p-14`}
+        } xl:w-10/12 mx-auto flex flex-col items-center justify-center`}
       >
-        <Image
-          src={isEmail ? email : number}
-          width={194}
-          height={194}
-          alt="mail icon"
-        />
+        <div className="relative aspect-square w-44">
+          <Image src={isEmail ? email : number} fill alt="mail icon" />
+        </div>
 
         <p className="font-bold text-textColor text-2xl md:text-3xl py-3">
           {isEmail ? "Email verification" : "Phone Number Verification"}
@@ -79,7 +74,11 @@ const Verify = () => {
         {isResend && (
           <div className="flex justify-center mt-5">
             <div className="bg-[#D4FFD5] w-max text-[13px] px-4 py-2 rounded border border-[#00FF26FC] flex justify-center">
-              <p>A code has been sent to {isEmail? 'your email' : 'phone number'}. Please check and input</p>
+              <p>
+                A code has been sent to{" "}
+                {isEmail ? "your email" : "phone number"}. Please check and
+                input
+              </p>
             </div>
           </div>
         )}
@@ -90,7 +89,7 @@ const Verify = () => {
             </div>
           </div>
         )}
-        <div className="flex flex-col sm:flex-row gap-4  my-14">
+        <div className="flex flex-col sm:flex-row gap-4 mt-10 mb-5">
           <Button
             onClick={() => setIsEmail(!isEmail)}
             className="verifyButton font-nunito text-[14px] !text-[#605dec] bg-[#f6f5ff] border-[#605dec] border  "
@@ -105,20 +104,21 @@ const Verify = () => {
           </Button>
         </div>
 
-        <div className="flex justify-center text text-center font-sans text-[15px] sm:text-[15px] md:text-[20px] lg:text-[20px] font-bold leading-[30px] ">
-          Didn’t get a code?
-          <button className="text-[#3377FF]" onClick={resendHandler}>
+        <div className="flex gap-2 justify-center text text-center font-sans text-sm md:text-base leading-[30px] ">
+          Didn’t get a code? 
+          <button className="text-[#3377FF] font-semibold" onClick={resendHandler}>
             Resend Code
           </button>
         </div>
       </div>
 
-      <div className={`${isSuccess ? "block" : "hidden"}`}>
+      <div className={`${isSuccess ? "block " : "hidden"}`}>
         <SuccessScreen
           head={isEmail ? "Email Verified" : "Phone Number Verified"}
-          content="Your details as a Super Admin has been verified and you can now proceed to the dashboard"
+          content="Your email address has been successfully verified.
+You can now enjoy full access to all our features and services."
           btn="Proceed to Dashboard"
-          onClick={() => router.push("/")}
+          onClick={() => router.push("/user/dashboard")}
         />
       </div>
     </div>

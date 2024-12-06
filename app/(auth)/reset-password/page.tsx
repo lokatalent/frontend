@@ -32,7 +32,7 @@ function ResetPassword() {
 
 	return (
 		<>
-			<div className="px-[2rem] sm:px-[4rem] md:px-[5.5rem] lg:px-[7rem] h-screen py-12 flex justify-center flex-col items-cener gap-12 bg-[#FAF8F4]">
+			<div className="flex justify-center flex-col items-cener gap-12 bg-[#FAF8F4]">
 				<div className="flex flex-col justify-center relative">
 					<div className="flex justify-center">
 						<Image
@@ -44,7 +44,7 @@ function ResetPassword() {
 						/>
 					</div>
 					<div>
-						<h4 className="font-nunito text-4xl font-bold leading-[50.4px] tracking-tighter text-center">
+						<h4 className="font-nunito text-4xl font-bold leading-[50.4px] tracking-tighter text-center mt-8 mb-2">
 							Forgot Password
 						</h4>
 						<p className="font-nunito text-sm text-[#6C727F] text-center w-[90%] mx-auto">
@@ -52,14 +52,14 @@ function ResetPassword() {
 							send you a link to <br /> reset your password
 						</p>
 					</div>
-					<div className="self-center">
+					<div className="mt-5">
 						{/* <EmailForm type="email-input" /> */}
 						<DynamicForm
 							fields={fields}
 							defaultValues={defaultValues}
 							schemaType={emailFormSchema}
 							buttonAction="reset-password"
-							width="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[35rem]"
+							width="w-full max-w-xl mx-auto"
 						/>
 						{/* <StraightForm /> */}
 					</div>

@@ -44,7 +44,7 @@ function MailVerification() {
 
 	return (
 		<>
-			<div className="px-[2rem] sm:px-[4rem] md:px-[5.5rem] lg:px-[7rem] py-12 flex justify-center flex-col items-cener gap-12 bg-[#FAF8F4] h-full">
+			<div className="flex justify-center flex-col items-cener bg-[#FAF8F4] h-full">
 				<div className="flex justify-center">
 					<Image
 						src="/Images/email.png"
@@ -54,17 +54,17 @@ function MailVerification() {
 						objectFit="cover"
 					/>
 				</div>
-				<div>
-					<h4 className="font-nunito text-4xl font-bold leading-[50.4px] tracking-tighter text-center">
+				<div className="mb-5 mt-5">
+					<h4 className="font-nunito text-3xl font-bold leading-[50.4px] tracking-tighter text-center">
 						Check Your Mail
 					</h4>
-					<p className="font-nunito text-sm md:text-xl text-center">
+					<p className="font-nunito text-center">
 						We’ve sent you a password reset link. Please check your email and{" "}
 						<br />
 						follow the instructions
 					</p>
 				</div>
-				<div className="flex gap-4 items-center justify-center">
+				<div className="flex gap-4 items-center justify-center mt-5">
 					<div>
 						<InputOTPDemo
 							value={value}
@@ -96,15 +96,15 @@ function MailVerification() {
           </Link> */}
 					<button
 						onClick={handleVerify}
-						className="font-nunito text-[14px] !text-[#fff] bg-[#3377FF]  font-normal leading-6 w-[15rem] sm:w-[15rem] md:w-[15rem] lg:w-[20rem] rounded h-12 flex items-center justify-center"
+						className="font-nunito text-[14px] !text-[#fff] bg-[#3377FF]  font-normal leading-6 w-[15rem] sm:w-[15rem] md:w-[15rem] lg:w-[20rem] rounded h-12 flex items-center justify-center my-5"
 					>
 						Verify
 					</button>
 				</div>
-				<div className="flex justify-center text text-center font-sans text-[15px] sm:text-[15px] md:text-[20px] lg:text-[20px] font-bold leading-[30px] ">
+				<div className="flex gap-2 justify-center text text-center font-sans text-sm md:text-base leading-[30px] ">
 					Didn’t get a code?
 					<button
-						className="text-[#3377FF] px-3"
+						className="text-[#3377FF] font-semibold"
 						onClick={resendHandler}
 					>
 						Resend Code

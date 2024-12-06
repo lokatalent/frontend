@@ -33,7 +33,7 @@
 		@apply bg-bgWhite hover:bg-blue-100 text-primaryBlue w-full    p-3 text-lg;
 	}
 	.card {
-		@apply shadow-lg p-12  border border-neutral-50 rounded-lg bg-white;
+		@apply shadow-lg md:p-12 p-3  border border-neutral-50 rounded-lg bg-white;
 	}
 	.card2 {
 		@apply shadow-lg p-8  border border-neutral-50 rounded-lg bg-white;
@@ -53,6 +53,12 @@
 	}
 	.verifyButton {
 		@apply font-normal leading-6 w-[15rem] sm:w-[15rem] md:w-[15rem] lg:w-[15rem] rounded h-12 flex items-center justify-center;
+	}
+	.transition-normal {
+		@apply transition transition-all duration-500;
+	}
+	.flex-center {
+		@apply flex items-center justify-center;
 	}
 }
 
@@ -134,3 +140,23 @@ body {
 	font-family: "Nunito Sans", sans-serif;
 	background-color: "#FAF8F4";
 }
+
+.wrap {
+	padding-left: 5%;
+	padding-right: 5%;
+}
+
+.waitlist_bg {
+	background-image: linear-gradient(rgba(1, 33, 54, 0.75), rgba(1, 33, 54, 0.75)), url("../public/Images/waitlist.png");
+	background-size: cover;
+	background-repeat: no-repeat;
+}
+
+.waitlist_input::placeholder {
+	color: white;
+  }
+
+  .wrap {
+	padding-left: 5%;
+	padding-right: 5%;
+  }

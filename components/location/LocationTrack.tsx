@@ -18,6 +18,9 @@ const LocationTrack = ({ mapping, setMapping }) => {
 	const [streetName, setStreetName] = useState("");
 	const [locationError, setLocationError] = useState(false);
 
+	//TODO: Location autocomplete only works when i refresh the location screen on the browser
+	//TODO: Track location is not tracking my particular location, ive not tracked it with another location
+
 	const handleLocationRequest = () => {
 		setMapping(true);
 		if (navigator.geolocation) {
@@ -27,7 +30,7 @@ const LocationTrack = ({ mapping, setMapping }) => {
 					console.log("LATITUDE", latitude);
 
 					// Use Google Maps Geocoding API to get the address;
-					const geocodingUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
+					const geocodingUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
 
 					fetch(geocodingUrl)
 						.then((response) => response.json())

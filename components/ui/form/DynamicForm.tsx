@@ -9,104 +9,124 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { FormField } from "./FormField";
+import ReviewModal from "@/components/profile/ReviewModal";
+import { useDispatch, useSelector } from "react-redux";
+import { RootStateProfile, setInformation, setProfileDetails } from "@/store/profile/profileSlice";
+import PasswordChangedModal from "@/components/settings/security/PasswordChangedModal";
+import PhoneNumberVerification from "@/components/settings/security/PhoneVerificationModal";
 
 interface DefaultValues {
-	firstName?: string;
-	lastName?: string;
-	email?: string;
-	number?: string;
-	newPassword?: string;
-	confirmPassword?: string;
+  firstName?: string;
+  lastName?: string;
+  email?: string;
+  number?: string;
+  newPassword?: string;
+  confirmPassword?: string;
+  addressVerify?: string;
+  gender?: string;
+  dateOfBirth?: string;
+  country?: string;
+  state?: string;
+  city?: string;
+  address?: string;
 }
 interface DynamicForm {
-	fields: FieldConfig[];
-	defaultValues: DefaultValues;
-	buttonAction: string;
-	schemaType: any;
-	width: string;
+  fields: FieldConfig[];
+  defaultValues: DefaultValues;
+  buttonAction: string;
+  schemaType: any;
+  width: string;
+  styles?: string
 }
 
 const DynamicForm = ({
-	fields,
-	defaultValues,
-	schemaType,
-	buttonAction,
-	width,
+  fields,
+  defaultValues,
+  schemaType,
+  buttonAction,
+  width,
+  styles
 }: DynamicForm) => {
-	const router = useRouter();
-	const pathname = usePathname();
-	const [savedData, setSavedData] = useState<FormData | null>(null);
-	const [error, setError] = useState<string[] | null | string>("");
-	const [isDialogOpen, setDialogOpen] = useState(false);
+  const router = useRouter();
+  const pathname = usePathname();
+  const [savedData, setSavedData] = useState<FormData | null>(null);
+  const [error, setError] = useState<string[] | null | string>("");
+  const [isDialogOpen, setDialogOpen] = useState(false);
+  const [fileValue, setFileValue] = useState<string>("");
+  const [inputValue, setInputValue] = useState<File | null>(null);
+  const verificationResult = useSelector(
+    (state: RootState) => state.profile.verification
+  );
+  const file = useSelector((state: RootState) => state.profile.file);
+  console.log(file);
+  const dispatch = useDispatch();
 
-	const {
-		register,
-		handleSubmit,
-		formState: { isSubmitting },
-		reset,
-	} = useForm<FormData>({
-		resolver: zodResolver(schemaType),
-		defaultValues,
-	});
+  // const file = sessionStorage.getItem("selectedFile");
 
-	// const onSubmit = (data: FormData) => {
-	//   try {
-	//     // Simulate API call
-	//     console.log('data')
-	//     console.log("data");
-	//     // await new Promise((resolve) => setTimeout(resolve, 1000));
-	//     setSavedData(data);
-	//     reset();
-	//   } catch (error) {
-	//     console.error("Form submission error:", error);
-	//   }
-	// };
+  const {
+    register,
+    handleSubmit,
+    formState: { isSubmitting },
+    control,
+    reset,
+  } = useForm<FormData>({
+    resolver: zodResolver(schemaType),
+    defaultValues,
+  });
 
-	const onSubmit = (data: any) => {
-		console.log("data");
-		console.log(savedData);
-		setSavedData(data);
-		if (buttonAction === "reset-password") {
-			router.push("./reset-password/verify");
-		}
-		if (buttonAction === "sign-up") {
-			router.push(`${pathname}/verify`);
-		}
-		if (buttonAction === "log-in") {
-			router.push("/");
-		}
-		setError(null);
+  const onSubmit = (data: any) => {
+    console.log("success");
+    console.log(data);
+    setSavedData(data);
+    if (buttonAction === "reset-password") {
+      router.push("./reset-password/verify");
+    }
+    if (buttonAction === "sign-up") {
+      router.push(`${pathname}/verify`);
+    }
+    if (buttonAction === "log-in") {
+      router.push("/dashboard");
+    }
+    if (buttonAction === "profile-edit") {
+      dispatch(setProfileDetails(data));
+      dispatch(
+        setInformation({
+          state: data.state,
+          address: data.address,
+          city: data.city,
+          dateOfBirth: data.dateofBirth,
+        })
+      );
+      router.push("/dashboard/profile/verify");
+    }
+    if (buttonAction === 'edit-address') {
+      dispatch(setInformation({ state: data.state, address: data.address, city: data.city}))
+    }
+    setError(null);
 
-		const openDialog = () => setDialogOpen(true);
-		openDialog();
-		const closeDialog = () => setDialogOpen(false);
-		closeDialog();
-		reset();
-	};
-	console.log(pathname);
-	const onError = (data: any) => {
-		setError(data);
-		// setSavedData(data);
-		reset();
-	};
-
+    const openDialog = () => setDialogOpen(true);
+    openDialog();
+    const closeDialog = () => setDialogOpen(false);
+    closeDialog();
+    reset();
+  };
+  
 	return (
-		<div className="w-full wmax mx-auto p-6">
+		<div className="w-full md:px-6 mt-5">
 			<form
 				onSubmit={handleSubmit(onSubmit, onError)}
-				className={`flex flex-col justify-center items-center gap-12`}
+				className={`flex flex-col justify-center items-center gap-6 w-full`}
 			>
-				<div>
+				<div className="w-full">
 					<div
-						className={`flex ${
+						className={`grid w-full ${
 							fields.length > 3
-								? "flex-row flex-wrap justify-center"
-								: "flex-col"
-						}  justify-center items-center gap-12`}
+								? "md:grid-cols-2 w-full"
+								: "grid-cols-1"
+						}  justify-center items-center gap-4`}
 					>
 						{fields.map((field) => (
 							// <div key={field.name}>
-
 							<FormField
 								key={field.name}
 								name={field.name}
@@ -133,7 +153,7 @@ const DynamicForm = ({
 						</div>
 					)}
 				</div>
-				<div>
+				<div className="w-full">
 					{buttonAction == "password" ? (
 						<ResetDialog isDialog={isDialogOpen} />
 					) : (
@@ -141,7 +161,7 @@ const DynamicForm = ({
 							<button
 								type="submit"
 								// disabled={true}
-								className="w-[10rem] md:w-[15rem] lg:w-[30rem] bg-blue-500 text-white p-2 py-3 rounded-sm hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+								className="w-full bg-blue-500 text-white p-2 py-3 rounded-sm hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
 							>
 								{buttonAction === "log-in"
 									? "Login"
@@ -151,7 +171,7 @@ const DynamicForm = ({
 							</button>
 
 							{buttonAction === "log-in" || buttonAction === "sign-up" ? (
-								<button className="w-max md:w-[15rem] lg:w-[30rem] bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
+								<button className="w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
 									<FcGoogle
 										size={24}
 										className="mr-2"
@@ -164,7 +184,7 @@ const DynamicForm = ({
 				</div>
 			</form>
 
-			{/* {savedData && (
+      {/* {savedData && (
         <div className="mt-4">
           <h3 className="font-medium">Saved Data:</h3>
           <pre className="mt-2 text-sm overflow-auto">
@@ -172,8 +192,8 @@ const DynamicForm = ({
           </pre>
         </div>
       )} */}
-		</div>
-	);
+    </div>
+  );
 };
 
 export default DynamicForm;
