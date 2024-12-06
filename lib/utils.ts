@@ -97,34 +97,72 @@ export const passwordFormSchema = z
 
 export const allowedCountries = ["Nigeria", "India", "Senegal", "Australia"];
 export const profileFormSchema = z.object({
-  // dateOfBirth: z
-  //   .string()
-  //   .nonempty("Date of birth is required")
-  //   .regex(
-  //     /^\d{2}-\d{2}-\d{4}$/,
-  //     "Date of birth must be in the format MM-DD-YYYY"
-  //   ),
-  // dateofBirth: z
-  //   .string()
-  //   .min(1, "Date of birth must be in the format MM-DD-YYYY"),
+
   dateofBirth: z.date({
     required_error: "Date of birth is required",
   }),
   city: z.string().min(2, "City must be at least 3 characters"),
   state: z.string().min(2, "State must be at least 3 characters"),
-  // country: z.string(),
-  // gender: z.string(),
+  // country: z.string().min(1, "You must select a valid country"),
+  // gender: z.string().min(1, "You must select a gender"),
+  address: z.string().min(5, "Address must be at least 5 characters"),
+}); 
+
+export const editAddressFormSchema = z.object({
+
+  // dateofBirth: z.date({
+  //   required_error: "Date of birth is required",
+  // }),
+  city: z.string().min(2, "City must be at least 3 characters"),
+  state: z.string().min(2, "State must be at least 3 characters"),
   // country: z.string().min(1, "You must select a valid country"),
   // gender: z.string().min(1, "You must select a gender"),
   address: z.string().min(5, "Address must be at least 5 characters"),
 });
+// for c
+// for changing password in the security settings page
+export const changePasswordFormSchema = (savedCurrentPassword: string) =>
+  z
+    .object({
+      currentPassword: z
+        .string()
+        .min(8, "Current password must be at least 8 characters")
+        .refine((value) => value === savedCurrentPassword, {
+          message: "Current password is incorrect",
+          // path: ["currentPassword"],
+        }),
+      newPassword: z
+        .string()
+        .min(8, "Password must be at least 8 characters")
+        .regex(
+          /[!@#$%^&*(),.?":{}|<>]/,
+          "Password must contain at least one symbol"
+        )
+        .regex(/\d/, "Password must contain at least one number"),
+      confirmPassword: z
+        .string()
+        .min(8, "Password must be at least 8 characters"),
+    })
+    .refine((data) => data.newPassword === data.confirmPassword, {
+      message: "Passwords do not match",
+      path: ["confirmPassword"],
+    });
 
+export const TwoStepVerificationFormSchema = z
+  .object({
+    number: z
+      .string()
+      .min(1, "Phone number is required")
+      .regex(/^[0-9]{10,15}$/, "Invalid phone number format"),
+  })
 
-// username: z
-//   .string()
-//   .min(3, "Username must be at least 3 characters")
-//   .max(50, "Username must be less than 50 characters"),
-// export type FormData = z.infer<typeof formSchema>;
+  export const securityPhoneNumberSchema = z.object({
+    number: z
+      .string()
+      .min(10, "Phone number must be at least 10 digits")
+      .max(15, "Phone number cannot exceed 15 digits"),
+    // .regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format"),
+  });
 
 interface FormData {
   username: string;
@@ -140,3 +178,5 @@ export interface FieldConfig {
   validation: RegisterOptions;
   options?: string[];
 }
+
+

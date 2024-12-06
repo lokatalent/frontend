@@ -11,7 +11,9 @@ import { FcGoogle } from "react-icons/fc";
 import { FormField } from "./FormField";
 import ReviewModal from "@/components/profile/ReviewModal";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setProfileDetails } from "@/store/profile/profileSlice";
+import { RootStateProfile, setInformation, setProfileDetails } from "@/store/profile/profileSlice";
+import PasswordChangedModal from "@/components/settings/security/PasswordChangedModal";
+import PhoneNumberVerification from "@/components/settings/security/PhoneVerificationModal";
 
 interface DefaultValues {
   firstName?: string;
@@ -34,6 +36,7 @@ interface DynamicForm {
   buttonAction: string;
   schemaType: any;
   width: string;
+  styles?: string
 }
 
 const DynamicForm = ({
@@ -42,24 +45,23 @@ const DynamicForm = ({
   schemaType,
   buttonAction,
   width,
+  styles
 }: DynamicForm) => {
   const router = useRouter();
   const pathname = usePathname();
   const [savedData, setSavedData] = useState<FormData | null>(null);
   const [error, setError] = useState<string[] | null | string>("");
   const [isDialogOpen, setDialogOpen] = useState(false);
-  const [fileValue, setFileValue] = useState<string>('');
+  const [fileValue, setFileValue] = useState<string>("");
   const [inputValue, setInputValue] = useState<File | null>(null);
   const verificationResult = useSelector(
     (state: RootState) => state.profile.verification
-	);
-	const file = useSelector(
-    (state: RootState) => state.profile.file
   );
-	console.log(file);
+  const file = useSelector((state: RootState) => state.profile.file);
+  console.log(file);
   const dispatch = useDispatch();
 
-	// const file = sessionStorage.getItem("selectedFile"); 
+  // const file = sessionStorage.getItem("selectedFile");
 
   const {
     register,
@@ -86,8 +88,19 @@ const DynamicForm = ({
       router.push("/dashboard");
     }
     if (buttonAction === "profile-edit") {
-      dispatch(setProfileDetails(data))
+      dispatch(setProfileDetails(data));
+      dispatch(
+        setInformation({
+          state: data.state,
+          address: data.address,
+          city: data.city,
+          dateOfBirth: data.dateofBirth,
+        })
+      );
       router.push("/dashboard/profile/verify");
+    }
+    if (buttonAction === 'edit-address') {
+      dispatch(setInformation({ state: data.state, address: data.address, city: data.city}))
     }
     setError(null);
 
@@ -98,12 +111,8 @@ const DynamicForm = ({
     reset();
   };
 
-	// const fileHandlerOptions = (InputValue: string, file: File) => {
-		// console.log(file, InputValue);
-		// setFileValue(file);
-		// setInputValue(InputValue);
-//   };
-	
+
+
   console.log(pathname);
   const onError = (data: any) => {
     console.log("error");
@@ -117,7 +126,11 @@ const DynamicForm = ({
     <div className="w-full wmax mx-auto p-6">
       <form
         onSubmit={handleSubmit(onSubmit, onError)}
-        className={`flex flex-col justify-center items-center gap-12`}
+        className={` ${
+          buttonAction === "changePassword"
+            ? ""
+            : "flex flex-col justify-center items-center gap-12"
+        }`}
       >
         <div>
           <div
@@ -125,7 +138,7 @@ const DynamicForm = ({
               fields.length > 3
                 ? "flex-row flex-wrap justify-center"
                 : "flex-col"
-            }  justify-center items-center gap-12`}
+            }  justify-cente items-cente gap-12`}
           >
             {fields.map((field) => (
               // <div key={field.name}>
@@ -141,6 +154,7 @@ const DynamicForm = ({
                 control={control}
                 disabled={isSubmitting}
                 width={width}
+                styles={styles}
                 options={field.options}
                 buttonAction={buttonAction}
                 // fileHandlerOptions={fileHandlerOptions}
@@ -166,13 +180,23 @@ const DynamicForm = ({
           ) : buttonAction === "addressVerification" &&
             verificationResult &&
             file ? (
-            <ReviewModal />
+            <ReviewModal linkTo={"/dashboard/profile"} />
+          ) : buttonAction === "edit-profile" && verificationResult && file ? (
+            <ReviewModal linkTo={"/dashboard/settings/profile"} />
+          ) : buttonAction === "changePassword" && !error ? (
+            <PasswordChangedModal />
+          ) : buttonAction === "twoStepVerification" ? (
+            <PhoneNumberVerification />
           ) : (
-            <div className="space-y-5 flex items-center flex-col">
+            <div className="space-y-5 flex itms-center flex-col">
               <button
                 type="submit"
                 // disabled={true}
-                className="text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[10rem] md:w-[15rem] lg:w-[30rem] mx-auto rounded h-14 flex-center transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] "
+                className={`${
+                  buttonAction === "changePassword"
+                    ? "!w-[23rem] mt-10"
+                    : "mx-auto  flex-center"
+                } text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[10rem] md:w-[15rem] lg:w-[30rem] rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] `}
               >
                 {buttonAction === "log-in"
                   ? "Login"

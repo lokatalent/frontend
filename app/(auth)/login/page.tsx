@@ -6,7 +6,7 @@ const LogIn = () => {
   const router = useRouter();  
 
   return (
-    <section className="bg-primaryBg bg-red relative">
+    <section className="bg-primaryBg relative h-screen">
       <div className="self-start cursor-pointer absolute top-[10%] sm:top-[1%] md:top-[1%] lg:top-[10%] left-[3%] h-12 w-12">
         <div onClick={() => router.back()}>
           <svg

@@ -77,7 +77,7 @@ const SideNav = () => {
 
         <div>
           <Link
-            href="/dashboard/settings"
+            href="/dashboard/settings/profile"
             className="flex space-x-3 items-center font-semibold p-3 hover:p-3 focus:p-3 hover:bg-white/30 focus:bg-white/30 rounded-lg"
           >
             <IoSettingsOutline /> <p>Settings</p>

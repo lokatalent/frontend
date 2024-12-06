@@ -42,7 +42,7 @@ const LogInAuth = () => {
 
 	const schemaType = LogInFormSchema;
 	return (
-		<div className="bg-bgWhite h-screen ">
+		<div className="bg-bgWhite h-scree">
 			<div className="w-8/12 mx-auto pt-20 pb-6 space-y-6  ">
 				<div className="text-center space-y-2">
 					<h1 className="font-bold text-3xl md:text-4xl text-textColor py-4">
