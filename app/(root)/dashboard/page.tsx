@@ -38,7 +38,7 @@ export default async function Dashboard() {
       <div className="w-full flex justify-between items-center">
         <div className="flex flex-col space-y-3">
           <p className="text-3xl text-black font-bold">Hello Gabriel👋</p>
-          <p className="text-[#6C727F]">Lorem ipsum lorem ipsum lore</p>
+          <p className="text-[#6C727F]">Ready to book? We’ve got you covered.</p>
         </div>
       </div>
       <div className="w-full flex flex-col md:flex-row  gap-4">

@@ -110,111 +110,79 @@ const DynamicForm = ({
     closeDialog();
     reset();
   };
+  
+	return (
+		<div className="w-full md:px-6 mt-5">
+			<form
+				onSubmit={handleSubmit(onSubmit, onError)}
+				className={`flex flex-col justify-center items-center gap-6 w-full`}
+			>
+				<div className="w-full">
+					<div
+						className={`grid w-full ${
+							fields.length > 3
+								? "md:grid-cols-2 w-full"
+								: "grid-cols-1"
+						}  justify-center items-center gap-4`}
+					>
+						{fields.map((field) => (
+							// <div key={field.name}>
+							<FormField
+								key={field.name}
+								name={field.name}
+								validation={field.validation}
+								label={field.label}
+								type={field.type}
+								error={error?.[field.name]}
+								register={register}
+								disabled={isSubmitting}
+								width={width}
+							/>
+							// </div>s
+						))}
+					</div>
+					{/* {savedData} */}
+					{buttonAction === "log-in" && (
+						<div className="flex justify-end mt-4 self-end text-right">
+							<Link
+								href="/reset-password"
+								className="text-[14px] text-primaryBlue self-end"
+							>
+								Forgot Password?
+							</Link>
+						</div>
+					)}
+				</div>
+				<div className="w-full">
+					{buttonAction == "password" ? (
+						<ResetDialog isDialog={isDialogOpen} />
+					) : (
+						<div className="space-y-5 flex items-center flex-col">
+							<button
+								type="submit"
+								// disabled={true}
+								className="w-full bg-blue-500 text-white p-2 py-3 rounded-sm hover:bg-blue-600 disabled:opacity-50 disabled:cursor-not-allowed"
+							>
+								{buttonAction === "log-in"
+									? "Login"
+									: buttonAction === "reset-password"
+									? "Send Reset Link"
+									: "Submit"}
+							</button>
 
-
-
-  console.log(pathname);
-  const onError = (data: any) => {
-    console.log("error");
-    setError(data);
-    // setSavedData(data);
-    console.log(data);
-    reset();
-  };
-
-  return (
-    <div className="w-full wmax mx-auto p-6">
-      <form
-        onSubmit={handleSubmit(onSubmit, onError)}
-        className={` ${
-          buttonAction === "changePassword"
-            ? ""
-            : "flex flex-col justify-center items-center gap-12"
-        }`}
-      >
-        <div>
-          <div
-            className={`flex ${
-              fields.length > 3
-                ? "flex-row flex-wrap justify-center"
-                : "flex-col"
-            }  justify-cente items-cente gap-12`}
-          >
-            {fields.map((field) => (
-              // <div key={field.name}>
-
-              <FormField
-                key={field.name}
-                name={field.name}
-                validation={field.validation}
-                label={field.label}
-                type={field.type}
-                error={error?.[field.name]}
-                register={register}
-                control={control}
-                disabled={isSubmitting}
-                width={width}
-                styles={styles}
-                options={field.options}
-                buttonAction={buttonAction}
-                // fileHandlerOptions={fileHandlerOptions}
-              />
-              // </div>s
-            ))}
-          </div>
-          {/* {savedData} */}
-          {buttonAction === "log-in" && (
-            <div className="flex justify-end mt-4 self-end text-right">
-              <Link
-                href="/reset-password"
-                className="text-[14px] text-primaryBlue self-end"
-              >
-                Forgot Password?
-              </Link>
-            </div>
-          )}
-        </div>
-        <div>
-          {buttonAction == "new-password" ? (
-            <ResetDialog />
-          ) : buttonAction === "addressVerification" &&
-            verificationResult &&
-            file ? (
-            <ReviewModal linkTo={"/dashboard/profile"} />
-          ) : buttonAction === "edit-profile" && verificationResult && file ? (
-            <ReviewModal linkTo={"/dashboard/settings/profile"} />
-          ) : buttonAction === "changePassword" && !error ? (
-            <PasswordChangedModal />
-          ) : buttonAction === "twoStepVerification" ? (
-            <PhoneNumberVerification />
-          ) : (
-            <div className="space-y-5 flex itms-center flex-col">
-              <button
-                type="submit"
-                // disabled={true}
-                className={`${
-                  buttonAction === "changePassword"
-                    ? "!w-[23rem] mt-10"
-                    : "mx-auto  flex-center"
-                } text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[10rem] md:w-[15rem] lg:w-[30rem] rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] `}
-              >
-                {buttonAction === "log-in"
-                  ? "Login"
-                  : buttonAction === "reset-password"
-                  ? "Send Reset Link"
-                  : "Submit"}
-              </button>
-
-              {buttonAction === "log-in" || buttonAction === "sign-up" ? (
-                <button className="w-max md:w-[15rem] lg:w-[30rem] bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
-                  <FcGoogle size={24} className="mr-2" />
-                  Continue with Google
-                </button>
-              ) : null}
-            </div>
-          )}
-        </div>
-      </form>
+							{buttonAction === "log-in" || buttonAction === "sign-up" ? (
+								<button className="w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
+									<FcGoogle
+										size={24}
+										className="mr-2"
+									/>
+									Continue with Google
+								</button>
+							) : null}
+						</div>
+					)}
+				</div>
+			</form>
 
       {/* {savedData && (
         <div className="mt-4">

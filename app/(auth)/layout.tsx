@@ -29,7 +29,8 @@ export default function RootLayout({
       {/* {loggedIn && ( */}
         <body className={nunito.className}>
           <Navbar />
-          {children}
+          <div className="">
+          {children}</div>
         </body>
       {/* )} */}
     </html>
