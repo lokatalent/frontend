@@ -51,14 +51,13 @@ const DynamicForm = ({
   const pathname = usePathname();
   const [savedData, setSavedData] = useState<FormData | null>(null);
   const [error, setError] = useState<string[] | null | string>("");
-  const [isDialogOpen, setDialogOpen] = useState(false);
   const [fileValue, setFileValue] = useState<string>("");
   const [inputValue, setInputValue] = useState<File | null>(null);
   const verificationResult = useSelector(
     (state: RootStateProfile) => state.profile.verification
   );
   const file = useSelector((state: RootStateProfile) => state.profile.file);
-  console.log(file);
+ 
   const dispatch = useDispatch();
 
   // const file = sessionStorage.getItem("selectedFile");
@@ -102,24 +101,24 @@ const DynamicForm = ({
     if (buttonAction === 'edit-address') {
       dispatch(setInformation({ state: data.state, address: data.address, city: data.city}))
     }
+    console.log(error)
     setError(null);
+    // console.log(error);
 
-    const openDialog = () => setDialogOpen(true);
-    openDialog();
-    const closeDialog = () => setDialogOpen(false);
-    closeDialog();
+
+   
     reset();
   };
 
 
 
-  console.log(pathname);
+  // console.log(pathname);
   const onError = (data: any) => {
     console.log("error");
     setError(data);
     // setSavedData(data);
     console.log(data);
-    reset();
+    // reset();
   };
 
   return (
@@ -183,7 +182,7 @@ const DynamicForm = ({
             <ReviewModal linkTo={"/dashboard/profile"} />
           ) : buttonAction === "edit-profile" && verificationResult && file ? (
             <ReviewModal linkTo={"/dashboard/settings/profile"} />
-          ) : buttonAction === "changePassword" && !error ? (
+          ) : buttonAction === "changePassword" ? (
             <PasswordChangedModal />
           ) : buttonAction === "twoStepVerification" ? (
             <PhoneNumberVerification />

@@ -2,10 +2,7 @@
 import TwoStepVerification from "@/components/settings/security/TwoStepVerification";
 import { Button } from "@/components/ui/button";
 import DynamicForm from "@/components/ui/form/DynamicForm";
-import {
-  changePasswordFormSchema,
-  FieldConfig,
-} from "@/lib/utils";
+import { changePasswordFormSchema, FieldConfig } from "@/lib/utils";
 import { RootStateProfile } from "@/store/profile/profileSlice";
 import {
   RootState,
@@ -114,7 +111,7 @@ function Security() {
 
       <div className="mt-6 card flex justify-between items-center">
         {!activeTwoStepVerification ? (
-          <div className="flex ">
+          <div className="flex justify-between">
             <div className="space-y-3">
               <p>2-FA autentification</p>
               <p className="text-gray-500 mt-2 w-[80%]">
