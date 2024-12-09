@@ -52,7 +52,7 @@ const TalentItem = () => {
 
 function Talents() {
   return (
-    <div className="py-5">
+    <div className="py-5 bg-bgWhite">
       {/* header */}
       <div>
         <h1 className="text-3xl font-semibold text-center">

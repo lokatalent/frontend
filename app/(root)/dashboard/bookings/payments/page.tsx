@@ -75,63 +75,29 @@ const Page = () => {
                 <Spacer size={10} />
                 <div className="">
                     <h1 className="font-semibold text-3xl my-5 text-center">
-                        Where do you need help?
+                        Payment Checkout
                     </h1>
+                    <p className="text-lg text-center">Choose how you would like to make payment</p>
                     <Spacer size={10} />
 
-                    <LocationAutocomplete onSelect={handleLocationSelect} />
-
-                    <Dialog>
-                        <DialogTrigger asChild className="w-full">
-                            <div className="flex justify-center my-8">
-                                <button
-                                    disabled={isDisabled}
-                                    className={`dialog-trigger ${isDisabled
-                                        ? "btnOne opacity-25 max-w-[499px]"
-                                        : " btnOne  max-w-[499px] "
-                                        }`}
-                                >
-                                    <p className="py-2">Continue</p>
-                                </button>
-                            </div>
-                        </DialogTrigger>
-                        <DialogContent className="px-12 ">
-                            <DialogHeader>
-                                <DialogTitle className="text-lg md:text-3xl mt-5 px-3 text-center font-medium">
-                                    Instant Booking or Schedule a Booking?
-                                </DialogTitle>
-                                <DialogDescription className=" flex flex-col justify-center items-center">
-                                    <Image
-                                        src={schedule}
-                                        height={192}
-                                        width={151}
-                                        alt="track location"
-                                    />
-                                    <p className="text-lg p-4 text-center">
-                                        Whether you need it now or later, we’ve got you covered
-                                    </p>
-                                </DialogDescription>
-                            </DialogHeader>
-                            <div className="flex flex-row justify-center space-x-3 w-full">
-                                <DialogClose asChild>
-                                    <button
-                                        className="btnTwo border border-primaryBlue"
-                                        onClick={() => router.push("/dashboard/bookings/schedule-booking")}
-                                    >
-                                        Schedule a Booking
-                                    </button>
-                                </DialogClose>
-                                <DialogClose asChild>
-                                    <button
-                                        className="btnOne"
-                                        onClick={() => router.push("/dashboard/bookings/instant-booking")}
-                                    >
-                                        Instant Booking
-                                    </button>
-                                </DialogClose>
-                            </div>
-                        </DialogContent>
-                    </Dialog>
+                </div>
+                <div>
+                    <div>
+                        <h1>Pay with:</h1>
+                        <div>
+                            <div>
+                                <input type="radio" name="channel" id="channel" /> Paystack</div>
+                            <div>
+                                <input type="radio" name="channel" id="channel" /> USSD</div>
+                        </div>
+                        <button className="btnOne">Continue</button>
+                        <div>
+                            <p>Please review your details and payment information carefully before confirming your booking. Cancellations within the stipulated time frame are eligible for a refund</p>
+                        </div>
+                    </div>
+                    <div>
+                        <h1>Payment Summary</h1>
+                    </div>
                 </div>
             </div>
         </div>
