@@ -51,7 +51,7 @@ function InputDropdown({ options, error, buttonAction }: InputDropdownProps) {
           </SelectTrigger>
           <SelectContent className="w-[414px]">
             <SelectGroup>
-              {options.map((option) => (
+              {options?.map((option) => (
                 <SelectItem
                   value={option}
                   key={option}
