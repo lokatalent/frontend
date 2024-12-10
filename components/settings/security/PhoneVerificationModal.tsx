@@ -11,17 +11,11 @@ import InputOTPDemo from "@/components/auth/InputOTP";
 
 const PhoneNumberVerification = () => {
   const [value, setValue] = useState("");
-  // const []
- 
+  
 
   return (
     <Dialog>
-      {/* <Button
-          type="submit"
-          className="font-nunito text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[23rem] mx-auto rounded h-14 hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] transition transition-all duration-[500ms]"
-        >
-          Done
-        </Button> */}
+    
 
       <DialogContent className="space-y-4">
         <DialogTitle className="text-center">
