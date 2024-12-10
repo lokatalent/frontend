@@ -29,14 +29,14 @@ const Menu: React.FC<{ username: string }> = ({ username }) => {
             <p>Profile</p>
           </Link>
           <Link
-            href="/dashboard/settings"
+            href="/dashboard/settings/profile"
             className="flex p-2 pl-8 py-3 space-x-4 items-center hover:bg-gray-200"
           >
             <IoSettingsOutline size={20} />
             <p>Settings</p>
           </Link>
           <Link
-            href="/dashboard/logout"
+            href="/login"
             className="flex p-2 pl-8 py-3 space-x-4 items-center hover:bg-gray-200 rounded-bl-lg rounded-br-lg"
           >
             <HiOutlineLogout size={20} />

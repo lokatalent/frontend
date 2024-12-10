@@ -1,7 +1,7 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button } from "../ui/button";
-import { useRouter } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 
 // Define more flexible props
 interface RoleSwitchProps {
@@ -26,10 +26,19 @@ const RoleSwitch: React.FC<RoleSwitchProps> = ({
   initialRole = "",
   onRoleChange,
   className,
-  type
+  type,
 }) => {
   const [selectedRole, setSelectedRole] = useState(initialRole);
+  const pathname = usePathname();
   const router = useRouter();
+
+  useEffect(() => {
+    // Automatically set selected role based on pathname if it matches
+    const matchedRole = roles.find((role) => pathname.includes(role.value));
+    if (matchedRole) {
+      setSelectedRole(matchedRole.value);
+    }
+  }, [pathname, roles]);
 
   // Default active and disabled styles, can be overridden
   const defaultActiveClass =
@@ -40,7 +49,7 @@ const RoleSwitch: React.FC<RoleSwitchProps> = ({
   const handleRoleChange = (role: Role) => {
     setSelectedRole(role);
     onRoleChange(role);
-    if (type === 'link') {
+    if (type === "link") {
       router.push(`/dashboard/settings/${role}`);
     }
   };
@@ -54,14 +63,11 @@ const RoleSwitch: React.FC<RoleSwitchProps> = ({
           <Button
             onClick={() => handleRoleChange(role.value)}
             variant="ghost"
-            className={`
-              ${
-                selectedRole === role.value
-                  ? defaultActiveClass
-                  : defaultDisabledClass
-              } 
-              px-3 py-2
-            `}
+            className={`${
+              selectedRole === role.value || pathname.includes(role.value)
+                ? defaultActiveClass
+                : defaultDisabledClass
+            } px-3 py-2`}
           >
             {role.label}
           </Button>

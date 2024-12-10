@@ -5,7 +5,7 @@ import NotificationsDropdown from "./nav/NotificationPopover";
 const TopNav = () => {
   const username = "John Doe";
   return (
-    <nav className="w-full bg-white p-3 shadow-lg flex justify-between items-center">
+    <nav className="w-full bg-white h-[70px] shadow-lg flex justify-between items-center">
       {/* Logo or Brand */}
       <div className=" text-xl font-bold"></div>
 

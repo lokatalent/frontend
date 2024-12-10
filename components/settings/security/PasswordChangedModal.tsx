@@ -2,7 +2,6 @@ import React from "react";
 import {
   Dialog,
   DialogContent,
-  DialogHeader,
   DialogTrigger,
   DialogClose
 } from "@/components/ui/dialog";

@@ -1,12 +1,11 @@
 "use client";
 import React, { useCallback, useState } from "react";
-import { Upload } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import fileUploadImg from "@/public/Images/upload.png";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setFileStore } from "@/store/profile/profileSlice";
+import { RootStateProfile, setFileStore } from "@/store/profile/profileSlice";
 import { FormFieldError } from "../ui/form/FormFieldError";
 
 type MessageObject = {
@@ -20,7 +19,7 @@ const FileUpload = () => {
   const [error, setError] = useState<MessageObject>({ message: 'Select a file to continue' });
   const dispatch = useDispatch();
   const files = useSelector(
-    (state: RootState) => state.profile.file
+    (state: RootStateProfile) => state.profile.file
   );
 
   // Allowed file types

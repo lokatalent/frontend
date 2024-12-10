@@ -60,6 +60,8 @@ export function DataTable<TData, TValue>({
   isRole,
 }: DataTableProps<TData, TValue>) {
   const router = useRouter();
+  const [sort, setSort]= useState(''); // Initial selected option
+
   const [globalFilter, setGlobalFilter] = useState<string>("");
   // const [role, setRole] = useState<boolean>(false);
 
@@ -79,33 +81,42 @@ export function DataTable<TData, TValue>({
   });
   // console.log(path);
   const handleNavigate = (id: number) => {
-    console.log(id);;
+    console.log(id);
     console.log(path);
     router.push(`/dashboard/bookings/${id}`);
   };
 
   const roleHandler = (role: string) => {
-    console.log(role)
-  }
+    console.log(role);
+  };
 
-   const bookingRoles = [
-     { value: "all", label: "All" },
-     { value: "instant-bookings", label: "Instant Bookings" },
-     { value: "schedule-bookings", label: "Schedule Bookings" },
-   ];
+  const bookingRoles = [
+    { value: "all", label: "All" },
+    { value: "instant-bookings", label: "Instant Bookings" },
+    { value: "schedule-bookings", label: "Schedule Bookings" },
+  ];
 
-   const handleRoleChange = (role: string) => {
-     console.log("Selected role:", role);
-     // Your role change logic here
-   };
+  const sortHandler = (role: string) => {
+    // cosnole.log("Selected role:", role);
+    setSort(role);
+    // Your role change logic here
+  };
 
   return (
     <div>
       <div className="mb-5">
         {/* <h1 className="font-medium text-2xl">{title}</h1> */}
         <div className="flex flex-col sm:flex-row gap-5 justify-between items-start sm:items-center">
-          {isRole ? <RoleSwitch initialRole="all" roles={bookingRoles}  onRoleChange={roleHandler} /> : null}
-          {isSort ? <SortList options={BookingOptions} /> : null}
+          {isRole ? (
+            <RoleSwitch
+              initialRole="all"
+              roles={bookingRoles}
+              onRoleChange={roleHandler}
+            />
+          ) : null}
+          {isSort ? (
+            <SortList options={BookingOptions} onSortChange={sortHandler} />
+          ) : null}
         </div>
       </div>
 
@@ -165,7 +176,10 @@ export function DataTable<TData, TValue>({
                     className="mx-auto"
                   />
                   <p>You havent made any booking yet</p>
-                  <p>Explore our services and book what you need in just a few taps</p>
+                  <p>
+                    Explore our services and book what you need in just a few
+                    taps
+                  </p>
                 </TableCell>
               </TableRow>
             )}
@@ -177,3 +191,6 @@ export function DataTable<TData, TValue>({
 }
 
 export default DataTable;
+
+
+
