@@ -58,7 +58,7 @@ const Page = () => {
                                     style={{ fill: "#3377FF" }}
                                 />
                             </span>
-                            <span className="text-textGray3">Details</span>
+                            <span>Details</span>
                         </p>
                         <RxCaretRight size={20} />
                         <p className="flex flex-row space-x-3 items-center">
@@ -81,22 +81,55 @@ const Page = () => {
                     <Spacer size={10} />
 
                 </div>
-                <div>
-                    <div>
-                        <h1>Pay with:</h1>
-                        <div>
+                <div className="w-full flex justify-between gap-14 max-w-6xl mx-auto mt-5">
+                    <div className="max-w-[400px] shrink-0">
+                        <h1 className="font-semibold text-lg mb-5">Pay with:</h1>
+                        <div className="flex items-center gap-10 mb-5">
                             <div>
                                 <input type="radio" name="channel" id="channel" /> Paystack</div>
                             <div>
                                 <input type="radio" name="channel" id="channel" /> USSD</div>
                         </div>
-                        <button className="btnOne">Continue</button>
-                        <div>
+                        <button className="btnOne max-w-[250px]">Continue</button>
+                        <div className="mt-12 bg-orangeLight text-[#212121CC] p-5">
                             <p>Please review your details and payment information carefully before confirming your booking. Cancellations within the stipulated time frame are eligible for a refund</p>
                         </div>
                     </div>
-                    <div>
-                        <h1>Payment Summary</h1>
+                    <div className="bg-white w-full py-6 px-8 rounded-md">
+                        <h1 className="font-semibold text-2xl mt-6 mb-5">Payment Summary</h1>
+                        <div className="relative h-40 w-40 mb-5">
+                            <Image
+                                src={`/Images/hero1.png`}
+                                fill
+                                className="object-cover"
+                                alt="talent-img"
+                            />
+                        </div>
+                        <div>
+                            <h1 className="text-primaryBlue text-xl py-4">Indoor cleaning service</h1>
+                        </div>
+                        <div className="py-5 border-t">
+                            <div className="flex items-center justify-between mb-5">
+                                <p className="">Rate per hour</p>
+                                <p>2,500</p>
+                            </div>
+                            <div className="flex items-center justify-between">
+                                <p>No of hours</p>
+                                <p>4hrs</p>
+                            </div>
+                        </div>
+                        <div className="border-t py-5">
+                            <div className="flex items-center justify-between">
+                                <p>Tax</p>
+                                <p>500</p>
+                            </div>
+                        </div>
+                        <div className="border-t py-5">
+                            <div className="flex items-center justify-between">
+                                <p>Total</p>
+                                <p className="font-semibold text-3xl">9,500</p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>

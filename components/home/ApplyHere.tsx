@@ -1,3 +1,5 @@
+import Link from "next/link";
+
 const ApplyHere = () => {
   return (
     <div className="bg-design-home py-16 md:py-24 md:px-14 bg-primaryBlue">
@@ -13,9 +15,11 @@ const ApplyHere = () => {
           </p>
         </div>
         <div className="flex justify-center xl:w-full xl:max-w-sm">
-          <button className="bg-white text-primaryBlue xl:w-full py-2 md:py-5 px-8 mt-6 md:mt-10">
-            Apply Here
-          </button>
+          <Link href={"/signup/talent"}>
+            <button className="bg-white text-primaryBlue xl:w-full py-2 md:py-5 px-8 mt-6 md:mt-10">
+              Apply Here
+            </button>
+          </Link>
         </div>
       </div>
     </div>
