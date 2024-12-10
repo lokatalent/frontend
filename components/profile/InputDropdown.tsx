@@ -9,15 +9,13 @@ import {
 } from "@/components/ui/select";
 import React, { useState } from "react";
 import { FormFieldError } from "../ui/form/FormFieldError";
-import fileUpload from "@/public/Images/upload.png";
-import Image from "next/image";
 import FileUpload from "./FileUpload";
 import { useDispatch } from "react-redux";
 import { setVerificationStore } from "@/store/profile/profileSlice";
 
 interface InputDropdownProps {
   options: string[];
-  error?: string;
+  error?: any;
   buttonAction: string;
 }
 

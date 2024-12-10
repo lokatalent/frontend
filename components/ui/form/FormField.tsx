@@ -10,7 +10,6 @@ import {
 import { FormFieldError } from "./FormFieldError";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import InputDropdown from "@/components/profile/InputDropdown";
-import { Label } from "@/components/ui/label";
 import {
   Popover,
   PopoverContent,
@@ -27,17 +26,21 @@ type Option = {
 };
 
 interface FormFieldProps {
-  name: keyof FormData | string;
+
+  name: any;
+
   label: string;
   type: string;
   error?: FieldError;
   register: UseFormRegister<FormData>;
-  control?: ControllerProps<FormData, any, any>;
+
+  control: ControllerProps<any>;
+
   disabled?: boolean;
   validation: RegisterOptions;
   width?: string;
   styles?: string;
-  options: Option;
+  options: any;
   buttonAction: string;
   // fileHandlerOptions;
 }
@@ -74,15 +77,6 @@ export const FormField: React.FC<FormFieldProps> = ({
   };
  
 
-  
-  // const FileForm = (inputValue, file) => {
-    // console.log(inputValue, file);
-    // fileHandlerOptions(inputValue, file);
-  // };
-
-  // const options = [{ name: "password" }, { name: "username" }];
-  // console.log(error)
-
   return (
     <div className={`relative flex flex-col  ${width}`}>
       <label
@@ -97,7 +91,6 @@ export const FormField: React.FC<FormFieldProps> = ({
           options={options}
           error={error}
           buttonAction={buttonAction}
-          // uploadFileHandler={FileForm}
         />
       ) : type === "date" ? (
         <Controller

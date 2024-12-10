@@ -9,6 +9,7 @@ import {
 
 interface SortProp {
   options: string[];
+  onSortChange: (value: string) => void;
 }
 
 
@@ -16,12 +17,12 @@ interface SortProp {
 
 function handleValueChange(value: string) {}
 
-const SortList = ({ options }: SortProp) => {
+const SortList = ({ options, onSortChange }: SortProp) => {
   const [value, setValue] = useState(options[0]); // Initial selected option
   // console.log(options)
  
   return (
-    <Select onValueChange={(value) => setValue(value)}>
+    <Select onValueChange={(value) => {setValue(value), onSortChange(value)}}>
       <SelectTrigger className="w-min bg-[#E5E7EB4A] focus:outline-none border-none shadow-none focus:ring-0 focus:ring-none">
         <div className="flex  items-center gap-2">
           <p>Sort by: </p>
