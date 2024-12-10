@@ -65,7 +65,7 @@ function Talents() {
     setShowModal(true)
   }
   return (
-    <div className="py-5">
+    <div className="py-10 bg-bgWhite wrap">
       {/* header */}
       <div>
         <h1 className="text-3xl font-semibold text-center">

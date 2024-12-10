@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 
 const HowItWorks = () => {
   const steps = [
@@ -62,9 +63,10 @@ const HowItWorks = () => {
             </div>
 
             <div className="w-[80%] mx-auto md:w-full">
-              <button className="bg-primaryBlue hover:bg-blue-700 text-white w-full md:w-[339px] py-3 md:py-5 px-8 ">
-                Make a Booking
-              </button>
+              <Link href={"/signup/user"}>
+                <button className="bg-primaryBlue hover:bg-blue-700 text-white w-full md:w-[339px] py-3 md:py-5 px-8 ">
+                  Get Started
+                </button></Link>
             </div>
           </div>
         </div>
