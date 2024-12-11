@@ -122,22 +122,22 @@ const DynamicForm = ({
   };
 
   return (
-    <div className="w-full wmax mx-auto p-6">
+    <div className="w-full md:px-6 mt-5">
       <form
         onSubmit={handleSubmit(onSubmit, onError)}
         className={` ${
           buttonAction === "changePassword"
             ? ""
-            : "flex flex-col justify-center items-center gap-12"
+            : "flex flex-col justify-center items-center gap-6 w-full"
         }`}
       >
-        <div>
+        <div className="w-full">
           <div
-            className={`flex ${
-              fields.length > 3
-                ? "flex-row flex-wrap justify-center"
-                : "flex-col"
-            }  justify-cente items-cente gap-12`}
+            className={`grid w-full ${
+							fields.length > 3
+								? "md:grid-cols-2 w-full"
+								: "grid-cols-1"
+						}  justify-center items-center gap-4`}
           >
             {fields.map((field) => (
               // <div key={field.name}>
@@ -166,7 +166,7 @@ const DynamicForm = ({
             <div className="flex justify-end mt-4 self-end text-right">
               <Link
                 href="/reset-password"
-                className="text-[14px] text-primaryBlue self-end"
+                className="text-sm text-primaryBlue self-end"
               >
                 Forgot Password?
               </Link>
@@ -205,7 +205,7 @@ const DynamicForm = ({
               </button>
 
               {buttonAction === "log-in" || buttonAction === "sign-up" ? (
-                <button className="w-max md:w-[15rem] lg:w-[30rem] bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
+                <button className="w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
                   <FcGoogle size={24} className="mr-2" />
                   Continue with Google
                 </button>
