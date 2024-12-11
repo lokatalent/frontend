@@ -10,7 +10,7 @@ import {
 import { HiArrowRightEndOnRectangle } from "react-icons/hi2";
 import { FaRegUser } from "react-icons/fa";
 // import { RiExchange2Line } from "react-icons/ri";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet";
 import Image from "next/image";
 
@@ -43,7 +43,7 @@ const links = [
 
 const SideNav = () => {
   const pathname = usePathname();
-  console.log(pathname)
+  const router = useRouter()
   
   return (
     <div>
@@ -82,8 +82,8 @@ const SideNav = () => {
           >
             <IoSettingsOutline /> <p>Settings</p>
           </Link>
-          <div className="font-semibold p-3 hover:p-3 focus:p-3 hover:text-white hover:bg-white/30 focus:bg-white/30 rounded-lg">
-            <button className="flex space-x-3 items-center">
+          <div className="font-semibold p-3 hover:p-3 focus:p-3 focus:bg-white/30 rounded-lg">
+            <button onClick={() => router.push('/login')} className="flex space-x-3 items-center">
               <HiArrowRightEndOnRectangle />
               <p>Logout</p>
             </button>

@@ -21,7 +21,7 @@ const SupportSettings = () => {
                     </div>
                     <h1 className="text-2xl font-semibold mb-5">Talk to us</h1>
                     <p>Need assistance or have questions?
-                        Text on on Twitter</p>
+                        Text us on Twitter</p>
                 </div>
                 <div className="bg-white px-8 py-10 rounded-lg">
                     {/* image */}
@@ -34,7 +34,7 @@ const SupportSettings = () => {
                         />
                     </div>
                     <h1 className="text-2xl font-semibold mb-5">Send us an Email</h1>
-                    <p>For inquiries, drop  us a message</p>
+                    <p>For inquiries, drop us a message</p>
                 </div>
             </div>
         </div>
