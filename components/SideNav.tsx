@@ -49,7 +49,7 @@ const SideNav = () => {
     <div>
       <div className="bg-primaryBlue w-[200px] h-screen fixed text-white p-8 flex-col justify-between hidden md:flex">
         <div>
-          <Link href="/">
+          <Link href="/landing">
             <span className="text-lg font-bold text-white">LokaTalent</span>
           </Link>
 
@@ -115,7 +115,7 @@ const SideNav = () => {
           >
             <div className="flex flex-col justify-between h-full ">
               <div>
-                <Link href="/">
+                <Link href="/landing">
                   <span className="text-lg font-bold text-white">
                     LokaTalent
                   </span>
@@ -149,7 +149,7 @@ const SideNav = () => {
                     <IoSettingsOutline /> <p>Settings</p>
                   </Link>
                   <div className="font-semibold p-3 hover:p-3 focus:p-3 hover:text-white hover:bg-white/30 focus:bg-white/30 rounded-lg">
-                    <button className="flex space-x-3 items-center">
+                    <button onClick={() => router.push('/login')} className="flex space-x-3 items-center">
                       <HiArrowRightEndOnRectangle />
                       <p>Logout</p>
                     </button>

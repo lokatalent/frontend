@@ -141,7 +141,7 @@ const Page = () => {
             </div>
           </div>
         )}
-        <LocationTrack mapping={mapping} setMapping={setMapping} />
+        <LocationTrack mapping={mapping} setMapping={setMapping} dashboard={true} />
       </div>
     </>
   );
