@@ -20,14 +20,20 @@ function SelectService() {
   };
 
   const bookService = () => {
-    router.push(`/dashboard/bookings/location?service=${encodeURIComponent(selectedService)}`);
+    router.push(
+      `/dashboard/bookings/location?service=${encodeURIComponent(
+        selectedService
+      )}`
+    );
   };
 
   // const services = ['Driv]
 
   return (
     <div className="">
-      <h1 className="font-semibold text-3xl text-center">What Service are you looking for?</h1>
+      <h1 className="font-semibold text-3xl text-center">
+        What Service are you looking for?
+      </h1>
       <div className="flex gap-2 my-4 md:my-5 xl:my-8 max-w-4xl mx-auto mt-10">
         <div className="flex-1">
           <Select value={selectedService} onValueChange={handleServiceChange}>
@@ -44,7 +50,8 @@ function SelectService() {
                   <div className=" text-primaryBlue my-2 p-2">
                     <p className="font-semibold ">Indoor Cleaning Services</p>
                     <p className="font-light">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Professional cleaning of homes or offices, ensuring
+                      spotless and organized interiors.
                     </p>
                   </div>
                 </SelectItem>
@@ -52,7 +59,8 @@ function SelectService() {
                   <div className=" text-primaryBlue my-2 p-2">
                     <p className="font-semibold ">Driving</p>
                     <p className="font-light">
-                      Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                      Reliable and safe transportation services for individuals
+                      or goods.
                     </p>
                   </div>
                 </SelectItem>
