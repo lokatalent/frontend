@@ -16,7 +16,7 @@ import { MdLocationSearching } from "react-icons/md";
 import schedule from "@/public/Images/schedule.png";
 import { useRouter } from "next/navigation";
 
-const LocationTrack = ({ mapping, setMapping }) => {
+const LocationTrack = ({ mapping, setMapping, dashboard }) => {
   const [streetName, setStreetName] = useState("");
   const [locationError, setLocationError] = useState(false);
 
@@ -117,7 +117,7 @@ const LocationTrack = ({ mapping, setMapping }) => {
                       <DialogClose asChild>
                         <button
                           className="btnTwo border border-primaryBlue"
-                          onClick={() => router.push("/schedule-booking")}
+                          onClick={() => router.push(dashboard ? "/dashboard/bookings/schedule-booking" : "/schedule-booking")}
                         >
                           Schedule a Booking
                         </button>
@@ -125,7 +125,7 @@ const LocationTrack = ({ mapping, setMapping }) => {
                       <DialogClose asChild>
                         <button
                           className="btnOne"
-                          onClick={() => router.push("/instant-booking")}
+                          onClick={() => router.push(dashboard ? "/dashboard/bookings/instant-booking" : "/instant-booking")}
                         >
                           Instant Booking
                         </button>
