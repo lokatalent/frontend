@@ -1,7 +1,7 @@
 "use client";
 import ProfileCompletion from "@/components/profile/ProfileCompletion";
 import ProfileDetails from "@/components/profile/ProfileDetails";
-import { RootState } from "@/store/profile/profileSlice";
+import { RootStateProfile } from "@/store/profile/profileSlice";
 import Image from "next/image";
 import React from "react";
 import { useSelector } from "react-redux";
@@ -11,15 +11,15 @@ interface DataItem {
   value: string;
 }
 
-export default async function Profile() {
+export default function Profile() {
   const profileDetails = useSelector(
-    (state: RootState) => state.profile.profileDetails
+    (state: RootStateProfile) => state.profile.profileDetails
   );
   const profilePics = useSelector(
-    (state: RootState) => state.profile.profilePics
+    (state: RootStateProfile) => state.profile.profilePics
   );
   const profileInformation = useSelector(
-    (state: RootState) => state.profile.information
+    (state: RootStateProfile) => state.profile.information
   );
 
   // Fetch user profile data from the server
