@@ -36,6 +36,7 @@ interface DataTableProps<TData, TValue> {
   path: string;
   isSort: boolean;
   isRole: boolean;
+  talent?: boolean;
 }
 interface GlobalFilter {
   globalFilter: any;
@@ -51,13 +52,13 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Return if the item should be filtered in/out
   return itemRank.passed;
 };
-
-export function DataTable<TData, TValue>({
+ function DataTable<TData, TValue>({
   columns,
   data,
   path,
   isSort,
   isRole,
+  talent,
 }: DataTableProps<TData, TValue>) {
   const router = useRouter();
   const [sort, setSort]= useState(''); // Initial selected option
@@ -83,7 +84,7 @@ export function DataTable<TData, TValue>({
   const handleNavigate = (id: number) => {
     console.log(id);
     console.log(path);
-    router.push(`/dashboard/bookings/${id}`);
+    router.push(talent ? `/talent/dashboard/bookings/${id}` : `/dashboard/bookings/${id}`);
   };
 
   const roleHandler = (role: string) => {

@@ -21,6 +21,7 @@ const config: Config = {
         navBlue: "#2659BF",
         textGray: "#141416",
         textGray2: "#212121",
+        online: "#32D30A",
         textGray3: "#9EA3AE",
         textGray4: "#2D2D2D8F",
         textGray5: "#4B5563",
