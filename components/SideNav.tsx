@@ -41,13 +41,13 @@ const links = [
   },
 ];
 
-const SideNav = () => {
+const SideNav = ({talent}: {talent?: boolean}) => {
   const pathname = usePathname();
   const router = useRouter()
   
   return (
     <div>
-      <div className="bg-primaryBlue w-[200px] h-screen fixed text-white p-8 flex-col justify-between hidden md:flex">
+      <div className="bg-primaryBlue w-[200px] h-screen fixed z-[20] text-white p-8 flex-col justify-between hidden md:flex">
         <div>
           <Link href="/landing">
             <span className="text-lg font-bold text-white">LokaTalent</span>
@@ -56,7 +56,7 @@ const SideNav = () => {
           <div className="flex flex-col space-y-7 mt-6">
             {links.map((link) => (
               <Link
-                href={link.link}
+                href={talent ? "/talent" + link.link : link.link}
                 key={link.id}
                 // className={`${
                 //   (pathname === "/dashboard" && link.link === "/dashboard")
@@ -77,7 +77,7 @@ const SideNav = () => {
 
         <div>
           <Link
-            href="/dashboard/settings/profile"
+            href={talent ? "/talent/dashboard/settings/profile" : "/dashboard/settings/profile"}
             className="flex space-x-3 items-center font-semibold p-3 hover:p-3 focus:p-3 hover:bg-white/30 focus:bg-white/30 rounded-lg"
           >
             <IoSettingsOutline /> <p>Settings</p>

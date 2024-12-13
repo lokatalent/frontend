@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 
 import { addEmailToWaitlist } from "@/services/waitlistService";
 import Image from "next/image";
