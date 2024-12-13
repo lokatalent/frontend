@@ -11,7 +11,7 @@ import React, { useState } from "react";
 import { FormFieldError } from "../ui/form/FormFieldError";
 import FileUpload from "./FileUpload";
 import { useDispatch } from "react-redux";
-import { setVerificationStore } from "@/store/profile/profileSlice";
+import { setFileStore, setVerificationStore } from "@/store/profile/profileSlice";
 
 interface InputDropdownProps {
   options: string[];
@@ -65,12 +65,30 @@ function InputDropdown({ options, error, buttonAction }: InputDropdownProps) {
         </Select>
         {error && <FormFieldError error={error} />}
       </div>
-      {selectedService && (buttonAction === "addressVerification" ||
-      buttonAction === "edit-address") ? (
-        <FileUpload />
+      {selectedService &&
+      (buttonAction === "addressVerification" ||
+        buttonAction === "edit-address") ? (
+        // <FileUpload />
+
+        <FileUpload
+          allowedTypes={["image/jpeg", "image/png"]}
+          maxFileSizeMB={10}
+          onFileSelect={(file, url) => {
+            // console.log("File selected:", file);
+            dispatch(setFileStore(file));
+            // console.log("File URL:", url);
+          }}
+          uploadLabel="Upload File"
+          dragDropLabel=" or drop here"
+        />
       ) : null}
     </div>
   );
 }
 
 export default InputDropdown;
+
+
+
+
+

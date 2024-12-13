@@ -2,6 +2,7 @@ import React from "react";
 import Image from "next/image";
 import { BsPlusCircleDotted, BsThreeDotsVertical } from "react-icons/bs";
 import { Button } from "@/components/ui/button";
+import AddPhoto from "./AddPhoto";
 
 function ImageProfile({ isPics = false }: boolean) {
   return (
@@ -55,7 +56,7 @@ function ImageProfile({ isPics = false }: boolean) {
             height={100}
           />
           <p className="text-[#9390908F]">No photos added yet</p>
-          <Button className="px-20">Add Photos</Button>
+          <AddPhoto />
         </div>
       )}
     </div>
