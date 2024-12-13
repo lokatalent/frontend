@@ -51,8 +51,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Return if the item should be filtered in/out
   return itemRank.passed;
 };
-
-export function DataTable<TData, TValue>({
+ function DataTable<TData, TValue>({
   columns,
   data,
   path,

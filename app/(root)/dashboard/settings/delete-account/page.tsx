@@ -1,6 +1,5 @@
-"use client";
-import React, { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import React from "react";
+
 import DeleteModal from "@/components/settings/delete-account/DeleteModal";
 import { MdOutlineInfo } from "react-icons/md";
 
