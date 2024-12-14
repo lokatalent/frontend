@@ -1,4 +1,5 @@
 "use client";
+
 import ProfileCompletion from "@/components/profile/ProfileCompletion";
 import ProfileDetails from "@/components/profile/ProfileDetails";
 import { Button } from "@/components/ui/button";
