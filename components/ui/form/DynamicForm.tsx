@@ -1,3 +1,5 @@
+"use client"
+
 // DynamicForm.tsx
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
