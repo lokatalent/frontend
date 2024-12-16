@@ -26,7 +26,9 @@ const TalentprofileSlice = createSlice({
 
     // Remove an image by ID
     removeFile: (state, action: PayloadAction<string>) => {
-      state.files = state.files.filter((file) => file.id !== action.payload);
+      console.log(action.payload)
+      state.files = state.files.filter((file) => file.url !== action.payload);
+      // state.files = state.files.filter((file) => file.id !== action.payload);
     },
 
     // Clear all files

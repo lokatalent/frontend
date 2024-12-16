@@ -1,9 +1,16 @@
 import React from "react";
 import Image from "next/image";
+import { date } from "zod";
 
 interface ServiceRateProps {
   isData: boolean;
-  data?: string[] | null;
+  data?:  {
+    bankName: string,
+    accountNo: string,
+    rps : string,
+    rph : string,
+  }
+
 }
 
 function ServiceRate({ isData, data}: ServiceRateProps) {
@@ -15,7 +22,9 @@ function ServiceRate({ isData, data}: ServiceRateProps) {
             <div>
               <div className="text-gray-500 font-medium">Rate per hour</div>
               <div className="flex items-end">
-                <div className="text-orange-500 font-bold text-4xl">₦1,500</div>
+                <div className="text-orange-500 font-bold text-4xl">
+                  ₦{data.rph}
+                </div>
                 <div className="text-gray-500 font-medium">/hr</div>
               </div>
             </div>
@@ -26,7 +35,7 @@ function ServiceRate({ isData, data}: ServiceRateProps) {
             <div>
               <div className="text-gray-500 font-medium">per service</div>
               <div className="text-orange-500 font-bold text-4xl ">
-                ₦100,000
+                ₦{data.rps}
               </div>
             </div>
           </div>
@@ -39,7 +48,7 @@ function ServiceRate({ isData, data}: ServiceRateProps) {
                   <div className="absolute w-[40px] h-[2px] bg-orange-500 top-1/2 transform -translate-y-1/2"></div>
                   <div className="absolute w-[10px] h-[10px] bg-orange-500 rounded-full right-0 top-1/2 transform -translate-y-1/2"></div>
                 </div>
-                <div className="text-gray-700 font-medium">Zenith Bank</div>
+                <div className="text-gray-700 font-medium">{data.bankName}</div>
               </div>
               <div className="flex gap-2 items-center">
                 <div className="text-gray-500 text-sm">Account Number</div>
@@ -47,7 +56,9 @@ function ServiceRate({ isData, data}: ServiceRateProps) {
                   <div className="absolute w-[40px] h-[2px] bg-orange-500 top-1/2 transform -translate-y-1/2"></div>
                   <div className="absolute w-[10px] h-[10px] bg-orange-500 rounded-full right-0 top-1/2 transform -translate-y-1/2"></div>
                 </div>
-                <div className="text-gray-700 font-medium">01234567888</div>
+                <div className="text-gray-700 font-medium">
+                  {data.accountNo }
+                </div>
               </div>
             </div>
           </div>
@@ -61,7 +72,8 @@ function ServiceRate({ isData, data}: ServiceRateProps) {
             height={200}
           />
           <p>
-            Nothing to show here. Complete your profile set up to add your service rate and bank details
+            Nothing to show here. Complete your profile set up to add your
+            service rate and bank details
           </p>
         </div>
       )}

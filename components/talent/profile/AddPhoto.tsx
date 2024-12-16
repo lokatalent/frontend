@@ -53,7 +53,7 @@ export default function AddPhoto({ linkTo }: ReviewModalProps) {
               onFileSelect={(file, url) => {
                 // console.log("File selected:", file);
                 // dispatch(setFileStore(file));
-                // console.log("File URL:", url);
+                console.log("File URL:", url);
                 dispatch(
                   addFile({
                     id: Math.random() * 1000,

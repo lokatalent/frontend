@@ -18,6 +18,7 @@ const ReviewCard: React.FC<ReviewCardProps> = ({ name, profileImage, rating, rev
       <div className="w-full">
         <div className="flex w-full justify-between items-start text-gray-800">
           <p className="text-xl font-semibold">{name}</p>
+          
           <div className="flex space-x-1 items-center mt-2">
             {[...Array(5)].map((_, index) => (
               <FaStar key={index} color={index < rating ? "#FFAC33" : "#D6DDEB"} />

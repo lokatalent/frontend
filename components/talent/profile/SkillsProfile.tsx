@@ -1,13 +1,20 @@
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 
-function SkillsProfile() {
+type SkillSetProps = {
+  skills: { [key: string]: boolean };
+  onSkillChange: (skill: string, value: boolean) => void;
+  skillsSet: any;
+};
+
+const SkillsProfile: React.FC<SkillSetProps> = ({ skillsSet }) => {
+  console.log(skillsSet);
+  
   return (
     <div className="card space-y-7">
       <div className="flex items-center justify-between">
         <div className="bg-[#DF86000F] text-[#DF8600] text-sm w-[18rem] p-3 py-5">
-          Bio: I am a cleaner with experience of over two years and a dedicated
-          person
+          Bio: {skillsSet.bio}
         </div>
         <div>
           <p>Service Radius</p>
@@ -15,7 +22,7 @@ function SkillsProfile() {
         </div>
         <div>
           <p>Years of Experience</p>
-          <p>2 Years</p>
+          <p>{skillsSet.experience} Years</p>
         </div>
         <div>
           <p>Available to Work</p>
@@ -24,7 +31,18 @@ function SkillsProfile() {
       </div>
       <div className="flex space-x-5">
         <p>Skill Set</p>
-        <div className="flex items-center space-x-3">
+        {Object.entries(skillsSet.skillsSet).map(([skill, isChecked]) => (
+          <div key={skill} className="flex items-center">
+            <input
+              type="checkbox"
+              className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+              checked={isChecked}
+              readOnly
+            />
+            <span>{skill}</span>
+          </div>
+        ))}
+        {/* <div className="flex items-center space-x-3">
           <FaCheckCircle color="#DF8600" />
           <p className="text-sm">Washing</p>
         </div>
@@ -43,10 +61,23 @@ function SkillsProfile() {
         <div className="flex items-center space-x-3">
           <FaCheckCircle color="#DF8600" />
           <p className="text-sm">Washing</p>
-        </div>
+        </div> */}
+        {/* <div className="grid grid-cols-2 gap-4">
+          {Object.entries(skills).map(([skill, selected]) => (
+            <div className="flex items-center" key={skill}>
+              <input
+                type="checkbox"
+                className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                checked={selected}
+                onChange={handleCheckboxChange(skill)}
+              />
+              <span>{skill}</span>
+            </div>
+          ))}
+        </div> */}
       </div>
     </div>
   );
-}
+};
 
 export default SkillsProfile;
