@@ -47,7 +47,7 @@ const NotificationsBar: React.FC<NotificationsBarProps> = ({
           </div>
           <div className="self-start mt-3">
             <Link
-              href={`/dashboard/notification/${notification.id}`}
+              href={`notification/${notification.id}`}
               className="text-white h-10 rounded-md text-sm py-2 bg-primaryBlue w-[10rem] flex-center block"
             >
               View Details

@@ -3,7 +3,11 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const loggedIn = true;
 
-  // if (!loggedIn) redirect("/login");
-  return <div className="">{children}</div>;
+  return (
+    <>
+      {children}
+    </>
+  );
 }

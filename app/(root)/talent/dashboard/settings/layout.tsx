@@ -10,6 +10,7 @@ export default function SettingsLayout({
   const SettingsRoles = [
     { value: "profile", label: "Profile" },
     { value: "security", label: "Security" },
+    { value: "verification", label: "Verification" },
     { value: "notifications", label: "Notifications" },
     { value: "help", label: "Help & Support" },
     { value: "delete-account", label: "Delete Account" },
