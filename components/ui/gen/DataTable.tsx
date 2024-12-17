@@ -192,6 +192,3 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 }
 
 export default DataTable;
-
-
-

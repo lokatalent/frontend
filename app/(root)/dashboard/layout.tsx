@@ -25,7 +25,7 @@ export default function RootLayout({
             </div>
           </div>
 
-          <div className="main-content pl-[2rem] pr-[2rem] md:pl-[14rem] md:pr-[2rem] pt-20 pb-10">
+          <div className="main-content pl-[2rem] pr-[2rem] py-[2rem] md:pl-[14rem] md:pr-[2rem] md:py-[2rem]">
             {children}
           </div>
         </div>
