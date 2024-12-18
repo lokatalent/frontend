@@ -1,3 +1,4 @@
+"use client";
 import ProfilePics from "@/components/ui/gen/ProfilePics";
 import React from "react";
 import { FaStar } from "react-icons/fa";

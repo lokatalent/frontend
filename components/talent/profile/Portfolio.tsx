@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import HoursProfile from "@/components/talent/profile/HoursProfile";
 import ImageProfile from "@/components/talent/profile/ImageProfile";
@@ -6,12 +7,10 @@ import Image from "next/image";
 
 interface PortfolioProps {
   isData: boolean;
-  data?: string[] | null| any;
+  data?: string[] | null | any;
 }
 
 function Portfolio({ isData, data }: PortfolioProps) {
-    
-
   return (
     <div className="space-y-6">
       {isData ? (

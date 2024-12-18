@@ -3,17 +3,9 @@ import ProfileCompletion from "@/components/profile/ProfileCompletion";
 import ProfileDetails from "@/components/profile/ProfileDetails";
 import { Button } from "@/components/ui/button";
 import { RootStateProfile } from "@/store/profile/profileSlice";
-import { FaCheckCircle } from "react-icons/fa";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Avatar } from "@/components/ui/avatar";
-import { BsPlusCircleDotted } from "react-icons/bs";
-import ProfilePics from "@/components/ui/gen/ProfilePics";
-import { FaStar } from "react-icons/fa";
-import { FaPen } from "react-icons/fa6";
-
 import ServiceRate from "@/components/talent/profile/ServiceRate";
 import ReviewCard from "@/components/talent/profile/ReviewCard";
 import Portfolio from "@/components/talent/profile/Portfolio";
@@ -99,7 +91,6 @@ export default function Profiles() {
       reviewText: "Amazing experience, highly recommend!",
     },
   ];
-  
 
   const [portfolioData1, setPortfolioData1] = useState({
     experience: "2",
@@ -114,7 +105,6 @@ export default function Profiles() {
     },
   });
 
-  
   const handleSkillChange = (skill: string, value: boolean) => {
     setPortfolioData1((prevData) => ({
       ...prevData,
@@ -135,7 +125,7 @@ export default function Profiles() {
     setPortfolioData1((prevSkills) => ({
       ...prevSkills,
       experience: service.experience,
-      bio: service.bio
+      bio: service.bio,
       // [skill]: value,
     }));
   };
@@ -181,7 +171,7 @@ export default function Profiles() {
         <div></div>
       </div>
 
-      <ProfileCompletion />
+      <ProfileCompletion addText="You are not done with your profile set up. Complete it now" />
 
       <div className="card mt-12">
         <div className="flex items-center mb-8 justify-between">
@@ -277,31 +267,7 @@ export default function Profiles() {
           </div>
         ) : null}
 
-        {/* <div className="card">
-          <div className="flex items-center bg-white shadow-md space-x-6 rounded-lg p-4">
-            <div className="">
-              <ProfilePics isProfile={"/Images/review.png"} isEdit={false} />
-            </div>
-            <div>
-              <div className="flex justify-between items-start text-gray-800">
-                <p className="text-xl">Daniella Doe</p>
-                <div className="flex space-x-1 items-center mt-2">
-                  <FaStar color="#FFAC33" />
-                  <FaStar color="#FFAC33" />
-                  <FaStar color="#FFAC33" />
-                  <FaStar color="#FFAC33" />
-                  <FaStar color="#D6DDEB" />
-                </div>
-              </div>
-              <p className="text-gray-600 text-sm">
-                Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-                lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-                lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-                lorem ipsum
-              </p>
-            </div>
-          </div>
-        </div> */}
+        
       </div>
     </div>
   );

@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+"use client";
+import React, { useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -12,6 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { FaPen } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
+import { Check, Info } from "lucide-react";
 import ChangesSaved from "../ChangesSaved";
 
 interface EditPortfolioProps {
@@ -20,10 +22,19 @@ interface EditPortfolioProps {
   onSkillChange: (skill: string, value: boolean) => void;
 }
 
-// Zod schema for form validation
 const editPortfolioSchema = z.object({
-  bio: z.string().nonempty("Please add your bio."),
-  experience: z.string().nonempty("Experience is required."),
+  bio: z
+    .string()
+    .min(1, "Bio should be at least 50 characters long")
+    .max(500, "Bio should not exceed 500 characters"),
+  experience: z
+    .string()
+    .regex(/^\d+$/, "Experience must be a number")
+    .transform(Number)
+    .refine(
+      (val) => val >= 0 && val <= 50,
+      "Experience must be between 0 and 50 years"
+    ),
 });
 
 type EditPortfolioFormValues = z.infer<typeof editPortfolioSchema>;
@@ -34,24 +45,36 @@ export default function EditPortfolio({
   onSkillChange,
 }: EditPortfolioProps) {
   const [isFinished, setIsFinished] = useState(false);
-  const [localSkills, setLocalSkills] = useState(skills); // Local state for skills
+  const [localSkills, setLocalSkills] = useState(skills);
+  const [isOnline, setIsOnline] = useState(false);
+  const [charCount, setCharCount] = useState(0);
 
   const {
     handleSubmit,
     control,
-    formState: { errors },
+    watch,
+    formState: { errors, isSubmitting },
   } = useForm<EditPortfolioFormValues>({
     resolver: zodResolver(editPortfolioSchema),
     defaultValues: {
-      bio: "John Smith",
-      experience: "2",
+      bio: "",
+      experience: "",
     },
   });
 
-  // Reset local skills when modal opens or closes
+  // Watch bio field for character count
+  React.useEffect(() => {
+    const subscription = watch((value) => {
+      if (value.bio) {
+        setCharCount(value.bio.length);
+      }
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
   const resetDialog = () => {
     setIsFinished(false);
-    setLocalSkills(skills); // Revert to default skills when modal closes
+    setLocalSkills(skills);
   };
 
   const handleCheckboxChange =
@@ -62,84 +85,92 @@ export default function EditPortfolio({
       }));
     };
 
-    const onSubmit = (data: EditPortfolioFormValues) => {
-      
-        setIsFinished(true); // Show "Changes Saved"
-        
-        
-            portfolioRateEdited(data);
-        // Update skills globally only on form submission
-        Object.entries(localSkills).forEach(([skill, value]) => {
-          onSkillChange(skill, value);
-        });
-            
-        
-        
-        
-
+  const onSubmit = async (data: EditPortfolioFormValues) => {
+    try {
+      await portfolioRateEdited(data);
+      Object.entries(localSkills).forEach(([skill, value]) => {
+        onSkillChange(skill, value);
+      });
+      setIsFinished(true);
+    } catch (error) {
+      console.error("Error saving changes:", error);
+    }
   };
 
   return (
     <Dialog onOpenChange={resetDialog}>
       <DialogTrigger asChild>
-        <div className="bg-[#F5F5F5] rounded-full h-8 w-8 flex-center mr-10 cursor-pointer">
+        <div className="bg-[#F5F5F5] rounded-full h-8 w-8 flex items-center justify-center mr-10 cursor-pointer hover:bg-gray-200 transition-colors">
           <FaPen color="#3377FF" size={10} />
         </div>
       </DialogTrigger>
+
       {isFinished ? (
         <DialogContent className="w-full p-6 sm:max-w-[16rem] lg:max-w-[25rem]">
           <DialogHeader>
             <DialogTitle className="text-center text-lg font-bold">
-              Changes Saved
+              Changes Saved Successfully
             </DialogTitle>
           </DialogHeader>
           <ChangesSaved />
           <div className="text-center mt-4">
             <DialogClose>
-              <Button type="button" className="px-6 py-2" onClick={() => setIsFinished(false)}>
+              <Button
+                type="button"
+                className="px-6 py-2 hover:bg-blue-600 transition-colors"
+                onClick={() => setIsFinished(false)}
+              >
                 Done
               </Button>
             </DialogClose>
           </div>
         </DialogContent>
       ) : (
-        <DialogContent className="w-full p-6 sm:max-w-[30rem] lg:max-w-[30rem]">
+        <DialogContent className="w-full p-6 sm:max-w-[35rem] max-h-[90vh] overflow-y-auto">
           <DialogHeader>
-            <DialogTitle className="text-center text-lg font-bold">
+            <DialogTitle className="text-center text-xl font-bold mb-6">
               Edit Portfolio
             </DialogTitle>
           </DialogHeader>
-          <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
+
+          <form onSubmit={handleSubmit(onSubmit)} className="space-y-6">
             {/* Bio Field */}
-            <div>
-              <label htmlFor="bio" className="block text-sm font-medium mb-2">
-                Add your Bio
+            <div className="space-y-2">
+              <label
+                htmlFor="bio"
+                className="text-sm font-medium flex items-center gap-2"
+              >
+                Add your Bio 😉
               </label>
               <Controller
                 name="bio"
                 control={control}
                 render={({ field }) => (
-                  <input
-                    id="bio"
-                    type="text"
-                    {...field}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:ring focus:ring-blue-300"
-                  />
+                  <div className="relative">
+                    <textarea
+                      {...field}
+                      id="bio"
+                      className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm min-h-[120px] resize-none focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                      placeholder="Tell clients about your experience, skills, and expertise..."
+                      onChange={(e) => {
+                        field.onChange(e);
+                        setCharCount(e.target.value.length);
+                      }}
+                    />
+                    <span className="absolute bottom-2 right-2 text-xs text-gray-500">
+                      {charCount}/500
+                    </span>
+                  </div>
                 )}
               />
               {errors.bio && (
-                <p className="text-red-500 text-sm mt-1">
-                  {errors.bio.message}
-                </p>
+                <p className="text-red-500 text-sm">{errors.bio.message}</p>
               )}
             </div>
 
             {/* Experience Field */}
-            <div>
-              <label
-                htmlFor="experience"
-                className="block text-sm font-medium mb-2"
-              >
+            <div className="space-y-2">
+              <label htmlFor="experience" className="text-sm font-medium">
                 Years of Experience
               </label>
               <Controller
@@ -147,39 +178,95 @@ export default function EditPortfolio({
                 control={control}
                 render={({ field }) => (
                   <input
-                    id="experience"
-                    type="text"
                     {...field}
-                    className="w-full rounded-md border border-gray-300 px-3 py-2 text-sm shadow-sm focus:ring focus:ring-blue-300"
+                    type="number"
+                    min="0"
+                    max="50"
+                    id="experience"
+                    className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
+                    placeholder="Enter years of experience"
                   />
                 )}
               />
               {errors.experience && (
-                <p className="text-red-500 text-sm mt-1">
+                <p className="text-red-500 text-sm">
                   {errors.experience.message}
                 </p>
               )}
             </div>
 
-            {/* Skills Checkboxes */}
-            <div className="grid grid-cols-2 gap-4">
-              {Object.entries(localSkills).map(([skill, selected]) => (
-                <div className="flex items-center" key={skill}>
-                  <input
-                    type="checkbox"
-                    className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                    checked={selected}
-                    onChange={handleCheckboxChange(skill)}
-                  />
-                  <span className="text-sm">{skill}</span>
+            {/* Skills Section */}
+            <div className="space-y-3">
+              <label className="text-sm font-medium">Skills & Expertise</label>
+              <div className="flex flex-wrap gap-3">
+                {Object.entries(localSkills).map(([skill, selected]) => (
+                  <div
+                    key={skill}
+                    className="flex items-center  rounded-lg p-2  transition-colors"
+                  >
+                    <input
+                      type="checkbox"
+                      className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded transition-colors"
+                      checked={selected}
+                      onChange={handleCheckboxChange(skill)}
+                      id={`skill-${skill}`}
+                    />
+                    <label
+                      htmlFor={`skill-${skill}`}
+                      className="text-sm cursor-pointer"
+                    >
+                      {skill}
+                    </label>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Service Radius */}
+            <div className="flex items-center gap-6 p-4 rounded-lg">
+              <div className="flex  items-center gap-2">
+                <p className="text-sm font-medium">Service Radius</p>
+
+                <span className="text-[#DF8600]">(2 KM)</span>
+              </div>
+              <button
+                type="button"
+                className="text-primaryBlue text-sm hover:underline focus:outline-none"
+              >
+                Change
+              </button>
+            </div>
+
+            {/* Online Status */}
+            <div className="space-y-2">
+              <button
+                type="button"
+                onClick={() => setIsOnline(!isOnline)}
+                className="flex items-center gap-3 py-3 text-sm font-medium text-gray-700 bg-white  transition-all"
+              >
+                <span>Click to go online </span>
+                <div
+                  className={`h-5 w-5 rounded flex items-center justify-center transition-colors ${
+                    isOnline ? "bg-green-500" : "border-2 border-gray-300"
+                  }`}
+                >
+                  {isOnline && <Check className="text-white" size={14} />}
                 </div>
-              ))}
+              </button>
+              <p className="text-xs text-gray-500">
+                (Appearing online means you are now marked as available and
+                ready to take on new jobs immediately)
+              </p>
             </div>
 
             {/* Submit Button */}
-            <div className="text-center">
-              <Button type="submit" className="px-6 py-2">
-                Update Changes
+            <div className="pt-4">
+              <Button
+                type="submit"
+                className="w-full py-6 text-sm font-medium hover:bg-blue-600 transition-colors disabled:opacity-50"
+                disabled={isSubmitting}
+              >
+                {isSubmitting ? "Saving Changes..." : "Save Changes"}
               </Button>
             </div>
           </form>

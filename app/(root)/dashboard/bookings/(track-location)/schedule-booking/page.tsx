@@ -1,5 +1,4 @@
 import ScheduleBooking from "@/components/location/ScheduleBooking";
-import { Spacer } from "@/components/Spacer";
 import { FaCircleCheck } from "react-icons/fa6";
 import { RxCaretRight } from "react-icons/rx";
 import { TbCircleNumber2, TbCircleNumber3Filled } from "react-icons/tb";

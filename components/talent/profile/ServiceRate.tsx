@@ -1,19 +1,18 @@
+"use client";
 import React from "react";
 import Image from "next/image";
-import { date } from "zod";
 
 interface ServiceRateProps {
   isData: boolean;
-  data?:  {
-    bankName: string,
-    accountNo: string,
-    rps : string,
-    rph : string,
-  }
-
+  data?: {
+    bankName: string;
+    accountNo: string;
+    rps: string;
+    rph: string;
+  };
 }
 
-function ServiceRate({ isData, data}: ServiceRateProps) {
+function ServiceRate({ isData, data }: ServiceRateProps) {
   return (
     <div className=" card p-6">
       {isData ? (
@@ -57,7 +56,7 @@ function ServiceRate({ isData, data}: ServiceRateProps) {
                   <div className="absolute w-[10px] h-[10px] bg-orange-500 rounded-full right-0 top-1/2 transform -translate-y-1/2"></div>
                 </div>
                 <div className="text-gray-700 font-medium">
-                  {data.accountNo }
+                  {data.accountNo}
                 </div>
               </div>
             </div>

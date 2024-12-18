@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { FaCheckCircle } from "react-icons/fa";
 
@@ -9,7 +10,7 @@ type SkillSetProps = {
 
 const SkillsProfile: React.FC<SkillSetProps> = ({ skillsSet }) => {
   console.log(skillsSet);
-  
+
   return (
     <div className="card space-y-7">
       <div className="flex items-center justify-between">

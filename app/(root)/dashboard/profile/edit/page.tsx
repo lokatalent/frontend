@@ -84,9 +84,11 @@ import { useDispatch } from "react-redux";
 
 
 function Edit() {
-   const [selectedImage, setSelectedImage] = useState<any>(null);
-   const dispatch = useDispatch();
-   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const dispatch = useDispatch();
+  // const [selectedImage, setSelectedImage] = useState<any>(null); // normal code
+  // const fileInputRef = useRef<HTMLInputElement | null>(null); // normal code
+  const [selectedImage, setSelectedImage] = useState<any>();
+   const fileInputRef = useRef<HTMLInputElement>();
 
   
   const handleImageSelect = (event: ChangeEvent<HTMLInputElement>): void => {
