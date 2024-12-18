@@ -6,9 +6,18 @@ import {
   BsThreeDotsVertical,
   BsTrash,
 } from "react-icons/bs";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogClose,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 import AddPhoto from "./AddPhoto";
 import { IoMdClose } from "react-icons/io";
+import { Button } from "@/components/ui/button";
 
 interface ImageProfileProps {
   isPics: boolean;
@@ -23,12 +32,13 @@ const ImageProfile: React.FC<ImageProfileProps> = ({ isPics = true }) => {
   ]);
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [modeView, setModeView] = useState<number | null>(null);
+  const [indexToDelete, setIndexToDelete] = useState<number | null>(null);
 
   const handleDelete = (index: number) => {
+    setModeView(null);
     const newImages = [...images];
     newImages.splice(index, 1);
     setImages(newImages);
-    setModeView(null);
   };
 
   const handleView = (image: string) => {
@@ -59,7 +69,7 @@ const ImageProfile: React.FC<ImageProfileProps> = ({ isPics = true }) => {
       <h2 className="text-base font-normal mb-6">Images</h2>
 
       {isPics ? (
-        <div className={`flex ${images.length > 3 ? 'flex-wrap' : ''} gap-4`}>
+        <div className={`flex ${images.length > 3 ? "flex-wrap" : ""} gap-4`}>
           {images.map((image, index) => (
             <div
               key={index}
@@ -87,12 +97,10 @@ const ImageProfile: React.FC<ImageProfileProps> = ({ isPics = true }) => {
                     View Picture
                   </button>
 
-                  <button
-                    onClick={() => handleDelete(index)}
-                    className="w-full text-start pl-2 rounded-lg py-1 text-[12px] font-bold hover:bg-[#3377FF2E] hover:text-primaryBlue"
-                  >
-                    Delete Picture
-                  </button>
+                  <DeleteImageProfile
+                    onConfirmDelete={() => handleDelete(index)}
+                    imageNumber={index + 1}
+                  />
                 </div>
               )}
             </div>
@@ -154,5 +162,63 @@ const ImageProfile: React.FC<ImageProfileProps> = ({ isPics = true }) => {
     </div>
   );
 };
+
+interface DeleteImageProfileProps {
+  onConfirmDelete: () => void;
+  imageNumber: number;
+}
+
+function DeleteImageProfile({
+  onConfirmDelete,
+  imageNumber,
+}: DeleteImageProfileProps) {
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <button className="w-full text-start pl-2 rounded-lg py-1 text-[12px] font-bold hover:bg-[#3377FF2E] hover:text-primaryBlue">
+          Delete Picture
+        </button>
+      </DialogTrigger>
+      <DialogContent className="w-full p-6 sm:max-w-[25rem] lg:max-w-[30rem]">
+        <DialogHeader></DialogHeader>
+
+        <div className="w-[3rem] h-[3rem]">
+          <Image
+            src="/Images/del-custom.png"
+            className="object-cover"
+            width={150}
+            height={150}
+            alt="Delete Custom Button"
+          />
+        </div>
+        <p className="text-left text-lg font-bold">Delete this Image</p>
+
+        <div className="my-3">
+          <p className="text-gray-600">
+            This action cannot be undone, and the image will be permanently
+            removed from your profile {imageNumber}?
+          </p>
+        </div>
+
+        <div className="flex gap-4">
+          <DialogClose asChild>
+            <Button
+              type="button"
+              className="px-28 py-7 text-sm"
+              onClick={() => {
+                onConfirmDelete();
+                setIsOpen(false);
+              }}
+            >
+              Delete
+            </Button>
+          </DialogClose>
+        </div>
+      </DialogContent>
+    </Dialog>
+  );
+}
 
 export default ImageProfile;

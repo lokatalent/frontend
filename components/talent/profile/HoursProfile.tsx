@@ -1,7 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import { FaPen } from "react-icons/fa";
-import EditAvailability from "./serviceRate/EditAvailablity";
+import EditAvailability from "./edition/EditAvailablity";
 interface Availability {
   [key: string]: {
     isActive: boolean;

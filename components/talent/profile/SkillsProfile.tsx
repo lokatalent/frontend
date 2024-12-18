@@ -43,39 +43,7 @@ const SkillsProfile: React.FC<SkillSetProps> = ({ skillsSet }) => {
             <span>{skill}</span>
           </div>
         ))}
-        {/* <div className="flex items-center space-x-3">
-          <FaCheckCircle color="#DF8600" />
-          <p className="text-sm">Washing</p>
-        </div>
-        <div className="flex items-center space-x-3">
-          <FaCheckCircle color="#DF8600" />
-          <p className="text-sm">Washing</p>
-        </div>
-        <div className="flex items-center space-x-3">
-          <FaCheckCircle color="#DF8600" />
-          <p className="text-sm">Washing</p>
-        </div>
-        <div className="flex items-center space-x-3">
-          <FaCheckCircle color="#DF8600" />
-          <p className="text-sm">Washing</p>
-        </div>
-        <div className="flex items-center space-x-3">
-          <FaCheckCircle color="#DF8600" />
-          <p className="text-sm">Washing</p>
-        </div> */}
-        {/* <div className="grid grid-cols-2 gap-4">
-          {Object.entries(skills).map(([skill, selected]) => (
-            <div className="flex items-center" key={skill}>
-              <input
-                type="checkbox"
-                className="mr-2 h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
-                checked={selected}
-                onChange={handleCheckboxChange(skill)}
-              />
-              <span>{skill}</span>
-            </div>
-          ))}
-        </div> */}
+        
       </div>
     </div>
   );

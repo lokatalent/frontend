@@ -6,8 +6,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import Image from "next/image";
-import Link from "next/link";
 import FileUpload from "@/components/profile/FileUpload";
 import { addFile } from "@/store/talent/profile/TalentProfileSlice";
 import { useDispatch } from "react-redux";
@@ -16,7 +14,7 @@ interface ReviewModalProps {
   linkTo: string;
 }
 
-export default function AddPhoto({ linkTo }: ReviewModalProps) {
+export default function AddPhoto() {
   const dispatch = useDispatch();
 
   return (

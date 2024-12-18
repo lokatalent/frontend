@@ -9,8 +9,8 @@ import { useSelector } from "react-redux";
 import ServiceRate from "@/components/talent/profile/ServiceRate";
 import ReviewCard from "@/components/talent/profile/ReviewCard";
 import Portfolio from "@/components/talent/profile/Portfolio";
-import EditServiceRate from "@/components/talent/profile/serviceRate/EditServiceRate";
-import EditPortfolio from "@/components/talent/profile/serviceRate/EditPortfolio";
+import EditServiceRate from "@/components/talent/profile/edition/EditServiceRate";
+import EditPortfolio from "@/components/talent/profile/edition/EditPortfolio";
 
 interface DataItem {
   title: string;
@@ -266,8 +266,6 @@ export default function Profiles() {
             )}
           </div>
         ) : null}
-
-        
       </div>
     </div>
   );
