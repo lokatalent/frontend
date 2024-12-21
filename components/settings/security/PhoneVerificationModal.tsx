@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import {
   Dialog,
@@ -11,12 +12,9 @@ import InputOTPDemo from "@/components/auth/InputOTP";
 
 const PhoneNumberVerification = () => {
   const [value, setValue] = useState("");
-  
 
   return (
     <Dialog>
-    
-
       <DialogContent className="space-y-4">
         <DialogTitle className="text-center">
           Phone Number verification

@@ -1,9 +1,8 @@
+"use client";
 import TalentDynamicForm from "@/components/ui/form/TalentDynamicForm";
-
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-
 
 // Define your schema
 const schema = z.object({
@@ -14,14 +13,13 @@ const schema = z.object({
   dateofbirth: z.string().nonempty("Start date is required"),
 });
 
-
 function PersonalInfo({ setActiveStep }) {
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(schema),
   });
   const onSubmit = (data: any) => {
-      console.log(data);
-      setActiveStep(1);
+    console.log(data);
+    setActiveStep(1);
     // Additional submit logic here
   };
 

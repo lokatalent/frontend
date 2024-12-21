@@ -1,3 +1,4 @@
+"use client";
 // components/UserProfile.js
 import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -54,13 +55,12 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
   };
 
   const handleAddressForm = () => {
-    if (title === 'Address') {
+    if (title === "Address") {
       router.push("/dashboard/settings/profile/address");
       return;
     }
     return;
-  }
-
+  };
 
   const handleConfirmationClose = () => {
     setIsConfirmationModalOpen(false);

@@ -1,5 +1,5 @@
+"use client";
 import TalentDynamicForm from "@/components/ui/form/TalentDynamicForm";
-
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -33,22 +33,21 @@ const schema = z.object({
   images: z.string().nonempty("Pls upload your images"),
 });
 
-
 function Portfolio({ setActiveStep }: any) {
-    const [availability, setAvailability] = useState<Availability>({
-        Monday: { isActive: true, from: "09:00", to: "04:00" },
-        Tuesday: { isActive: true, from: "10:00", to: "04:00" },
-        Wednesday: { isActive: true, from: "10:30", to: "04:00" },
-        Thursday: { isActive: true, from: "11:30", to: "04:00" },
-        Friday: { isActive: true, from: "09:00", to: "04:00" },
-        Saturday: { isActive: false, from: "", to: "" },
-        Sunday: { isActive: false, from: "", to: "" },
-      });
-      const handleSaveAvailability = (updatedAvailability: any) => {
-        console.log(updatedAvailability);
-        setAvailability(updatedAvailability);
-        // Save the updated availability data to the server or elsewhere
-      };
+  const [availability, setAvailability] = useState<Availability>({
+    Monday: { isActive: true, from: "09:00", to: "04:00" },
+    Tuesday: { isActive: true, from: "10:00", to: "04:00" },
+    Wednesday: { isActive: true, from: "10:30", to: "04:00" },
+    Thursday: { isActive: true, from: "11:30", to: "04:00" },
+    Friday: { isActive: true, from: "09:00", to: "04:00" },
+    Saturday: { isActive: false, from: "", to: "" },
+    Sunday: { isActive: false, from: "", to: "" },
+  });
+  const handleSaveAvailability = (updatedAvailability: any) => {
+    console.log(updatedAvailability);
+    setAvailability(updatedAvailability);
+    // Save the updated availability data to the server or elsewhere
+  };
 
   const dispatch = useDispatch();
   const { control, handleSubmit } = useForm({
@@ -163,7 +162,7 @@ function Portfolio({ setActiveStep }: any) {
                   trigger={true}
                   initialAvailability={availability}
                   onSave={handleSaveAvailability}
-                 />
+                />
               </div>
             </div>
 

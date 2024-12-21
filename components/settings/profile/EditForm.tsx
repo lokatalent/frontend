@@ -1,3 +1,4 @@
+"use client";
 import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
 import {
@@ -11,10 +12,14 @@ import {
 import NameResponse from "./NameResponse";
 import { IoWarningOutline } from "react-icons/io5";
 import { useDispatch, useSelector } from "react-redux";
-import { RootState, setConfirmationMailModal, setEditModal, setNameResponseModal } from "@/store/settings/SettingsSlice";
+import {
+  RootState,
+  setConfirmationMailModal,
+  setEditModal,
+  setNameResponseModal,
+} from "@/store/settings/SettingsSlice";
 import { setInformation } from "@/store/profile/profileSlice";
 import ConfirmationMailModal from "@/components/settings/profile/ConfirmationMailModal";
-
 
 interface FormField {
   type: "name" | "email";
@@ -41,7 +46,6 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
   //////// redux
   const editModal = useSelector((state: RootState) => state.settings.editModal);
   const dispatch = useDispatch();
-  
 
   const validateName = (name: string): boolean => {
     // Basic name validation: at least two words, only letters and spaces
@@ -91,19 +95,19 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
 
     // If all validations pass, open response modal
     if (isValid) {
-      if (form.label === 'Full Name') {
-        dispatch(setInformation({ name: name, reason: reason}));
-        dispatch(setNameResponseModal(true))  
+      if (form.label === "Full Name") {
+        dispatch(setInformation({ name: name, reason: reason }));
+        dispatch(setNameResponseModal(true));
       } else {
         dispatch(setInformation({ email: email }));
         dispatch(setConfirmationMailModal(true));
       }
       setIsResponseModalOpen(true);
-      dispatch(setEditModal(false))
+      dispatch(setEditModal(false));
       // setDefaultOpen(false);
     }
   };
-  console.log(form)
+  console.log(form);
 
   return (
     <>

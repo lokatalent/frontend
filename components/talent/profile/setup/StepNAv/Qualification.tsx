@@ -1,5 +1,5 @@
+"use client";
 import TalentDynamicForm from "@/components/ui/form/TalentDynamicForm";
-
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";

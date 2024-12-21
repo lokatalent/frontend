@@ -1,14 +1,15 @@
+"use client";
 import React from "react";
 import {
   Dialog,
   DialogContent,
   DialogTrigger,
-  DialogClose
+  DialogClose,
 } from "@/components/ui/dialog";
 import { IoIosSend } from "react-icons/io";
 import { Button } from "@/components/ui/button";
 
-const   PasswordChangedModal = () => {
+const PasswordChangedModal = () => {
   return (
     <Dialog>
       <DialogTrigger
@@ -41,7 +42,7 @@ const   PasswordChangedModal = () => {
           </div>
           <div className="mt-5 sm:mt-6">
             <DialogClose asChild>
-            <Button className="px-16 py-6">Done</Button>
+              <Button className="px-16 py-6">Done</Button>
             </DialogClose>
           </div>
         </div>

@@ -1,3 +1,4 @@
+"use client";
 import React, { useRef, useState, useEffect } from "react";
 import { Dialog, DialogContent, DialogTitle } from "@/components/ui/dialog";
 import { IoWarningOutline } from "react-icons/io5";
@@ -11,22 +12,22 @@ import {
 import { z } from "zod";
 import InputOTPDemo from "@/components/auth/InputOTP";
 import { IoIosSend } from "react-icons/io";
-import { RootStateProfile, setInformation, } from "@/store/profile/profileSlice";
+import { RootStateProfile, setInformation } from "@/store/profile/profileSlice";
 
 // Phone number validation schema
 const phoneNumberSchema = z.object({
   number: z
     .string()
     .min(10, "Phone number must be at least 10 digits")
-    .max(15, "Phone number cannot exceed 15 digits")
-    // .regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format"),
+    .max(15, "Phone number cannot exceed 15 digits"),
+  // .regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format"),
 });
 
 const TwoStepVerification: React.FC = () => {
   const twoStepVerification = useSelector(
     (state: RootState) => state.settings.twoStepVerificationModal
   );
-  
+
   const dispatch = useDispatch();
   const numberRef = useRef<HTMLInputElement>(null);
   const [error, setError] = useState("");
@@ -60,7 +61,7 @@ const TwoStepVerification: React.FC = () => {
     try {
       // Validate phone number
       phoneNumberSchema.parse({ number });
-        dispatch(setInformation({ phoneNumber: number }));
+      dispatch(setInformation({ phoneNumber: number }));
 
       // Clear any previous errors
       setError("");

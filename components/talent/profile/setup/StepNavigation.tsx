@@ -1,3 +1,4 @@
+"use client";
 import React, { useState } from "react";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
@@ -5,31 +6,29 @@ import { cn } from "@/lib/utils";
 const steps = [
   {
     id: 1,
-        title: 'Add your personal information',
+    title: "Add your personal information",
     step: 0,
     status: "undone",
   },
   {
     id: 2,
-    title: 'Add your Qualifications',
+    title: "Add your Qualifications",
     step: 0,
     status: "undone",
   },
   {
     id: 3,
-    title: 'Set up your Portfolio',
+    title: "Set up your Portfolio",
     step: 0,
     status: "undone",
   },
   {
     id: 4,
-title: 'Add your service charge and bank details',
+    title: "Add your service charge and bank details",
     step: 0,
     status: "completed",
   },
-
 ];
-
 
 interface activeStep {
   step: 0 | 1 | 2 | 3 | 4;
@@ -90,7 +89,7 @@ const StepNavigation = ({ stepNavHandler, activeSteps, onStepClick }) => {
           return (
             <button
               key={step.id}
-              onClick={() => onStepClick(step.id, 'in-progress')}
+              onClick={() => onStepClick(step.id, "in-progress")}
               className={cn(
                 "w-full p-4 flex items-center justify-between",
                 "rounded-lg transition-colors duration-200",
