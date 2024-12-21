@@ -1,5 +1,6 @@
-import React, { ReactNode } from "react";
+"use client";
 import { X } from "lucide-react";
+import React, { ReactNode } from "react";
 
 interface ModalProps {
   isOpen: boolean;

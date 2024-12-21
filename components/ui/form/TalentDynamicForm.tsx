@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import { Controller } from "react-hook-form";
 import { cn } from "@/lib/utils";
@@ -43,10 +44,10 @@ const TalentDynamicForm: React.FC<FormFieldProps> = ({
   placeholder = "",
   ...props
 }) => {
-  const baseInputStyles = cn("flex w-full rounded-md bg-white h-[3rem] px-3 py-1 text-sm shadow-s transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
-    ,className
-    );
-    
+  const baseInputStyles = cn(
+    "flex w-full rounded-md bg-white h-[3rem] px-3 py-1 text-sm shadow-s transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50",
+    className
+  );
 
   const renderField = ({ field, fieldState: { error } }) => {
     switch (type) {
@@ -78,7 +79,7 @@ const TalentDynamicForm: React.FC<FormFieldProps> = ({
               allowedTypes={acceptedFileTypes}
               maxFileSizeMB={maxFileSizeMB}
               onFileSelect={(file, url) => field.onChange(url)}
-              className={'w-full px-2'}
+              className={"w-full px-2"}
             />
             {error && <FormFieldError error={{ message: error.message }} />}
           </div>

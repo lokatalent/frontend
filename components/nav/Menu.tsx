@@ -1,4 +1,6 @@
+"use client";
 import * as React from "react";
+
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { MdKeyboardArrowDown } from "react-icons/md";
 import { HiOutlineLogout } from "react-icons/hi";

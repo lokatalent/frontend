@@ -1,4 +1,4 @@
-// "use client"
+"use client"
 import React from "react";
 import {
   Popover,
@@ -19,8 +19,8 @@ interface NotificationItem {
   avatar?: string;
 }
 
-async function getNotifications(): Promise<NotificationItem[]> {
-  return [
+// async function getNotifications(): Promise<NotificationItem[]> {
+  const notifications =  [
     {
       id: 1,
       type: "system",
@@ -54,10 +54,10 @@ async function getNotifications(): Promise<NotificationItem[]> {
       avatar: "/Images/dp.png",
     },
   ];
-}
+// }
 
-const NotificationPanel = async () => {
-  const notifications = await getNotifications();
+const NotificationPanel = () => {
+  // const notifications = await getNotifications();
 
   return (
     <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
