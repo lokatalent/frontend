@@ -26,12 +26,16 @@ type Option = {
 };
 
 interface FormFieldProps {
+
   name: any;
+
   label: string;
   type: string;
   error?: FieldError;
   register: UseFormRegister<FormData>;
+
   control: ControllerProps<any>;
+
   disabled?: boolean;
   validation: RegisterOptions;
   width?: string;
