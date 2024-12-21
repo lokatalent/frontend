@@ -1,3 +1,4 @@
+"use client";
 import React from "react";
 import {
   Dialog,
@@ -7,7 +8,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import FileUpload from "@/components/profile/FileUpload";
-import { addFile } from "@/store/talent/profile/TalentProfileSlice";
+import { addFile, removeFile } from "@/store/talent/profile/TalentProfileSlice";
 import { useDispatch } from "react-redux";
 
 interface ReviewModalProps {
@@ -48,17 +49,17 @@ export default function AddPhoto() {
             <FileUpload
               allowedTypes={["image/jpeg", "image/png"]}
               maxFileSizeMB={10}
-              onFileSelect={(file, url) => {
-                // console.log("File selected:", file);
-                // dispatch(setFileStore(file));
-                console.log("File URL:", url);
-                dispatch(
-                  addFile({
-                    id: Math.random() * 1000,
-                    url,
-                    //   name: file.name,
-                  })
-                );
+              onFileUpload={(file, url) => {
+                const newFile = {
+                  name: file.name,
+                  size: file.size,
+                  type: file.type,
+                  lastModified: file.lastModified,
+                };
+                dispatch(addFile({ newFile, url }));
+              }}
+              onFileRemove={(file, url) => {
+                dispatch(removeFile(url));
               }}
               uploadLabel="Upload File"
               dragDropLabel=" or drop here"

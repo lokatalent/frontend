@@ -21,10 +21,12 @@ interface Availability {
 interface EditAvailabilityProps {
   initialAvailability: Availability;
   onSave: (availability: Availability) => void;
+  trigger?: boolean;
 }
 
 const EditAvailability: React.FC<EditAvailabilityProps> = ({
   initialAvailability,
+  trigger,
   onSave,
 }) => {
   const [availability, setAvailability] =
@@ -60,8 +62,12 @@ const EditAvailability: React.FC<EditAvailabilityProps> = ({
 
   return (
     <Dialog>
-      <DialogTrigger asChild>
-        <FaPen color="#3377FF" size={10} />
+      <DialogTrigger>
+        {trigger ? (
+          <p className="underline">Set Availability*</p>
+        ) : (
+          <FaPen color="#3377FF" size={10} />
+        )}
       </DialogTrigger>
 
       <DialogContent className="w-full p-[3rem] sm:max-w-[30rem] lg:max-w-[40rem] max-h-[90vh] overflow-y-auto">
@@ -207,14 +213,13 @@ const EditAvailability: React.FC<EditAvailabilityProps> = ({
           </div>
           <div className="flex justify-center mt-4">
             <DialogClose asChild>
-
-            <button
-              className="bg-blue-500 w-[50%] mx-auto hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md"
-              onClick={handleDone}
+              <button
+                className="bg-blue-500 w-[50%] mx-auto hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md"
+                onClick={handleDone}
               >
-              Done
-            </button>
-              </DialogClose>
+                Done
+              </button>
+            </DialogClose>
           </div>
         </div>
       </DialogContent>

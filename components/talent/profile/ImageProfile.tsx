@@ -1,44 +1,46 @@
 "use client";
-import React, { useState, useRef } from "react";
+
+import React, { useState, useRef, useEffect } from "react";
 import Image from "next/image";
-import {
-  BsPlusCircleDotted,
-  BsThreeDotsVertical,
-  BsTrash,
-} from "react-icons/bs";
+import { BsPlusCircleDotted, BsThreeDotsVertical } from "react-icons/bs";
+import { IoMdClose } from "react-icons/io";
+import { useSelector } from "react-redux";
 import {
   Dialog,
   DialogContent,
   DialogHeader,
-  DialogTitle,
-  DialogClose,
   DialogTrigger,
+  DialogClose,
 } from "@/components/ui/dialog";
-
-import AddPhoto from "./AddPhoto";
-import { IoMdClose } from "react-icons/io";
 import { Button } from "@/components/ui/button";
+import AddPhoto from "./AddPhoto";
+import { RootStateTalentProfile } from "@/store/talent/profile/TalentProfileSlice";
 
-interface ImageProfileProps {
-  isPics: boolean;
-}
-
-const ImageProfile: React.FC<ImageProfileProps> = ({ isPics = true }) => {
+const ImageProfile: React.FC = () => {
+  const [isPics, setIsPics] = useState(false);
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const [images, setImages] = useState([
-    "/Images/Gallery1.png",
-    "/Images/Gallery2.png",
-    "/Images/Gallery3.png",
-  ]);
+  const addedPhoto = useSelector(
+    (state: RootStateTalentProfile) => state.talentProfile.files
+  );
+  const [images, setImages] = useState<string[]>(
+    addedPhoto.map((photo) => photo.url),
+    
+  );
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [modeView, setModeView] = useState<number | null>(null);
-  const [indexToDelete, setIndexToDelete] = useState<number | null>(null);
+
+  useEffect(() => {
+    const updatedImages = [
+      ...images.filter((img) => !addedPhoto.some((photo) => photo.url === img)),
+      ...addedPhoto.map((photo) => photo.url),
+    ];
+    setImages(updatedImages);
+    setIsPics(updatedImages.length > 0);
+  }, [addedPhoto]);
 
   const handleDelete = (index: number) => {
     setModeView(null);
-    const newImages = [...images];
-    newImages.splice(index, 1);
-    setImages(newImages);
+    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
   };
 
   const handleView = (image: string) => {
@@ -52,11 +54,11 @@ const ImageProfile: React.FC<ImageProfileProps> = ({ isPics = true }) => {
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files;
-    if (files && files.length > 0) {
+    if (files) {
       const newImageUrls = Array.from(files).map((file) =>
         URL.createObjectURL(file)
       );
-      setImages([...images, ...newImageUrls]);
+      setImages((prevImages) => [...prevImages, ...newImageUrls]);
     }
   };
 
@@ -71,39 +73,15 @@ const ImageProfile: React.FC<ImageProfileProps> = ({ isPics = true }) => {
       {isPics ? (
         <div className={`flex ${images.length > 3 ? "flex-wrap" : ""} gap-4`}>
           {images.map((image, index) => (
-            <div
+            <ImageCard
               key={index}
-              className="relative h-[188px] w-[210px] bg-gray-100 rounded-lg"
-            >
-              <Image
-                src={image}
-                alt={`Gallery Image ${index + 1}`}
-                className="object-cover rounded-lg"
-                fill
-              />
-              <button
-                onClick={() => toggleModeView(index)}
-                className="absolute top-2 right-2 bg-white hover:bg-gray-300 p-1 rounded-full text-xs"
-              >
-                <BsThreeDotsVertical size={25} color="black" />
-              </button>
-
-              {modeView === index && (
-                <div className="w-[70%] absolute p-1 top-12 right-2 flex flex-col bg-white rounded-lg shadow-md">
-                  <button
-                    onClick={() => handleView(image)}
-                    className="w-full text-start pl-2 rounded-lg py-1 text-[12px] font-bold hover:bg-[#3377FF2E] hover:text-primaryBlue"
-                  >
-                    View Picture
-                  </button>
-
-                  <DeleteImageProfile
-                    onConfirmDelete={() => handleDelete(index)}
-                    imageNumber={index + 1}
-                  />
-                </div>
-              )}
-            </div>
+              image={image}
+              index={index}
+              modeView={modeView}
+              onToggleModeView={toggleModeView}
+              onView={handleView}
+              onDelete={handleDelete}
+            />
           ))}
 
           <div
@@ -124,7 +102,7 @@ const ImageProfile: React.FC<ImageProfileProps> = ({ isPics = true }) => {
       ) : (
         <div className="flex flex-col items-center space-y-3">
           <Image
-            src={"/Images/gallery-slash.png"}
+            src="/Images/gallery-slash.png"
             alt="No photos available"
             width={100}
             height={100}
@@ -135,43 +113,92 @@ const ImageProfile: React.FC<ImageProfileProps> = ({ isPics = true }) => {
       )}
 
       {selectedImage && (
-        <div
-          className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
-          onClick={() => setSelectedImage(null)}
-        >
-          <div className="relative" onClick={(e) => e.stopPropagation()}>
-            <Image
-              src={selectedImage}
-              alt="Selected Image"
-              className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg"
-              width={800}
-              height={600}
-              priority
-            />
+        <ImageViewer
+          image={selectedImage}
+          onClose={() => setSelectedImage(null)}
+        />
+      )}
+    </div>
+  );
+};
 
-            <button
-              className="absolute top-4 right-4 bg-white hover:bg-gray-300 p-2 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
-              onClick={() => setSelectedImage(null)}
-              aria-label="Close Viewer"
-            >
-              <IoMdClose size={18} color="black" />
-            </button>
-          </div>
+const ImageCard: React.FC<{
+  image: string;
+  index: number;
+  modeView: number | null;
+  onToggleModeView: (index: number) => void;
+  onView: (image: string) => void;
+  onDelete: (index: number) => void;
+}> = ({ image, index, modeView, onToggleModeView, onView, onDelete }) => {
+  return (
+    <div className="relative h-[188px] w-[210px] bg-gray-100 rounded-lg">
+      <Image
+        src={image}
+        alt={`Gallery Image ${index + 1}`}
+        className="object-cover rounded-lg"
+        fill
+      />
+      <button
+        onClick={() => onToggleModeView(index)}
+        className="absolute top-2 right-2 bg-white hover:bg-gray-300 p-1 rounded-full text-xs"
+      >
+        <BsThreeDotsVertical size={25} color="black" />
+      </button>
+
+      {modeView === index && (
+        <div className="w-[70%] absolute p-1 top-12 right-2 flex flex-col bg-white rounded-lg shadow-md">
+          <button
+            onClick={() => onView(image)}
+            className="w-full text-start pl-2 rounded-lg py-1 text-[12px] font-bold hover:bg-[#3377FF2E] hover:text-primaryBlue"
+          >
+            View Picture
+          </button>
+
+          <DeleteImageProfile
+            onConfirmDelete={() => onDelete(index)}
+            imageNumber={index + 1}
+          />
         </div>
       )}
     </div>
   );
 };
 
-interface DeleteImageProfileProps {
+const ImageViewer: React.FC<{ image: string; onClose: () => void }> = ({
+  image,
+  onClose,
+}) => {
+  return (
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center bg-black/70"
+      onClick={onClose}
+    >
+      <div className="relative" onClick={(e) => e.stopPropagation()}>
+        <Image
+          src={image}
+          alt="Selected Image"
+          className="max-w-[90vw] max-h-[90vh] object-contain rounded-lg"
+          width={800}
+          height={600}
+          priority
+        />
+
+        <button
+          className="absolute top-4 right-4 bg-white hover:bg-gray-300 p-2 rounded-full shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+          onClick={onClose}
+          aria-label="Close Viewer"
+        >
+          <IoMdClose size={18} color="black" />
+        </button>
+      </div>
+    </div>
+  );
+};
+
+const DeleteImageProfile: React.FC<{
   onConfirmDelete: () => void;
   imageNumber: number;
-}
-
-function DeleteImageProfile({
-  onConfirmDelete,
-  imageNumber,
-}: DeleteImageProfileProps) {
+}> = ({ onConfirmDelete, imageNumber }) => {
   const [isOpen, setIsOpen] = useState(false);
 
   return (
@@ -182,7 +209,7 @@ function DeleteImageProfile({
         </button>
       </DialogTrigger>
       <DialogContent className="w-full p-6 sm:max-w-[25rem] lg:max-w-[30rem]">
-        <DialogHeader></DialogHeader>
+        <DialogHeader />
 
         <div className="w-[3rem] h-[3rem]">
           <Image
@@ -198,7 +225,7 @@ function DeleteImageProfile({
         <div className="my-3">
           <p className="text-gray-600">
             This action cannot be undone, and the image will be permanently
-            removed from your profile {imageNumber}?
+            removed from your profile {imageNumber}.
           </p>
         </div>
 
@@ -219,6 +246,6 @@ function DeleteImageProfile({
       </DialogContent>
     </Dialog>
   );
-}
+};
 
 export default ImageProfile;
