@@ -22,7 +22,7 @@ const NotificationsBar: React.FC<NotificationsBarProps> = ({
       {notifications.map((notification, index) => (
         <div
           key={notification.id}
-          className={`bg-white w-full rounded-br-md rounded-tr-md p-6 flex flex-col sm:flex-row justify-between items-center ${
+          className={`bg-white w-full notify rounded-br-md rounded-tr-md p-6 flex flex-col sm:flex-row justify-between items-center ${
             notification.statusNotification === "unread"
               ? "border-[#DF8600] border-l-[5px]"
               : ""
