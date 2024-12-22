@@ -1,4 +1,6 @@
-// "use client";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import EmptyNotification from "@/components/notifications/EmptyNotification";
 import NotificationsBar from "@/components/notifications/NotificationsBar";
 import OverallNotification from "@/components/notifications/overallNotification";
@@ -9,7 +11,7 @@ type Notification = {
   title: string;
   description: string;
   icon: string;
-  statusNotification: "read" | "unread"; // Added status property
+  statusNotification: "read" | "unread";
   name: string;
   occupation: string;
   location: string;
@@ -29,18 +31,17 @@ type NotificationResponse = {
   notification: Notification[];
 };
 
-
-
-async function NotificationsData(): Promise<NotificationResponse> {
+async function fetchNotifications(): Promise<NotificationResponse> {
+  // Simulating API call
   return {
-    isNotified: true, // Set to true if there are notifications
+    isNotified: true,
     notification: [
       {
         id: "1",
         title: "Booking accepted",
         description:
           "Your booking has been accepted! The talent will arrive as scheduled.",
-        icon: "/Images/sparkles.png", // Corrected path
+        icon: "/Images/sparkles.png",
         statusNotification: "unread",
         name: "Jayden Cooper",
         occupation: "Indoor Cleaner",
@@ -61,7 +62,7 @@ async function NotificationsData(): Promise<NotificationResponse> {
         title: "Booking accepted",
         description:
           "Your booking has been accepted! The talent will arrive as scheduled.",
-        icon: "/Images/sparkles.png", // Corrected path
+        icon: "/Images/sparkles.png",
         statusNotification: "read",
         name: "Gabriel Daramola",
         occupation: "Plumber",
@@ -81,7 +82,7 @@ async function NotificationsData(): Promise<NotificationResponse> {
         title: "Booking accepted",
         description:
           "Your booking has been accepted! The talent will arrive as scheduled.",
-        icon: "/Images/sparkles.png", // Corrected path
+        icon: "/Images/sparkles.png",
         statusNotification: "unread",
         name: "Jayden Cooper",
         occupation: "Indoor Cleaner",
@@ -102,7 +103,7 @@ async function NotificationsData(): Promise<NotificationResponse> {
         title: "Booking Cancelled",
         description:
           "Your booking request has been cancelled lorem ipsum lorem ipsumlorem ipsum lotem lorem bbnnnnnnnlorem ",
-        icon: "/Images/booked-cancel.png", // Corrected path
+        icon: "/Images/booked-cancel.png",
         statusNotification: "unread",
         name: "Mavis Bacon",
         occupation: "Driver",
@@ -121,11 +122,33 @@ async function NotificationsData(): Promise<NotificationResponse> {
   };
 }
 
-export default async function Notification() {
-  const { isNotified, notification } = await NotificationsData();
+export default function Notification() {
+  const [notifications, setNotifications] =
+    useState<NotificationResponse | null>(null);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const data = await fetchNotifications();
+      setNotifications(data);
+      setLoading(false);
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) {
+    return <p>Loading notifications...</p>;
+  }
+
+  if (!notifications || !notifications.isNotified) {
+    return <EmptyNotification />;
+  }
 
   return (
-    
-    <OverallNotification isNotified={isNotified} notifications={notification} />
+    <OverallNotification
+      isNotified={notifications.isNotified}
+      notifications={notifications.notification}
+    />
   );
 }
