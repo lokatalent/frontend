@@ -76,8 +76,6 @@ const DynamicForm = ({
   });
 
   const onSubmit = (data: any) => {
-    console.log("success");
-    console.log(data);
     setSavedData(data);
     if (buttonAction === "reset-password") {
       router.push("./reset-password/verify");
@@ -105,10 +103,6 @@ const DynamicForm = ({
     }
     console.log(error)
     setError(null);
-    // console.log(error);
-
-
-   
     reset();
   };
 
