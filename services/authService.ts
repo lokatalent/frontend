@@ -15,7 +15,7 @@ export const signup = async (values: any) => {
 
 export const signin = async (values: any) => {
   try {
-    let response = await http.post("auth/signin", values);
+    let response = await http.post("auth/signin");
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
     return {
@@ -100,6 +100,58 @@ export const sendResetToken = async (values: any) => {
 export const resetPassword = async (values: any) => {
   try {
     let response = await http.post("auth/reset-password", values);
+    return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err.response.data,
+      status: err.response.status,
+    };
+  }
+};
+
+export const verifyEmailOTP = async (values: any) => {
+  try {
+    let response = await http.patch("auth/verify-otp?verification_type=email", values);
+    return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err.response.data,
+      status: err.response.status,
+    };
+  }
+};
+
+export const sendEmailOTP = async () => {
+  try {
+    let response = await http.get("auth/send-otp?verification_type=email");
+    return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err.response.data,
+      status: err.response.status,
+    };
+  }
+};
+
+export const verifyPhoneOTP = async (values: any) => {
+  try {
+    let response = await http.patch("auth/verify-otp?verification_type=phone", values);
+    return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err.response.data,
+      status: err.response.status,
+    };
+  }
+};
+
+export const sendPhoneOTP = async () => {
+  try {
+    let response = await http.get("auth/send-otp?verification_type=phone");
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
     return {

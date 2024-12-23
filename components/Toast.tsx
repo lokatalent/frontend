@@ -27,7 +27,7 @@ export default function Toast() {
             {showToast && status ? (
                 <div
                     id="toast-top-right"
-                    className={`z-[1000] fixed flex items-center min-w-[250px] max-w-xs py-3 px-4 space-x-4 text-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-sm shadow top-5 right-5 ${status === "success" ? "bg-primaryBlue text-white" : "bg-red-500 text-white"
+                    className={`z-[1000] border border-gray-700 fixed flex items-center min-w-[250px] max-w-xs py-3 px-4 space-x-4 text-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-sm shadow top-5 right-5 ${status === "success" ? "bg-primaryBlue text-white" : "bg-red-500 text-white"
                         }`}
                     role="alert"
                 >
