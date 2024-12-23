@@ -21,8 +21,8 @@ import {
 import PasswordChangedModal from "@/components/settings/security/PasswordChangedModal";
 import PhoneNumberVerification from "@/components/settings/security/PhoneVerificationModal";
 import { showToast } from "@/store/auth/toastSlice";
-import { sendEmailOTP, signin, signup } from "@/services/authService";
-import { onSignUp, setLoggedin, setUser } from "@/store/auth/authSlice";
+import { forgotPassword, sendEmailOTP, signin, signup } from "@/services/authService";
+import { onForgotPassword, onSignUp, setLoggedin, setUser } from "@/store/auth/authSlice";
 import { loginTest } from "@/services/axiosTest";
 
 interface DefaultValues {
@@ -86,8 +86,18 @@ const DynamicForm = ({
   const onSubmit = async (data: any) => {
     setSavedData(data);
     if (buttonAction === "reset-password") {
-      console.log(data)
-      router.push("./reset-password/verify");
+      const response = await forgotPassword(data);
+      if (!response.error) {
+        dispatch(onForgotPassword(data.email))
+        router.push("./reset-password/verify");
+      } else {
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(response.data),
+          })
+        );
+      }
     } else if (buttonAction === "sign-up") {
       // check passwords
       if (data.newPassword !== data.confirmPassword) {
@@ -251,7 +261,7 @@ const DynamicForm = ({
             </div>
           )}
         </div>
-        <div>
+        <div className="w-full max-w-xl mx-auto">
           {buttonAction == "new-password" ? (
             <ResetDialog />
           ) : buttonAction === "addressVerification" &&
@@ -265,15 +275,15 @@ const DynamicForm = ({
           ) : buttonAction === "twoStepVerification" ? (
             <PhoneNumberVerification />
           ) : (
-            <div className="space-y-5 flex itms-center flex-col">
+            <div className="space-y-5 flex itms-center flex-col w-full">
               <button
                 type="submit"
                 // disabled={true}
                 className={`${
                   buttonAction === "changePassword"
-                    ? "!w-[23rem] mt-10"
-                    : "mx-auto  flex-center"
-                } text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[10rem] md:w-[15rem] lg:w-[30rem] rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] `}
+                    ? "mt-10"
+                    : "flex-center"
+                } text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-full rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] `}
               >
                 {buttonAction === "log-in"
                   ? "Login"
