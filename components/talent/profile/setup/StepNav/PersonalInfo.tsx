@@ -13,7 +13,7 @@ const schema = z.object({
   dateofbirth: z.string().nonempty("Start date is required"),
 });
 
-function PersonalInfo({ setActiveStep }) {
+function PersonalInfo({ setActiveStep }: any) {
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(schema),
   });

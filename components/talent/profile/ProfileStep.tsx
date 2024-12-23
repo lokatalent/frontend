@@ -4,17 +4,13 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Form from "@/components/ui/form";
-import Image from "next/image";
-import dp from "../../../public/Images/dp.png";
-import PersonalInfo from "./setup/StepNAv/PersonalInfo";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import Qualification from "./setup/StepNAv/Qualification";
-import Portfolio from "./setup/StepNAv/Portfolio";
-import ServiceCharge from "./setup/StepNAv/ServiceCharge";
+import PersonalInfo from "./setup/StepNav/PersonalInfo";
+import Qualification from "./setup/StepNav/Qualification";
+import Portfolio from "./setup/StepNav/Portfolio";
+import ServiceCharge from "./setup/StepNav/ServiceCharge";
 
 const steps = [
   "Personal Information",
@@ -50,182 +46,7 @@ const steps1 = [
   },
 ];
 
-const dataPersonal = [
-  {
-    label: "Gender",
-    error: "Input a valid gender",
-    type: "input",
-    isImportant: true,
-    selection: true,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-  {
-    label: "Date of Birth",
-    error: "Input a valid date of Birth",
-    type: "input",
-    isImportant: true,
-    selection: false,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-  {
-    label: "Postal Code",
-    error: "Input a valid postal Code",
-    type: "input",
-    isImportant: true,
-    selection: false,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-  {
-    label: "Language",
-    error: "Input a valid Language",
-    type: "input",
-    isImportant: true,
-    selection: false,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-];
-const dataPortfolio = [
-  {
-    label: "Select University",
-    error: "Select your University",
-    type: "input",
-    isImportant: false,
-    selection: true,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-  {
-    label: "Highest Degree Qualification",
-    error: "Select a Highest Degree Qualification",
-    type: "input",
-    isImportant: false,
-    selection: true,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-  {
-    label: "Field of Study",
-    error: "Selct a field of study",
-    type: "input",
-    isImportant: false,
-    selection: true,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-  {
-    label: "Start Date",
-    error: "Select a valid Start Date",
-    type: "input",
-    isImportant: false,
-    selection: false,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-  {
-    label: "End Date or Expected End Date",
-    error: "Select a valid End Date",
-    type: "input",
-    isImportant: false,
-    selection: false,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-  {
-    label: "Service Category",
-    error: "Select a service",
-    type: "input",
-    isImportant: true,
-    selection: true,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-  {
-    label: "Years of Experience",
-    error: "Select a number of years of experience",
-    type: "input",
-    isImportant: true,
-    selection: false,
-    width: "w-[52rem]",
-  },
-  {
-    label: "Upload Your Certifications",
-    error: "Upload your certificates",
-    type: "file",
-    isImportant: true,
-    selection: false,
-    width: "w-[52rem] py-[1rem]",
-  },
-  {
-    label: "Upload Your Images",
-    error: "Upload your images",
-    type: "file",
-    isImportant: true,
-    selection: false,
-    width: "w-[52rem] py-[1rem]",
-  },
-];
-const dataService = [
-  {
-    label: "Rate Per Service",
-    error: "Select a Rate Per Service*",
-    type: "input",
-    isImportant: true,
-    selection: false,
-    width: "w-[52rem]",
-  },
-  {
-    label: "Rate Per Hour",
-    error: "Select a number of Rate Per Hour*",
-    type: "input",
-    isImportant: true,
-    selection: false,
-    width: "w-[52rem]",
-  },
-  {
-    label: "Bank Name (Select bank you want to use to receive your payment)",
-    error: "Select a number of Bank Name",
-    type: "input",
-    isImportant: true,
-    selection: true,
-    width: "w-[52rem]",
-  },
-  {
-    label: "Account Number*",
-    error: "Select a Account Number*",
-    type: "input",
-    isImportant: true,
-    selection: false,
-    width: "w-[52rem]",
-  },
-];
-const dataVerify = [
-  {
-    label: "Address Verification",
-    error: "Input a valid gender",
-    type: "input",
-    isImportant: true,
-    selection: true,
-    width: "w-[52rem]",
-  },
-  {
-    label: "Upload the Document",
-    error: "Input a valid date of Birth",
-    type: "file",
-    isImportant: true,
-    selection: false,
-    width: "w-[52rem] py-[1rem]",
-  },
-  {
-    label: "ID Type",
-    error: "Input a valid postal Code",
-    type: "input",
-    isImportant: true,
-    selection: true,
-    width: "w-[52rem]",
-  },
-  {
-    label: "BVN",
-    error: "Input a valid Language",
-    type: "input",
-    isImportant: true,
-    selection: false,
-    width: "w-[52rem]",
-  },
-];
+
 
 export default function ProfileStep() {
   const [activeStep, setActiveStep] = React.useState(-1);
@@ -251,28 +72,8 @@ export default function ProfileStep() {
     setSkipped(newSkipped);
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
 
-  // const handleSkip = () => {
-  //   if (!isStepOptional(activeStep)) {
-  //     // You probably want to guard against something like this,
-  //     // it should never occur unless someone's actively trying to break something.
-  //     throw new Error("You can't skip a step that isn't optional.");
-  //   }
 
-  //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  //   setSkipped((prevSkipped) => {
-  //     const newSkipped = new Set(prevSkipped.values());
-  //     newSkipped.add(activeStep);
-  //     return newSkipped;
-  //   });
-  // };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
 
   return (
     <Box
