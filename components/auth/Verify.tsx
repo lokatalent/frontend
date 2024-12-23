@@ -9,6 +9,11 @@ import { Button } from "@/components/ui/button";
 import email from "@/public/Images/email.png";
 import number from "@/public/Images/number.png";
 import { useRouter } from "next/navigation";
+import { sendEmailOTP, sendPhoneOTP, verifyEmailOTP } from "@/services/authService";
+import { showToast } from "@/store/auth/toastSlice";
+import { errorHandler } from "@/lib/utils";
+import { useDispatch } from "react-redux";
+import { setLoggedin } from "@/store/auth/authSlice";
 
 interface Verify {
   title: string;
@@ -22,11 +27,24 @@ const Verify = () => {
   const [isError, setIsError] = useState<boolean>(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [isResend, setIsResend] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
-  function resendHandler() {
+  const resendHandler = async () => {
+    const response: any = await isEmail ? sendEmailOTP() : sendPhoneOTP();
+    if (!response.error) {
+      setIsResend(true);
+      // redirect to verify account
+    } else {
+      dispatch(
+        showToast({
+          status: "error",
+          message: errorHandler(response.data),
+        })
+      );
+    }
     // setIsResend((resend) => !resend);
-    setIsResend(true);
-  }
+   
+  };
 
   useEffect(() => {
     setTimeout(() => {
@@ -40,16 +58,30 @@ const Verify = () => {
     }, 2000);
   }, [isResend]);
 
-  const handleVerify = () => {
-    // if ()
+  const handleVerify = async () => {
     if (value.length !== 6) {
       setIsError(true);
       return;
     }
-    setIsError(false);
-    setIsSuccess(true);
+    // verify OTP
+    let data = {
+      verification_code: value,
+    };
+    const response = await verifyEmailOTP(data);
+    if (!response.error) {
+      setIsError(false);
+      setIsSuccess(true);
+    } else {
+      dispatch(
+        showToast({
+          status: "error",
+          message: errorHandler(response.data),
+        })
+      );
+    }
     // router.push('./verified')
   };
+
   return (
     <div className="">
       <div
@@ -105,8 +137,11 @@ const Verify = () => {
         </div>
 
         <div className="flex gap-2 justify-center text text-center font-sans text-sm md:text-base leading-[30px] ">
-          Didn’t get a code? 
-          <button className="text-[#3377FF] font-semibold" onClick={resendHandler}>
+          Didn’t get a code?
+          <button
+            className="text-[#3377FF] font-semibold"
+            onClick={resendHandler}
+          >
             Resend Code
           </button>
         </div>
@@ -118,7 +153,10 @@ const Verify = () => {
           content="Your email address has been successfully verified.
 You can now enjoy full access to all our features and services."
           btn="Proceed to Dashboard"
-          onClick={() => router.push("/user/dashboard")}
+          onClick={() => {
+            dispatch(setLoggedin(true));
+            router.push("/dashboard");
+          }}
         />
       </div>
     </div>
