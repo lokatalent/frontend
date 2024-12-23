@@ -3,7 +3,7 @@ import { RegisterOptions } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
 
-export const baseUrl = "https://api.staging.lokatalent.com"
+export const baseUrl = "https://api.staging.lokatalent.com/"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));

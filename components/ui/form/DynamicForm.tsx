@@ -81,7 +81,21 @@ const DynamicForm = ({
       router.push("./reset-password/verify");
     }
     if (buttonAction === "sign-up") {
-      router.push(`${pathname}/verify`);
+      // check passwords
+      if (data.newPassword !== data.confirmPassword) {
+        return
+      }
+
+      let temp = {
+        "first_name": data.firstName,
+        "last_name": data.lastName,
+        "email": data.email,
+          "phone_num": data.number,
+        "password": data.newPassword
+      }
+
+      console.log("Hi there", temp)
+      // router.push(`${pathname}/verify`);
     }
     if (buttonAction === "log-in") {
       router.push("/dashboard");
