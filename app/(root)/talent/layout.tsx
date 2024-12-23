@@ -15,7 +15,7 @@ export default function RootLayout({
   return (
     <>
       {loggedIn && (
-        <div className="bg-bgWhite  main-contain min-h-screen">
+        <div className="bg-bgWhite main-contain min-h-screen">
           <div className="flex flex-row">
             <div className="sidenav-container">
               <SideNav talent={true} />
@@ -25,7 +25,7 @@ export default function RootLayout({
             </div>
           </div>
 
-          <div className="main-content pl-[2rem] pr-[2rem] md:pl-[14rem] md:pr-[2rem] pt-20 pb-10">
+          <div className="main-content pl-[2rem] pr-[2rem] md:pl-[14rem] md:pr-[2rem] pt-5 pb-10">
             {children}
           </div>
         </div>

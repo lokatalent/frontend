@@ -63,7 +63,7 @@ export default async function Bookings() {
             data={BookingData}
             isRole={true}
             isSort={true}
-            path="/talent/dashboard/bookings/"
+            path="talent/dashboard/bookings/"
             talent={true}
           />
         </div>
