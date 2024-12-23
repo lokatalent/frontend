@@ -6,7 +6,7 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import ResetDialog from "@/components/auth/ResetDialog";
-import { FieldConfig } from "@/lib/utils";
+import { errorHandler, FieldConfig } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
@@ -16,6 +16,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { RootStateProfile, setInformation, setProfileDetails } from "@/store/profile/profileSlice";
 import PasswordChangedModal from "@/components/settings/security/PasswordChangedModal";
 import PhoneNumberVerification from "@/components/settings/security/PhoneVerificationModal";
+import { showToast } from "@/store/auth/toastSlice";
+import { signup } from "@/services/authService";
+import { onSignUp } from "@/store/auth/authSlice";
 
 interface DefaultValues {
   firstName?: string;
@@ -59,7 +62,7 @@ const DynamicForm = ({
     (state: RootStateProfile) => state.profile.verification
   );
   const file = useSelector((state: RootStateProfile) => state.profile.file);
- 
+
   const dispatch = useDispatch();
 
   // const file = sessionStorage.getItem("selectedFile");
@@ -75,7 +78,7 @@ const DynamicForm = ({
     defaultValues,
   });
 
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     setSavedData(data);
     if (buttonAction === "reset-password") {
       router.push("./reset-password/verify");
@@ -83,19 +86,39 @@ const DynamicForm = ({
     if (buttonAction === "sign-up") {
       // check passwords
       if (data.newPassword !== data.confirmPassword) {
-        return
+        return dispatch(
+          showToast({
+            status: "error",
+            message: "",
+          })
+        );
       }
 
       let temp = {
         "first_name": data.firstName,
         "last_name": data.lastName,
         "email": data.email,
-          "phone_num": data.number,
+        "phone_num": data.number,
         "password": data.newPassword
       }
 
-      console.log("Hi there", temp)
-      // router.push(`${pathname}/verify`);
+      const response = await signup(temp);
+      if (!response.error) {
+        dispatch(onSignUp(response.data.email))
+        // router.push(`${pathname}/verify`);
+      } else {
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(response.data),
+          })
+        );
+      }
+
+      dispatch(showToast({
+        status: "success",
+        message: "We are live!"
+      }))
     }
     if (buttonAction === "log-in") {
       router.push("/dashboard");
@@ -113,9 +136,9 @@ const DynamicForm = ({
       router.push("/dashboard/profile/verify");
     }
     if (buttonAction === 'edit-address') {
-      dispatch(setInformation({ state: data.state, address: data.address, city: data.city}))
+      dispatch(setInformation({ state: data.state, address: data.address, city: data.city }))
     }
-    console.log(error)
+    // console.log(error)
     setError(null);
     reset();
   };
@@ -135,19 +158,17 @@ const DynamicForm = ({
     <div className="w-full md:px-6 mt-5">
       <form
         onSubmit={handleSubmit(onSubmit, onError)}
-        className={` ${
-          buttonAction === "changePassword"
-            ? ""
-            : "flex flex-col justify-center items-center gap-6 w-full"
-        }`}
+        className={` ${buttonAction === "changePassword"
+          ? ""
+          : "flex flex-col justify-center items-center gap-6 w-full"
+          }`}
       >
         <div className="w-full">
           <div
-            className={`grid w-full ${
-							fields.length > 3
-								? "md:grid-cols-2 w-full"
-								: "grid-cols-1"
-						}  justify-center items-center gap-4`}
+            className={`grid w-full ${fields.length > 3
+              ? "md:grid-cols-2 w-full"
+              : "grid-cols-1"
+              }  justify-center items-center gap-4`}
           >
             {fields.map((field) => (
               // <div key={field.name}>
@@ -166,7 +187,7 @@ const DynamicForm = ({
                 styles={styles}
                 options={field.options}
                 buttonAction={buttonAction}
-                // fileHandlerOptions={fileHandlerOptions}
+              // fileHandlerOptions={fileHandlerOptions}
               />
               // </div>s
             ))}
@@ -201,17 +222,16 @@ const DynamicForm = ({
               <button
                 type="submit"
                 // disabled={true}
-                className={`${
-                  buttonAction === "changePassword"
-                    ? "!w-[23rem] mt-10"
-                    : "mx-auto  flex-center"
-                } text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[10rem] md:w-[15rem] lg:w-[30rem] rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] `}
+                className={`${buttonAction === "changePassword"
+                  ? "!w-[23rem] mt-10"
+                  : "mx-auto  flex-center"
+                  } text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[10rem] md:w-[15rem] lg:w-[30rem] rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] `}
               >
                 {buttonAction === "log-in"
                   ? "Login"
                   : buttonAction === "reset-password"
-                  ? "Send Reset Link"
-                  : "Submit"}
+                    ? "Send Reset Link"
+                    : "Submit"}
               </button>
 
               {buttonAction === "log-in" || buttonAction === "sign-up" ? (

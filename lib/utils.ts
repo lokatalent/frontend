@@ -9,6 +9,21 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const errorHandler = (err: any) => {
+  console.log(err);
+  if (!err) return;
+  let errMsg;
+  if (err.message) errMsg = err.message;
+  else if (err.data?.message) errMsg = err.data?.message;
+  else if (err.error === "TypeError: Failed to fetch")
+    errMsg = "Check your network and try again";
+  else if (err.error) errMsg = err.error;
+  else if (err.data?.error && typeof err.data?.error === "string")
+    errMsg = err.data.error;
+  else errMsg = "An error occured";
+  return errMsg;
+};
+
 export const SignUpFormSchema1 = () =>
   z.object({
     text: z.string().min(2),
