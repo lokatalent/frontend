@@ -3,20 +3,14 @@ import ProfileCompletion from "@/components/profile/ProfileCompletion";
 import ProfileDetails from "@/components/profile/ProfileDetails";
 import { Button } from "@/components/ui/button";
 import { RootStateProfile } from "@/store/profile/profileSlice";
-import { FaCheckCircle } from "react-icons/fa";
-import { BsThreeDotsVertical } from "react-icons/bs";
 import Image from "next/image";
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
-import { Avatar } from "@/components/ui/avatar";
-import { BsPlusCircleDotted } from "react-icons/bs";
-import ProfilePics from "@/components/ui/gen/ProfilePics";
-import { FaStar } from "react-icons/fa";
-import { FaPen } from "react-icons/fa6";
-
 import ServiceRate from "@/components/talent/profile/ServiceRate";
 import ReviewCard from "@/components/talent/profile/ReviewCard";
 import Portfolio from "@/components/talent/profile/Portfolio";
+import EditServiceRate from "@/components/talent/profile/editing/EditServiceRate";
+import EditPortfolio from "@/components/talent/profile/editing/EditPortfolio";
 
 interface DataItem {
   title: string;
@@ -34,6 +28,13 @@ export default function Profiles() {
     (state: RootStateProfile) => state.profile.information
   );
   const [method, setMethod] = useState("personal");
+  const IserviceRate = {
+    bankName: "Zenith Bank",
+    accountNo: "1234567789",
+    rps: "2500",
+    rph: "1100",
+  };
+  const [serviceRate, setServiceRate] = useState(IserviceRate);
 
   const handleMethodChange = (method: string) => {
     setMethod(method);
@@ -91,6 +92,44 @@ export default function Profiles() {
     },
   ];
 
+  const [portfolioData1, setPortfolioData1] = useState({
+    experience: "2",
+    bio: "John Smith",
+    serviceRadius: "1 - 4km",
+    skillsSet: {
+      Washing: false,
+      Sweeping: true,
+      Cleaning: false,
+      Driving: false,
+      Cooking: true,
+    },
+  });
+
+  const handleSkillChange = (skill: string, value: boolean) => {
+    setPortfolioData1((prevData) => ({
+      ...prevData,
+      skillsSet: {
+        ...prevData.skillsSet,
+        [skill]: value,
+      },
+    }));
+  };
+
+  const handleServiceRate = (service) => {
+    console.log(service);
+    setServiceRate(service);
+  };
+  const handlePortfolio = (service) => {
+    console.log(service);
+    // setServiceRate(service);
+    setPortfolioData1((prevSkills) => ({
+      ...prevSkills,
+      experience: service.experience,
+      bio: service.bio,
+      // [skill]: value,
+    }));
+  };
+
   const activeMethod =
     "rounded-none border-b-2 border-primaryBlue  text-primaryBlue pb-1";
 
@@ -132,7 +171,7 @@ export default function Profiles() {
         <div></div>
       </div>
 
-      <ProfileCompletion />
+      <ProfileCompletion addText="You are not done with your profile set up. Complete it now" />
 
       <div className="card mt-12">
         <div className="flex items-center mb-8 justify-between">
@@ -182,24 +221,27 @@ export default function Profiles() {
               </Button>
             </div>
           </div>
-          {method === "portfolio" ||
-            method === "service" ? (
-              <div className="bg-[#F5F5F5] rounded-full h-8 w-8 flex-center mr-10 ">
-                <FaPen color="#3377FF" size={10} />
-              </div>
-            ): null}
+          {method === "service" ? (
+            <EditServiceRate serviceRateEdited={handleServiceRate} />
+          ) : method === "portfolio" ? (
+            <EditPortfolio
+              portfolioRateEdited={handlePortfolio}
+              skills={portfolioData1.skillsSet}
+              onSkillChange={handleSkillChange}
+            />
+          ) : null}
         </div>
 
         {method === "personal" ? <ProfileDetails details={data} /> : null}
         {method === "portfolio" ? (
-          <Portfolio isData={true} data={null} />
+          <Portfolio isData={true} data={portfolioData1} />
         ) : null}
         {method === "service" ? (
-          <ServiceRate isData={false} data={null} />
+          <ServiceRate isData={true} data={serviceRate} />
         ) : null}
         {method === "reviews" ? (
           <div className="card divide-y-[2px] divide-gray-300">
-            {reviews.length > 3 ? (
+            {reviews.length > 1 ? (
               <div>
                 {reviews.map((review, index) => (
                   <ReviewCard
@@ -224,32 +266,6 @@ export default function Profiles() {
             )}
           </div>
         ) : null}
-
-        {/* <div className="card">
-          <div className="flex items-center bg-white shadow-md space-x-6 rounded-lg p-4">
-            <div className="">
-              <ProfilePics isProfile={"/Images/review.png"} isEdit={false} />
-            </div>
-            <div>
-              <div className="flex justify-between items-start text-gray-800">
-                <p className="text-xl">Daniella Doe</p>
-                <div className="flex space-x-1 items-center mt-2">
-                  <FaStar color="#FFAC33" />
-                  <FaStar color="#FFAC33" />
-                  <FaStar color="#FFAC33" />
-                  <FaStar color="#FFAC33" />
-                  <FaStar color="#D6DDEB" />
-                </div>
-              </div>
-              <p className="text-gray-600 text-sm">
-                Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-                lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-                lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum
-                lorem ipsum
-              </p>
-            </div>
-          </div>
-        </div> */}
       </div>
     </div>
   );
