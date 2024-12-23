@@ -1,13 +1,20 @@
+"use client";
 import React from "react";
-import { FaCheckCircle } from "react-icons/fa";
 
-function SkillsProfile() {
+type SkillsProfileProps = {
+  skillsSet: {
+    bio: string;
+    experience: number;
+    skillsSet: { [key: string]: boolean };
+  };
+};
+
+const SkillsProfile: React.FC<SkillsProfileProps> = ({ skillsSet }) => {
   return (
     <div className="card space-y-7">
       <div className="flex items-center justify-between">
         <div className="bg-[#DF86000F] text-[#DF8600] text-sm w-[18rem] p-3 py-5">
-          Bio: I am a cleaner with experience of over two years and a dedicated
-          person
+          Bio: {skillsSet.bio}
         </div>
         <div>
           <p>Service Radius</p>
@@ -15,38 +22,32 @@ function SkillsProfile() {
         </div>
         <div>
           <p>Years of Experience</p>
-          <p>2 Years</p>
+          <p>{skillsSet.experience} Years</p>
         </div>
         <div>
           <p>Available to Work</p>
           <p>Yes</p>
         </div>
       </div>
-      <div className="flex space-x-5">
+      <div>
         <p>Skill Set</p>
-        <div className="flex items-center space-x-3">
-          <FaCheckCircle color="#DF8600" />
-          <p className="text-sm">Washing</p>
-        </div>
-        <div className="flex items-center space-x-3">
-          <FaCheckCircle color="#DF8600" />
-          <p className="text-sm">Washing</p>
-        </div>
-        <div className="flex items-center space-x-3">
-          <FaCheckCircle color="#DF8600" />
-          <p className="text-sm">Washing</p>
-        </div>
-        <div className="flex items-center space-x-3">
-          <FaCheckCircle color="#DF8600" />
-          <p className="text-sm">Washing</p>
-        </div>
-        <div className="flex items-center space-x-3">
-          <FaCheckCircle color="#DF8600" />
-          <p className="text-sm">Washing</p>
+        <div className="flex flex-wrap space-x-5">
+          {Object.entries(skillsSet.skillsSet).map(([skill, isChecked]) => (
+            <label key={skill} className="flex items-center space-x-2 text-sm">
+              <input
+                type="checkbox"
+                className="h-4 w-4 text-blue-600 focus:ring-blue-500 border-gray-300 rounded"
+                checked={isChecked}
+                readOnly
+                aria-label={skill}
+              />
+              <span>{skill}</span>
+            </label>
+          ))}
         </div>
       </div>
     </div>
   );
-}
+};
 
 export default SkillsProfile;

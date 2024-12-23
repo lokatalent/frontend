@@ -1,40 +1,70 @@
 "use client";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
-interface Image {
-  id: string; // Unique ID for each image
-  name: string;
+interface ImageNew {
+  newFile: {
+    name: string;
+    size: number;
+    type: string;
+  };
   url: string;
 }
 
-interface ProfileState {
-  files: Image[]; // Array to store images
+interface TalentProfileState {
+  files: ImageNew[]; // Array to store images
 }
 
-const initialState: ProfileState = {
-  files: [],
+export interface RootStateTalentProfile {
+  talentProfile: TalentProfileState; // Nested state structure
+}
+
+// Initial state
+const initialState: TalentProfileState = {
+  files: [
+    {
+      newFile: {
+        name: "",
+        size: 1,
+        type: "1",
+      },
+      url: "/Images/Gallery1.png",
+    },
+  ],
 };
 
-const TalentprofileSlice = createSlice({
+// Redux slice for Talent Profile
+const talentProfileSlice = createSlice({
   name: "TalentProfile",
   initialState,
   reducers: {
-    // Add a new image to the list
-    addFile: (state, action: PayloadAction<Image>) => {
+    /**
+     * Add a new image to the list.
+     * @param state - Current state.
+     * @param action - Payload containing the new image.
+     */
+    addFile: (state, action: PayloadAction<ImageNew>) => {
       state.files.push(action.payload);
     },
 
-    // Remove an image by ID
+    /**
+     * Remove an image by its URL.
+     * @param state - Current state.
+     * @param action - Payload containing the URL of the image to remove.
+     */
     removeFile: (state, action: PayloadAction<string>) => {
-      state.files = state.files.filter((file) => file.id !== action.payload);
+      state.files = state.files.filter((file) => file.url !== action.payload);
     },
 
-    // Clear all files
+    /**
+     * Clear all images from the list.
+     * @param state - Current state.
+     */
     clearFiles: (state) => {
       state.files = [];
     },
   },
 });
 
-export const { addFile, removeFile, clearFiles } = TalentprofileSlice.actions;
-export default TalentprofileSlice.reducer;
+// Export actions and reducer
+export const { addFile, removeFile, clearFiles } = talentProfileSlice.actions;
+export default talentProfileSlice.reducer;

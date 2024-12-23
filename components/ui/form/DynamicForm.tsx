@@ -1,19 +1,29 @@
+"use client";
+
 // DynamicForm.tsx
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import ResetDialog from "@/components/auth/ResetDialog";
-import { FieldConfig } from "@/lib/utils";
+import { errorHandler, FieldConfig, formatPhone, setToken } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { FormField } from "./FormField";
 import ReviewModal from "@/components/profile/ReviewModal";
 import { useDispatch, useSelector } from "react-redux";
-import { RootStateProfile, setInformation, setProfileDetails } from "@/store/profile/profileSlice";
+import {
+  RootStateProfile,
+  setInformation,
+  setProfileDetails,
+} from "@/store/profile/profileSlice";
 import PasswordChangedModal from "@/components/settings/security/PasswordChangedModal";
 import PhoneNumberVerification from "@/components/settings/security/PhoneVerificationModal";
+import { showToast } from "@/store/auth/toastSlice";
+import { forgotPassword, sendEmailOTP, signin, signup } from "@/services/authService";
+import { onForgotPassword, onSignUp, setLoggedin, setUser } from "@/store/auth/authSlice";
+import { loginTest } from "@/services/axiosTest";
 
 interface DefaultValues {
   firstName?: string;
@@ -36,7 +46,7 @@ interface DynamicForm {
   buttonAction: string;
   schemaType: any;
   width: string;
-  styles?: string
+  styles?: string;
 }
 
 const DynamicForm = ({
@@ -45,7 +55,7 @@ const DynamicForm = ({
   schemaType,
   buttonAction,
   width,
-  styles
+  styles,
 }: DynamicForm) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -57,7 +67,7 @@ const DynamicForm = ({
     (state: RootStateProfile) => state.profile.verification
   );
   const file = useSelector((state: RootStateProfile) => state.profile.file);
- 
+
   const dispatch = useDispatch();
 
   // const file = sessionStorage.getItem("selectedFile");
@@ -73,20 +83,101 @@ const DynamicForm = ({
     defaultValues,
   });
 
-  const onSubmit = (data: any) => {
-    console.log("success");
-    console.log(data);
+  const onSubmit = async (data: any) => {
     setSavedData(data);
     if (buttonAction === "reset-password") {
-      router.push("./reset-password/verify");
-    }
-    if (buttonAction === "sign-up") {
-      router.push(`${pathname}/verify`);
-    }
-    if (buttonAction === "log-in") {
-      router.push("/dashboard");
-    }
-    if (buttonAction === "profile-edit") {
+      const response = await forgotPassword(data);
+      if (!response.error) {
+        dispatch(onForgotPassword(data.email))
+        router.push("./reset-password/verify");
+      } else {
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(response.data),
+          })
+        );
+      }
+    } else if (buttonAction === "sign-up") {
+      // check passwords
+      if (data.newPassword !== data.confirmPassword) {
+        return dispatch(
+          showToast({
+            status: "error",
+            message: "",
+          })
+        );
+      }
+
+      let temp = {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        phone_num: formatPhone(data.number),
+        password: data.newPassword,
+      };
+
+      const response = await signup(temp);
+      if (!response.error) {
+        router.push(`/login`);
+      } else {
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(response.data),
+          })
+        );
+      }
+    } else if (buttonAction === "log-in") {
+      let temp = {
+        email: data.email,
+        password: data.password,
+      };
+
+      const response = await signin(temp);
+      if (!response.error) {
+        let data = response.data;
+        // save tokens
+        setToken(data.tokens.access_token, data.tokens.refresh_token);
+          // save user
+          dispatch(setUser(data.user));
+        if (data.user.isVerified) {
+          // set logged in
+          dispatch(setLoggedin(true));
+          // route to dashboard
+          router.push(`/dashboard`);
+        } else {
+          // send OTP
+          const response = await sendEmailOTP();
+          if (!response.error) {
+            dispatch(
+              showToast({
+                status: "success",
+                message:
+                  "Verify your account. An OTP has been sent to your email",
+              })
+            );
+            // redirect to verify account
+            return router.push(`/verify`);
+          } else {
+            dispatch(
+              showToast({
+                status: "error",
+                message: errorHandler(response.data),
+              })
+            );
+          }
+        }
+      } else {
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(response.data),
+          })
+        );
+      }
+      // router.push("/dashboard");
+    } else if (buttonAction === "profile-edit") {
       dispatch(setProfileDetails(data));
       dispatch(
         setInformation({
@@ -97,20 +188,19 @@ const DynamicForm = ({
         })
       );
       router.push("/dashboard/profile/verify");
+    } else if (buttonAction === "edit-address") {
+      dispatch(
+        setInformation({
+          state: data.state,
+          address: data.address,
+          city: data.city,
+        })
+      );
     }
-    if (buttonAction === 'edit-address') {
-      dispatch(setInformation({ state: data.state, address: data.address, city: data.city}))
-    }
-    console.log(error)
+    // console.log(error)
     setError(null);
-    // console.log(error);
-
-
-   
     reset();
   };
-
-
 
   // console.log(pathname);
   const onError = (data: any) => {
@@ -134,10 +224,8 @@ const DynamicForm = ({
         <div className="w-full">
           <div
             className={`grid w-full ${
-							fields.length > 3
-								? "md:grid-cols-2 w-full"
-								: "grid-cols-1"
-						}  justify-center items-center gap-4`}
+              fields.length > 3 ? "md:grid-cols-2 w-full" : "grid-cols-1"
+            }  justify-center items-center gap-4`}
           >
             {fields.map((field) => (
               // <div key={field.name}>
@@ -173,7 +261,7 @@ const DynamicForm = ({
             </div>
           )}
         </div>
-        <div>
+        <div className="w-full max-w-xl mx-auto">
           {buttonAction == "new-password" ? (
             <ResetDialog />
           ) : buttonAction === "addressVerification" &&
@@ -187,15 +275,15 @@ const DynamicForm = ({
           ) : buttonAction === "twoStepVerification" ? (
             <PhoneNumberVerification />
           ) : (
-            <div className="space-y-5 flex itms-center flex-col">
+            <div className="space-y-5 flex itms-center flex-col w-full">
               <button
                 type="submit"
                 // disabled={true}
                 className={`${
                   buttonAction === "changePassword"
-                    ? "!w-[23rem] mt-10"
-                    : "mx-auto  flex-center"
-                } text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[10rem] md:w-[15rem] lg:w-[30rem] rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] `}
+                    ? "mt-10"
+                    : "flex-center"
+                } text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-full rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] `}
               >
                 {buttonAction === "log-in"
                   ? "Login"

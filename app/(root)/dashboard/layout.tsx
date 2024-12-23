@@ -1,17 +1,21 @@
+"use client"
 
 import SideNav from "@/components/SideNav";
 // import "../globals.css";
 import TopNav from "@/components/TopNav";
-
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const loggedIn = true;
+  const loggedIn = useSelector((state: any) => state.auth.loggedIn);
 
-  // if (!loggedIn) redirect("/login");
+  const router = useRouter();
+
+  if (!loggedIn) return router.push("/login");
   return (
     <>
       {loggedIn && (

@@ -1,6 +1,5 @@
 import { http } from "@/lib/axios";
 
-
 export const addEmailToWaitlist = async (email: string) => {
   try {
     let response = await http.post(`/users/waitlist?email=${email}`);
