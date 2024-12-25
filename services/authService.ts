@@ -15,7 +15,7 @@ export const signup = async (values: any) => {
 
 export const signin = async (values: any) => {
   try {
-    let response = await http.post("auth/signin");
+    let response = await http.post("auth/signin", values);
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
     return {
