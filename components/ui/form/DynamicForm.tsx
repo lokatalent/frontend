@@ -141,7 +141,7 @@ const DynamicForm = ({
         setToken(data.tokens.access_token, data.tokens.refresh_token);
           // save user
           dispatch(setUser(data.user));
-        if (data.user.isVerified) {
+        if (data.user.is_verified || data.user.email_verified || data.user.phone_verified) {
           // set logged in
           dispatch(setLoggedin(true));
           // route to dashboard

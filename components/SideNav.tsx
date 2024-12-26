@@ -13,6 +13,8 @@ import { FaRegUser } from "react-icons/fa";
 import { usePathname, useRouter } from "next/navigation";
 import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet";
 import Image from "next/image";
+import { setLoggedin } from "@/store/auth/authSlice";
+import { useDispatch } from "react-redux";
 
 const links = [
   {
@@ -41,10 +43,16 @@ const links = [
   },
 ];
 
-const SideNav = ({talent}: {talent?: boolean}) => {
+const SideNav = ({ talent }: { talent?: boolean }) => {
   const pathname = usePathname();
-  const router = useRouter()
-  
+  const dispatch = useDispatch()
+  const router = useRouter();
+  const logout = () => {
+    dispatch(setLoggedin(false))
+    sessionStorage.removeItem("lokaToken")
+    router.push("/login");
+  };
+
   return (
     <div>
       <div className="bg-primaryBlue w-[200px] h-screen fixed z-[20] text-white p-8 flex-col justify-between hidden md:flex">
@@ -77,13 +85,17 @@ const SideNav = ({talent}: {talent?: boolean}) => {
 
         <div>
           <Link
-            href={talent ? "/talent/dashboard/settings/profile" : "/dashboard/settings/profile"}
+            href={
+              talent
+                ? "/talent/dashboard/settings/profile"
+                : "/dashboard/settings/profile"
+            }
             className="flex space-x-3 items-center font-semibold p-3 hover:p-3 focus:p-3 hover:bg-white/30 focus:bg-white/30 rounded-lg"
           >
             <IoSettingsOutline /> <p>Settings</p>
           </Link>
           <div className="font-semibold p-3 hover:p-3 focus:p-3 focus:bg-white/30 rounded-lg">
-            <button onClick={() => router.push('/login')} className="flex space-x-3 items-center">
+            <button onClick={logout} className="flex space-x-3 items-center">
               <HiArrowRightEndOnRectangle />
               <p>Logout</p>
             </button>
@@ -149,7 +161,10 @@ const SideNav = ({talent}: {talent?: boolean}) => {
                     <IoSettingsOutline /> <p>Settings</p>
                   </Link>
                   <div className="font-semibold p-3 hover:p-3 focus:p-3 hover:text-white hover:bg-white/30 focus:bg-white/30 rounded-lg">
-                    <button onClick={() => router.push('/login')} className="flex space-x-3 items-center">
+                    <button
+                      onClick={() => router.push("/login")}
+                      className="flex space-x-3 items-center"
+                    >
                       <HiArrowRightEndOnRectangle />
                       <p>Logout</p>
                     </button>
