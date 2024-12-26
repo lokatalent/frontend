@@ -21,7 +21,7 @@ import {
 import PasswordChangedModal from "@/components/settings/security/PasswordChangedModal";
 import PhoneNumberVerification from "@/components/settings/security/PhoneVerificationModal";
 import { showToast } from "@/store/auth/toastSlice";
-import { forgotPassword, sendEmailOTP, signin, signup } from "@/services/authService";
+import { forgotPassword, googleAuth, sendEmailOTP, signin, signup } from "@/services/authService";
 import { onForgotPassword, onSignUp, setLoggedin, setUser } from "@/store/auth/authSlice";
 import { loginTest } from "@/services/axiosTest";
 
@@ -82,6 +82,20 @@ const DynamicForm = ({
     resolver: zodResolver(schemaType),
     defaultValues,
   });
+
+  const onGoogleAuth = () => {
+    const response = googleAuth()
+    if (!response.error) {
+      console.log("Auth", response.data)
+    } else {
+      dispatch(
+        showToast({
+          status: "error",
+          message: errorHandler(response.data),
+        })
+      );
+    }
+  }
 
   const onSubmit = async (data: any) => {
     setSavedData(data);
@@ -293,7 +307,7 @@ const DynamicForm = ({
               </button>
 
               {buttonAction === "log-in" || buttonAction === "sign-up" ? (
-                <button className="w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
+                <button onClick={onGoogleAuth} className="w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
                   <FcGoogle size={24} className="mr-2" />
                   Continue with Google
                 </button>

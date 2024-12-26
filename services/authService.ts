@@ -13,6 +13,19 @@ export const signup = async (values: any) => {
   }
 };
 
+export const googleAuth = async () => {
+  try {
+    let response = await http.get("auth/google");
+    return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err.response.data,
+      status: err.response.status,
+    };
+  }
+};
+
 export const signin = async (values: any) => {
   try {
     let response = await http.post("auth/signin", values);
