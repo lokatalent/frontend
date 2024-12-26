@@ -15,7 +15,7 @@ export const signup = async (values: any) => {
 
 export const signin = async (values: any) => {
   try {
-    let response = await http.post("auth/signin");
+    let response = await http.post("auth/signin", values);
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
     return {
@@ -125,7 +125,7 @@ export const verifyEmailOTP = async (values: any) => {
 
 export const sendEmailOTP = async () => {
   try {
-    let response = await http.get("auth/send-otp?verification_type=email");
+    let response = await http.post("auth/send-otp?verification_type=email");
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
     return {
@@ -151,7 +151,7 @@ export const verifyPhoneOTP = async (values: any) => {
 
 export const sendPhoneOTP = async () => {
   try {
-    let response = await http.get("auth/send-otp?verification_type=phone");
+    let response = await http.post("auth/send-otp?verification_type=phone");
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
     return {

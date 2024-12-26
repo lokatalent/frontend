@@ -6,7 +6,7 @@ const initialState: any = {
   otp: "",
   resetToken: "",
   user: {},
-  loggedin: false,
+  loggedIn: false,
   logout: false,
 };
 
@@ -30,7 +30,7 @@ const authSlice = createSlice({
       state.user = payload;
     },
     setLoggedin: (state, { payload }) => {
-      state.loggedin = payload;
+      state.loggedIn = payload;
     },
     setLogout: (state, { payload }) => {
       console.log(payload);

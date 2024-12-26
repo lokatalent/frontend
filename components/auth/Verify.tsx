@@ -65,7 +65,7 @@ const Verify = () => {
     }
     // verify OTP
     let data = {
-      verification_code: value,
+      verification_code: Number(value),
     };
     const response = await verifyEmailOTP(data);
     if (!response.error) {

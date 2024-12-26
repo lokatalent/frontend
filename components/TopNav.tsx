@@ -1,9 +1,13 @@
 // components/TopNav.tsx
+"use client"
+
+import { useSelector } from "react-redux";
 import PopoverExample from "./nav/Menu";
 import NotificationsDropdown from "./nav/NotificationPopover";
 
 const TopNav = () => {
-  const username = "John Doe";
+  const user = useSelector((state: any) => state.auth.user)
+  const username = `${user.first_name} ${user.last_name}`
   return (
     <nav className="w-full bg-white h-[70px] shadow-lg flex justify-between items-center">
       {/* Logo or Brand */}
