@@ -76,6 +76,7 @@ export const forgotPassword = async (values: any) => {
     let response = await http.post("auth/forgot-password", values);
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
+    console.log("Error", err)
     return {
       error: true,
       data: err.response.data,

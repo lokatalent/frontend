@@ -103,7 +103,7 @@ const DynamicForm = ({
       const response = await forgotPassword(data);
       if (!response.error) {
         dispatch(onForgotPassword(data.email))
-        router.push("./reset-password/verify");
+        router.push("/reset-password/verify");
       } else {
         dispatch(
           showToast({
@@ -239,7 +239,7 @@ const DynamicForm = ({
           <div
             className={`grid w-full ${
               fields.length > 3 ? "md:grid-cols-2 w-full" : "grid-cols-1"
-            }  justify-center items-center gap-4`}
+            }   gap-4`}
           >
             {fields.map((field) => (
               // <div key={field.name}>
@@ -275,7 +275,7 @@ const DynamicForm = ({
             </div>
           )}
         </div>
-        <div className="w-full max-w-xl mx-auto">
+        <div className="w-full max-w-2xl mx-auto">
           {buttonAction == "new-password" ? (
             <ResetDialog />
           ) : buttonAction === "addressVerification" &&

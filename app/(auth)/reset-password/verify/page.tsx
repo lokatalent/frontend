@@ -56,7 +56,7 @@ function MailVerification() {
 					/>
 				</div>
 				<div className="mb-5 mt-5">
-					<h4 className="font-nunito text-3xl font-bold leading-[50.4px] tracking-tighter text-center">
+					<h4 className="font-nunito text-2xl md:text-3xl font-bold leading-[50.4px] tracking-tighter text-center">
 						Check Your Mail
 					</h4>
 					<p className="font-nunito text-center">
