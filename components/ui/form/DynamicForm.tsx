@@ -142,6 +142,37 @@ const DynamicForm = ({
           })
         );
       }
+    } else if (buttonAction === "sign-up-talent") {
+      // check passwords
+      if (data.newPassword !== data.confirmPassword) {
+        return dispatch(
+          showToast({
+            status: "error",
+            message: "",
+          })
+        );
+      }
+
+      let temp = {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        phone_num: formatPhone(data.number),
+        password: data.newPassword,
+        service_role: "service_provider",
+      };
+
+      const response = await signup(temp);
+      if (!response.error) {
+        router.push(`/login`);
+      } else {
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(response.data),
+          })
+        );
+      }
     } else if (buttonAction === "log-in") {
       let temp = {
         email: data.email,
@@ -159,7 +190,7 @@ const DynamicForm = ({
           // set logged in
           dispatch(setLoggedin(true));
           // route to dashboard
-          router.push(`/dashboard`);
+          router.push(data.user.service_role === "service_provider" ? `/talent/dashboard` : `/dashboard`);
         } else {
           // send OTP
           const response = await sendEmailOTP();
@@ -307,7 +338,7 @@ const DynamicForm = ({
               </button>
 
               {buttonAction === "log-in" || buttonAction === "sign-up" ? (
-                <button onClick={onGoogleAuth} className="w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
+                <button onClick={onGoogleAuth} className="hidden w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
                   <FcGoogle size={24} className="mr-2" />
                   Continue with Google
                 </button>

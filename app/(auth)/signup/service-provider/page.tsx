@@ -106,7 +106,7 @@ const user = () => {
         fields={fields}
         defaultValues={defaultValues}
         schemaType={schemaType}
-        buttonAction="sign-up"
+        buttonAction="sign-up-talent"
         width="w-full max-w-xl mx-auto"
       />
 

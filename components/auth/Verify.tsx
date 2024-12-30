@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 import { sendEmailOTP, sendPhoneOTP, verifyEmailOTP } from "@/services/authService";
 import { showToast } from "@/store/auth/toastSlice";
 import { errorHandler } from "@/lib/utils";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setLoggedin } from "@/store/auth/authSlice";
 
 interface Verify {
@@ -28,13 +28,26 @@ const Verify = () => {
   const [isSuccess, setIsSuccess] = useState(false);
   const [isResend, setIsResend] = useState<boolean>(false);
   const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.auth.user)
 
   const resendHandler = async () => {
-    const response: any = await isEmail ? sendEmailOTP() : sendPhoneOTP();
+    const response: any = isEmail ? await sendEmailOTP() : await sendPhoneOTP();
     if (!response.error) {
       setIsResend(true);
       // redirect to verify account
     } else {
+      if (response.status === 401) {
+        dispatch(
+          showToast({
+            status: "error",
+            message: "Session expired",
+          })
+        );
+        return router.push("/login")
+      }
+      if (response.data.message === "Already verified") {
+       router.push("/login")
+      }
       dispatch(
         showToast({
           status: "error",
@@ -155,7 +168,7 @@ You can now enjoy full access to all our features and services."
           btn="Proceed to Dashboard"
           onClick={() => {
             dispatch(setLoggedin(true));
-            router.push("/dashboard");
+            router.push(user.service_role === "service_provider" ? "/talent/dashboard" : "/dashboard");
           }}
         />
       </div>
