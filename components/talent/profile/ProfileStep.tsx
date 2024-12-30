@@ -4,14 +4,15 @@ import Box from "@mui/material/Box";
 import Stepper from "@mui/material/Stepper";
 import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
-import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
+
 import PersonalInfo from "./setup/stepNav/PersonalInfo";
 import Qualification from "./setup/stepNav/Qualification";
 import Portfolio from "./setup/stepNav/Portfolio";
 import ServiceCharge from "./setup/stepNav/ServiceCharge";
+
 
 const steps = [
   "Personal Information",
@@ -20,190 +21,43 @@ const steps = [
   "Verification",
 ];
 
-const dataPersonal = [
+const steps1 = [
   {
-    label: "Gender",
-    error: "Input a valid gender",
-    type: "input",
-    isImportant: true,
-    selection: true,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
+    id: 1,
+    title: "Add your personal information",
+    step: 0,
+    status: "undone",
   },
   {
-    label: "Date of Birth",
-    error: "Input a valid date of Birth",
-    type: "input",
-    isImportant: true,
-    selection: false,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
+    id: 2,
+    title: "Add your Qualifications",
+    step: 0,
+    status: "undone",
   },
   {
-    label: "Postal Code",
-    error: "Input a valid postal Code",
-    type: "input",
-    isImportant: true,
-    selection: false,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
+    id: 3,
+    title: "Set up your Portfolio",
+    step: 0,
+    status: "undone",
   },
   {
-    label: "Language",
-    error: "Input a valid Language",
-    type: "input",
-    isImportant: true,
-    selection: false,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-];
-const dataPortfolio = [
-  {
-    label: "Select University",
-    error: "Select your University",
-    type: "input",
-    isImportant: false,
-    selection: true,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-  {
-    label: "Highest Degree Qualification",
-    error: "Select a Highest Degree Qualification",
-    type: "input",
-    isImportant: false,
-    selection: true,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-  {
-    label: "Field of Study",
-    error: "Selct a field of study",
-    type: "input",
-    isImportant: false,
-    selection: true,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-  {
-    label: "Start Date",
-    error: "Select a valid Start Date",
-    type: "input",
-    isImportant: false,
-    selection: false,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-  {
-    label: "End Date or Expected End Date",
-    error: "Select a valid End Date",
-    type: "input",
-    isImportant: false,
-    selection: false,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-  {
-    label: "Service Category",
-    error: "Select a service",
-    type: "input",
-    isImportant: true,
-    selection: true,
-    width: "w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]",
-  },
-  {
-    label: "Years of Experience",
-    error: "Select a number of years of experience",
-    type: "input",
-    isImportant: true,
-    selection: false,
-    width: "w-[52rem]",
-  },
-  {
-    label: "Upload Your Certifications",
-    error: "Upload your certificates",
-    type: "file",
-    isImportant: true,
-    selection: false,
-    width: "w-[52rem] py-[1rem]",
-  },
-  {
-    label: "Upload Your Images",
-    error: "Upload your images",
-    type: "file",
-    isImportant: true,
-    selection: false,
-    width: "w-[52rem] py-[1rem]",
-  },
-];
-const dataService = [
-  {
-    label: "Rate Per Service",
-    error: "Select a Rate Per Service*",
-    type: "input",
-    isImportant: true,
-    selection: false,
-    width: "w-[52rem]",
-  },
-  {
-    label: "Rate Per Hour",
-    error: "Select a number of Rate Per Hour*",
-    type: "input",
-    isImportant: true,
-    selection: false,
-    width: "w-[52rem]",
-  },
-  {
-    label: "Bank Name (Select bank you want to use to receive your payment)",
-    error: "Select a number of Bank Name",
-    type: "input",
-    isImportant: true,
-    selection: true,
-    width: "w-[52rem]",
-  },
-  {
-    label: "Account Number*",
-    error: "Select a Account Number*",
-    type: "input",
-    isImportant: true,
-    selection: false,
-    width: "w-[52rem]",
-  },
-];
-const dataVerify = [
-  {
-    label: "Address Verification",
-    error: "Input a valid gender",
-    type: "input",
-    isImportant: true,
-    selection: true,
-    width: "w-[52rem]",
-  },
-  {
-    label: "Upload the Document",
-    error: "Input a valid date of Birth",
-    type: "file",
-    isImportant: true,
-    selection: false,
-    width: "w-[52rem] py-[1rem]",
-  },
-  {
-    label: "ID Type",
-    error: "Input a valid postal Code",
-    type: "input",
-    isImportant: true,
-    selection: true,
-    width: "w-[52rem]",
-  },
-  {
-    label: "BVN",
-    error: "Input a valid Language",
-    type: "input",
-    isImportant: true,
-    selection: false,
-    width: "w-[52rem]",
+    id: 4,
+    title: "Add your service charge and bank details",
+    step: 0,
+    status: "completed",
   },
 ];
 
+
+
 export default function ProfileStep() {
-  const [activeStep, setActiveStep] = React.useState(0);
+  const [activeStep, setActiveStep] = React.useState(-1);
   const [skipped, setSkipped] = React.useState(new Set<number>());
 
   // const isStepOptional = (step: number) => {
   //   return step === 1;
   // };
+  console.log(activeStep)
 
   const isStepSkipped = (step: number) => {
     return skipped.has(step);
@@ -220,28 +74,8 @@ export default function ProfileStep() {
     setSkipped(newSkipped);
   };
 
-  const handleBack = () => {
-    setActiveStep((prevActiveStep) => prevActiveStep - 1);
-  };
 
-  // const handleSkip = () => {
-  //   if (!isStepOptional(activeStep)) {
-  //     // You probably want to guard against something like this,
-  //     // it should never occur unless someone's actively trying to break something.
-  //     throw new Error("You can't skip a step that isn't optional.");
-  //   }
 
-  //   setActiveStep((prevActiveStep) => prevActiveStep + 1);
-  //   setSkipped((prevSkipped) => {
-  //     const newSkipped = new Set(prevSkipped.values());
-  //     newSkipped.add(activeStep);
-  //     return newSkipped;
-  //   });
-  // };
-
-  const handleReset = () => {
-    setActiveStep(0);
-  };
 
   return (
     <Box
@@ -254,23 +88,20 @@ export default function ProfileStep() {
       }}
     >
       <Stepper activeStep={activeStep} className="w-[44rem]">
-        {steps.map((label) => {
+        {steps.map((label, index) => {
           const stepProps: { completed?: boolean } = {};
-          const labelProps: {
-            optional?: React.ReactNode;
-          } = {};
-          console.log(stepProps, labelProps);
-          // if (isStepOptional(index)) {
-          //   labelProps.optional = (
-          //     <Typography variant="caption">Optional</Typography>
-          //   );
-          // }
-          // if (isStepSkipped(index)) {
-          //   stepProps.completed = false;
-          // }
+          const labelProps: { optional?: React.ReactNode; className?: string } =
+            {};
+
+          // Apply conditional styling to the label
+          labelProps.className =
+            index === activeStep && activeStep === 0
+              ? "text-red-500" // Add a class for gray text
+              : "text-green-500"; // Add a class for
+
           return (
-            <Step key={label} {...stepProps}>
-              <StepLabel {...labelProps}>{label}</StepLabel>
+            <Step key={label} {...stepProps} className="my-10">
+              <StepLabel {...labelProps}></StepLabel>
             </Step>
           );
         })}
@@ -280,66 +111,47 @@ export default function ProfileStep() {
           <Typography sx={{ mt: 2, mb: 1 }}>
             All steps completed - you&apos;re finished
           </Typography>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Box sx={{ flex: "1 1 auto" }} />
-            <Button onClick={handleReset}>Reset</Button>
-          </Box>
+          
         </React.Fragment>
       ) : (
         <React.Fragment>
           <Box>
-            {activeStep === 0 && (
-                <Form isFormValid={true} dataInput={dataPersonal} >{null}</Form>
-            )}
-            {activeStep === 1 && (
-              <Form isFormValid={true} dataInput={dataPortfolio}>
-                <div className="flex items-center justify-between space-x-6">
-                  <div className="w-28 h-28 flex items-center justify-center rounded-full bg-white">
-                    <Image
-                      src={dp}
-                      alt="My Profile Photo"
-                      className="" // w-10 h-10 --for empty dp
-                    />
-                  </div>
-                  <div>
-                    <button className="text-sm text-[#fff] bg-primaryBlue px-8 py-1 rounded">
-                      Add Profile Image
+            {activeStep === -1 && (
+              <div className="space-y-4">
+                {steps1.map((step) => {
+                  // const currentStep = activeStep.find((s) => s.id === step.id);
+                  return (
+                    <button
+                      key={step.id}
+                      // onClick={() => onStepClick(step.id, "in-progress")}
+                      onClick={handleNext}
+                      className={cn(
+                        "w-full p-4 flex items-center justify-between ",
+                        "rounded-lg transition-colors duration-200 bg-gray-100 hover:bg-gray-200 text-gray-700 w-[30rem]"
+                        // currentStep?.status === "in-progress"
+                        //   ? "bg-blue-50 text-primaryBlue"
+                        //   : "bg-gray-100 hover:bg-gray-200 text-gray-700"
+                      )}
+                    >
+                      <span className="text-sm font-medium">{step.title}</span>
+                      <ChevronRight className="w-5 h-5" />
                     </button>
-                  </div>
-                </div>
-              </Form>
+                  );
+                })}
+              </div>
             )}
-            {activeStep === 2 && (
-                <Form isFormValid={true} dataInput={dataService}>{null}</Form> 
+            {activeStep === 0 && <PersonalInfo setActiveStep={setActiveStep} />}
+            {activeStep === 1 && (
+              <Qualification setActiveStep={setActiveStep} />
             )}
+            {activeStep === 2 && <Portfolio setActiveStep={setActiveStep} />}
             {activeStep === 3 && (
-                <Form isFormValid={true} dataInput={dataVerify}>{null}</Form>
+              <ServiceCharge setActiveStep={setActiveStep} />
             )}
 
             {/* <p>{activeStep}</p> */}
           </Box>
-          <Box sx={{ display: "flex", flexDirection: "row", pt: 2 }}>
-            <Button
-              color="inherit"
-              disabled={activeStep === 0}
-              onClick={handleBack}
-              sx={{ mr: 1 }}
-            >
-              Back
-            </Button>
-            <Box sx={{ flex: "1 1 auto" }} />
-            {/* {isStepOptional(activeStep) && (
-              <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
-                Skip
-              </Button>
-            )} */}
-            <Button
-              onClick={handleNext}
-              className="font-nunito contactButton text-xl text-[#fff] bg-primaryBlue hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff]"
-            >
-              {activeStep === steps.length - 1 ? "Finish" : "Next"}
-            </Button>
-          </Box>
+         
         </React.Fragment>
       )}
     </Box>

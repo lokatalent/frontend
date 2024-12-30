@@ -39,7 +39,7 @@ const Dashboard = async () => {
 			<div className="w-full flex justify-between items-center">
 				<div className="flex flex-col space-y-3">
 					<p className="text-3xl text-black font-bold">Hello Gabriel👋</p>
-					<p className="text-[#6C727F]">Lorem ipsum lorem ipsum lore</p>
+					<p className="text-[#6C727F]">Keep track of your bookings and provide top-notch service to your clients</p>
 				</div>
 			</div>
 
@@ -84,7 +84,7 @@ const Dashboard = async () => {
 
 					<div className="flex justify-center mt-5">
 						<Link
-							href="/dashboard/bookings"
+							href="talent/dashboard/bookings"
 							className="px-10 py-4 text-white bg-blue-500 rounded-md hover:bg-blue-600"
 						>
 							View all bookings

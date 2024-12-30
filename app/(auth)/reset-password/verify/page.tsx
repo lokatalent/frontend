@@ -1,14 +1,17 @@
 "use client";
 import InputOTPDemo from "@/components/auth/InputOTP";
+import { onSaveOTP } from "@/store/auth/authSlice";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 
 function MailVerification() {
 	const [isResend, setIsResend] = useState<boolean>(false);
 	const [isError, setIsError] = useState<boolean>(false);
 	const [value, setValue] = useState("");
 	const router = useRouter();
+	const dispatch = useDispatch()
 
 	function resendHandler() {
 		// setIsResend((resend) => !resend);
@@ -27,8 +30,6 @@ function MailVerification() {
 		}, 2000);
 	}, [isResend]);
 
-	console.log(value);
-
 	const handleVerify = () => {
 		// if ()
 		if (value.length !== 6) {
@@ -36,7 +37,7 @@ function MailVerification() {
 			return;
 		}
 		setIsError(false);
-
+		dispatch(onSaveOTP(value))
 		// check if the value is the same as the otp sent to the mail
 
 		router.push("../../reset-password/new-password");
@@ -55,7 +56,7 @@ function MailVerification() {
 					/>
 				</div>
 				<div className="mb-5 mt-5">
-					<h4 className="font-nunito text-3xl font-bold leading-[50.4px] tracking-tighter text-center">
+					<h4 className="font-nunito text-2xl md:text-3xl font-bold leading-[50.4px] tracking-tighter text-center">
 						Check Your Mail
 					</h4>
 					<p className="font-nunito text-center">

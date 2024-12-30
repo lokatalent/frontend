@@ -1,3 +1,5 @@
+"use client"
+
 import React, { useState } from "react";
 import {
   Dialog,
@@ -7,8 +9,6 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import Image from "next/image";
-import Link from "next/link";
 import { Button } from "@/components/ui/button";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { deleteUserAccount } from "@/services/authService";

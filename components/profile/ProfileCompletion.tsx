@@ -1,10 +1,17 @@
-import Image from 'next/image'
-import React from 'react'
-import { BiSolidRightArrowAlt } from 'react-icons/bi'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
+"use client";
+import Image from "next/image";
+import React from "react";
+import { BiSolidRightArrowAlt } from "react-icons/bi";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
-function ProfileCompletion() {
+interface ProfileCompletionProps {
+  addText?: string;
+}
+
+function ProfileCompletion({
+  addText = " You have to complete your profile set up",
+}) {
   return (
     <div className="bg-white w-full rounded-br-md rounded-tr-md p-6 flex justify-between items-center border-[#DF8600] border-l-[5px]">
       <div className="flex items-center space-x-6">
@@ -22,7 +29,9 @@ function ProfileCompletion() {
       </div>
       <div>
         <Link
+
           href="/dashboard/profile/edit"
+
           className="text-white h-10 rounded-md py-2 bg-primaryBlue px-[3rem]"
         >
           Complete
@@ -32,4 +41,4 @@ function ProfileCompletion() {
   );
 }
 
-export default ProfileCompletion
+export default ProfileCompletion;

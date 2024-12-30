@@ -40,7 +40,8 @@ function DropDownElement() {
                 <div className=" text-primaryBlue my-2 p-2">
                   <p className="font-semibold ">Indoor Cleaning Services</p>
                   <p className="font-light">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Professional cleaning of homes or offices, ensuring spotless
+                    and organized interiors.
                   </p>
                 </div>
               </SelectItem>
@@ -48,7 +49,8 @@ function DropDownElement() {
                 <div className=" text-primaryBlue my-2 p-2">
                   <p className="font-semibold ">Driving</p>
                   <p className="font-light">
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                    Reliable and safe transportation services for individuals or
+                    goods.
                   </p>
                 </div>
               </SelectItem>
@@ -56,7 +58,10 @@ function DropDownElement() {
           </SelectContent>
         </Select>
       </div>
-      <div onClick={bookService} className="bg-[#ede8e8] h-12 md:h-14 xl:h-16 w-16 rounded flex items-center justify-center cursor-pointer">
+      <div
+        onClick={bookService}
+        className="bg-[#ede8e8] h-12 md:h-14 xl:h-16 w-16 rounded flex items-center justify-center cursor-pointer"
+      >
         <CiSearch color="black" />
       </div>
     </div>

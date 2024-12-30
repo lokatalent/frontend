@@ -1,20 +1,27 @@
+"use client";
+
 // DynamicForm.tsx
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import ResetDialog from "@/components/auth/ResetDialog";
-import { FieldConfig } from "@/lib/utils";
+import { errorHandler, FieldConfig, formatPhone, setToken } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { FormField } from "./FormField";
 import ReviewModal from "@/components/profile/ReviewModal";
 import { useDispatch, useSelector } from "react-redux";
-import { RootStateProfile, setInformation, setProfileDetails } from "@/store/profile/profileSlice";
+import {
+  RootStateProfile,
+  setInformation,
+  setProfileDetails,
+} from "@/store/profile/profileSlice";
 import PasswordChangedModal from "@/components/settings/security/PasswordChangedModal";
 import PhoneNumberVerification from "@/components/settings/security/PhoneVerificationModal";
 import { showToast } from "@/store/auth/toastSlice";
+
 import {
   forgotPassword,
   googleAuth,
@@ -30,6 +37,7 @@ import {
 } from "@/store/auth/authSlice";
 import { loginTest } from "@/services/axiosTest";
 import { updateProfile } from "@/services/profileService";
+
 
 interface DefaultValues {
   firstName?: string;
@@ -52,7 +60,7 @@ interface DynamicForm {
   buttonAction: string;
   schemaType: any;
   width: string;
-  styles?: string
+  styles?: string;
 }
 
 const DynamicForm = ({
@@ -61,7 +69,7 @@ const DynamicForm = ({
   schemaType,
   buttonAction,
   width,
-  styles
+  styles,
 }: DynamicForm) => {
   const router = useRouter();
   const pathname = usePathname();
@@ -73,7 +81,7 @@ const DynamicForm = ({
     (state: RootStateProfile) => state.profile.verification
   );
   const file = useSelector((state: RootStateProfile) => state.profile.file);
- 
+
   const dispatch = useDispatch();
 
   // const file = sessionStorage.getItem("selectedFile")
@@ -93,6 +101,7 @@ const DynamicForm = ({
     const response = googleAuth();
     if (!response.error) {
       console.log("Auth", response.data);
+
     } else {
       dispatch(
         showToast({
@@ -101,17 +110,20 @@ const DynamicForm = ({
         })
       );
     }
+
   };
 
   const onSubmit = async (data: any) => {
     console.log(data);
     setShowModal(true);
+
     setSavedData(data);
     if (buttonAction === "reset-password") {
       const response = await forgotPassword(data);
       if (!response.error) {
         dispatch(onForgotPassword(data.email));
         router.push("./reset-password/verify");
+
       } else {
         dispatch(
           showToast({
@@ -150,6 +162,39 @@ const DynamicForm = ({
           })
         );
       }
+
+    } else if (buttonAction === "sign-up-talent") {
+      // check passwords
+      if (data.newPassword !== data.confirmPassword) {
+        return dispatch(
+          showToast({
+            status: "error",
+            message: "",
+          })
+        );
+      }
+
+      let temp = {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        phone_num: formatPhone(data.number),
+        password: data.newPassword,
+        service_role: "service_provider",
+      };
+
+      const response = await signup(temp);
+      if (!response.error) {
+        router.push(`/login`);
+      } else {
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(response.data),
+          })
+        );
+      }
+
     } else if (buttonAction === "log-in") {
       let temp = {
         email: data.email,
@@ -157,22 +202,19 @@ const DynamicForm = ({
       };
 
       const response = await signin(temp);
-      console.log(response);
+
       if (!response.error) {
         let data = response.data;
         // save tokens
         setToken(data.tokens.access_token, data.tokens.refresh_token);
-        // save user
-        dispatch(setUser(data.user));
-        if (
-          data.user.is_verified ||
-          data.user.email_verified ||
-          data.user.phone_verified
-        ) {
+
+          // save user
+          dispatch(setUser(data.user));
+        if (data.user.is_verified || data.user.email_verified || data.user.phone_verified) {
           // set logged in
           dispatch(setLoggedin(true));
           // route to dashboard
-          router.push(`/dashboard`);
+          router.push(data.user.service_role === "service_provider" ? `/talent/dashboard` : `/dashboard`);
         } else {
           // send OTP
           const response = await sendEmailOTP();
@@ -205,6 +247,7 @@ const DynamicForm = ({
       }
       // router.push("/dashboard");
     } else if (buttonAction === "profile-edit") {
+
       const response = await updateProfile(data);
       console.log(response);
       if (!response.error) {
@@ -234,6 +277,7 @@ const DynamicForm = ({
         );
       }
     } else if (buttonAction === "edit-address") {
+
       dispatch(
         setInformation({
           state: data.state,
@@ -241,17 +285,13 @@ const DynamicForm = ({
           city: data.city,
         })
       );
+
     }
     console.log(error)
+
     setError(null);
-    // console.log(error);
-
-
-   
     reset();
   };
-
-
 
   // console.log(pathname);
   const onError = (data: any) => {
@@ -264,22 +304,20 @@ const DynamicForm = ({
   };
 
   return (
-    <div className="w-full wmax mx-auto p-6">
+    <div className="w-full md:px-6 mt-5">
       <form
         onSubmit={handleSubmit(onSubmit, onError)}
         className={` ${
           buttonAction === "changePassword"
             ? ""
-            : "flex flex-col justify-center items-center gap-12"
+            : "flex flex-col justify-center items-center gap-6 w-full"
         }`}
       >
-        <div>
+        <div className="w-full">
           <div
-            className={`flex ${
-              fields.length > 3
-                ? "flex-row flex-wrap justify-center"
-                : "flex-col"
-            }  justify-cente items-cente gap-12`}
+            className={`grid w-full ${
+              fields.length > 3 ? "md:grid-cols-2 w-full" : "grid-cols-1"
+            }   gap-4`}
           >
             {fields.map((field) => (
               // <div key={field.name}>
@@ -308,14 +346,14 @@ const DynamicForm = ({
             <div className="flex justify-end mt-4 self-end text-right">
               <Link
                 href="/reset-password"
-                className="text-[14px] text-primaryBlue self-end"
+                className="text-sm text-primaryBlue self-end"
               >
                 Forgot Password?
               </Link>
             </div>
           )}
         </div>
-        <div>
+        <div className="w-full max-w-2xl mx-auto">
           {buttonAction == "new-password" ? (
             <ResetDialog />
           ) : buttonAction === "addressVerification" &&
@@ -329,12 +367,14 @@ const DynamicForm = ({
           ) : buttonAction === "twoStepVerification" ? (
             <PhoneNumberVerification />
           ) : (
-            <div className="space-y-5 flex itms-center flex-col">
+            <div className="space-y-5 flex itms-center flex-col w-full">
               <button
                 type="submit"
                 // disabled={true}
                 className={`${
+
                   buttonAction === "changePassword" ? "mt-10" : "flex-center"
+
                 } text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-full rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] `}
               >
                 {buttonAction === "log-in"
@@ -345,10 +385,10 @@ const DynamicForm = ({
               </button>
 
               {buttonAction === "log-in" || buttonAction === "sign-up" ? (
-                <button
-                  onClick={onGoogleAuth}
-                  className="w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]"
-                >
+
+
+                <button onClick={onGoogleAuth} className="hidden w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
+
                   <FcGoogle size={24} className="mr-2" />
                   Continue with Google
                 </button>

@@ -55,6 +55,7 @@ export const verifyEmail = async (values: any) => {
   }
 };
 
+
 export const verifyUser = async () => {
   try {
     let response = await http.post("/auth/verify-user");
@@ -189,6 +190,7 @@ export const sendPhoneOTP = async () => {
   }
 };
 
+
 export const deleteUserAccount = async () => {
   try {
     let response = await http.delete("users");
@@ -202,4 +204,5 @@ export const deleteUserAccount = async () => {
     };
   }
 };
+
 

@@ -12,11 +12,12 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const loggedIn = useSelector((state: any) => state.auth.loggedIn);
-  console.log(loggedIn);
+
 
   const router = useRouter();
 
-  // if (!loggedIn) return router.push("/login");
+  if (!loggedIn) return router.push("/login");
+
   return (
     <>
       {loggedIn && (

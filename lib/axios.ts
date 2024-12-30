@@ -18,6 +18,7 @@ export const http = axios.create(options)
 
 
 
+
 // Request interceptor to include Authorization header
 http.interceptors.request.use(
   (config) => {
@@ -32,4 +33,5 @@ http.interceptors.request.use(
     return Promise.reject(error);
   }
 );
+
 

@@ -1,7 +1,9 @@
 "use client";
+
 import SecurityForm from "@/components/settings/security/SecurityForm";
 import TwoStepVerification from "@/components/settings/security/TwoStepVerification";
 import { Button } from "@/components/ui/button";
+
 import { RootStateProfile } from "@/store/profile/profileSlice";
 import {
   RootState,
@@ -22,7 +24,10 @@ function Security() {
   );
   console.log(ProfileInfo);
 
+
   const toggleSwitch = () => {
+
+  
     if (activeTwoStepVerification) {
       dispatch(setActiveTwoStepVerification(false));
     } else {
@@ -30,11 +35,14 @@ function Security() {
     }
   };
 
+
   return (
     <div className="p-6">
       <div>
         <SecurityForm />
       </div>
+
+ 
       <div className="mt-6 card flex justify-between items-center">
         {!activeTwoStepVerification ? (
           <div className="flex justify-between">
@@ -68,9 +76,11 @@ function Security() {
               >
                 <div
                   className={`bg-white w-4 h-4 rounded-full shadow-md transform ${
+
                     activeTwoStepVerification
                       ? "translate-x-6"
                       : "translate-x-0"
+
                   } transition-transform duration-200`}
                 ></div>
               </div>
