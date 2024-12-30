@@ -108,7 +108,7 @@ const user = () => {
         defaultValues={defaultValues}
         schemaType={schemaType}
         buttonAction="sign-up"
-        width="w-full max-w-xl mx-auto"
+        width="w-full"
       />
 
       <footer className="flex justify-center gap-2 mt-5">

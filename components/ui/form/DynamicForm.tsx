@@ -21,7 +21,7 @@ import {
 import PasswordChangedModal from "@/components/settings/security/PasswordChangedModal";
 import PhoneNumberVerification from "@/components/settings/security/PhoneVerificationModal";
 import { showToast } from "@/store/auth/toastSlice";
-import { forgotPassword, sendEmailOTP, signin, signup } from "@/services/authService";
+import { forgotPassword, googleAuth, sendEmailOTP, signin, signup } from "@/services/authService";
 import { onForgotPassword, onSignUp, setLoggedin, setUser } from "@/store/auth/authSlice";
 import { loginTest } from "@/services/axiosTest";
 
@@ -83,13 +83,27 @@ const DynamicForm = ({
     defaultValues,
   });
 
+  const onGoogleAuth = () => {
+    const response = googleAuth()
+    if (!response.error) {
+      console.log("Auth", response.data)
+    } else {
+      dispatch(
+        showToast({
+          status: "error",
+          message: errorHandler(response.data),
+        })
+      );
+    }
+  }
+
   const onSubmit = async (data: any) => {
     setSavedData(data);
     if (buttonAction === "reset-password") {
       const response = await forgotPassword(data);
       if (!response.error) {
         dispatch(onForgotPassword(data.email))
-        router.push("./reset-password/verify");
+        router.push("/reset-password/verify");
       } else {
         dispatch(
           showToast({
@@ -128,6 +142,37 @@ const DynamicForm = ({
           })
         );
       }
+    } else if (buttonAction === "sign-up-talent") {
+      // check passwords
+      if (data.newPassword !== data.confirmPassword) {
+        return dispatch(
+          showToast({
+            status: "error",
+            message: "",
+          })
+        );
+      }
+
+      let temp = {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        phone_num: formatPhone(data.number),
+        password: data.newPassword,
+        service_role: "service_provider",
+      };
+
+      const response = await signup(temp);
+      if (!response.error) {
+        router.push(`/login`);
+      } else {
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(response.data),
+          })
+        );
+      }
     } else if (buttonAction === "log-in") {
       let temp = {
         email: data.email,
@@ -145,7 +190,7 @@ const DynamicForm = ({
           // set logged in
           dispatch(setLoggedin(true));
           // route to dashboard
-          router.push(`/dashboard`);
+          router.push(data.user.service_role === "service_provider" ? `/talent/dashboard` : `/dashboard`);
         } else {
           // send OTP
           const response = await sendEmailOTP();
@@ -225,7 +270,7 @@ const DynamicForm = ({
           <div
             className={`grid w-full ${
               fields.length > 3 ? "md:grid-cols-2 w-full" : "grid-cols-1"
-            }  justify-center items-center gap-4`}
+            }   gap-4`}
           >
             {fields.map((field) => (
               // <div key={field.name}>
@@ -261,7 +306,7 @@ const DynamicForm = ({
             </div>
           )}
         </div>
-        <div className="w-full max-w-xl mx-auto">
+        <div className="w-full max-w-2xl mx-auto">
           {buttonAction == "new-password" ? (
             <ResetDialog />
           ) : buttonAction === "addressVerification" &&
@@ -293,7 +338,7 @@ const DynamicForm = ({
               </button>
 
               {buttonAction === "log-in" || buttonAction === "sign-up" ? (
-                <button className="w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
+                <button onClick={onGoogleAuth} className="hidden w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
                   <FcGoogle size={24} className="mr-2" />
                   Continue with Google
                 </button>

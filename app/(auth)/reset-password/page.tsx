@@ -44,7 +44,7 @@ function ResetPassword() {
 						/>
 					</div>
 					<div>
-						<h4 className="font-nunito text-4xl font-bold leading-[50.4px] tracking-tighter text-center mt-8 mb-2">
+						<h4 className="font-nunito text-2xl md:text-3xl font-bold leading-[50.4px] tracking-tighter text-center mt-8 mb-2">
 							Forgot Password
 						</h4>
 						<p className="font-nunito text-sm text-[#6C727F] text-center w-[90%] mx-auto">
@@ -59,7 +59,7 @@ function ResetPassword() {
 							defaultValues={defaultValues}
 							schemaType={emailFormSchema}
 							buttonAction="reset-password"
-							width="w-full max-w-xl mx-auto"
+							width="w-full max-w-2xl mx-auto"
 						/>
 						{/* <StraightForm /> */}
 					</div>
