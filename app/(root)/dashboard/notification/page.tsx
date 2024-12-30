@@ -3,6 +3,7 @@ import EmptyNotification from "@/components/notifications/EmptyNotification";
 import NotificationsBar from "@/components/notifications/NotificationsBar";
 import OverallNotification from "@/components/notifications/overallNotification";
 import RoleSwitch from "@/components/overview/RoleSwitch";
+import { getNotifications } from "@/services/notificationService";
 
 type Notification = {
   id: string;
@@ -123,6 +124,8 @@ async function NotificationsData(): Promise<NotificationResponse> {
 
 export default async function Notification() {
   const { isNotified, notification } = await NotificationsData();
+
+ 
 
   return (
     

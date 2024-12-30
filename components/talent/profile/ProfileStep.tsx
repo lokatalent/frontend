@@ -6,9 +6,12 @@ import Step from "@mui/material/Step";
 import StepLabel from "@mui/material/StepLabel";
 import Button from "@mui/material/Button";
 import Typography from "@mui/material/Typography";
-import Form from "@/components/ui/form";
-import Image from "next/image";
-import dp from "../../../public/Images/dp.png"
+import { ChevronRight } from "lucide-react";
+import { cn } from "@/lib/utils";
+import PersonalInfo from "./setup/stepNav/PersonalInfo";
+import Qualification from "./setup/stepNav/Qualification";
+import Portfolio from "./setup/stepNav/Portfolio";
+import ServiceCharge from "./setup/stepNav/ServiceCharge";
 
 const steps = [
   "Personal Information",

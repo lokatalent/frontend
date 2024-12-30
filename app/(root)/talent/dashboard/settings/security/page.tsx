@@ -2,8 +2,6 @@
 import SecurityForm from "@/components/settings/security/SecurityForm";
 import TwoStepVerification from "@/components/settings/security/TwoStepVerification";
 import { Button } from "@/components/ui/button";
-import DynamicForm from "@/components/ui/form/DynamicForm";
-import { changePasswordFormSchema, FieldConfig } from "@/lib/utils";
 import { RootStateProfile } from "@/store/profile/profileSlice";
 import {
   RootState,
@@ -11,14 +9,11 @@ import {
   setTwoStepVerificationModal,
 } from "@/store/settings/SettingsSlice";
 import React, { useState } from "react";
-import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 
 function Security() {
   const dispatch = useDispatch();
   const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(true);
-  const [showPassword, setShowPassword] = useState(false);
-
   const ProfileInfo = useSelector(
     (state: RootStateProfile) => state.profile.information.phoneNumber
   );
@@ -26,67 +21,6 @@ function Security() {
     (state: RootState) => state.settings.activeTwoStepVerification
   );
   console.log(ProfileInfo);
-  const fields: FieldConfig[] = [
-    {
-      name: "currentPassword",
-      type: "password",
-      label: "Current Password",
-      validation: {
-        required: "Password is required",
-        minLength: {
-          value: 8,
-          message: "Password must be at least 8 characters",
-        },
-        pattern: {
-          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-          message: "Password must contain at least one letter and one number",
-        },
-      },
-    },
-    {
-      name: "newPassword",
-      type: "password",
-      label: "New Password",
-      validation: {
-        required: "Password is required",
-        minLength: {
-          value: 6,
-          message: "Password must be at least 6 characters",
-        },
-        pattern: {
-          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-          message: "Password must contain at least one letter and one number",
-        },
-      },
-    },
-    {
-      name: "confirmPassword",
-      type: "password",
-      label: "Confirm Password",
-      validation: {
-        required: "Password is required",
-        minLength: {
-          value: 6,
-          message: "Password must be at least 6 characters",
-        },
-        pattern: {
-          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-          message: "Password must contain at least one letter and one number",
-        },
-      },
-    },
-  ];
-
-  const defaultValues = {
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  };
-
-  const togglePasswordVisibility = (e: React.MouseEvent) => {
-    e.preventDefault();
-    setShowPassword((prev) => !prev);
-  };
 
   const toggleSwitch = () => {
     if (activeTwoStepVerification) {
@@ -98,9 +32,9 @@ function Security() {
 
   return (
     <div className="p-6">
-      
-     <SecurityForm />
-
+      <div>
+        <SecurityForm />
+      </div>
       <div className="mt-6 card flex justify-between items-center">
         {!activeTwoStepVerification ? (
           <div className="flex justify-between">
