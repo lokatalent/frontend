@@ -67,14 +67,14 @@ export const SignUpFormSchema = z
       .regex(/^[0-9]{10,15}$/, "Invalid phone number format"),
     newPassword: z
       .string()
-      .min(8, "Password must be at least 8 characters")
+      .min(8, "Password must be at least 8 characters"),
       // ADD THIS IF A SYMBOL IS REQUIRED
       
       // .regex(
       //   /[!@#$%^&*(),.?":{}|<>]/,
       //   "Password must contain at least one symbol"
       // )
-      .regex(/\d/, "Password must contain at least one number"),
+      // .regex(/\d/, "Password must contain at least one number"),
     confirmPassword: z
       .string()
       .min(8, "Password must be at least 8 characters"),
