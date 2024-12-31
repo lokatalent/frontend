@@ -29,7 +29,9 @@ function ProfileCompletion({
       </div>
       <div>
         <Link
-          href="/talent/dashboard/profile/edit"
+
+          href="/dashboard/profile/edit"
+
           className="text-white h-10 rounded-md py-2 bg-primaryBlue px-[3rem]"
         >
           Complete

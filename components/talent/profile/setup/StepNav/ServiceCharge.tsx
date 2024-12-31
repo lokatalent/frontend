@@ -44,10 +44,12 @@ function ServiceCharge({ setActiveStep }: any) {
   } = useForm<ServiceChargeFormValues>({
     resolver: zodResolver(ServiceChargeSchema),
     defaultValues: {
-      bankName: "GTBank",
-      accountNo: "1234567890",
-      rps: "11098",
-      rph: "98745",
+
+      bankName: "",
+      accountNo: "",
+      rps: "",
+      rph: "",
+
     },
   });
 

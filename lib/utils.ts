@@ -68,11 +68,13 @@ export const SignUpFormSchema = z
     newPassword: z
       .string()
       .min(8, "Password must be at least 8 characters")
-       .regex(
-         /[!@#$%^&*(),.?":{}|<>]/,
-         "Password must contain at least one symbol"
-       )
-       .regex(/\d/, "Password must contain at least one number"),
+      // ADD THIS IF A SYMBOL IS REQUIRED
+      
+      // .regex(
+      //   /[!@#$%^&*(),.?":{}|<>]/,
+      //   "Password must contain at least one symbol"
+      // )
+      .regex(/\d/, "Password must contain at least one number"),
     confirmPassword: z
       .string()
       .min(8, "Password must be at least 8 characters"),
@@ -121,13 +123,15 @@ export const passwordFormSchema = z
 
 export const allowedCountries = ["Nigeria", "India", "Senegal", "Australia"];
 export const profileFormSchema = z.object({
-  dateofBirth: z.date({
-    required_error: "Date of birth is required",
-  }),
+
+  // dateofBirth: z.date({
+  //   required_error: "Date of birth is required",
+  // }),
+
   city: z.string().min(2, "City must be at least 3 characters"),
   state: z.string().min(2, "State must be at least 3 characters"),
-  // country: z.string().min(1, "You must select a valid country"),
-  // gender: z.string().min(1, "You must select a gender"),
+  country: z.string().min(1, "You must select a valid country"),
+  gender: z.string().min(1, "You must select a gender"),
   address: z.string().min(5, "Address must be at least 5 characters"),
 });
 

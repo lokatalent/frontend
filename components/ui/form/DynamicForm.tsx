@@ -21,9 +21,23 @@ import {
 import PasswordChangedModal from "@/components/settings/security/PasswordChangedModal";
 import PhoneNumberVerification from "@/components/settings/security/PhoneVerificationModal";
 import { showToast } from "@/store/auth/toastSlice";
-import { forgotPassword, googleAuth, sendEmailOTP, signin, signup } from "@/services/authService";
-import { onForgotPassword, onSignUp, setLoggedin, setUser } from "@/store/auth/authSlice";
+
+import {
+  forgotPassword,
+  googleAuth,
+  sendEmailOTP,
+  signin,
+  signup,
+} from "@/services/authService";
+import {
+  onForgotPassword,
+  onSignUp,
+  setLoggedin,
+  setUser,
+} from "@/store/auth/authSlice";
 import { loginTest } from "@/services/axiosTest";
+import { updateProfile } from "@/services/profileService";
+
 
 interface DefaultValues {
   firstName?: string;
@@ -62,7 +76,7 @@ const DynamicForm = ({
   const [savedData, setSavedData] = useState<FormData | null>(null);
   const [error, setError] = useState<string[] | null | string>("");
   const [fileValue, setFileValue] = useState<string>("");
-  const [inputValue, setInputValue] = useState<File | null>(null);
+  const [showModal, setShowModal] = useState<boolean>(false);
   const verificationResult = useSelector(
     (state: RootStateProfile) => state.profile.verification
   );
@@ -70,7 +84,7 @@ const DynamicForm = ({
 
   const dispatch = useDispatch();
 
-  // const file = sessionStorage.getItem("selectedFile");
+  // const file = sessionStorage.getItem("selectedFile")
 
   const {
     register,
@@ -84,9 +98,10 @@ const DynamicForm = ({
   });
 
   const onGoogleAuth = () => {
-    const response = googleAuth()
+    const response = googleAuth();
     if (!response.error) {
-      console.log("Auth", response.data)
+      console.log("Auth", response.data);
+
     } else {
       dispatch(
         showToast({
@@ -95,15 +110,20 @@ const DynamicForm = ({
         })
       );
     }
-  }
+
+  };
 
   const onSubmit = async (data: any) => {
+    console.log(data);
+    setShowModal(true);
+
     setSavedData(data);
     if (buttonAction === "reset-password") {
       const response = await forgotPassword(data);
       if (!response.error) {
-        dispatch(onForgotPassword(data.email))
-        router.push("/reset-password/verify");
+        dispatch(onForgotPassword(data.email));
+        router.push("./reset-password/verify");
+
       } else {
         dispatch(
           showToast({
@@ -142,6 +162,7 @@ const DynamicForm = ({
           })
         );
       }
+
     } else if (buttonAction === "sign-up-talent") {
       // check passwords
       if (data.newPassword !== data.confirmPassword) {
@@ -173,6 +194,7 @@ const DynamicForm = ({
           })
         );
       }
+
     } else if (buttonAction === "log-in") {
       let temp = {
         email: data.email,
@@ -180,10 +202,12 @@ const DynamicForm = ({
       };
 
       const response = await signin(temp);
+
       if (!response.error) {
         let data = response.data;
         // save tokens
         setToken(data.tokens.access_token, data.tokens.refresh_token);
+
           // save user
           dispatch(setUser(data.user));
         if (data.user.is_verified || data.user.email_verified || data.user.phone_verified) {
@@ -223,17 +247,37 @@ const DynamicForm = ({
       }
       // router.push("/dashboard");
     } else if (buttonAction === "profile-edit") {
-      dispatch(setProfileDetails(data));
-      dispatch(
-        setInformation({
-          state: data.state,
-          address: data.address,
-          city: data.city,
-          dateOfBirth: data.dateofBirth,
-        })
-      );
-      router.push("/dashboard/profile/verify");
+
+      const response = await updateProfile(data);
+      console.log(response);
+      if (!response.error) {
+        dispatch(
+          showToast({
+            status: "success",
+            message: "Verify your account. An OTP has been sent to your email",
+          })
+        );
+        dispatch(setProfileDetails(data));
+        dispatch(
+          setInformation({
+            state: data.state,
+            address: data.address,
+            city: data.city,
+            dateOfBirth: data.dateofBirth,
+          })
+        );
+        // redirect to verify account
+        // router.push("/dashboard/profile/verify");
+      } else {
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(response.data),
+          })
+        );
+      }
     } else if (buttonAction === "edit-address") {
+
       dispatch(
         setInformation({
           state: data.state,
@@ -241,8 +285,10 @@ const DynamicForm = ({
           city: data.city,
         })
       );
+
     }
-    // console.log(error)
+    console.log(error)
+
     setError(null);
     reset();
   };
@@ -253,6 +299,7 @@ const DynamicForm = ({
     setError(data);
     // setSavedData(data);
     console.log(data);
+    setShowModal(false);
     // reset();
   };
 
@@ -315,8 +362,8 @@ const DynamicForm = ({
             <ReviewModal linkTo={"/dashboard/profile"} />
           ) : buttonAction === "edit-profile" && verificationResult && file ? (
             <ReviewModal linkTo={"/dashboard/settings/profile"} />
-          ) : buttonAction === "changePassword" ? (
-            <PasswordChangedModal />
+          ) : buttonAction === "changePassword"  ? (
+            <PasswordChangedModal showModal={showModal} setShowModal={setShowModal} />
           ) : buttonAction === "twoStepVerification" ? (
             <PhoneNumberVerification />
           ) : (
@@ -325,9 +372,9 @@ const DynamicForm = ({
                 type="submit"
                 // disabled={true}
                 className={`${
-                  buttonAction === "changePassword"
-                    ? "mt-10"
-                    : "flex-center"
+
+                  buttonAction === "changePassword" ? "mt-10" : "flex-center"
+
                 } text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-full rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] `}
               >
                 {buttonAction === "log-in"
@@ -338,7 +385,10 @@ const DynamicForm = ({
               </button>
 
               {buttonAction === "log-in" || buttonAction === "sign-up" ? (
+
+
                 <button onClick={onGoogleAuth} className="hidden w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
+
                   <FcGoogle size={24} className="mr-2" />
                   Continue with Google
                 </button>

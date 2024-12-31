@@ -11,14 +11,17 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { RiDeleteBinLine } from "react-icons/ri";
+import { deleteUserAccount } from "@/services/authService";
 
 
 export default function DeleteModal() {
   const [isDelete, setIsDelete] = useState(false);
 
-  const modalSwitchHandler = () => {
+  const modalSwitchHandler = async () => {
     setIsDelete(true);
-    console.log("delete");
+    console.log("delete done");
+    const response = await deleteUserAccount();
+    console.log(response);
   };
 
   const modalDeleteHandler = () => {

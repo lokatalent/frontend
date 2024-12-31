@@ -3,14 +3,14 @@ import {
   Dialog,
   DialogContent,
   DialogTrigger,
-  DialogClose
+  DialogClose,
 } from "@/components/ui/dialog";
 import { IoIosSend } from "react-icons/io";
 import { Button } from "@/components/ui/button";
 
-const   PasswordChangedModal = () => {
+const PasswordChangedModal = ({ showModal, setShowModal}) => {
   return (
-    <Dialog>
+    <Dialog open={showModal} onOpenChange={setShowModal}>
       <DialogTrigger
         type="submit"
         className="font-nunito mt-10 text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[23rem] mx-auto rounded h-14  hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] transition transition-all duration-[500ms]"
@@ -19,7 +19,7 @@ const   PasswordChangedModal = () => {
       </DialogTrigger>
       <DialogContent className="w-[27rem]">
         <div className="">
-          <div className=" px-4  pt-4 pb-20 sm:block sm:p-0">
+          <div className="px-4  pt-4 pb-20 sm:block sm:p-0">
             <div className="mt-3 space-y-3 sm:mt-5">
               <Button
                 size={"icon"}
@@ -41,7 +41,7 @@ const   PasswordChangedModal = () => {
           </div>
           <div className="mt-5 sm:mt-6">
             <DialogClose asChild>
-            <Button className="px-16 py-6">Done</Button>
+              <Button className="px-16 py-6">Done</Button>
             </DialogClose>
           </div>
         </div>

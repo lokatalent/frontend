@@ -6,6 +6,7 @@ import {  FieldConfig, profileFormSchema } from "@/lib/utils";
 import DynamicForm from "@/components/ui/form/DynamicForm";
 import { setProfilePics } from "@/store/profile/profileSlice";
 import { useDispatch } from "react-redux";
+import { updateProfileImage } from "@/services/profileService";
 
  const fields: FieldConfig[] = [
    {
@@ -91,11 +92,17 @@ function Edit() {
 
 
   
-  const handleImageSelect = (event: ChangeEvent<HTMLInputElement>): void => {
+  const handleImageSelect = async (event: ChangeEvent<HTMLInputElement>): void => {
     const file = event.target.files?.[0];
     if (file) {
       const imageUrl: string = URL.createObjectURL(file);
-      setSelectedImage(imageUrl); // Make sure setSelectedImage is defined in your component
+      const images = {
+        image: file,
+      }
+      const response = await updateProfileImage(images);
+      console.log(response);
+      setSelectedImage(imageUrl);
+      // Make sure setSelectedImage is defined in your component
       dispatch(setProfilePics(imageUrl));
     }
   };
@@ -108,7 +115,7 @@ function Edit() {
 
   const defaultValues = {
     gender: "",
-    dateOfBirth: "",
+    // dateOfBirth: "",
     country: "",
     state: "",
     city: "",

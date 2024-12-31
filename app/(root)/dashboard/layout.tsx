@@ -13,9 +13,11 @@ export default function RootLayout({
 }>) {
   const loggedIn = useSelector((state: any) => state.auth.loggedIn);
 
+
   const router = useRouter();
 
   if (!loggedIn) return router.push("/login");
+
   return (
     <>
       {loggedIn && (

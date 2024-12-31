@@ -60,10 +60,11 @@ const user = () => {
           value: 6,
           message: "Password must be at least 6 characters",
         },
-        pattern: {
-          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-          message: "Password must contain at least one letter and one number",
-        },
+        // ADD THIS IF A SYMBOL IS REQUIRED
+        // pattern: {
+        //   value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+        //   message: "Password must contain at least one letter and one number",
+        // },
       },
     },
     {
@@ -76,10 +77,10 @@ const user = () => {
           value: 6,
           message: "Password must be at least 6 characters",
         },
-        pattern: {
-          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-          message: "Password must contain at least one letter and one number",
-        },
+        // pattern: {
+        //   value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+        //   message: "Password must contain at least one letter and one number",
+        // },
       },
     },
   ];

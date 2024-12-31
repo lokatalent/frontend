@@ -55,6 +55,21 @@ export const verifyEmail = async (values: any) => {
   }
 };
 
+
+export const verifyUser = async () => {
+  try {
+    let response = await http.post("/auth/verify-user");
+    return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err.response.data,
+      status: err.response.status,
+    };
+  }
+};
+
+
 export const verifyPhone = async (values: any) => {
   try {
     let response = await http.post(
@@ -76,7 +91,6 @@ export const forgotPassword = async (values: any) => {
     let response = await http.post("auth/forgot-password", values);
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
-    console.log("Error", err)
     return {
       error: true,
       data: err.response.data,
@@ -175,3 +189,20 @@ export const sendPhoneOTP = async () => {
     };
   }
 };
+
+
+export const deleteUserAccount = async () => {
+  try {
+    let response = await http.delete("users");
+    console.log(response);
+    return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err.response.data,
+      status: err.response.status,
+    };
+  }
+};
+
+
