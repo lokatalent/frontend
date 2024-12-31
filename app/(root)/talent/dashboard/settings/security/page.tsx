@@ -1,8 +1,9 @@
 "use client";
+
+import SecurityForm from "@/components/settings/security/SecurityForm";
 import TwoStepVerification from "@/components/settings/security/TwoStepVerification";
 import { Button } from "@/components/ui/button";
-import DynamicForm from "@/components/ui/form/DynamicForm";
-import { changePasswordFormSchema, FieldConfig } from "@/lib/utils";
+
 import { RootStateProfile } from "@/store/profile/profileSlice";
 import {
   RootState,
@@ -22,71 +23,11 @@ function Security() {
     (state: RootState) => state.settings.activeTwoStepVerification
   );
   console.log(ProfileInfo);
-  const fields: FieldConfig[] = [
-    {
-      name: "currentPassword",
-      type: "password",
-      label: "Current Password",
-      validation: {
-        required: "Password is required",
-        minLength: {
-          value: 8,
-          message: "Password must be at least 8 characters",
-        },
-        pattern: {
-          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-          message: "Password must contain at least one letter and one number",
-        },
-      },
-    },
-    {
-      name: "newPassword",
-      type: "password",
-      label: "New Password",
-      validation: {
-        required: "Password is required",
-        minLength: {
-          value: 6,
-          message: "Password must be at least 6 characters",
-        },
-        pattern: {
-          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-          message: "Password must contain at least one letter and one number",
-        },
-      },
-    },
-    {
-      name: "confirmPassword",
-      type: "password",
-      label: "Confirm Password",
-      validation: {
-        required: "Password is required",
-        minLength: {
-          value: 6,
-          message: "Password must be at least 6 characters",
-        },
-        pattern: {
-          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
-          message: "Password must contain at least one letter and one number",
-        },
-      },
-    },
-  ];
 
-  const defaultValues = {
-    currentPassword: "",
-    newPassword: "",
-    confirmPassword: "",
-  };
-
-  const handleTwoFactorToggle = () => {
-    setIsTwoFactorEnabled((prevState) => !prevState);
-  };
-
-  const [isOn, setIsOn] = useState(false);
 
   const toggleSwitch = () => {
-    setIsOn(!isOn);
+
+  
     if (activeTwoStepVerification) {
       dispatch(setActiveTwoStepVerification(false));
     } else {
@@ -94,21 +35,14 @@ function Security() {
     }
   };
 
-  const savedCurrentPassword = "12345678"; // Replace with actual saved password value
 
-  const schemaType = changePasswordFormSchema(savedCurrentPassword);
   return (
     <div className="p-6">
       <div>
-        <DynamicForm
-          fields={fields}
-          defaultValues={defaultValues}
-          schemaType={schemaType}
-          buttonAction="changePassword"
-          width="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[28rem]"
-        />
+        <SecurityForm />
       </div>
 
+ 
       <div className="mt-6 card flex justify-between items-center">
         {!activeTwoStepVerification ? (
           <div className="flex justify-between">
@@ -142,7 +76,11 @@ function Security() {
               >
                 <div
                   className={`bg-white w-4 h-4 rounded-full shadow-md transform ${
-                    isOn ? "translate-x-6" : "translate-x-0"
+
+                    activeTwoStepVerification
+                      ? "translate-x-6"
+                      : "translate-x-0"
+
                   } transition-transform duration-200`}
                 ></div>
               </div>

@@ -16,15 +16,22 @@ export const getToken = () => {
 
 export const http = axios.create(options)
 
+
+
+
+// Request interceptor to include Authorization header
 http.interceptors.request.use(
-(config) => {
-  const token = getToken();
-  if (token) {
-    config.headers.Authorization = `Bearer ${token}`;
+  (config) => {
+    const token = getToken();
+    console.log("Token:", token);
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
+    }
+    return config;
+  },
+  (error) => {
+    return Promise.reject(error);
   }
-  return config;
-},
-(error) => {
-  return Promise.reject(error);
-}
 );
+
+

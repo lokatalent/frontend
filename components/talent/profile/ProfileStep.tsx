@@ -7,10 +7,12 @@ import StepLabel from "@mui/material/StepLabel";
 import Typography from "@mui/material/Typography";
 import { ChevronRight } from "lucide-react";
 import { cn } from "@/lib/utils";
-import PersonalInfo from "./setup/StepNav/PersonalInfo";
-import Qualification from "./setup/StepNav/Qualification";
-import Portfolio from "./setup/StepNav/Portfolio";
-import ServiceCharge from "./setup/StepNav/ServiceCharge";
+
+import PersonalInfo from "./setup/stepNav/PersonalInfo";
+import Qualification from "./setup/stepNav/Qualification";
+import Portfolio from "./setup/stepNav/Portfolio";
+import ServiceCharge from "./setup/stepNav/ServiceCharge";
+
 
 const steps = [
   "Personal Information",
