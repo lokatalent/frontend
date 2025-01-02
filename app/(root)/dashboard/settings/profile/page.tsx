@@ -65,12 +65,11 @@ function Profile() {
 
   return (
     <div>
-      Here
-      {/* <div className="flex flex-wrap gap-5">
+      <div className="flex flex-wrap gap-5">
         <SettingsProfileCard title="Name and Email" forms={forms} />
         <SettingsProfileCard title="Phone Number" forms={Phone} />
         <SettingsProfileCard title="Address" forms={Address} />
-      </div> */}
+      </div>
     </div>
   );
 }
