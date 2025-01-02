@@ -87,7 +87,8 @@ export default function EditPortfolio({
 
   const onSubmit = async (data: EditPortfolioFormValues) => {
     try {
-      await portfolioRateEdited(data);
+      // await portfolioRateEdited(data);
+
       Object.entries(localSkills).forEach(([skill, value]) => {
         onSkillChange(skill, value);
       });
