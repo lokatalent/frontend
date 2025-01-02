@@ -15,6 +15,7 @@ import { Sheet, SheetClose, SheetContent, SheetTrigger } from "./ui/sheet";
 import Image from "next/image";
 import { setLoggedin } from "@/store/auth/authSlice";
 import { useDispatch } from "react-redux";
+import { CiMenuBurger } from "react-icons/ci";
 
 const links = [
   {
@@ -103,7 +104,7 @@ const SideNav = ({ talent }: { talent?: boolean }) => {
         </div>
       </div>
 
-      <div className="xl:hidden fixed top-0 left-0 z-[20] bg-white px-2 flex items-center justify-center min-h-[70px]">
+      <div className="xl:hidden bg-white fixed top-0 left-0 z-[20] px-2 flex items-center justify-center min-h-[70px]">
         <Sheet>
           <div className="flex justify-between mx-4">
             {/* <Link href="/">
@@ -111,13 +112,14 @@ const SideNav = ({ talent }: { talent?: boolean }) => {
             </Link> */}
 
             <SheetTrigger>
-              <Image
+              {/* <Image
                 src="/Images/hamburger.svg"
                 width={30}
                 height={30}
                 alt="menu"
                 className="cursor-pointer"
-              />
+              /> */}
+              <CiMenuBurger color="#3377ff" size={25} />
             </SheetTrigger>
           </div>
 
