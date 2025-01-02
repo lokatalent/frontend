@@ -414,7 +414,7 @@ const DynamicForm = ({
               {buttonAction === "log-in" || buttonAction === "sign-up" ? (
                 <button
                   onClick={onGoogleAuth}
-                  className="hidden w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]"
+                  className="hidden w-full bg-white text-black font-bold justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]"
                 >
                   <FcGoogle size={24} className="mr-2" />
                   Continue with Google

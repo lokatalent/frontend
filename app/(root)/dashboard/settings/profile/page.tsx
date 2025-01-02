@@ -6,7 +6,7 @@ import SettingsProfileCard from "@/components/settings/profile/SettingsProfileCa
 import { RootStateProfile } from "@/store/profile/profileSlice";
 import { RootStateAuth } from "@/store/auth/authSlice";
 
-function Profile() {
+function ProfileSettings() {
   const profileDetails = useSelector(
     (state: RootStateProfile) => state.profile.profileDetails
   );
@@ -42,7 +42,7 @@ function Profile() {
   const Address = [
     {
       label: "Address",
-      text: profileAuth.address.length > 0 ? profileAuth.address : "-",
+      text: profileAuth?.address?.length > 0 ? profileAuth.address : "-",
       type: "address",
     },
     {
@@ -53,12 +53,12 @@ function Profile() {
     {
       label: "State",
       text:
-        profileInformation.state.length > 0 ? profileInformation.state : "-",
+        profileInformation?.state?.length > 0 ? profileInformation.state : "-",
       type: "state",
     },
     {
       label: "City",
-      text: profileInformation.city.length > 0 ? profileDetails.city : "-",
+      text: profileInformation?.city?.length > 0 ? profileDetails.city : "-",
       type: "city",
     },
   ];
@@ -74,4 +74,4 @@ function Profile() {
   );
 }
 
-export default Profile;
+export default ProfileSettings;
