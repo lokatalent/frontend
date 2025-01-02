@@ -6,6 +6,7 @@ import {  FieldConfig, profileFormSchema } from "@/lib/utils";
 import DynamicForm from "@/components/ui/form/DynamicForm";
 import { setProfilePics } from "@/store/profile/profileSlice";
 import { useDispatch } from "react-redux";
+import { updateProfileImage } from "@/services/profileService";
 
  const fields: FieldConfig[] = [
    {
@@ -17,18 +18,18 @@ import { useDispatch } from "react-redux";
        required: "Select a gender",
      },
    },
-   {
-     name: "dateofBirth",
-     type: "date",
-     label: "Date of Birth*",
-     validation: {
-       required: "Date of Birth is required",
-        minLength: {
-          value: 1,
-          message: "Date of Birth must be at least 6 characters",
-        },
-     },
-   },
+  //  {
+  //    name: "dateofBirth",
+  //    type: "date",
+  //    label: "Date of Birth*",
+  //    validation: {
+  //      required: "Date of Birth is required",
+  //       minLength: {
+  //         value: 1,
+  //         message: "Date of Birth must be at least 6 characters",
+  //       },
+  //    },
+  //  },
    {
      name: "country",
      type: "select",
@@ -84,23 +85,29 @@ import { useDispatch } from "react-redux";
 
 
 function Edit() {
-  const dispatch = useDispatch();
-  // const [selectedImage, setSelectedImage] = useState<any>(null); // normal code
-  // const fileInputRef = useRef<HTMLInputElement | null>(null); // normal code
-  const [selectedImage, setSelectedImage] = useState<any>();
-   const fileInputRef = useRef<HTMLInputElement>();
+   const [selectedImage, setSelectedImage] = useState<any>(null);
+   const dispatch = useDispatch();
+
+   const fileInputRef = useRef<HTMLInputElement | null>(null);
+
 
   
-  const handleImageSelect = (event: ChangeEvent<HTMLInputElement>): void => {
+  const handleImageSelect = async (event: ChangeEvent<HTMLInputElement>): void => {
     const file = event.target.files?.[0];
     if (file) {
       const imageUrl: string = URL.createObjectURL(file);
-      setSelectedImage(imageUrl); // Make sure setSelectedImage is defined in your component
+      const images = {
+        image: file,
+      }
+      const response = await updateProfileImage(images);
+      console.log(response);
+      setSelectedImage(imageUrl);
+      // Make sure setSelectedImage is defined in your component
       dispatch(setProfilePics(imageUrl));
     }
   };
 
-  const handleButtonClick = (): void => {
+  const handleButtonClick = () => {
     fileInputRef.current?.click();
 
   };
@@ -108,7 +115,7 @@ function Edit() {
 
   const defaultValues = {
     gender: "",
-    dateOfBirth: "",
+    // dateOfBirth: "",
     country: "",
     state: "",
     city: "",

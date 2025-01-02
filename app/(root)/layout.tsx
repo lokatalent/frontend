@@ -1,32 +1,39 @@
+"use client";
 
 import SideNav from "@/components/SideNav";
 // import "../globals.css";
 import TopNav from "@/components/TopNav";
-
+import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
 export default function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const loggedIn = true;
+  const loggedIn = useSelector((state: any) => state.auth.loggedIn);
+  const router = useRouter();
 
-  // if (!loggedIn) redirect("/login");
+  const role = useSelector((state: any) => state.auth.user.service_role);
+
+  // if (role === "regular") return router.push("/dashboard");
+
+  if (!loggedIn) return router.push("/login");
+
   return (
     <>
       {loggedIn && (
-        <div className="bg-bgWhite  main-contain min-h-screen">
+        <div className="bg-bgWhite main-contain min-h-screen">
           <div className="flex flex-row">
             <div className="sidenav-container">
-              <SideNav />
+              <SideNav talent={role === "service_provider"} />
             </div>
-            <div className="flex-1 md:ml-[200px] ">
+            <div className="flex-1 xl:ml-[200px]">
               <TopNav />
             </div>
           </div>
-
-          <div className="main-content pl-[2rem] pr-[2rem] py-[2rem] md:pl-[14rem] md:pr-[2rem] md:py-[2rem]">
-            {children}
+          <div className="main-content xl:pl-[200px] pt-24 pb-10">
+            <div className="px-[5%] xl:px-[3%] mx-auto">{children}</div>
           </div>
         </div>
       )}

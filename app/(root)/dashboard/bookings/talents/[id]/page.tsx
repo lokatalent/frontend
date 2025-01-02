@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaAngleLeft, FaCheckCircle, FaStar } from "react-icons/fa";
@@ -59,7 +60,8 @@ function TalentDetails() {
                   <span>Available for work</span>
                 </div>
               </div>
-              <button className="btnOne max-w-[150px]">Book Now</button>
+              <Link href={"/dashboard/bookings/payments"}>
+              <button className="btnOne max-w-[150px]">Book Now</button></Link>
             </div>
           </div>
         </div>

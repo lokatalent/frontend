@@ -13,10 +13,11 @@ interface RoleSwitchProps {
   // Optional initial selected role
   initialRole?: string;
   // Callback function when role changes
-  onRoleChange: (role: string) => void;
+  onRoleChange: any;
   // Optional custom styling
   className?: string;
   type?: string;
+  talent?: boolean;
 }
 
 type Role = string;
@@ -27,6 +28,7 @@ const RoleSwitch: React.FC<RoleSwitchProps> = ({
   onRoleChange,
   className,
   type,
+  talent,
 }) => {
   const [selectedRole, setSelectedRole] = useState(initialRole);
   const pathname = usePathname();
@@ -50,7 +52,7 @@ const RoleSwitch: React.FC<RoleSwitchProps> = ({
     setSelectedRole(role);
     onRoleChange(role);
     if (type === "link") {
-      router.push(`/dashboard/settings/${role}`);
+      router.push(talent ? `/talent/dashboard/settings/${role}` : `/dashboard/settings/${role}`);
     }
   };
 

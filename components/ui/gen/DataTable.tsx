@@ -36,6 +36,7 @@ interface DataTableProps<TData, TValue> {
   path: string;
   isSort: boolean;
   isRole: boolean;
+  talent?: boolean;
 }
 interface GlobalFilter {
   globalFilter: any;
@@ -43,7 +44,7 @@ interface GlobalFilter {
 const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Rank the item
   const itemRank = rankItem(row.getValue(columnId), value);
-  console.log(itemRank, row, columnId, value)
+  console.log(itemRank, row, columnId, value);
 
   // Store the itemRank info
   addMeta({ itemRank });
@@ -51,15 +52,16 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Return if the item should be filtered in/out
   return itemRank.passed;
 };
- function DataTable<TData, TValue>({
+function DataTable<TData, TValue>({
   columns,
   data,
   path,
   isSort,
   isRole,
+  talent,
 }: DataTableProps<TData, TValue>) {
   const router = useRouter();
-  const [sort, setSort]= useState(''); // Initial selected option
+  const [sort, setSort] = useState(""); // Initial selected option
 
   const [globalFilter, setGlobalFilter] = useState<string>("");
   // const [role, setRole] = useState<boolean>(false);
@@ -80,19 +82,17 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   });
   // console.log(path);
   const handleNavigate = (id: number) => {
-    console.log(id);
-    console.log(path);
-    router.push(`/dashboard/bookings/${id}`);
+    router.push(
+      talent ? `/talent/dashboard/bookings/${id}` : `/dashboard/bookings/${id}`
+    );
   };
 
-  const roleHandler = (role: string) => {
-    console.log(role);
-  };
+  const roleHandler = (role: string) => {};
 
   const bookingRoles = [
     { value: "all", label: "All" },
-    { value: "instant-bookings", label: "Instant Bookings" },
-    { value: "schedule-bookings", label: "Schedule Bookings" },
+    { value: "instant-bookings", label: "Instant" },
+    { value: "schedule-bookings", label: "Scheduled" },
   ];
 
   const sortHandler = (role: string) => {
@@ -120,7 +120,7 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
       </div>
 
       <div className="rounded-md borde">
-        <Table>
+        <Table className="whitespace-nowrap">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>
@@ -174,11 +174,23 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
                     width={150}
                     className="mx-auto"
                   />
-                  <p>You havent made any booking yet</p>
-                  <p>
-                    Explore our services and book what you need in just a few
-                    taps
-                  </p>
+                  {talent ? (
+                    <div>
+                      <p>You havent received any booking yet</p>
+                      <p>
+                        No bookings yet, but new requests may come in at any
+                        time!
+                      </p>
+                    </div>
+                  ) : (
+                    <div>
+                      <p>You havent made any booking yet</p>
+                      <p>
+                        Explore our services and book what you need in just a
+                        few taps
+                      </p>
+                    </div>
+                  )}
                 </TableCell>
               </TableRow>
             )}
@@ -190,6 +202,3 @@ const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
 }
 
 export default DataTable;
-
-
-

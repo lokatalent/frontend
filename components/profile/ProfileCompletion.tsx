@@ -1,9 +1,9 @@
-"use client"
-import Image from 'next/image'
-import React from 'react'
-import { BiSolidRightArrowAlt } from 'react-icons/bi'
-import { Button } from '@/components/ui/button'
-import Link from 'next/link'
+"use client";
+import Image from "next/image";
+import React from "react";
+import { BiSolidRightArrowAlt } from "react-icons/bi";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 interface ProfileCompletionProps {
   addText?: string;
@@ -29,7 +29,9 @@ function ProfileCompletion({
       </div>
       <div>
         <Link
-          href="/talent/dashboard/profile/edit"
+
+          href="/dashboard/profile/edit"
+
           className="text-white h-10 rounded-md py-2 bg-primaryBlue px-[3rem]"
         >
           Complete
@@ -39,4 +41,4 @@ function ProfileCompletion({
   );
 }
 
-export default ProfileCompletion
+export default ProfileCompletion;

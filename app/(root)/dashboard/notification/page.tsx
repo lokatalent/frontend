@@ -5,6 +5,7 @@ import EmptyNotification from "@/components/notifications/EmptyNotification";
 import NotificationsBar from "@/components/notifications/NotificationsBar";
 import OverallNotification from "@/components/notifications/overallNotification";
 import RoleSwitch from "@/components/overview/RoleSwitch";
+import { getNotifications } from "@/services/notificationService";
 
 type Notification = {
   id: string;
@@ -144,6 +145,8 @@ export default function Notification() {
   if (!notifications || !notifications.isNotified) {
     return <EmptyNotification />;
   }
+
+ 
 
   return (
     <OverallNotification

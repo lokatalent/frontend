@@ -5,13 +5,11 @@ import "./globals.css";
 import Navbar from "@/components/Nav";
 import { Providers } from "./Provider";
 
-
 const nunito = Nunito_Sans({
   weight: ["400", "700"],
   style: ["normal", "italic"],
   subsets: ["latin"],
   display: "swap",
-
 });
 
 export const metadata: Metadata = {

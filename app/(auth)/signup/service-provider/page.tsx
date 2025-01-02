@@ -1,4 +1,4 @@
-// "use client";
+"use client";
 import DynamicForm from "@/components/ui/form/DynamicForm";
 import { FieldConfig, SignUpFormSchema } from "@/lib/utils";
 import Link from "next/link";
@@ -106,7 +106,7 @@ const user = () => {
         fields={fields}
         defaultValues={defaultValues}
         schemaType={schemaType}
-        buttonAction="sign-up"
+        buttonAction="sign-up-talent"
         width="w-full max-w-xl mx-auto"
       />
 

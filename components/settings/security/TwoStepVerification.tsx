@@ -45,7 +45,9 @@ const TwoStepVerification: React.FC = () => {
     setIsSubmitting(false);
     setValue("");
     dispatch(setTwoStepVerificationModal(false));
-    dispatch(setActiveTwoStepVerification(true));
+    if (value === OTP) {    
+      dispatch(setActiveTwoStepVerification(true));
+     }
   };
 
   const OTP = "111111";

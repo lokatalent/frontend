@@ -23,7 +23,7 @@ const NotificationsBar: React.FC<NotificationsBarProps> = ({
       {notifications.map((notification, index) => (
         <div
           key={notification.id}
-          className={`bg-white w-full rounded-br-md rounded-tr-md p-6 flex flex-col sm:flex-row justify-between items-center ${
+          className={`bg-white w-full notify rounded-br-md rounded-tr-md p-6 flex flex-col sm:flex-row justify-between items-center ${
             notification.statusNotification === "unread"
               ? "border-[#DF8600] border-l-[5px]"
               : ""
@@ -48,7 +48,7 @@ const NotificationsBar: React.FC<NotificationsBarProps> = ({
           </div>
           <div className="self-start mt-3">
             <Link
-              href={`/dashboard/notification/${notification.id}`}
+              href={`notification/${notification.id}`}
               className="text-white h-10 rounded-md text-sm py-2 bg-primaryBlue w-[10rem] flex-center block"
             >
               View Details

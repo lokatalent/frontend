@@ -22,7 +22,7 @@ interface ProfileState {
     state: string;
     city: string;
     dateOfBirth: string;
-      gender: string;
+    gender: string;
   };
 }
 
@@ -42,7 +42,7 @@ const initialState: ProfileState = {
     state: "",
     city: "",
     dateOfBirth: "",
-      gender: "",
+    gender: "",
   },
 };
 
@@ -113,6 +113,11 @@ const profileSlice = createSlice({
   },
 });
 
-export const { setVerificationStore, setFileStore, setProfileDetails, setProfilePics, setInformation } =
-  profileSlice.actions;
+export const {
+  setVerificationStore,
+  setFileStore,
+  setProfileDetails,
+  setProfilePics,
+  setInformation,
+} = profileSlice.actions;
 export default profileSlice.reducer;

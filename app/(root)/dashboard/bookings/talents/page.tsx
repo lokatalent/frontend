@@ -42,7 +42,7 @@ const TalentItem = () => {
               <button onClick={() => router.push("/dashboard/bookings/talents/1")} className="btnTwo border border-primaryBlue">
                 View Profile
               </button>
-              <button className="btnOne">Book Now</button>
+              <button onClick={() => router.push("/dashboard/bookings/payments")} className="btnOne">Book Now</button>
             </div>
           </div>
         </div>
@@ -52,7 +52,7 @@ const TalentItem = () => {
 
 function Talents() {
   return (
-    <div className="py-5">
+    <div className="py-5 bg-bgWhite">
       {/* header */}
       <div>
         <h1 className="text-3xl font-semibold text-center">

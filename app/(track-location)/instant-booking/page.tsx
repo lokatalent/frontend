@@ -6,7 +6,7 @@ import { TbCircleNumber2, TbCircleNumber3Filled } from "react-icons/tb";
 
 const page = () => {
 	return (
-		<div className="bg-bgWhite  ">
+		<div className="bg-bgWhite  min-h-screen">
 			<div className="flex flex-col justify-center contained mx-auto ">
 				<div className="my-4">
 					<Spacer size={30} />

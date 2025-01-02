@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/popover";
 import { FaRegBell } from "react-icons/fa";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 interface NotificationItem {
   id: number;
@@ -105,7 +106,10 @@ const NotificationPanel = () => {
                   </div>
 
                   {notification.hasAction && (
-                    <button className="rounded-md bg-blue-500 px-4 py-1.5 text-sm font-medium text-white hover:bg-blue-600">
+                    <button
+                      onClick={() => router.push("/dashboard/bookings/1")}
+                      className="rounded-md bg-blue-500 px-4 py-1.5 text-sm font-medium text-white hover:bg-blue-600 mt-3"
+                    >
                       View
                     </button>
                   )}
@@ -135,7 +139,7 @@ const NotificationsDropdown = () => {
         </div>
       </PopoverTrigger>
 
-      <PopoverContent className="absolute bg-white p-0 right-[-165px] rounded-md mt-2 w-[15rem] sm:w-96 transform">
+      <PopoverContent className="absolute bg-white p-0 right-[-90px] md:right-[-165px] rounded-md mt-2 w-[270px] sm:w-96 transform">
         <NotificationPanel />
       </PopoverContent>
     </Popover>

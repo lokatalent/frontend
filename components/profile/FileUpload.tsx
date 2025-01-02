@@ -1,10 +1,11 @@
-// METHOD 2
 "use client";
 import React, { useCallback, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { FormFieldError } from "@/components/ui/form/FormFieldError";
+import { useDispatch, useSelector } from "react-redux";
+import { RootStateProfile, setFileStore } from "@/store/profile/profileSlice";
+import { FormFieldError } from "../ui/form/FormFieldError";
 
 type FileConfig = {
   allowedTypes: string[];
@@ -14,103 +15,24 @@ type FileConfig = {
   errorMessage: string;
 };
 
-type FileHandlers = {
-  onFileSelect?: (file: File | null, url: string | null) => void;
-  onFileUpload?: (file: File, url: string) => void;
-  onFileRemove?: (file: File | null, url: string | null) => void;
-  onError?: (error: string) => void;
-};
 
-type FileUploadProps = Partial<FileConfig> &
-  Partial<FileHandlers> & {
-    className?: string;
-    uploadIcon?: string;
-  };
-
-const defaultConfig: FileConfig = {
-  allowedTypes: ["image/jpeg", "image/png", "image/gif", "application/pdf"],
-  maxFileSizeMB: 5,
-  uploadLabel: "Click to upload",
-  dragDropLabel: "or drag and drop",
-  errorMessage: "Select a file to continue",
-};
-
-const FileUpload: React.FC<FileUploadProps> = ({
-  // Config props with defaults
-  allowedTypes = defaultConfig.allowedTypes,
-  maxFileSizeMB = defaultConfig.maxFileSizeMB,
-  uploadLabel = defaultConfig.uploadLabel,
-  dragDropLabel = defaultConfig.dragDropLabel,
-  errorMessage = defaultConfig.errorMessage,
-  // Handler props
-  onFileSelect,
-  onFileUpload,
-  onFileRemove,
-  onError,
-  // Style props
-  className,
-  uploadIcon,
-}) => {
+const FileUpload = () => {
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
-  const [fileUrl, setFileUrl] = useState<string | null>(null);
-  const [error, setError] = useState<string>(errorMessage);
-
-  const handleError = useCallback(
-    (errorMsg: string) => {
-      setError(errorMsg);
-      onError?.(errorMsg);
-    },
-    [onError]
+  const [error, setError] = useState<MessageObject>({ message: 'Select a file to continue' });
+  const dispatch = useDispatch();
+  const files = useSelector(
+    (state: RootStateProfile) => state.profile.file
   );
 
-  const validateFile = useCallback(
-    (file: File) => {
-      if (!allowedTypes.includes(file.type)) {
-        handleError(
-          `Invalid file type. Allowed types: ${allowedTypes.join(", ")}`
-        );
-        return false;
-      }
-      if (file.size > maxFileSizeMB * 1024 * 1024) {
-        handleError(`File size too large. Max size: ${maxFileSizeMB}MB`);
-        return false;
-      }
-      return true;
-    },
-    [allowedTypes, maxFileSizeMB, handleError]
-  );
+  // Allowed file types
+  const allowedTypes = [
+    "image/jpeg",
+    "image/png",
+    "image/gif",
+    "application/pdf",
+  ];
 
-  const handleFileUpload = useCallback(
-    (selectedFile: File) => {
-      if (validateFile(selectedFile)) {
-        const url = URL.createObjectURL(selectedFile);
-
-        setFileUrl(url);
-        setFile(selectedFile);
-        setError("");
-
-        onFileSelect?.(selectedFile, url);
-        onFileUpload?.(selectedFile, url);
-      }
-    },
-    [validateFile, onFileSelect, onFileUpload]
-  );
-
-  const handleRemove = useCallback(() => {
-    if (file && fileUrl) {
-      onFileRemove?.(file, fileUrl);
-      URL.revokeObjectURL(fileUrl);
-
-      setFileUrl(null);
-      setFile(null);
-      setError(errorMessage);
-
-      onFileSelect?.(null, null);
-    }
-  }, [file, fileUrl, errorMessage, onFileRemove, onFileSelect]);
-
-  // Drag and drop handlers
   const handleDragEnter = useCallback((e: React.DragEvent) => {
     e.preventDefault();
     e.stopPropagation();
@@ -128,35 +50,66 @@ const FileUpload: React.FC<FileUploadProps> = ({
     e.stopPropagation();
   }, []);
 
-  const handleDrop = useCallback(
-    (e: React.DragEvent) => {
-      e.preventDefault();
-      e.stopPropagation();
-      setIsDragging(false);
+  const validateFile = (file: File) => {
+    if (!allowedTypes.includes(file.type)) {
+      setError({
+        message: "Invalid file type. Please upload PDF or image files (JPEG, PNG, GIF)"
+      });
+      return false;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      // 5MB limit
+      setError({message: "File size too large. Please upload files smaller than 5MB"});
+      return false;
+    }
+    return true;
+  };
 
-      const droppedFile = e.dataTransfer.files[0];
-      if (droppedFile) {
-        handleFileUpload(droppedFile);
-      }
-    },
-    [handleFileUpload]
-  );
+  const handleDrop = useCallback((e: React.DragEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsDragging(false);
+    setError({message: ""});
+
+    const droppedFile = e.dataTransfer.files[0];
+    if (droppedFile && validateFile(droppedFile)) {
+      setFile(droppedFile);
+      const url = URL.createObjectURL(droppedFile);
+        dispatch(setFileStore(url));
+     
+    }
+  }, []);
 
   const handleFileSelect = useCallback(
     (e: React.ChangeEvent<HTMLInputElement>) => {
+     setError({message: ""});
       const selectedFile = e.target.files?.[0];
-      if (selectedFile) {
-        handleFileUpload(selectedFile);
+      if (selectedFile && validateFile(selectedFile)) {
+        setFile(selectedFile);
+        console.log(selectedFile);
+        // URL.createObjectURL;
+         const url = URL.createObjectURL(selectedFile);
+        dispatch(setFileStore(url));
+        // sessionStorage.setItem('selectedFile', URL.createObjectURL(selectedFile));
       }
     },
-    [handleFileUpload]
+    []
   );
+
+
+  const handleRemove = useCallback(() => {
+    setFile(null);
+  //  setError({message: ""});
+    sessionStorage.removeItem('selectedFile');
+        dispatch(setFileStore(null));
+
+  }, []);
 
   return (
     <div className={cn("w-full mx-auto", className)}>
       <div
         className={cn(
-          "border-2 border-dashed rounded-lg text-center",
+          "border-2 border-dashed rounded-lg  text-center",
           isDragging ? "border-blue-500 bg-blue-50" : "border-gray-300",
           "transition-all duration-200"
         )}
@@ -174,21 +127,35 @@ const FileUpload: React.FC<FileUploadProps> = ({
         />
 
         {!file ? (
-          <div className="bg-white text-[#3377FF] rounded px-4 py-4 flex items-center flex-col">
-            {uploadIcon && (
-              <Image src={uploadIcon} alt="File Upload" className="w-10 h-10" />
-            )}
-            <Button
-              variant="ghost"
-              className="text-blue-600 hover:text-blue-700"
-              onClick={() => document.getElementById("fileInput")?.click()}
-            >
-              {uploadLabel}
-              <span className="text-gray-500">{dragDropLabel}</span>
-            </Button>
-          </div>
+          <>
+            <div>
+              <div
+                className={` bg-white text-[#3377FF] rounded px-[1rem] py-4 flex items-center justify-content flex-col`}
+              >
+                <div>
+                  <Image
+                    src={fileUploadImg}
+                    alt="File Upload"
+                    className="w-10"
+                  />
+                </div>
+                <Button
+                  variant="ghost"
+                  className="text-blue-600 hover:text-blue-700"
+                  onClick={(event) => {
+                    event.preventDefault(); // Prevent default button behavior
+                    document.getElementById("fileInput")?.click();
+                  }}
+                >
+                  Click to upload
+                  <span className="text-gray-500"> or drag and drop</span>
+                </Button>
+                <p className="text-[11px] text-black">SVG, HEIC, PNG, JPG</p>
+              </div>
+            </div>
+          </>
         ) : (
-          <div className="space-y-4 py-4">
+          <div className="space-y-4  py-4 ">
             <div className="flex items-center justify-center space-x-2">
               <span className="text-sm font-medium">{file.name}</span>
               <Button
@@ -207,7 +174,7 @@ const FileUpload: React.FC<FileUploadProps> = ({
         )}
       </div>
 
-      {error && <FormFieldError error={{ message: error }} />}
+      {!files && <FormFieldError error={error} />}
     </div>
   );
 };

@@ -2,6 +2,7 @@
 import EmptyNotification from "@/components/notifications/EmptyNotification";
 import NotificationsBar from "@/components/notifications/NotificationsBar";
 import RoleSwitch from "@/components/overview/RoleSwitch";
+import { getNotifications } from "@/services/notificationService";
 import { useEffect, useState } from "react";
 
 type Notification = {
@@ -41,6 +42,15 @@ export default function OverallNotification({ isNotified, notifications}: Notifi
     { value: "all", label: "All" },
     { value: "unread", label: "Unread" },
   ];
+
+   const body = {
+     type: "5f68d6ba-c4e4-436c-8049-150d0ed5085b",
+     booking_id: "5f68d6ba-c4e4-436c-8049-150d0ed5085b",
+   };
+
+  //  const notificationss = await getNotifications(body);
+
+  //  console.log(notificationss);
 
 
   const handleRoleChange = (role: Role) => {    

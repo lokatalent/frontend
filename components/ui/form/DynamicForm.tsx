@@ -1,3 +1,5 @@
+"use client";
+
 // DynamicForm.tsx
 "use client";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -5,16 +7,38 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import ResetDialog from "@/components/auth/ResetDialog";
-import { FieldConfig } from "@/lib/utils";
+import { errorHandler, FieldConfig, formatPhone, setToken } from "@/lib/utils";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
 import { FormField } from "./FormField";
 import ReviewModal from "@/components/profile/ReviewModal";
 import { useDispatch, useSelector } from "react-redux";
-import { RootStateProfile, setInformation, setProfileDetails } from "@/store/profile/profileSlice";
+import {
+  RootStateProfile,
+  setInformation,
+  setProfileDetails,
+} from "@/store/profile/profileSlice";
 import PasswordChangedModal from "@/components/settings/security/PasswordChangedModal";
 import PhoneNumberVerification from "@/components/settings/security/PhoneVerificationModal";
+import { showToast } from "@/store/auth/toastSlice";
+
+import {
+  forgotPassword,
+  googleAuth,
+  sendEmailOTP,
+  signin,
+  signup,
+} from "@/services/authService";
+import {
+  onForgotPassword,
+  onSignUp,
+  setLoggedin,
+  setUser,
+} from "@/store/auth/authSlice";
+import { loginTest } from "@/services/axiosTest";
+import { updateProfile } from "@/services/profileService";
+import Spinner from "../Spinner";
 
 interface DefaultValues {
   firstName?: string;
@@ -37,7 +61,7 @@ interface DynamicForm {
   buttonAction: string;
   schemaType: any;
   width: string;
-  styles?: string
+  styles?: string;
 }
 
 const DynamicForm = ({
@@ -46,22 +70,23 @@ const DynamicForm = ({
   schemaType,
   buttonAction,
   width,
-  styles
+  styles,
 }: DynamicForm) => {
   const router = useRouter();
   const pathname = usePathname();
   const [savedData, setSavedData] = useState<FormData | null>(null);
   const [error, setError] = useState<string[] | null | string>("");
   const [fileValue, setFileValue] = useState<string>("");
-  const [inputValue, setInputValue] = useState<File | null>(null);
+  const [showModal, setShowModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
   const verificationResult = useSelector(
     (state: RootStateProfile) => state.profile.verification
   );
   const file = useSelector((state: RootStateProfile) => state.profile.file);
- 
+
   const dispatch = useDispatch();
 
-  // const file = sessionStorage.getItem("selectedFile");
+  // const file = sessionStorage.getItem("selectedFile")
 
   const {
     register,
@@ -74,44 +99,212 @@ const DynamicForm = ({
     defaultValues,
   });
 
-  const onSubmit = (data: any) => {
-    console.log("success");
-    console.log(data);
+  const onGoogleAuth = () => {
+    const response = googleAuth();
+    if (!response.error) {
+      console.log("Auth", response.data);
+    } else {
+      dispatch(
+        showToast({
+          status: "error",
+          message: errorHandler(response.data),
+        })
+      );
+    }
+  };
+
+  const onSubmit = async (data: any) => {
+    setShowModal(true);
+    setLoading(true);
     setSavedData(data);
     if (buttonAction === "reset-password") {
-      router.push("./reset-password/verify");
-    }
-    if (buttonAction === "sign-up") {
-      router.push(`${pathname}/verify`);
-    }
-    if (buttonAction === "log-in") {
-      router.push("/dashboard");
-    }
-    if (buttonAction === "profile-edit") {
-      dispatch(setProfileDetails(data));
+      const response = await forgotPassword(data);
+      if (!response.error) {
+        setLoading(false);
+        dispatch(onForgotPassword(data.email));
+        router.push("./reset-password/verify");
+      } else {
+        setLoading(false);
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(response.data),
+          })
+        );
+      }
+    } else if (buttonAction === "sign-up") {
+      // check passwords
+      if (data.newPassword !== data.confirmPassword) {
+        return dispatch(
+          showToast({
+            status: "error",
+            message: "",
+          })
+        );
+      }
+
+      let temp = {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        phone_num: formatPhone(data.number),
+        password: data.newPassword,
+      };
+
+      const response = await signup(temp);
+      if (!response.error) {
+        setLoading(false);
+        router.push(`/login`);
+      } else {
+        setLoading(false);
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(response.data),
+          })
+        );
+      }
+    } else if (buttonAction === "sign-up-talent") {
+      // check passwords
+      if (data.newPassword !== data.confirmPassword) {
+        return dispatch(
+          showToast({
+            status: "error",
+            message: "",
+          })
+        );
+      }
+
+      let temp = {
+        first_name: data.firstName,
+        last_name: data.lastName,
+        email: data.email,
+        phone_num: formatPhone(data.number),
+        password: data.newPassword,
+        service_role: "service_provider",
+      };
+
+      const response = await signup(temp);
+      if (!response.error) {
+        setLoading(false);
+        router.push(`/login`);
+      } else {
+        setLoading(false);
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(response.data),
+          })
+        );
+      }
+    } else if (buttonAction === "log-in") {
+      let temp = {
+        email: data.email,
+        password: data.password,
+      };
+
+      const response = await signin(temp);
+
+      if (!response.error) {
+        setLoading(false);
+        let data = response.data;
+        // save tokens
+        setToken(data.tokens.access_token, data.tokens.refresh_token);
+
+        // save user
+        dispatch(setUser(data.user));
+        if (
+          data.user.is_verified ||
+          data.user.email_verified ||
+          data.user.phone_verified
+        ) {
+          // set logged in
+          dispatch(setLoggedin(true));
+          // route to dashboard
+          router.push(
+            data.user.service_role === "service_provider"
+              ? `/talent/dashboard`
+              : `/dashboard`
+          );
+        } else {
+          setLoading(true);
+          // send OTP
+          const response = await sendEmailOTP();
+          if (!response.error) {
+            setLoading(false);
+            dispatch(
+              showToast({
+                status: "success",
+                message:
+                  "Verify your account. An OTP has been sent to your email",
+              })
+            );
+            // redirect to verify account
+            return router.push(`/verify`);
+          } else {
+            setLoading(false);
+            dispatch(
+              showToast({
+                status: "error",
+                message: errorHandler(response.data),
+              })
+            );
+          }
+        }
+      } else {
+        setLoading(false);
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(response.data),
+          })
+        );
+      }
+      // router.push("/dashboard");
+    } else if (buttonAction === "profile-edit") {
+      const response = await updateProfile(data);
+      if (!response.error) {
+        setLoading(false);
+        dispatch(
+          showToast({
+            status: "success",
+            message: "Verify your account. An OTP has been sent to your email",
+          })
+        );
+        dispatch(setProfileDetails(data));
+        dispatch(
+          setInformation({
+            state: data.state,
+            address: data.address,
+            city: data.city,
+            dateOfBirth: data.dateofBirth,
+          })
+        );
+        // redirect to verify account
+        // router.push("/dashboard/profile/verify");
+      } else {
+        setLoading(false);
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(response.data),
+          })
+        );
+      }
+    } else if (buttonAction === "edit-address") {
+      setLoading(false);
       dispatch(
         setInformation({
           state: data.state,
           address: data.address,
           city: data.city,
-          dateOfBirth: data.dateofBirth,
         })
       );
-      router.push("/dashboard/profile/verify");
     }
-    if (buttonAction === 'edit-address') {
-      dispatch(setInformation({ state: data.state, address: data.address, city: data.city}))
-    }
-    console.log(error)
+
     setError(null);
-    // console.log(error);
-
-
-   
     reset();
   };
-
-
 
   // console.log(pathname);
   const onError = (data: any) => {
@@ -119,26 +312,25 @@ const DynamicForm = ({
     setError(data);
     // setSavedData(data);
     console.log(data);
+    setShowModal(false);
     // reset();
   };
 
   return (
-    <div className="w-full wmax mx-auto p-6">
+    <div className="w-full md:px-6 mt-5">
       <form
         onSubmit={handleSubmit(onSubmit, onError)}
         className={` ${
           buttonAction === "changePassword"
             ? ""
-            : "flex flex-col justify-center items-center gap-12"
+            : "flex flex-col justify-center items-center gap-6 w-full"
         }`}
       >
-        <div>
+        <div className="w-full">
           <div
-            className={`flex ${
-              fields.length > 3
-                ? "flex-row flex-wrap justify-center"
-                : "flex-col"
-            }  justify-cente items-cente gap-12`}
+            className={`grid w-full ${
+              fields.length > 3 ? "md:grid-cols-2 w-full" : "grid-cols-1"
+            }   gap-4`}
           >
             {fields.map((field) => (
               // <div key={field.name}>
@@ -167,14 +359,14 @@ const DynamicForm = ({
             <div className="flex justify-end mt-4 self-end text-right">
               <Link
                 href="/reset-password"
-                className="text-[14px] text-primaryBlue self-end"
+                className="text-sm text-primaryBlue self-end"
               >
                 Forgot Password?
               </Link>
             </div>
           )}
         </div>
-        <div>
+        <div className="w-full max-w-2xl mx-auto">
           {buttonAction == "new-password" ? (
             <ResetDialog />
           ) : buttonAction === "addressVerification" &&
@@ -184,29 +376,39 @@ const DynamicForm = ({
           ) : buttonAction === "edit-profile" && verificationResult && file ? (
             <ReviewModal linkTo={"/dashboard/settings/profile"} />
           ) : buttonAction === "changePassword" ? (
-            <PasswordChangedModal />
+            <PasswordChangedModal
+              showModal={showModal}
+              setShowModal={setShowModal}
+            />
           ) : buttonAction === "twoStepVerification" ? (
             <PhoneNumberVerification />
           ) : (
-            <div className="space-y-5 flex itms-center flex-col">
+            <div className="space-y-5 flex itms-center flex-col w-full">
               <button
                 type="submit"
                 // disabled={true}
                 className={`${
-                  buttonAction === "changePassword"
-                    ? "!w-[23rem] mt-10"
-                    : "mx-auto  flex-center"
-                } text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[10rem] md:w-[15rem] lg:w-[30rem] rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] `}
+                  buttonAction === "changePassword" ? "mt-10" : "flex-center"
+                } text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-full rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] `}
               >
-                {buttonAction === "log-in"
-                  ? "Login"
-                  : buttonAction === "reset-password"
-                  ? "Send Reset Link"
-                  : "Submit"}
+                {loading ? (
+                  <Spinner />
+                ) : (
+                  <span>
+                    {buttonAction === "log-in"
+                      ? "Login"
+                      : buttonAction === "reset-password"
+                      ? "Send Reset Link"
+                      : "Submit"}
+                  </span>
+                )}
               </button>
 
               {buttonAction === "log-in" || buttonAction === "sign-up" ? (
-                <button className="w-max md:w-[15rem] lg:w-[30rem] bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
+                <button
+                  onClick={onGoogleAuth}
+                  className="hidden w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]"
+                >
                   <FcGoogle size={24} className="mr-2" />
                   Continue with Google
                 </button>
