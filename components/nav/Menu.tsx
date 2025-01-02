@@ -29,12 +29,12 @@ const Menu: React.FC<{ username: string }> = ({ username }) => {
           <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white">
             {username.charAt(0)}
           </div>
-          <p className="">{username}</p>
+          <p className="hidden md:block">{username}</p>
           <MdKeyboardArrowDown size={20} />
         </div>
       </PopoverTrigger>
 
-      <PopoverContent className="w-[12rem] bg-white shadow-lg mt-4 rounded-lg">
+      <PopoverContent className="bg-white shadow-lg mt-4 rounded-lg">
         <div className="">
           <Link
             href="/dashboard/profile"

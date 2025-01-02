@@ -1,4 +1,5 @@
 "use client";
+import SecurityForm from "@/components/settings/security/SecurityForm";
 import TwoStepVerification from "@/components/settings/security/TwoStepVerification";
 import { Button } from "@/components/ui/button";
 import DynamicForm from "@/components/ui/form/DynamicForm";
@@ -10,11 +11,14 @@ import {
   setTwoStepVerificationModal,
 } from "@/store/settings/SettingsSlice";
 import React, { useState } from "react";
+import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { useDispatch, useSelector } from "react-redux";
 
 function Security() {
   const dispatch = useDispatch();
   const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(true);
+  const [showPassword, setShowPassword] = useState(false);
+
   const ProfileInfo = useSelector(
     (state: RootStateProfile) => state.profile.information.phoneNumber
   );
@@ -79,14 +83,12 @@ function Security() {
     confirmPassword: "",
   };
 
-  const handleTwoFactorToggle = () => {
-    setIsTwoFactorEnabled((prevState) => !prevState);
+  const togglePasswordVisibility = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setShowPassword((prev) => !prev);
   };
 
-  const [isOn, setIsOn] = useState(false);
-
   const toggleSwitch = () => {
-    setIsOn(!isOn);
     if (activeTwoStepVerification) {
       dispatch(setActiveTwoStepVerification(false));
     } else {
@@ -94,20 +96,10 @@ function Security() {
     }
   };
 
-  const savedCurrentPassword = "12345678"; // Replace with actual saved password value
-
-  const schemaType = changePasswordFormSchema(savedCurrentPassword);
   return (
     <div className="p-6">
-      <div>
-        <DynamicForm
-          fields={fields}
-          defaultValues={defaultValues}
-          schemaType={schemaType}
-          buttonAction="changePassword"
-          width="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[28rem]"
-        />
-      </div>
+      
+     <SecurityForm />
 
       <div className="mt-6 card flex justify-between items-center">
         {!activeTwoStepVerification ? (
@@ -142,7 +134,9 @@ function Security() {
               >
                 <div
                   className={`bg-white w-4 h-4 rounded-full shadow-md transform ${
-                    isOn ? "translate-x-6" : "translate-x-0"
+                    activeTwoStepVerification
+                      ? "translate-x-6"
+                      : "translate-x-0"
                   } transition-transform duration-200`}
                 ></div>
               </div>

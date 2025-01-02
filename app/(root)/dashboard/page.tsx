@@ -1,37 +1,12 @@
 "use client";
 
-import { BookingColumns, BookingType } from "@/components/columns/Columns";
+import { BookingColumns } from "@/components/columns/Columns";
 import BalanceCard from "@/components/overview/BalanceCard";
 import BookingCard from "@/components/overview/BookingCard";
 import DataTable from "@/components/ui/gen/DataTable";
 import Link from "next/link";
 import React from "react";
 import { useSelector } from "react-redux";
-// async function getData(): Promise<BookingType[]> {
-//   return [
-//     {
-//       id: "12456256565",
-//       date: "24/4/2022",
-//       time: "11:35 AM",
-//       location: "14, Asherifa Juncti.hfhfhf vhf dds hdd dfsd...",
-//       status: "Pending",
-//     },
-//     {
-//       id: "2565767900",
-//       date: "24/4/2021",
-//       time: "11:15 AM",
-//       location: "14, Asherifa Juncti....",
-//       status: "Accepted",
-//     },
-//     {
-//       id: "8698767900",
-//       date: "24/4/2023",
-//       time: "11:45 PM",
-//       location: "14, Asherifa Juncti....",
-//       status: "Declined",
-//     },
-//   ];
-// }
 
 export default function Dashboard() {
   const user = useSelector((state: any) => state.auth.user);
@@ -48,7 +23,7 @@ export default function Dashboard() {
           </p>
         </div>
       </div>
-      <div className="w-full flex flex-col md:flex-row  gap-4">
+      <div className="w-full flex flex-col md:flex-row gap-4">
         <BalanceCard text="Balance" number={0} />
         <BookingCard />
       </div>

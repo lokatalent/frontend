@@ -10,7 +10,7 @@ export default function SettingsLayout({
   const SettingsRoles = [
     { value: "profile", label: "Profile" },
     { value: "security", label: "Security" },
-    { value: "verification", label: "Verification" },
+    // { value: "verification", label: "Verification" },
     { value: "notifications", label: "Notifications" },
     { value: "help", label: "Help & Support" },
     { value: "delete-account", label: "Delete Account" },
@@ -29,7 +29,7 @@ export default function SettingsLayout({
   return (
     <div className="space-y-10">
       {!shouldHideRoleSwitch && (
-        <div className="w-full space-y-6">
+        <div className="hidden w-full space-y-6">
           <RoleSwitch
             type="link"
             roles={SettingsRoles}

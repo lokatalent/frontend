@@ -26,16 +26,12 @@ type Option = {
 };
 
 interface FormFieldProps {
-
   name: any;
-
   label: string;
   type: string;
   error?: FieldError;
   register: UseFormRegister<FormData>;
-
   control: ControllerProps<any>;
-
   disabled?: boolean;
   validation: RegisterOptions;
   width?: string;
@@ -74,8 +70,7 @@ export const FormField: React.FC<FormFieldProps> = ({
   const togglePasswordVisibility = (e: React.MouseEvent) => {
     e.preventDefault();
     setShowPassword((prev) => !prev);
-  };
- 
+  }; 
 
   return (
     <div className={`relative flex flex-col  ${width}`}>
@@ -87,11 +82,35 @@ export const FormField: React.FC<FormFieldProps> = ({
       </label>
 
       {type === "select" ? (
-        <InputDropdown
-          options={options}
-          error={error}
-          buttonAction={buttonAction}
-        />
+        <div className=" w-full">
+          <Controller
+            name={name}
+            control={control}
+            rules={{
+              required: "This field is required", // Add validation rules here
+            }}
+            render={({ field }) => (
+              <div>
+                <select
+                  id={name as string}
+                  {...field}
+                  className={`flex w-full rounded-md bg-white border ${
+                    error ? "border-red-500" : "border-gray-300"
+                  } h-[3rem] px-3 py-1 text-sm shadow-sm transition-colors`}
+                  aria-invalid={!!error}
+                >
+                  <option value=""></option>
+                  {options.map((option) => (
+                    <option value={option} key={option}>
+                      {option}
+                    </option>
+                  ))}
+                </select>
+                {error && <FormFieldError error={error} />}
+              </div>
+            )}
+          />
+        </div>
       ) : type === "date" ? (
         <Controller
           name={name}

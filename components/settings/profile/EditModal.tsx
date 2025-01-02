@@ -31,7 +31,6 @@ interface RoleSwitchProps {
 }
 
 const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
-  console.log(forms);
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedForm, setSelectedForm] = useState<any>(null);
   const [error, setError] = useState("");
@@ -42,7 +41,6 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
 
   const mainModal = useSelector((state: RootState) => state.settings.mainModal);
   const editModal = useSelector((state: RootState) => state.settings.editModal);
-  console.log(mainModal);
   const dispatch = useDispatch();
 
   const handleEditClick = (form: any) => {
@@ -72,7 +70,6 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
 
   const handleSubmit = () => {
     const number = numberRef.current?.value || "";
-    console.log(number);
 
     try {
       // Validate phone number using the imported schema

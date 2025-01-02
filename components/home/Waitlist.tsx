@@ -133,7 +133,7 @@ export default function Waitlist() {
         {toast && (
           <div
             id="toast-bottom-right"
-            className={`fixed flex items-center min-w-[250px] max-w-xs py-4 px-4 space-x-4 text-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-sm shadow top-5 right-5 ${
+            className={`z-10 fixed flex items-center min-w-[250px] max-w-xs py-4 px-4 space-x-4 text-white divide-x rtl:divide-x-reverse divide-gray-200 rounded-sm shadow top-5 right-5 ${
               toast === "success" ? "bg-primaryBlue text-white" : "bg-red-500"
             }`}
             role="alert"

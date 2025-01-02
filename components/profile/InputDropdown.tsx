@@ -17,9 +17,11 @@ interface InputDropdownProps {
   options: string[];
   error?: any;
   buttonAction: string;
+  control: any;
+  register: any;
 }
 
-function InputDropdown({ options, error, buttonAction }: InputDropdownProps) {
+function InputDropdown({ options, error, buttonAction, control, register }: InputDropdownProps) {
   const [selectedService, setSelectedService] = useState<string>("");
   const dispatch = useDispatch();
   console.log(buttonAction);

@@ -7,8 +7,8 @@ export const signup = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -20,8 +20,8 @@ export const googleAuth = async () => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -33,8 +33,8 @@ export const signin = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -49,11 +49,26 @@ export const verifyEmail = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
+
+
+export const verifyUser = async () => {
+  try {
+    let response = await http.post("/auth/verify-user");
+    return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err?.response?.data,
+      status: err?.response?.status,
+    };
+  }
+};
+
 
 export const verifyPhone = async (values: any) => {
   try {
@@ -65,8 +80,8 @@ export const verifyPhone = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -76,11 +91,10 @@ export const forgotPassword = async (values: any) => {
     let response = await http.post("auth/forgot-password", values);
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
-    console.log("Error", err)
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -92,8 +106,8 @@ export const resendMail = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -105,8 +119,8 @@ export const sendResetToken = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -118,8 +132,8 @@ export const resetPassword = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -131,8 +145,8 @@ export const verifyEmailOTP = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -144,8 +158,8 @@ export const sendEmailOTP = async () => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -157,8 +171,8 @@ export const verifyPhoneOTP = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -170,8 +184,25 @@ export const sendPhoneOTP = async () => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
+
+
+export const deleteUserAccount = async () => {
+  try {
+    let response = await http.delete("users");
+    console.log(response);
+    return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err?.response?.data,
+      status: err?.response?.status,
+    };
+  }
+};
+
+
