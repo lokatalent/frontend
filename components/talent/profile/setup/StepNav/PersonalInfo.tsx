@@ -59,10 +59,10 @@ function PersonalInfo({ setActiveStep }: any) {
                 label="Country"
                 control={control}
                 defaultOption="Nigeria"
-                // options={[
-                //   { value: "Nigeria", label: "Nigeria" },
+                options={[
+                  { value: "Nigeria", label: "Nigeria" },
                   
-                // ]}
+                ]}
                 
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
                 required

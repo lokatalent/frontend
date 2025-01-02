@@ -91,7 +91,7 @@ export default function Profile() {
               </div>
             </div>
             <p className="text-primaryBlue text-sm md:text-2xl font-bold">
-              Gabriel Daramola
+             {data[0].value}
             </p>
           </div>
         </div>

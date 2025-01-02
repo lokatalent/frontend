@@ -15,6 +15,8 @@ import { FaPen } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Check, Info } from "lucide-react";
 import ChangesSaved from "../ChangesSaved";
+import { useSelector } from "react-redux";
+import { getService, updateService } from "@/services/profileService";
 
 interface EditPortfolioProps {
   portfolioRateEdited: (data: EditPortfolioFormValues) => void;
@@ -48,6 +50,8 @@ export default function EditPortfolio({
   const [localSkills, setLocalSkills] = useState(skills);
   const [isOnline, setIsOnline] = useState(false);
   const [charCount, setCharCount] = useState(0);
+    const user = useSelector((state: any) => state.auth.user);
+
 
   const {
     handleSubmit,
@@ -87,7 +91,25 @@ export default function EditPortfolio({
 
   const onSubmit = async (data: EditPortfolioFormValues) => {
     try {
-      await portfolioRateEdited(data);
+      // await portfolioRateEdited(data);
+       console.log(user.id)
+    let requestTemp = {
+      id: user.id,
+    }
+    const responseGet = getService(requestTemp);
+    console.log('for response');
+    console.log(responseGet);
+    console.log('for response');
+    console.log(data);
+    let temp = {
+      experience_years: data.experience_years,
+      service_type: "",
+      service_desc: "",
+      rate_per_hour: 0,
+      address: ''
+    };
+    const response = await updateService( temp);
+    console.log(response);
       console.log(data);
       Object.entries(localSkills).forEach(([skill, value]) => {
         onSkillChange(skill, value);

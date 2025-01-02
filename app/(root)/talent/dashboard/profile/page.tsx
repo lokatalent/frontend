@@ -11,7 +11,7 @@ import ReviewCard from "@/components/talent/profile/ReviewCard";
 import Portfolio from "@/components/talent/profile/Portfolio";
 import EditServiceRate from "@/components/talent/profile/editing/EditServiceRate";
 import EditPortfolio from "@/components/talent/profile/editing/EditPortfolio";
-import { getOwnProfile, updateService, UpdateService } from "@/services/profileService";
+import { getOwnProfile, getService, updateService, UpdateService } from "@/services/profileService";
 import { showToast } from "@/store/auth/toastSlice";
 
 interface DataItem {
@@ -46,6 +46,8 @@ export default function Profiles() {
   const profileInformation = useSelector(
     (state: RootStateProfile) => state.profile.information
   );
+    const user = useSelector((state: any) => state.auth.user);
+  
   // Fetch user profile data from the server
  
 
@@ -130,16 +132,7 @@ export default function Profiles() {
     setServiceRate(service);
   };
   const handlePortfolio = async (service) => {
-    console.log(service);
-    let temp = {
-      experience_years: service.experience_years,
-      service_type: "",
-      service_desc: "",
-      rate_per_hour: 0,
-      address: ''
-    };
-    const response = await updateService(temp);
-    console.log(response);
+   
     setPortfolioData1((prevSkills) => ({
       ...prevSkills,
       experience: service.experience,
