@@ -39,3 +39,5 @@ next-env.d.ts
 
 /components/api
 /components/api/page.tsx
+test.tsx
+logindetails

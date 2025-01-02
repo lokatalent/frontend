@@ -5,12 +5,10 @@ import { usePathname, useRouter } from "next/navigation";
 
 // Define more flexible props
 interface RoleSwitchProps {
-  // Array of role options to make the component more dynamic
   roles: Array<{
     value: string;
     label: string;
   }>;
-  // Optional initial selected role
   initialRole?: string;
   // Callback function when role changes
   onRoleChange: any;
@@ -42,7 +40,7 @@ const RoleSwitch: React.FC<RoleSwitchProps> = ({
     }
   }, [pathname, roles]);
 
-  // Default active and disabled styles, can be overridden
+  // Default active and disabled styles
   const defaultActiveClass =
     "rounded-md bg-primaryBlue text-white hover:bg-primaryBlue hover:text-white";
   const defaultDisabledClass =
@@ -52,29 +50,35 @@ const RoleSwitch: React.FC<RoleSwitchProps> = ({
     setSelectedRole(role);
     onRoleChange(role);
     if (type === "link") {
-      router.push(talent ? `/talent/dashboard/settings/${role}` : `/dashboard/settings/${role}`);
+      router.push(
+        talent
+          ? `/talent/dashboard/settings/${role}`
+          : `/dashboard/settings/${role}` 
+      );
     }
   };
 
   return (
     <div
-      className={`flex w-max bg-[#E5E7EB4A] px-1 md:px-3 rounded-xl py-1 md:py-2 ${className}`}
+      className={`flex w-full sm:w-max overflow-x-auto bg-[#E5E7EB4A] px-1 md:px-3 rounded-xl py-1 md:py-2 ${className}`}
     >
-      {roles.map((role) => (
-        <div key={role.value} className="mx-1">
-          <Button
-            onClick={() => handleRoleChange(role.value)}
-            variant="ghost"
-            className={`${
-              selectedRole === role.value || pathname.includes(role.value)
-                ? defaultActiveClass
-                : defaultDisabledClass
-            } px-3 py-2`}
-          >
-            {role.label}
-          </Button>
-        </div>
-      ))}
+      <div className="flex space-x-2 sm:space-x-4 md:justify-center">
+        {roles.map((role) => (
+          <div key={role.value} className="flex-shrink-0">
+            <Button
+              onClick={() => handleRoleChange(role.value)}
+              variant="ghost"
+              className={`${
+                selectedRole === role.value || pathname.includes(role.value)
+                  ? defaultActiveClass
+                  : defaultDisabledClass
+              } px-3 py-2`}
+            >
+              {role.label}
+            </Button>
+          </div>
+        ))}
+      </div>
     </div>
   );
 };

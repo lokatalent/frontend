@@ -261,13 +261,21 @@ const DynamicForm = ({
       }
       // router.push("/dashboard");
     } else if (buttonAction === "profile-edit") {
-      const response = await updateProfile(data);
+      let temp = {
+        state: data.state,
+        city: data.city,
+        country: data.country,
+        address: data.street_addr,
+        gender: data.gender
+      };  
+      const response = await updateProfile(temp);
+      console.log(response);
       if (!response.error) {
         setLoading(false);
         dispatch(
           showToast({
             status: "success",
-            message: "Verify your account. An OTP has been sent to your email",
+            message: "Your Profile has been updated",
           })
         );
         dispatch(setProfileDetails(data));
