@@ -57,6 +57,7 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
 
   const handleSubmit = () => {
     const number = numberRef.current?.value || "";
+
     try {
       const validatedNumber = securityPhoneNumberSchema.parse({ number });
       dispatch(setInformation({ phoneNumber: validatedNumber.number }));

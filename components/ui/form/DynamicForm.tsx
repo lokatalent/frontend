@@ -37,7 +37,7 @@ import {
 } from "@/store/auth/authSlice";
 import { loginTest } from "@/services/axiosTest";
 import { updateProfile } from "@/services/profileService";
-
+import Spinner from "../Spinner";
 
 interface DefaultValues {
   firstName?: string;
@@ -77,6 +77,7 @@ const DynamicForm = ({
   const [error, setError] = useState<string[] | null | string>("");
   const [fileValue, setFileValue] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
+  const [loading, setLoading] = useState(false);
   const verificationResult = useSelector(
     (state: RootStateProfile) => state.profile.verification
   );
@@ -101,7 +102,6 @@ const DynamicForm = ({
     const response = googleAuth();
     if (!response.error) {
       console.log("Auth", response.data);
-
     } else {
       dispatch(
         showToast({
@@ -110,21 +110,20 @@ const DynamicForm = ({
         })
       );
     }
-
   };
 
   const onSubmit = async (data: any) => {
-    console.log(data);
     setShowModal(true);
-
+    setLoading(true);
     setSavedData(data);
     if (buttonAction === "reset-password") {
       const response = await forgotPassword(data);
       if (!response.error) {
+        setLoading(false);
         dispatch(onForgotPassword(data.email));
         router.push("./reset-password/verify");
-
       } else {
+        setLoading(false);
         dispatch(
           showToast({
             status: "error",
@@ -153,8 +152,10 @@ const DynamicForm = ({
 
       const response = await signup(temp);
       if (!response.error) {
+        setLoading(false);
         router.push(`/login`);
       } else {
+        setLoading(false);
         dispatch(
           showToast({
             status: "error",
@@ -162,7 +163,6 @@ const DynamicForm = ({
           })
         );
       }
-
     } else if (buttonAction === "sign-up-talent") {
       // check passwords
       if (data.newPassword !== data.confirmPassword) {
@@ -185,8 +185,10 @@ const DynamicForm = ({
 
       const response = await signup(temp);
       if (!response.error) {
+        setLoading(false);
         router.push(`/login`);
       } else {
+        setLoading(false);
         dispatch(
           showToast({
             status: "error",
@@ -194,7 +196,6 @@ const DynamicForm = ({
           })
         );
       }
-
     } else if (buttonAction === "log-in") {
       let temp = {
         email: data.email,
@@ -204,21 +205,32 @@ const DynamicForm = ({
       const response = await signin(temp);
 
       if (!response.error) {
+        setLoading(false);
         let data = response.data;
         // save tokens
         setToken(data.tokens.access_token, data.tokens.refresh_token);
 
-          // save user
-          dispatch(setUser(data.user));
-        if (data.user.is_verified || data.user.email_verified || data.user.phone_verified) {
+        // save user
+        dispatch(setUser(data.user));
+        if (
+          data.user.is_verified ||
+          data.user.email_verified ||
+          data.user.phone_verified
+        ) {
           // set logged in
           dispatch(setLoggedin(true));
           // route to dashboard
-          router.push(data.user.service_role === "service_provider" ? `/talent/dashboard` : `/dashboard`);
+          router.push(
+            data.user.service_role === "service_provider"
+              ? `/talent/dashboard`
+              : `/dashboard`
+          );
         } else {
+          setLoading(true);
           // send OTP
           const response = await sendEmailOTP();
           if (!response.error) {
+            setLoading(false);
             dispatch(
               showToast({
                 status: "success",
@@ -229,6 +241,7 @@ const DynamicForm = ({
             // redirect to verify account
             return router.push(`/verify`);
           } else {
+            setLoading(false);
             dispatch(
               showToast({
                 status: "error",
@@ -238,6 +251,7 @@ const DynamicForm = ({
           }
         }
       } else {
+        setLoading(false);
         dispatch(
           showToast({
             status: "error",
@@ -257,6 +271,7 @@ const DynamicForm = ({
       const response = await updateProfile(temp);
       console.log(response);
       if (!response.error) {
+        setLoading(false);
         dispatch(
           showToast({
             status: "success",
@@ -275,6 +290,7 @@ const DynamicForm = ({
         // redirect to verify account
         router.push("/dashboard/profile/verify");
       } else {
+        setLoading(false);
         dispatch(
           showToast({
             status: "error",
@@ -283,7 +299,7 @@ const DynamicForm = ({
         );
       }
     } else if (buttonAction === "edit-address") {
-
+      setLoading(false);
       dispatch(
         setInformation({
           state: data.state,
@@ -291,9 +307,7 @@ const DynamicForm = ({
           city: data.city,
         })
       );
-
     }
-    console.log(error)
 
     setError(null);
     reset();
@@ -368,8 +382,11 @@ const DynamicForm = ({
             <ReviewModal linkTo={"/dashboard/profile"} />
           ) : buttonAction === "edit-profile" && verificationResult && file ? (
             <ReviewModal linkTo={"/dashboard/settings/profile"} />
-          ) : buttonAction === "changePassword"  ? (
-            <PasswordChangedModal showModal={showModal} setShowModal={setShowModal} />
+          ) : buttonAction === "changePassword" ? (
+            <PasswordChangedModal
+              showModal={showModal}
+              setShowModal={setShowModal}
+            />
           ) : buttonAction === "twoStepVerification" ? (
             <PhoneNumberVerification />
           ) : (
@@ -378,23 +395,27 @@ const DynamicForm = ({
                 type="submit"
                 // disabled={true}
                 className={`${
-
                   buttonAction === "changePassword" ? "mt-10" : "flex-center"
-
                 } text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-full rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] `}
               >
-                {buttonAction === "log-in"
-                  ? "Login"
-                  : buttonAction === "reset-password"
-                  ? "Send Reset Link"
-                  : "Submit"}
+                {loading ? (
+                  <Spinner />
+                ) : (
+                  <span>
+                    {buttonAction === "log-in"
+                      ? "Login"
+                      : buttonAction === "reset-password"
+                      ? "Send Reset Link"
+                      : "Submit"}
+                  </span>
+                )}
               </button>
 
               {buttonAction === "log-in" || buttonAction === "sign-up" ? (
-
-
-                <button onClick={onGoogleAuth} className="hidden w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]">
-
+                <button
+                  onClick={onGoogleAuth}
+                  className="hidden w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]"
+                >
                   <FcGoogle size={24} className="mr-2" />
                   Continue with Google
                 </button>

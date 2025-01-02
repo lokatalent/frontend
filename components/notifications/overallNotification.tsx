@@ -32,7 +32,7 @@ type NotificationResponse = {
 type Role = "all" | "unread";
 
 
-export default async function OverallNotification({ isNotified, notifications}: NotificationResponse) {
+export default function OverallNotification({ isNotified, notifications}: NotificationResponse) {
     const [role, setRole] = useState<Role>("all");
     const [filteredNotifications, setFilteredNotifications] = useState<
       Notification[]
@@ -50,9 +50,10 @@ export default async function OverallNotification({ isNotified, notifications}: 
      type: "5f68d6ba-c4e4-436c-8049-150d0ed5085b",
      booking_id: "5f68d6ba-c4e4-436c-8049-150d0ed5085b",
    };
-   const notificationss = await getNotifications(body);
 
-   console.log(notificationss);
+  //  const notificationss = await getNotifications(body);
+
+  //  console.log(notificationss);
 
 
   const handleRoleChange = (role: Role) => {    

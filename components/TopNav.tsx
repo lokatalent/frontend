@@ -9,12 +9,12 @@ const TopNav = () => {
   const user = useSelector((state: any) => state.auth.user)
   const username = `${user.first_name} ${user.last_name}`
   return (
-    <nav className="w-full bg-white h-[70px] shadow-lg flex justify-between items-center">
+    <nav className="fixed top-0 left-0 w-full bg-white h-[70px] shadow-lg flex justify-between items-center">
       {/* Logo or Brand */}
       <div className=" text-xl font-bold"></div>
 
       {/* Right Side: Notification Bell and User Profile */}
-      <div className="flex items-center space-x-6 mr-8">
+      <div className="flex items-center gap-3 md:mr-5">
         {/* Notification*/}
         <NotificationsDropdown />
 

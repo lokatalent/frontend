@@ -10,7 +10,9 @@ interface RoleSwitchProps {
     label: string;
   }>;
   initialRole?: string;
-  onRoleChange: (role: string) => void;
+  // Callback function when role changes
+  onRoleChange: any;
+  // Optional custom styling
   className?: string;
   type?: string;
   talent?: boolean;
