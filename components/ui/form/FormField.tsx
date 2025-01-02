@@ -20,6 +20,7 @@ import { Calendar } from "@/components/ui/calendar";
 import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
+import FileUpload from "@/components/profile/FileUpload";
 
 type Option = {
   name: string;
@@ -53,7 +54,7 @@ export const FormField: React.FC<FormFieldProps> = ({
   width,
   buttonAction,
   options,
-  styles
+  styles,
   // fileHandlerOptions,
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -72,14 +73,13 @@ export const FormField: React.FC<FormFieldProps> = ({
     setShowPassword((prev) => !prev);
   };
 
-  console.log(error)
- 
+  console.log(error);
 
   return (
     <div className={`relative flex flex-col  ${width}`}>
       <label
         htmlFor={name as string}
-        className="block text-sm font-medium mb-2"
+        className="block  text-[12px] sm:text-sm font-medium mb-2"
       >
         {label}
       </label>
@@ -110,6 +110,13 @@ export const FormField: React.FC<FormFieldProps> = ({
                   ))}
                 </select>
                 {error && <FormFieldError error={error} />}
+                {buttonAction === "addressVerification" &&
+                  field.value &&
+                  !error && (
+                    <div className="py-4">
+                      <FileUpload />
+                    </div>
+                  )}
               </div>
             )}
           />
@@ -154,7 +161,7 @@ export const FormField: React.FC<FormFieldProps> = ({
           id={name as string}
           {...register(name, validation)}
           type={type}
-          className={` ${styles} flex w-full rounded-md bg-white h-[3rem] px-3 py-1 text-sm shadow-s transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+          className={` ${styles} flex w-full rounded-md bg-white h-[3rem] px-3 py-1 text-[12px] sm:text-sm shadow-s transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
           ${error ? "border-red-500" : "border-gray-300"}`}
           aria-invalid={error ? "true" : "false"}
           disabled={disabled}

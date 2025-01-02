@@ -18,18 +18,18 @@ import { updateProfileImage } from "@/services/profileService";
        required: "Select a gender",
      },
    },
-  //  {
-  //    name: "dateofBirth",
-  //    type: "date",
-  //    label: "Date of Birth*",
-  //    validation: {
-  //      required: "Date of Birth is required",
-  //       minLength: {
-  //         value: 1,
-  //         message: "Date of Birth must be at least 6 characters",
-  //       },
-  //    },
-  //  },
+   //  {
+   //    name: "dateofBirth",
+   //    type: "date",
+   //    label: "Date of Birth*",
+   //    validation: {
+   //      required: "Date of Birth is required",
+   //       minLength: {
+   //         value: 1,
+   //         message: "Date of Birth must be at least 6 characters",
+   //       },
+   //    },
+   //  },
    {
      name: "country",
      type: "select",
@@ -67,7 +67,7 @@ import { updateProfileImage } from "@/services/profileService";
      },
    },
    {
-     name: "address",
+     name: "street_addr",
      type: "text",
      label: "Address*",
      validation: {
@@ -119,8 +119,7 @@ function Edit() {
     country: "",
     state: "",
     city: "",
-    address: "",
-
+    street_addr: "",
   };
 
 
@@ -149,14 +148,14 @@ function Edit() {
       </section>
       <div className="flex gap-4 items-center flex-col justify-center">
         <div className="space-y-3">
-          <p className="text-black text-4xl font-bold">Set Up Your Profile</p>
-          <p className="text-gray-500  text-center">
+          <p className="text-black text-base text-center sm:text-4xl font-bold">Set Up Your Profile</p>
+          <p className="text-gray-500 text-sm sm:text-base text-center">
             Please enter your details to proceed
           </p>
         </div>
 
         <div className="flex items-center justify-between space-x-6">
-          <div className="relative w-32 h-32 rounded-full">
+          <div className="relative w-20 h-20 sm:w-32 sm:h-32 rounded-full">
             <div className="flex items-center justify-center bg-[#C4C4C424] shadow-lg p-2 w-full h-full rounded-full">
               {selectedImage ? (
                 <Image
@@ -184,7 +183,7 @@ function Edit() {
           />
           <div>
             <button
-              className="text-sm text-white bg-primaryBlue px-6 py-2 rounded"
+              className="text-[12px] sm:text-sm text-white bg-primaryBlue px-6 py-2 rounded"
               onClick={handleButtonClick}
             >
               Add Profile Image

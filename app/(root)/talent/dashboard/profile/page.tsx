@@ -189,7 +189,10 @@ export default function Profiles() {
         <div></div>
       </div>
 
-      <ProfileCompletion addText="You are not done with your profile set up. Complete it now" />
+      <ProfileCompletion
+        addText="You are not done with your profile set up. Complete it now"
+        linkTo="/talent/dashboard/profile/edit"
+      />
 
       <div className="card mt-12">
         <div className="flex items-center mb-8 justify-between">

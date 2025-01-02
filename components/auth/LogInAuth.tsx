@@ -36,8 +36,10 @@ const LogInAuth = () => {
   ];
 
   const defaultValues = {
-    email: "kehadconnect01@gmail.com",
-    password: "kehadtalent",
+    // email: "kehadconnect01@gmail.com",
+    // password: "kehadtalent",
+    email: "keahnney01@gmail.com",
+    password: "123456789",
   };
 
   const schemaType = LogInFormSchema;

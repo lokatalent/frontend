@@ -1,22 +1,19 @@
-"use client"
+"use client";
 import React from "react";
 import { useSelector } from "react-redux";
-import SettingsProfileCard from "@/components/settings/profile/SettingsProfileCard";
-import EditModal from "@/components/settings/profile/EditModal";
+import SettingsProfileCard from "@/components/settings/profile/SettingsProfileCard";;
 import { RootStateProfile } from "@/store/profile/profileSlice";
 import { RootStateAuth } from "@/store/auth/authSlice";
 
 function Profile() {
-     const profileDetails = useSelector(
-       (state: RootStateProfile) => state.profile.profileDetails
+  const profileDetails = useSelector(
+    (state: RootStateProfile) => state.profile.profileDetails
   );
   const profileInformation = useSelector(
-       (state: RootStateProfile) => state.profile.information
+    (state: RootStateProfile) => state.profile.information
   );
-  const profileAuth = useSelector(
-      (state: RootStateAuth) => state.auth.user
-  );
-  
+  const profileAuth = useSelector((state: RootStateAuth) => state.auth.user);
+
   const forms = [
     {
       label: "Full Name",
@@ -44,7 +41,7 @@ function Profile() {
   const Address = [
     {
       label: "Address",
-      text: profileInformation.address.length > 0 ? profileAuth.address : "-",
+      text: profileAuth.address.length > 0 ? profileAuth.address : "-",
       type: "address",
     },
     {
@@ -54,13 +51,14 @@ function Profile() {
     },
     {
       label: "State",
-      text: profileInformation.state.length > 0 ? profileInformation.state : "-",
+      text:
+        profileInformation.state.length > 0 ? profileInformation.state : "-",
       type: "state",
     },
     {
       label: "City",
       text: profileInformation.city.length > 0 ? profileDetails.city : "-",
-      type: 'city',
+      type: "city",
     },
   ];
 
@@ -70,7 +68,6 @@ function Profile() {
         <SettingsProfileCard title="Name and Email" forms={forms} />
         <SettingsProfileCard title="Phone Number" forms={Phone} />
         <SettingsProfileCard title="Address" forms={Address} />
-    
       </div>
     </>
   );

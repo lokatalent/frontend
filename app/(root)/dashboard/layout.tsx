@@ -16,7 +16,7 @@ export default function RootLayout({
 
   const router = useRouter();
 
-  if (!loggedIn) return router.push("/login");
+  // if (!loggedIn) return router.push("/login");
 
   return (
     <>
@@ -31,7 +31,7 @@ export default function RootLayout({
             </div>
           </div>
 
-          <div className="main-content pl-[2rem] pr-[2rem] py-[2rem] md:pl-[14rem] md:pr-[2rem] md:py-[2rem]">
+          <div className="main-content pl-[0rem] pr-[rem] py-[2rem] md:pl-[14rem] md:pr-[2rem] md:py-[2rem]">
             {children}
           </div>
         </div>
