@@ -48,22 +48,26 @@ function Navbar({ waitlist }: { waitlist?: boolean }) {
         </div>
       </nav>
 
-      <div className="md:hidden bg-navBlue h-[70px] md:h-20 flex items-center w-full">
+      <div
+        className={`md:hidden bg-navBlue h-[70px] md:h-20 flex items-center w-full`}
+      >
         <Sheet>
           <div className="flex w-full justify-between mx-4">
             <Link href="/">
               <span className="text-xl font-bold text-white">LokaTalent</span>
             </Link>
 
-            <SheetTrigger>
-              <Image
-                src="/Images/hamburger.svg"
-                width={24}
-                height={24}
-                alt="menu"
-                className="cursor-pointer"
-              />
-            </SheetTrigger>
+            {!waitlist && (
+              <SheetTrigger>
+                <Image
+                  src="/Images/hamburger.svg"
+                  width={24}
+                  height={24}
+                  alt="menu"
+                  className="cursor-pointer"
+                />
+              </SheetTrigger>
+            )}
           </div>
 
           <SheetContent

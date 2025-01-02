@@ -70,10 +70,7 @@ export const FormField: React.FC<FormFieldProps> = ({
   const togglePasswordVisibility = (e: React.MouseEvent) => {
     e.preventDefault();
     setShowPassword((prev) => !prev);
-  };
-
-  console.log(error)
- 
+  }; 
 
   return (
     <div className={`relative flex flex-col  ${width}`}>

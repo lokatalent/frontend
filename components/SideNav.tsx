@@ -45,17 +45,17 @@ const links = [
 
 const SideNav = ({ talent }: { talent?: boolean }) => {
   const pathname = usePathname();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const router = useRouter();
   const logout = () => {
-    dispatch(setLoggedin(false))
-    sessionStorage.removeItem("lokaToken")
+    dispatch(setLoggedin(false));
+    sessionStorage.removeItem("lokaToken");
     router.push("/login");
   };
 
   return (
     <div>
-      <div className="bg-primaryBlue w-[200px] h-screen fixed z-[20] text-white p-8 flex-col justify-between hidden md:flex">
+      <div className="bg-primaryBlue w-[200px] h-screen fixed z-[20] text-white p-8 flex-col justify-between hidden xl:flex">
         <div>
           <Link href="/landing">
             <span className="text-lg font-bold text-white">LokaTalent</span>
@@ -103,7 +103,7 @@ const SideNav = ({ talent }: { talent?: boolean }) => {
         </div>
       </div>
 
-      <div className="md:hidden bg-navBlue p-4">
+      <div className="xl:hidden fixed top-0 left-0 z-[20] bg-white px-2 flex items-center justify-center min-h-[70px]">
         <Sheet>
           <div className="flex justify-between mx-4">
             {/* <Link href="/">
@@ -136,13 +136,10 @@ const SideNav = ({ talent }: { talent?: boolean }) => {
                 <div className="flex flex-col space-y-7 mt-6">
                   {links.map((link) => (
                     <Link
-                      href={link.link}
+                      href={talent ? "/talent" + link.link : link.link}
                       key={link.id}
                       className={`${
-                        (pathname === "/" && link.link === "/") ||
-                        (link.link !== "/" && pathname.startsWith(link.link))
-                          ? "bg-white/30"
-                          : ""
+                        pathname === link.link ? "bg-white/30" : ""
                       } text-white flex space-x-3 items-center font-semibold p-3 hover:p-3 focus:p-3 hover:bg-white/30 focus:bg-white/30 rounded-lg`}
                     >
                       {link.icon}

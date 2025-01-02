@@ -82,21 +82,17 @@ function DataTable<TData, TValue>({
   });
   // console.log(path);
   const handleNavigate = (id: number) => {
-    console.log(id);
-    console.log(path);
     router.push(
       talent ? `/talent/dashboard/bookings/${id}` : `/dashboard/bookings/${id}`
     );
   };
 
-  const roleHandler = (role: string) => {
-    console.log(role);
-  };
+  const roleHandler = (role: string) => {};
 
   const bookingRoles = [
     { value: "all", label: "All" },
-    { value: "instant-bookings", label: "Instant Bookings" },
-    { value: "schedule-bookings", label: "Schedule Bookings" },
+    { value: "instant-bookings", label: "Instant" },
+    { value: "schedule-bookings", label: "Scheduled" },
   ];
 
   const sortHandler = (role: string) => {
@@ -124,7 +120,7 @@ function DataTable<TData, TValue>({
       </div>
 
       <div className="rounded-md borde">
-        <Table>
+        <Table className="whitespace-nowrap">
           <TableHeader>
             {table.getHeaderGroups().map((headerGroup) => (
               <TableRow key={headerGroup.id}>

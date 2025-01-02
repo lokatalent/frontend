@@ -7,8 +7,8 @@ export const signup = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -20,8 +20,8 @@ export const googleAuth = async () => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -33,8 +33,8 @@ export const signin = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -49,8 +49,8 @@ export const verifyEmail = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -63,8 +63,8 @@ export const verifyUser = async () => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -80,8 +80,8 @@ export const verifyPhone = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -93,8 +93,8 @@ export const forgotPassword = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -106,8 +106,8 @@ export const resendMail = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -119,8 +119,8 @@ export const sendResetToken = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -132,8 +132,8 @@ export const resetPassword = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -145,8 +145,8 @@ export const verifyEmailOTP = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -158,8 +158,8 @@ export const sendEmailOTP = async () => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -171,8 +171,8 @@ export const verifyPhoneOTP = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -184,8 +184,8 @@ export const sendPhoneOTP = async () => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };
@@ -199,8 +199,8 @@ export const deleteUserAccount = async () => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response?.data,
+      status: err?.response?.status,
     };
   }
 };

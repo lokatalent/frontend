@@ -13,7 +13,7 @@ interface RoleSwitchProps {
   // Optional initial selected role
   initialRole?: string;
   // Callback function when role changes
-  onRoleChange: (role: string) => void;
+  onRoleChange: any;
   // Optional custom styling
   className?: string;
   type?: string;

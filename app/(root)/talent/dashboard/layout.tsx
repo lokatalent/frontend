@@ -13,7 +13,7 @@ export default function RootLayout({
 
   const role = useSelector((state: any) => state.auth.user.service_role);
 
-  if (role === "service_provider") return router.push("/talent/dashboard");
+  if (role !== "service_provider") return router.push("/dashboard");
 
   if (!loggedIn) return router.push("/login");
 
