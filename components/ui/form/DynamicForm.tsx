@@ -288,7 +288,7 @@ const DynamicForm = ({
           })
         );
         // redirect to verify account
-        router.push("/dashboard/profile/verify");
+        // router.push("/dashboard/profile/verify");
       } else {
         setLoading(false);
         dispatch(
