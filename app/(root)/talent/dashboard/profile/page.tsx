@@ -4,20 +4,39 @@ import ProfileDetails from "@/components/profile/ProfileDetails";
 import { Button } from "@/components/ui/button";
 import { RootStateProfile } from "@/store/profile/profileSlice";
 import Image from "next/image";
-import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import ServiceRate from "@/components/talent/profile/ServiceRate";
 import ReviewCard from "@/components/talent/profile/ReviewCard";
 import Portfolio from "@/components/talent/profile/Portfolio";
 import EditServiceRate from "@/components/talent/profile/editing/EditServiceRate";
 import EditPortfolio from "@/components/talent/profile/editing/EditPortfolio";
+import { getOwnProfile, getService, updateService, UpdateService } from "@/services/profileService";
+import { showToast } from "@/store/auth/toastSlice";
 
 interface DataItem {
   title: string;
   value: string;
 }
 
+ const reviews = [
+   {
+     name: "Daniella Doe",
+     profileImage: "/Images/review.png",
+     rating: 4,
+     reviewText:
+       "Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.",
+   },
+   {
+     name: "John Smith",
+     profileImage: "/Images/review.png",
+     rating: 5,
+     reviewText: "Amazing experience, highly recommend!",
+   },
+ ];
+
 export default function Profiles() {
+  const dispatch = useDispatch();
   const profileDetails = useSelector(
     (state: RootStateProfile) => state.profile.profileDetails
   );
@@ -27,6 +46,55 @@ export default function Profiles() {
   const profileInformation = useSelector(
     (state: RootStateProfile) => state.profile.information
   );
+    const user = useSelector((state: any) => state.auth.user);
+  
+  // Fetch user profile data from the server
+ 
+
+   const [data, setData] = useState([
+      { title: "Name", value: profileInformation?.name || "-" },
+      { title: "Email Address", value: profileInformation?.email || "-" },
+      { title: "Phone Number", value: "09123456789" },
+      { title: "Country", value: "-" },
+      { title: "State", value: profileDetails?.state || "-" },
+      { title: "City", value: profileDetails?.city || "-" },
+      { title: "Address", value: profileDetails?.address || "-" },
+    ]);
+  
+    // const data: DataItem[] = ;
+  
+    useEffect(() => {
+      const fetchProfile = async () => {
+        const response = await getOwnProfile();
+        console.log(response);
+        if (response.status === 200) {
+          const profileData = response.data;
+          setData([
+            {
+              title: "Name",
+              value: `${profileData.first_name} ${profileData.last_name}` || "-",
+            },
+            { title: "Email Address", value: profileData.email || "-" },
+            { title: "Phone Number", value: profileData.phone_num || "-" },
+            { title: "Country", value: profileData.country || "-" },
+            { title: "State", value: profileData.state || "-" },
+            { title: "City", value: profileData.city || "-" },
+            { title: "Address", value: profileData.address || "-" },
+          ]);
+        } else if (response.status === 401) {
+          dispatch(
+            showToast({
+              status: "error",
+              message: response.data.message,
+            })
+          );
+        }
+      };
+  
+      fetchProfile();
+    }, []);
+
+
   const [method, setMethod] = useState("personal");
   const IserviceRate = {
     bankName: "Zenith Bank",
@@ -35,63 +103,9 @@ export default function Profiles() {
     rph: "1100",
   };
   const [serviceRate, setServiceRate] = useState(IserviceRate);
-
   const handleMethodChange = (method: string) => {
     setMethod(method);
   };
-
-  // Fetch user profile data from the server
-  const data: DataItem[] = [
-    {
-      title: "Name",
-      value: profileInformation.name,
-    },
-    {
-      title: "Email Address",
-      value: profileInformation.email,
-    },
-    {
-      title: "Phone Number",
-      value: "09123456789",
-    },
-    {
-      title: "Gender",
-      value: "-",
-    },
-    {
-      title: "Country",
-      value: "-",
-    },
-    {
-      title: "State",
-      value: profileDetails.state.length > 0 ? profileDetails.state : "-",
-    },
-    {
-      title: "City",
-      value: profileDetails.city.length > 0 ? profileDetails.city : "-",
-    },
-    {
-      title: "Address",
-      value: profileDetails.address.length > 0 ? profileDetails.address : "-",
-    },
-  ];
-
-  const reviews = [
-    {
-      name: "Daniella Doe",
-      profileImage: "/Images/review.png",
-      rating: 4,
-      reviewText:
-        "Lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum lorem ipsum.",
-    },
-    {
-      name: "John Smith",
-      profileImage: "/Images/review.png",
-      rating: 5,
-      reviewText: "Amazing experience, highly recommend!",
-    },
-  ];
-
   const [portfolioData1, setPortfolioData1] = useState({
     experience: "2",
     bio: "John Smith",
@@ -104,7 +118,6 @@ export default function Profiles() {
       Cooking: true,
     },
   });
-
   const handleSkillChange = (skill: string, value: boolean) => {
     setPortfolioData1((prevData) => ({
       ...prevData,
@@ -114,19 +127,17 @@ export default function Profiles() {
       },
     }));
   };
-
   const handleServiceRate = (service) => {
     console.log(service);
     setServiceRate(service);
   };
-  const handlePortfolio = (service) => {
-    console.log(service);
-    // setServiceRate(service);
+  const handlePortfolio = async (service) => {
+   
     setPortfolioData1((prevSkills) => ({
       ...prevSkills,
       experience: service.experience,
       bio: service.bio,
-      // [skill]: value,
+
     }));
   };
 
@@ -171,7 +182,10 @@ export default function Profiles() {
         <div></div>
       </div>
 
-      <ProfileCompletion addText="You are not done with your profile set up. Complete it now" />
+      <ProfileCompletion
+        addText="You are not done with your profile set up. Complete it now"
+        linkTo="/talent/dashboard/profile/edit"
+      />
 
       <div className="card mt-12">
         <div className="flex items-center mb-8 justify-between">

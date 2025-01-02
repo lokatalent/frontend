@@ -262,13 +262,21 @@ const DynamicForm = ({
       }
       // router.push("/dashboard");
     } else if (buttonAction === "profile-edit") {
-      const response = await updateProfile(data);
+      let temp = {
+        state: data.state,
+        city: data.city,
+        country: data.country,
+        address: data.street_addr,
+        gender: data.gender
+      };  
+      const response = await updateProfile(temp);
+      console.log(response);
       if (!response.error) {
         setLoading(false);
         dispatch(
           showToast({
             status: "success",
-            message: "Verify your account. An OTP has been sent to your email",
+            message: "Your Profile has been updated",
           })
         );
         dispatch(setProfileDetails(data));
@@ -407,7 +415,7 @@ const DynamicForm = ({
               {buttonAction === "log-in" || buttonAction === "sign-up" ? (
                 <button
                   onClick={onGoogleAuth}
-                  className="hidden w-full bg-white text-black font-bold flex justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]"
+                  className="hidden w-full bg-white text-black font-bold justify-center p-2 py-3 rounded-sm border border-[#D6DDEB]"
                 >
                   <FcGoogle size={24} className="mr-2" />
                   Continue with Google

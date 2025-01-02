@@ -15,6 +15,8 @@ import { FaPen } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Check, Info } from "lucide-react";
 import ChangesSaved from "../ChangesSaved";
+import { useSelector } from "react-redux";
+import { getService, updateService } from "@/services/profileService";
 
 interface EditPortfolioProps {
   portfolioRateEdited: (data: EditPortfolioFormValues) => void;
@@ -25,16 +27,16 @@ interface EditPortfolioProps {
 const editPortfolioSchema = z.object({
   bio: z
     .string()
-    .min(1, "Bio should be at least 50 characters long")
+    .min(1, "Bio should be at least 1 characters long")
     .max(500, "Bio should not exceed 500 characters"),
-  experience: z
+  experience_years: z
     .string()
-    .regex(/^\d+$/, "Experience must be a number")
-    .transform(Number)
-    .refine(
-      (val) => val >= 0 && val <= 50,
-      "Experience must be between 0 and 50 years"
-    ),
+    // .regex(/^\d+$/, "Experience must be a number")
+    // .transform(Number)
+    // .refine(
+    //   (val) => val >= 0 && val <= 50,
+    //   "Experience must be between 0 and 50 years"
+    // ),
 });
 
 type EditPortfolioFormValues = z.infer<typeof editPortfolioSchema>;
@@ -48,6 +50,8 @@ export default function EditPortfolio({
   const [localSkills, setLocalSkills] = useState(skills);
   const [isOnline, setIsOnline] = useState(false);
   const [charCount, setCharCount] = useState(0);
+    const user = useSelector((state: any) => state.auth.user);
+
 
   const {
     handleSubmit,
@@ -58,7 +62,7 @@ export default function EditPortfolio({
     resolver: zodResolver(editPortfolioSchema),
     defaultValues: {
       bio: "",
-      experience: "",
+      experience_years: "",
     },
   });
 
@@ -88,7 +92,25 @@ export default function EditPortfolio({
   const onSubmit = async (data: EditPortfolioFormValues) => {
     try {
       // await portfolioRateEdited(data);
-
+       console.log(user.id)
+    let requestTemp = {
+      id: user.id,
+    }
+    const responseGet = getService(requestTemp);
+    console.log('for response');
+    console.log(responseGet);
+    console.log('for response');
+    console.log(data);
+    let temp = {
+      experience_years: data.experience_years,
+      service_type: "",
+      service_desc: "",
+      rate_per_hour: 0,
+      address: ''
+    };
+    const response = await updateService( temp);
+    console.log(response);
+      console.log(data);
       Object.entries(localSkills).forEach(([skill, value]) => {
         onSkillChange(skill, value);
       });
@@ -107,7 +129,10 @@ export default function EditPortfolio({
       </DialogTrigger>
 
       {isFinished ? (
-        <DialogContent className="w-full p-6 sm:max-w-[16rem] lg:max-w-[25rem]">
+        <DialogContent
+          className="w-full p-6 sm:max-w-[16rem] lg:max-w-[25rem]"
+          aria-describedby={undefined}
+        >
           <DialogHeader>
             <DialogTitle className="text-center text-lg font-bold">
               Changes Saved Successfully
@@ -127,7 +152,10 @@ export default function EditPortfolio({
           </div>
         </DialogContent>
       ) : (
-        <DialogContent className="w-full p-6 sm:max-w-[35rem] max-h-[90vh] overflow-y-auto">
+        <DialogContent
+          className="w-full p-6 sm:max-w-[35rem] max-h-[90vh] overflow-y-auto"
+          aria-describedby={undefined}
+        >
           <DialogHeader>
             <DialogTitle className="text-center text-xl font-bold mb-6">
               Edit Portfolio
@@ -171,11 +199,11 @@ export default function EditPortfolio({
 
             {/* Experience Field */}
             <div className="space-y-2">
-              <label htmlFor="experience" className="text-sm font-medium">
+              <label htmlFor="experience_years" className="text-sm font-medium">
                 Years of Experience
               </label>
               <Controller
-                name="experience"
+                name="experience_years"
                 control={control}
                 render={({ field }) => (
                   <input
@@ -183,15 +211,15 @@ export default function EditPortfolio({
                     type="number"
                     min="0"
                     max="50"
-                    id="experience"
+                    id="experience_years"
                     className="w-full rounded-lg border border-gray-300 px-4 py-3 text-sm focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all"
                     placeholder="Enter years of experience"
                   />
                 )}
               />
-              {errors.experience && (
+              {errors.experience_years && (
                 <p className="text-red-500 text-sm">
-                  {errors.experience.message}
+                  {errors.experience_years.message}
                 </p>
               )}
             </div>

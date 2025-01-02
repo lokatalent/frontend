@@ -141,14 +141,17 @@ const FileUpload = () => {
                 </div>
                 <Button
                   variant="ghost"
-                  className="text-blue-600 hover:text-blue-700"
+                  className=" text-[12px] sm:text-sm text-blue-600 hover:text-blue-700"
                   onClick={(event) => {
                     event.preventDefault(); // Prevent default button behavior
                     document.getElementById("fileInput")?.click();
                   }}
                 >
                   Click to upload
-                  <span className="text-gray-500"> or drag and drop</span>
+                  <span className="text-[12px] sm:text-sm text-gray-500">
+                    {" "}
+                    or drag and drop
+                  </span>
                 </Button>
                 <p className="text-[11px] text-black">SVG, HEIC, PNG, JPG</p>
               </div>

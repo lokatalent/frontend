@@ -43,6 +43,9 @@ export default function OverallNotification({ isNotified, notifications}: Notifi
     { value: "unread", label: "Unread" },
   ];
 
+  useEffect(() => {
+    
+  })
    const body = {
      type: "5f68d6ba-c4e4-436c-8049-150d0ed5085b",
      booking_id: "5f68d6ba-c4e4-436c-8049-150d0ed5085b",

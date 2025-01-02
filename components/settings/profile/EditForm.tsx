@@ -1,4 +1,4 @@
-"use client"
+"use client";
 
 import React, { useRef, useState } from "react";
 import { Button } from "@/components/ui/button";
@@ -113,16 +113,16 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
   return (
     <>
       <Dialog open={editModal} onOpenChange={onOpenChange}>
-        <DialogContent>
+        <DialogContent className="w-full w-[25rem]">
           <DialogHeader>
             <DialogTitle className="text-xl font-normal mt-5 px-3 text-center">
               Change {form.label === "Full Name" ? "Name" : "Email"}
             </DialogTitle>
           </DialogHeader>
-          <div className="flex justify-center items-center">
-            <div className="w-full max-w-md">
-              <div className="space-y-4 divide-y">
-                <div className="py-4">
+          <div className="flex justify-center w-full items-center">
+            <div className="w-full max-w-m">
+              <div className="space-y-4 w-full divide-y">
+                <div className="py-4 w-full -[22rem]">
                   <label
                     htmlFor="fullName"
                     className="block text-gray-700 font-medium pb-1"
@@ -153,7 +153,7 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
                   )}
                 </div>
                 {form.label === "Full Name" && (
-                  <div className="py-4">
+                  <div className="py-4 w-full">
                     <label
                       htmlFor="nameReason"
                       className="block text-gray-700 font-medium pb-1"
@@ -165,7 +165,7 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
                       id="nameReason"
                       ref={reasonRef}
                       placeholder="I want to change my name because..."
-                      className="border-gray-300 border h-20 text-black bg-[#FAF8F81C] rounded-md px-4 py-2 w-full"
+                      className="border-gray-300 border h-20 text-black bg-[#FAF8F81C] rounded-md px-4 py-2 w-full "
                     />
                     {reasonError && (
                       <p
@@ -182,16 +182,18 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
                     )}
                   </div>
                 )}
-                <div className="mt-4 flex gap-3">
-                  <DialogClose asChild>
-                    <Button
-                      variant="outline"
-                      className="text-primaryBlue text-sm px-20 py-[1.8rem]"
-                      onClick={() => dispatch(setEditModal(false))}
-                    >
-                      Cancel
-                    </Button>
-                  </DialogClose>
+                <div className="mt-4 flex flex-co sm:flex-row gap-3">
+                  <div>
+                    <DialogClose asChild>
+                      <Button
+                        variant="outline"
+                        className="text-primaryBlue text-sm px-20 py-[1.8rem]"
+                        onClick={() => dispatch(setEditModal(false))}
+                      >
+                        Cancel
+                      </Button>
+                    </DialogClose>
+                  </div>
                   <Button
                     variant="default"
                     className="px-8 w-48 py-[1.8rem] text-sm hover:border-none"

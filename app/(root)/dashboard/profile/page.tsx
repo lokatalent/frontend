@@ -71,10 +71,10 @@ export default function Profile() {
 
   return (
     <div className="ml-8 h-screen sm:ml-0">
-      <div className="h-[10rem] mb-24 w-full bg-gradient-to-r to-[#CCD6B0] from-[#6B705C]">
+      <div className="h-[5rem] sm:h-[10rem] mb-24 w-full bg-gradient-to-r to-[#CCD6B0] from-[#6B705C]">
         <div className="bg-white translate-y-1/2 w-[80%] mx-auto rounded-md p-6 flex justify-between items-center">
           <div className="flex items-center space-x-6">
-            <div className="relative flex items-center justify-center bg-[#C4C4C424] shadow-lg p-2 w-[100px] h-[100px] rounded-full">
+            <div className="relative flex items-center justify-center bg-[#C4C4C424] shadow-lg p-2 w-[50px] h-[50px] sm:w-[100px] sm:h-[100px] rounded-full">
               <Image
                 src={profilePics || "/Images/camera.png"}
                 alt="Profile"
@@ -90,14 +90,17 @@ export default function Profile() {
                 />
               </div>
             </div>
-            <p className="text-primaryBlue text-2xl font-bold">
-              Gabriel Daramola
+            <p className="text-primaryBlue text-sm md:text-2xl font-bold">
+             {data[0].value}
             </p>
           </div>
         </div>
       </div>
 
-      <ProfileCompletion />
+      <ProfileCompletion
+        addText="Finish setting up your profile to get the most out of our services"
+        linkTo="/dashboard/profile/edit"
+      />
 
       <div>
         <ProfileDetails details={data} />

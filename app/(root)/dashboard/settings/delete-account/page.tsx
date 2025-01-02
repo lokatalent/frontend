@@ -11,7 +11,7 @@ function DeleteAccount() {
         <p className="text-xl">Delete Account</p>
         <MdOutlineInfo size={20}/>
       </div>
-      <p className="text-base w-4/5">
+      <p className="text-base w-full sm:w-4/5">
         By deleting your account, all your data, bookings, and preferences will
         be permanently removed from our system. Please note that this action is
         irreversible and cannot be undone

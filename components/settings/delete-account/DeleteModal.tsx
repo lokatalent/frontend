@@ -32,7 +32,7 @@ export default function DeleteModal() {
     <Dialog>
       <DialogTrigger
         type="submit"
-        className="font-nunito text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[8rem] md:w-[12rem] lg:w-[20rem] mx-auto rounded h-14 lex items-center justify-center hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] transition transition-all duration-[500ms]"
+        className="font-nunito text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-full md:w-[12rem] lg:w-[20rem] mx-auto rounded h-14 lex items-center justify-center hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] transition transition-all duration-[500ms]"
       >
         Delete
       </DialogTrigger>

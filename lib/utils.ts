@@ -67,14 +67,14 @@ export const SignUpFormSchema = z
       .regex(/^[0-9]{10,15}$/, "Invalid phone number format"),
     newPassword: z
       .string()
-      .min(8, "Password must be at least 8 characters")
+      .min(8, "Password must be at least 8 characters"),
       // ADD THIS IF A SYMBOL IS REQUIRED
       
       // .regex(
       //   /[!@#$%^&*(),.?":{}|<>]/,
       //   "Password must contain at least one symbol"
       // )
-      .regex(/\d/, "Password must contain at least one number"),
+      // .regex(/\d/, "Password must contain at least one number"),
     confirmPassword: z
       .string()
       .min(8, "Password must be at least 8 characters"),
@@ -123,7 +123,6 @@ export const passwordFormSchema = z
 
 export const allowedCountries = ["Nigeria", "India", "Senegal", "Australia"];
 export const profileFormSchema = z.object({
-
   // dateofBirth: z.date({
   //   required_error: "Date of birth is required",
   // }),
@@ -132,7 +131,7 @@ export const profileFormSchema = z.object({
   state: z.string().min(2, "State must be at least 3 characters"),
   country: z.string().min(1, "You must select a valid country"),
   gender: z.string().min(1, "You must select a gender"),
-  address: z.string().min(5, "Address must be at least 5 characters"),
+  street_addr: z.string().min(5, "Address must be at least 5 characters"),
 });
 
 export const editAddressFormSchema = z.object({
