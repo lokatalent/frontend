@@ -69,7 +69,7 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
   };
 
   return (
-    <>
+    <div>
       <Dialog open={isEditModalOpen} onOpenChange={setIsEditModalOpen}>
         <DialogTrigger
           type="submit"
@@ -177,7 +177,7 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
           form={selectedForm}
         />
       )}
-    </>
+    </div>
   );
 };
 

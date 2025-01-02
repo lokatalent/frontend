@@ -1,4 +1,5 @@
 "use client";
+
 import React from "react";
 import { useSelector } from "react-redux";
 import SettingsProfileCard from "@/components/settings/profile/SettingsProfileCard";;
@@ -63,13 +64,14 @@ function Profile() {
   ];
 
   return (
-    <>
-      <div className="flex flex-wrap gap-5">
+    <div>
+      Here
+      {/* <div className="flex flex-wrap gap-5">
         <SettingsProfileCard title="Name and Email" forms={forms} />
         <SettingsProfileCard title="Phone Number" forms={Phone} />
         <SettingsProfileCard title="Address" forms={Address} />
-      </div>
-    </>
+      </div> */}
+    </div>
   );
 }
 
