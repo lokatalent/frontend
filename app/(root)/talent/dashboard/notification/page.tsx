@@ -117,7 +117,7 @@ const notificationsData: NotificationResponse = {
   ],
 };
 
-export default async function Notification() {
+export default function Notification() {
   const { isNotified, notification } = notificationsData;
 
   return (
