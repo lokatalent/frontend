@@ -22,7 +22,8 @@ type TextFieldProps = BaseFieldProps & {
 
 type SelectFieldProps = BaseFieldProps & {
   type: "select";
-  options: Array<{ value: string; label: string }>;
+  options?: Array<{ value: string; label: string }>;
+  defaultOption?: string;
 };
 
 type FileFieldProps = BaseFieldProps & {
@@ -58,7 +59,7 @@ const TalentDynamicForm: React.FC<FormFieldProps> = ({
   }) => {
     switch (type) {
       case "select": {
-        const { options } = props as SelectFieldProps;
+        const { options, defaultOption } = props as SelectFieldProps;
         return (
           <div className="w-full space-y-2">
             <select
@@ -68,12 +69,16 @@ const TalentDynamicForm: React.FC<FormFieldProps> = ({
               aria-invalid={!!error}
               aria-required={required}
             >
-              <option value="">{placeholder || "Select an option"}</option>
-              {options.map((option) => (
-                <option key={option.value} value={option.value}>
-                  {option.label}
-                </option>
-              ))}
+              {!defaultOption && <option value="">{placeholder || "Select an option"}</option>}
+              {options ? (
+                options.map((option) => (
+                  <option key={option.value} value={option.value}>
+                    {option.label}
+                  </option>
+                ))
+              ) : (
+                <option value={defaultOption}>{defaultOption}</option>
+              )}
             </select>
             {error && <FormFieldError error={{ message: error.message }} />}
           </div>

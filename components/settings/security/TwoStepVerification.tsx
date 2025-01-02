@@ -12,6 +12,7 @@ import { z } from "zod";
 import InputOTPDemo from "@/components/auth/InputOTP";
 import { IoIosSend } from "react-icons/io";
 import { RootStateProfile, setInformation } from "@/store/profile/profileSlice";
+import { FormFieldError } from "@/components/ui/form/FormFieldError";
 
 // Phone number validation schema
 const phoneNumberSchema = z.object({
@@ -95,7 +96,7 @@ const TwoStepVerification: React.FC = () => {
   return (
     <Dialog open={twoStepVerification} onOpenChange={resetModal}>
       {switchModal === "twoStep" && (
-        <DialogContent className="w-[27rem]">
+        <DialogContent className="w-[22rem] rounded-lg sm:w-[27rem]">
           <DialogTitle className="text-center">
             Add a Phone Number for 2-Step Verification
           </DialogTitle>
@@ -130,15 +131,7 @@ const TwoStepVerification: React.FC = () => {
                   disabled={isSubmitting}
                 />
 
-                {error && (
-                  <div
-                    className="text-red-500 text-xs flex items-center mt-2"
-                    role="alert"
-                  >
-                    <IoWarningOutline color="red" size={16} className="mr-2" />
-                    {error}
-                  </div>
-                )}
+                {error && <FormFieldError error={{ message: error }} />}
               </div>
 
               <Button
@@ -155,7 +148,7 @@ const TwoStepVerification: React.FC = () => {
       )}
 
       {switchModal === "verify" && (
-        <DialogContent className="space-y-4">
+        <DialogContent className="space-y-4 w-[22rem] sm:w-max rounded-lg">
           <DialogTitle className="text-center">
             Phone Number Verification
           </DialogTitle>
@@ -166,9 +159,7 @@ const TwoStepVerification: React.FC = () => {
             </p>
             <div>
               <InputOTPDemo value={value} setValue={setValue} />
-              {error && (
-                <p className="text-red-500 text-center mt-2">{error}</p>
-              )}
+              {error && <FormFieldError error={{ message: error }} />}
             </div>
             <div className="mt-5 sm:mt-6 flex space-x-4">
               <Button
@@ -187,7 +178,7 @@ const TwoStepVerification: React.FC = () => {
       )}
 
       {switchModal === "protection" && (
-        <DialogContent>
+        <DialogContent className="w-[22rem] sm:w-max rounded-lg">
           <DialogTitle className="text-center">
             You are now protected with 2-Step Verification
           </DialogTitle>

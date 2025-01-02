@@ -22,12 +22,10 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const loggedIn = true; // Replace with actual authentication logic
   return (
     <html lang="en">
       <body className={nunito.className}>
         <Providers>{children}</Providers>
-        {/* {loggedIn && <Navbar />} */}
       </body>
     </html>
   );

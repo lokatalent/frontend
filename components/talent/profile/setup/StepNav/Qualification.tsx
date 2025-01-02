@@ -18,11 +18,11 @@ const fileSchema = z
 
 // Define your schema
 const schema = z.object({
-  university: z.string().nonempty("Please select a university"),
-  degree: z.string().nonempty("Enter your degree"),
+  university: z.string().optional(),
+  degree: z.string().optional(),
   field: z.string().nonempty("Pls enter your field of field"),
   startdate: z.string().nonempty("Start date is required"),
-  enddate: z.string().nonempty("End date is required"),
+  enddate: z.string().optional(),
   // certificate: z.array(fileSchema).min(1, "Please upload at least one file"),
 });
 
@@ -60,7 +60,7 @@ function Qualification({ setActiveStep }: any) {
                   { value: "UI", label: "UI" },
                   { value: "Ibadan", label: "Ibadan" },
                 ]}
-                required
+                
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
               />
               <TalentDynamicForm
@@ -72,7 +72,7 @@ function Qualification({ setActiveStep }: any) {
                   { value: "UI", label: "UI" },
                   { value: "Ibadan", label: "Ibadan" },
                 ]}
-                required
+                // required for not optional
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
               />
               <TalentDynamicForm
@@ -102,7 +102,7 @@ function Qualification({ setActiveStep }: any) {
                 label="End Date or Expected End Date (Optional)"
                 control={control}
                 className="w-[53rem]"
-                required
+                
               />
 
               <TalentDynamicForm
@@ -110,7 +110,7 @@ function Qualification({ setActiveStep }: any) {
                 name="certificate"
                 label="Upload Your Certifications(Optional) "
                 control={control}
-                required
+                
                 className="w-[53rem]"
               />
             </div>

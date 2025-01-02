@@ -35,7 +35,7 @@ function DropDownElement() {
               <SelectValue placeholder="What services do you need?" />
             )}
           </SelectTrigger>
-          <SelectContent className="max-w-[320px]   sm:max-w-md">
+          <SelectContent className="max-w-[320px] sm:max-w-md">
             <SelectGroup>
               <SelectItem value="Indoor Cleaning Services">
                 <div className=" text-primaryBlue my-2 p-2">
