@@ -110,7 +110,7 @@ function ServiceCharge({ setActiveStep }: any) {
         onSubmit={handleSubmit(onSubmit)}
         className="gap-3 flex flex-center gap-[3rem] flex-wrap"
       >
-        <div className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]">
+        {/* <div className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]">
           <label htmlFor="rps" className="block text-sm font-medium mb-2">
             Rate per Service*
           </label>
@@ -129,8 +129,8 @@ function ServiceCharge({ setActiveStep }: any) {
           {errors.rps && (
             <FormFieldError error={{ message: errors.rps.message }} />
           )}
-        </div>
-        <div className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]">
+        </div> */}
+        {/* <div className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]">
           <label htmlFor="rph" className="block text-sm font-medium mb-2">
             Rate per Hour*
           </label>
@@ -149,7 +149,7 @@ function ServiceCharge({ setActiveStep }: any) {
           {errors.rph && (
             <FormFieldError error={{ message: errors.rph.message }} />
           )}
-        </div>
+        </div> */}
         <div className="">
           <Controller
             name="bankName"

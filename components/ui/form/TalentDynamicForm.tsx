@@ -117,6 +117,7 @@ const TalentDynamicForm: React.FC<FormFieldProps> = ({
               className={inputBaseClass}
               aria-invalid={!!error}
               aria-required={required}
+              min={1}
             />
             {error && <FormFieldError error={{ message: error.message }} />}
           </div>
