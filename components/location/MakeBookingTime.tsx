@@ -183,9 +183,9 @@ const MakeBookingTime = () => {
             onChange={(e) => setSelectedTime(e.target.value)}
             className="h-12 w-full rounded-full border px-5 focus:outline-none"
           >
-            {time.map((item) => (
+            {time.map((item, index) => (
               <option
-                key={item.value}
+                key={index}
                 value={item.value}
                 disabled={timeCheck < Number(item.value)}
               >
@@ -273,7 +273,7 @@ const MakeBookingTime = () => {
           <button
             type="button"
             className="btnOne max-w-[567px] p-4"
-            onClick={() => onSubmit}
+            onClick={onSubmit}
           >
             {" "}
             Proceed

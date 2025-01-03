@@ -81,7 +81,7 @@ const ScheduleBooking = () => {
 
   return (
     <div className="p-6 w-full max-w-5xl mx-auto">
-      <form onSubmit={handleSubmit(onSubmit)} className="">
+      <div className="">
         <div className=" flex flex-row space-x-5">
           {/* Start Date Input */}
           <Controller
@@ -286,7 +286,7 @@ const ScheduleBooking = () => {
             Proceed
           </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 };
