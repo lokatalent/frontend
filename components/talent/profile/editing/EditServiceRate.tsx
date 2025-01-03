@@ -14,6 +14,10 @@ import {
 import { FaPen } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import ChangesSaved from "../ChangesSaved";
+import { showToast } from "@/store/auth/toastSlice";
+import { errorHandler } from "@/lib/utils";
+import { updateBankProfile } from "@/services/profileService";
+import { useDispatch } from "react-redux";
 
 interface EditServiceRateProps {
   serviceRateEdited: (data: any) => void; // Adjust type as needed
@@ -34,6 +38,7 @@ type EditServiceRateFormValues = z.infer<typeof editServiceRateSchema>;
 
 function EditServiceRate({ serviceRateEdited }: EditServiceRateProps) {
   const [isFinished, setIsFinished] = useState(false);
+  const dispatch = useDispatch();
 
   const {
     handleSubmit,
@@ -51,9 +56,33 @@ function EditServiceRate({ serviceRateEdited }: EditServiceRateProps) {
 
   const options = ["GTBank", "Sterling Bank", "EcoBank"];
 
-  const onSubmit = (data: EditServiceRateFormValues) => {
+  const onSubmit = async (data: EditServiceRateFormValues) => {
     console.log("Submitted Data:", data);
     serviceRateEdited(data);
+
+    let temp = {
+      bank_name: data.bankName,
+      bank_code: "044",
+      account_num: data.accountNo,
+      account_name: 'Kehad Talent'
+    };
+    const response = await updateBankProfile(temp);
+    console.log(response);
+    if (response.status !== 200) {
+      dispatch(
+        showToast({
+          status: "error",
+          message: errorHandler(response.data),
+        })
+      );
+      return;
+    }
+    dispatch(
+      showToast({
+        status: "success",
+        message: "Bank details updated successfully!",
+      })
+    );
     setIsFinished(true); // Transition to confirmation view
   };
 

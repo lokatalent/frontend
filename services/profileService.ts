@@ -14,6 +14,7 @@ export const getOwnProfile = async () => {
 };
 export const updateProfile = async (values: any) => {
   try {
+    console.log(values)
     let response = await http.patch("/users/profile", values);
     return { error: false, data: response?.data, status: response?.status };
   } catch (err: any) {
@@ -60,6 +61,32 @@ export const getService = async (values) => {
     let response = await http.patch("/users/:id/service?service_type=cleaning", values);
     console.log(response);
     return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err.response.data,
+      status: err.response.status,
+    };
+  }
+};
+export const updateEducationProfile = async (values: any) => {
+  try {
+    console.log(values);
+    let response = await http.patch("/users/profile/education", values);
+    return { error: false, data: response?.data, status: response?.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err.response.data,
+      status: err.response.status,
+    };
+  }
+};
+export const updateBankProfile = async (values: any) => {
+  try {
+    console.log(values);
+    let response = await http.patch("/users/profile/bank", values);
+    return { error: false, data: response?.data, status: response?.status };
   } catch (err: any) {
     return {
       error: true,

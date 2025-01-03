@@ -24,21 +24,18 @@ interface InputDropdownProps {
 function InputDropdown({ options, error, buttonAction, control, register }: InputDropdownProps) {
   const [selectedService, setSelectedService] = useState<string>("");
   const dispatch = useDispatch();
-  console.log(buttonAction);
 
   const handleServiceChange = (value: string) => {
     setSelectedService(value);
-    console.log(value);
+
+    // Dispatch to Redux store if needed
     dispatch(setVerificationStore(value));
+
+    // Call onValueChange if provided
+    onValueChange?.(value);
   };
 
-  // const fileHandler = (file: File) => {
-  // console.log(file);
-  // console.log(selectedService);
-  // uploadFileHandler(selectedService, file);
-  // };
-
-  const uploadHandler = () => {};
+  // Rest of the component remains the same...
 
   return (
     <div className="space-y-5">

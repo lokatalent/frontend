@@ -1,6 +1,7 @@
 "use client";
 
 // DynamicForm.tsx
+"use client";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
@@ -290,6 +291,8 @@ const DynamicForm = ({
         );
         // redirect to verify account
         // router.push("/dashboard/profile/verify");
+        
+        router.push("/dashboard/profile");
       } else {
         setLoading(false);
         dispatch(

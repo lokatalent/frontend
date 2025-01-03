@@ -70,7 +70,7 @@ const EditAvailability: React.FC<EditAvailabilityProps> = ({
         )}
       </DialogTrigger>
 
-      <DialogContent className="w-full p-[3rem] sm:max-w-[30rem] lg:max-w-[40rem] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-full p-[3rem] max-w-[22rem] sm:max-w-[30rem] lg:max-w-[40rem] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-center">Edit Availability</DialogTitle>
           <p className="text-[14px] text-center text-[#6C727F]">

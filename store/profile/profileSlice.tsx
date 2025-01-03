@@ -91,6 +91,7 @@ const profileSlice = createSlice({
         state.file = action.payload;
         return;
       }
+      console.log(action.payload);
       state.file = action.payload;
     },
     setProfilePics: (state, action: PayloadAction<string>) => {

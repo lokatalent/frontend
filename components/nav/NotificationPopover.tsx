@@ -1,5 +1,4 @@
-"use client";
-
+"use client"
 import React from "react";
 import {
   Popover,
@@ -21,8 +20,8 @@ interface NotificationItem {
   avatar?: string;
 }
 
-async function getNotifications(): Promise<NotificationItem[]> {
-  return [
+// async function getNotifications(): Promise<NotificationItem[]> {
+  const notifications =  [
     {
       id: 1,
       type: "system",
@@ -56,44 +55,10 @@ async function getNotifications(): Promise<NotificationItem[]> {
       avatar: "/Images/dp.png",
     },
   ];
-}
+// }
 
 const NotificationPanel = () => {
-  const router = useRouter();
-  const notifications = [
-    {
-      id: 1,
-      type: "system",
-      title: "Your account set up has now been lorem ipsum",
-      time: "8 min ago",
-      icon: (
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
-          <svg
-            className="h-6 w-6 text-blue-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-        </div>
-      ),
-    },
-    {
-      id: 2,
-      type: "user",
-      title: "Edward Curr",
-      subtitle: "Accepted your Booking",
-      time: "12 min ago",
-      hasAction: true,
-      avatar: "/Images/dp.png",
-    },
-  ];
+  // const notifications = await getNotifications();
 
   return (
     <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
