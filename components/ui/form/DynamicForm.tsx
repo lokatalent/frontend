@@ -148,6 +148,7 @@ const DynamicForm = ({
         email: data.email,
         phone_num: formatPhone(data.number),
         password: data.newPassword,
+        service_role: "service_requester",
       };
 
       const response = await signup(temp);

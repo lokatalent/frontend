@@ -73,7 +73,7 @@ export const FormField: React.FC<FormFieldProps> = ({
     setShowPassword((prev) => !prev);
   };
 
-  console.log(error);
+  // console.log(error);
 
   return (
     <div className={`relative flex flex-col  ${width}`}>
