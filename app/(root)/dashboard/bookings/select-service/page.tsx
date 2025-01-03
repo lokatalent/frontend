@@ -17,13 +17,13 @@ function SelectService() {
 
   const handleServiceChange = (value: string) => {
     setSelectedService(value);
-    bookService()
+    bookService(value)
   };
 
-  const bookService = () => {
+  const bookService = (service: any) => {
     router.push(
       `/dashboard/bookings/location?service=${encodeURIComponent(
-        selectedService
+        service
       )}`
     );
   };

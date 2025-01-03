@@ -12,7 +12,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { Spacer } from "../Spacer";
@@ -25,7 +25,7 @@ type FormValues = {
 };
 
 const MakeBookingTime = () => {
-	const router = useRouter()
+  const router = useRouter();
   const { handleSubmit, control, register } = useForm<FormValues>({
     defaultValues: {
       startTime: "",
@@ -34,15 +34,69 @@ const MakeBookingTime = () => {
     },
   });
 
-  const onSubmit = (data: FormValues) => {
-    console.log(data);
+  const onSubmit = () => {
+    // console.log(data);
     // handle submission logic here
-	router.push("talents")
+    router.push("talents");
   };
 
   const [count, setCount] = useState(3.5);
   const [showDuration, setShowDutration] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
+
+  const time = [
+    {
+      text: "7:00 - 7:30",
+      value: "7",
+    },
+    {
+      text: "7:00 - 7:30",
+      value: "7",
+    },
+    {
+      text: "8:00 - 8:30",
+      value: "8",
+    },
+    {
+      text: "9:00 - 9:30",
+      value: "9",
+    },
+    {
+      text: "10:00 - 10:30",
+      value: "10",
+    },
+    {
+      text: "11:00 - 11:30",
+      value: "11",
+    },
+    {
+      text: "12:00 - 12:30",
+      value: "12",
+    },
+    {
+      text: "13:00 - 13:30",
+      value: "13",
+    },
+    {
+      text: "14:00 - 14:30",
+      value: "14",
+    },
+    {
+      text: "15:00 - 15:30",
+      value: "15",
+    },
+    {
+      text: "16:00 - 16:30",
+      value: "16",
+    },
+    {
+      text: "17:00 - 17:30",
+      value: "17",
+    },
+  ];
+
+  const [selectedTime, setSelectedTime] = useState("7");
+  const [timeCheck, setTimeCheck] = useState(11);
 
   const increase = () => {
     if (count < 10) {
@@ -60,10 +114,14 @@ const MakeBookingTime = () => {
     setShowDutration(true);
   };
 
+  useEffect(() => {
+    setTimeCheck(17 - Number(count));
+  }, [count]);
+
   return (
-    <div className="p-6 pb-10 w-full max-w-5xl mx-auto">
-      <form onSubmit={handleSubmit(onSubmit)} className="">
-        <div className=" flex flex-row space-x-2">
+    <div className="p-6 pb-10 w-full max-w-[567px] mx-auto">
+      <div className="">
+        <div className="hidden flex-row space-x-2">
           {/* Start Time Input */}
 
           <Controller
@@ -111,10 +169,46 @@ const MakeBookingTime = () => {
             )}
           />
         </div>
-        <p className="text-xs text-textGray3 ">
+        <p className="hidden text-xs text-textGray3 ">
           Click on the clock icon to set time
         </p>
-
+        <div>
+          <Label htmlFor="description" className="text-md pb-3">
+            Start time
+          </Label>
+          <select
+            name="time"
+            id="time"
+            value={selectedTime}
+            onChange={(e) => setSelectedTime(e.target.value)}
+            className="h-12 w-full rounded-full border px-5 focus:outline-none"
+          >
+            {time.map((item) => (
+              <option
+                key={item.value}
+                value={item.value}
+                disabled={timeCheck < Number(item.value)}
+              >
+                {item.text}
+              </option>
+            ))}
+          </select>
+        </div>
+        <Spacer size={20} />
+        <div>
+          <Label htmlFor="description" className="text-md pb-3">
+            Set hours duration
+          </Label>
+          <div className="bg-white flex flex-row items-center justify-between border rounded-full h-14 mt-3 px-8 m-w-[496px]">
+            <button onClick={decrease} disabled={count <= 3.5}>
+              <FaMinus size={24} color={count <= 3.5 ? "#909090" : "black"} />
+            </button>
+            <h1 className="text-2xl">{count}</h1>
+            <button onClick={increase} disabled={count + Number(selectedTime) >= 17}>
+              <FaPlus size={24}  color={count + Number(selectedTime) >= 17 ? "#909090" : "black"} />
+            </button>
+          </div>
+        </div>
         <Spacer size={20} />
         {/* Description Text Area */}
         <div>
@@ -123,9 +217,7 @@ const MakeBookingTime = () => {
           </Label>
           <Textarea className="bg-white h-40" {...register("description")} />
         </div>
-
-        <Spacer size={20} />
-        <div>
+        <div className="hidden">
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger className=" underline underline-offset-4 text-md ">
               Set Hours Duration*
@@ -179,15 +271,15 @@ const MakeBookingTime = () => {
         <Spacer size={20} />
         <div className="w-full flex justify-center mt-8">
           <button
-            type="submit"
+            type="button"
             className="btnOne max-w-[567px] p-4"
-            onClick={handleSubmit(onSubmit)}
+            onClick={() => onSubmit}
           >
             {" "}
             Proceed
           </button>
         </div>
-      </form>
+      </div>
     </div>
   );
 };

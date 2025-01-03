@@ -1,10 +1,7 @@
 "use client";
 
-import React, { useState } from "react";
-import {
-  ControlPosition,
-  Map,
-} from "@vis.gl/react-google-maps";
+import React, { useEffect, useState } from "react";
+import { ControlPosition, Map, Marker } from "@vis.gl/react-google-maps";
 
 import { CustomMapControl } from "./map-control";
 import MapHandler from "./map-handler";
@@ -24,21 +21,34 @@ const LocationPlace = () => {
   const [selectedPlace, setSelectedPlace] =
     useState<google.maps.places.PlaceResult | null>(null);
 
+    const [pinLocation, setPinLocation] = useState<{lat: number, lng: number}>({ lat: 7.4667, lng: 4.5667 })
+  
+    useEffect(() => {
+      let lat = selectedPlace?.geometry?.location?.lat() ?? 0
+      let lng = selectedPlace?.geometry?.location?.lng() ?? 0
+      setPinLocation({lat, lng})
+    }, [selectedPlace])
+
   return (
     <div className="w-screen h-screen fixed top-0 left-0">
       <Map
         defaultZoom={12}
         defaultCenter={{ lat: 7.4667, lng: 4.5667 }}
-        gestureHandling={"greedy"}
-        disableDefaultUI={true}>
+        gestureHandling="none"
+        zoomControl={false}
+        disableDefaultUI={true}
+      >
+        <Marker
+          position={pinLocation}
+        />
       </Map>
-      
+
       <CustomMapControl
         controlPosition={ControlPosition.TOP}
         selectedAutocompleteMode={selectedAutocompleteMode}
         onPlaceSelect={setSelectedPlace}
       />
- 
+
       {/* <ControlPanel
         autocompleteModes={autocompleteModes}
         selectedAutocompleteMode={selectedAutocompleteMode}

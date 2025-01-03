@@ -31,12 +31,12 @@ const editPortfolioSchema = z.object({
     .max(500, "Bio should not exceed 500 characters"),
   experience_years: z
     .string()
-    // .regex(/^\d+$/, "Experience must be a number")
-    // .transform(Number)
-    // .refine(
-    //   (val) => val >= 0 && val <= 50,
-    //   "Experience must be between 0 and 50 years"
-    // ),
+    .regex(/^\d+$/, "Experience must be a number")
+    .transform(Number)
+    .refine(
+      (val) => val >= 0 && val <= 50,
+      "Experience must be between 0 and 50 years"
+    ),
 });
 
 type EditPortfolioFormValues = z.infer<typeof editPortfolioSchema>;
