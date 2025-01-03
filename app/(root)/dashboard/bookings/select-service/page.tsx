@@ -7,13 +7,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { getServices } from "@/services/bookingService";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
 
 function SelectService() {
   const router = useRouter();
   const [selectedService, setSelectedService] = useState("");
+
+  const fetchServices = async () => {
+    const response = await getServices()
+    console.log(response)
+  }
 
   const handleServiceChange = (value: string) => {
     setSelectedService(value);
@@ -27,6 +33,10 @@ function SelectService() {
       )}`
     );
   };
+
+  useEffect(() => {
+    fetchServices()
+  }, [])
 
   // const services = ['Driv]
 

@@ -1,5 +1,4 @@
-"use client"
-
+"use client";
 import React, { useState } from "react";
 import {
   Dialog,
@@ -15,7 +14,7 @@ const VerificationMailModal = ({ isError }) => {
   const [value, setValue] = useState("");
   // const []
   const isErrorEmpty = isError;
-    console.log(isErrorEmpty);
+  console.log(isErrorEmpty);
 
   return (
     <Dialog>

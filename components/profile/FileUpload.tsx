@@ -2,14 +2,17 @@
 import React, { useCallback, useState } from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import fileUploadImg from "@/public/Images/upload.png";
 import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStateProfile, setFileStore } from "@/store/profile/profileSlice";
 import { FormFieldError } from "../ui/form/FormFieldError";
 
-type MessageObject = {
-  message: string;
+type FileConfig = {
+  allowedTypes: string[];
+  maxFileSizeMB: number;
+  uploadLabel: string;
+  dragDropLabel: string;
+  errorMessage: string;
 };
 
 
@@ -103,7 +106,7 @@ const FileUpload = () => {
   }, []);
 
   return (
-    <div className="w-full mx-auto">
+    <div className={cn("w-full mx-auto")}>
       <div
         className={cn(
           "border-2 border-dashed rounded-lg  text-center",
@@ -131,7 +134,8 @@ const FileUpload = () => {
               >
                 <div>
                   <Image
-                    src={fileUploadImg}
+                    // src={fileUploadImg}
+                    src={""}
                     alt="File Upload"
                     className="w-10"
                   />

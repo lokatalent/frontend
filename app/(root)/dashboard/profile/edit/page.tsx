@@ -1,106 +1,150 @@
 "use client";
 import Image from "next/image";
-import React, { ChangeEvent, useRef, useState } from "react";;
+import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import {  FieldConfig, profileFormSchema } from "@/lib/utils";
+import { FieldConfig, profileFormSchema } from "@/lib/utils";
 import DynamicForm from "@/components/ui/form/DynamicForm";
 import { setProfilePics } from "@/store/profile/profileSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { updateProfileImage } from "@/services/profileService";
-
- const fields: FieldConfig[] = [
-   {
-     name: "gender",
-     type: "select",
-     label: "Gender*",
-     options: ["Male", "Female"],
-     validation: {
-       required: "Select a gender",
-     },
-   },
-   //  {
-   //    name: "dateofBirth",
-   //    type: "date",
-   //    label: "Date of Birth*",
-   //    validation: {
-   //      required: "Date of Birth is required",
-   //       minLength: {
-   //         value: 1,
-   //         message: "Date of Birth must be at least 6 characters",
-   //       },
-   //    },
-   //  },
-   {
-     name: "country",
-     type: "select",
-     label: "Country*",
-     options: ["Nigeria", "India", "Senegal", "Australia"],
-     validation: {
-       required: "Select a country",
-       //  validate: (value: string) =>
-       //    ["Nigeria", "India", "Senegal", "Australia"].includes(value) ||
-       //    "You must select a valid country",
-     },
-   },
-   {
-     name: "state",
-     type: "text",
-     label: "State*",
-     validation: {
-       required: "Select a State",
-       minLength: {
-         value: 6,
-         message: "State must be at least 3 characters",
-       },
-     },
-   },
-   {
-     name: "city",
-     type: "text",
-     label: "City*",
-     validation: {
-       required: "Select a City",
-       minLength: {
-         value: 6,
-         message: "City must be at least 3 characters",
-       },
-     },
-   },
-   {
-     name: "street_addr",
-     type: "text",
-     label: "Address*",
-     validation: {
-       required: "Address is required",
-       minLength: {
-         value: 6,
-         message: "Address must be at least 6 characters",
-       },
-     },
-   },
- ];
-
-	const schemaType = profileFormSchema;
-
-
+import Spinner from "@/components/ui/Spinner";
+import { showToast } from "@/store/auth/toastSlice";
+import axios from "axios";
 
 function Edit() {
-   const [selectedImage, setSelectedImage] = useState<any>(null);
-   const dispatch = useDispatch();
+  let [bankData, setBankData] = useState([]);
 
-   const fileInputRef = useRef<HTMLInputElement | null>(null);
+  let getBanks = async () => {
+    let response = await axios.get("https://api.paystack.co/bank");
+    setBankData(response.data.data);
+  };
 
+  const fields: FieldConfig[] = [
+    {
+      name: "gender",
+      type: "select",
+      label: "Gender*",
+      options: ["Male", "Female"],
+      validation: {
+        required: "Select a gender",
+      },
+    },
+    {
+      name: "dateofBirth",
+      type: "date",
+      label: "Date of Birth*",
+      validation: {
+        required: "Date of Birth is required",
+        minLength: {
+          value: 1,
+          message: "Date of Birth must be at least 6 characters",
+        },
+      },
+    },
+    {
+      name: "country",
+      type: "select",
+      label: "Country*",
+      options: ["Nigeria"],
+      validation: {
+        required: "Select a country",
+        //  validate: (value: string) =>
+        //    ["Nigeria", "India", "Senegal", "Australia"].includes(value) ||
+        //    "You must select a valid country",
+      },
+    },
+    {
+      name: "state",
+      type: "text",
+      label: "State*",
+      validation: {
+        required: "Select a State",
+        minLength: {
+          value: 6,
+          message: "State must be at least 3 characters",
+        },
+      },
+    },
+    {
+      name: "city",
+      type: "text",
+      label: "City*",
+      validation: {
+        required: "Select a City",
+        minLength: {
+          value: 6,
+          message: "City must be at least 3 characters",
+        },
+      },
+    },
+    {
+      name: "street_addr",
+      type: "text",
+      label: "Address*",
+      validation: {
+        required: "Address is required",
+        minLength: {
+          value: 6,
+          message: "Address must be at least 6 characters",
+        },
+      },
+    },
+    {
+      name: "bank_name",
+      type: "select",
+      label: "Bank*",
+      options: bankData,
+      validation: {
+        required: "Select a bank",
+      },
+    },
+    {
+      name: "acc_num",
+      type: "text",
+      label: "Account Number*",
+      validation: {
+        required: "Account number is required",
+        minLength: {
+          value: 6,
+          message: "Account number must be at least 6 characters",
+        },
+      },
+    },
+  ];
 
-  
-  const handleImageSelect = async (event: ChangeEvent<HTMLInputElement>): void => {
+  const schemaType = profileFormSchema;
+  const user = useSelector((state: any) => state.auth.user);
+  const [imageLoading, setImageLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<any>(user.avatar ?? null);
+  const dispatch = useDispatch();
+
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+
+  const handleImageSelect = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      setImageLoading(true);
       const imageUrl: string = URL.createObjectURL(file);
       const images = {
         image: file,
-      }
+      };
       const response = await updateProfileImage(images);
-      console.log(response);
+      if (!response.error) {
+        setImageLoading(false);
+        dispatch(
+          showToast({
+            status: "success",
+            message: "Image updated successfully",
+          })
+        );
+      } else {
+        dispatch(
+          showToast({
+            status: "error",
+            message: response.data.message,
+          })
+        );
+      }
       setSelectedImage(imageUrl);
       // Make sure setSelectedImage is defined in your component
       dispatch(setProfilePics(imageUrl));
@@ -109,19 +153,23 @@ function Edit() {
 
   const handleButtonClick = () => {
     fileInputRef.current?.click();
-
   };
   const router = useRouter();
 
   const defaultValues = {
     gender: "",
-    // dateOfBirth: "",
+    dateOfBirth: "",
     country: "",
     state: "",
     city: "",
     street_addr: "",
+    bank_name: "",
+    acc_num: "", 
   };
 
+  useEffect(() => {
+    getBanks()
+  }, [])
 
   return (
     <div className="">
@@ -148,7 +196,9 @@ function Edit() {
       </section>
       <div className="flex gap-4 items-center flex-col justify-center">
         <div className="space-y-3">
-          <p className="text-black text-base text-center sm:text-4xl font-bold">Set Up Your Profile</p>
+          <p className="text-black text-base text-center sm:text-4xl font-bold">
+            Set Up Your Profile
+          </p>
           <p className="text-gray-500 text-sm sm:text-base text-center">
             Please enter your details to proceed
           </p>
@@ -186,7 +236,7 @@ function Edit() {
               className="text-[12px] sm:text-sm text-white bg-primaryBlue px-6 py-2 rounded"
               onClick={handleButtonClick}
             >
-              Add Profile Image
+              {imageLoading ? <Spinner /> : "Update Profile Image"}
             </button>
           </div>
         </div>

@@ -32,9 +32,9 @@ const initialState: ProfileState = {
   profileDetails: { dateofBirth: "", city: "", address: "", state: "" },
   profilePics: "",
   information: {
-    name: "Gabriel Daramola",
+    name: "",
     reason: "",
-    email: "gabamazing20@gmail.com",
+    email: "",
     phoneNumber: "",
     altPhoneNumber: "",
     address: "",
@@ -91,6 +91,7 @@ const profileSlice = createSlice({
         state.file = action.payload;
         return;
       }
+      console.log(action.payload);
       state.file = action.payload;
     },
     setProfilePics: (state, action: PayloadAction<string>) => {

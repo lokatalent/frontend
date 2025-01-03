@@ -10,11 +10,11 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog";
-import { FaPen } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { IoIosSend } from "react-icons/io";
 import { FormFieldError } from "@/components/ui/form/FormFieldError";
 import { useRouter } from "next/navigation";
+import { useDispatch } from "react-redux";
 
 interface ServiceChargeProps {
   serviceRateEdited: (data: any) => void;
@@ -34,6 +34,7 @@ type ServiceChargeFormValues = z.infer<typeof ServiceChargeSchema>;
 
 function ServiceCharge({ setActiveStep }: any) {
   const [isFinished, setIsFinished] = useState(false);
+  const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   const router = useRouter();
 
@@ -55,9 +56,10 @@ function ServiceCharge({ setActiveStep }: any) {
 
   const options = ["GTBank", "Sterling Bank", "EcoBank"];
 
-  const onSubmit = (data: ServiceChargeFormValues) => {
+  const onSubmit = async (data: ServiceChargeFormValues) => {
     console.log("Submitted Data:", data);
     // serviceRateEdited(data);
+    
     setIsFinished(true);
   };
 

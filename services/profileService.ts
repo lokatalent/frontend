@@ -1,4 +1,9 @@
 import { http } from "@/lib/axios";
+let formDataConfig = {
+  headers: {
+    'Content-Type': 'multipart/form-data;'
+  }
+}
 
 export const getOwnProfile = async () => {
   try {
@@ -12,8 +17,10 @@ export const getOwnProfile = async () => {
     };
   }
 };
+
 export const updateProfile = async (values: any) => {
   try {
+    // console.log(values)
     let response = await http.patch("/users/profile", values);
     return { error: false, data: response?.data, status: response?.status };
   } catch (err: any) {
@@ -25,9 +32,23 @@ export const updateProfile = async (values: any) => {
   }
 };
 
-export const updateProfileImage = async (values) => {
+export const updateBankProfile = async (values: any) => {
   try {
-    let response = await http.patch("/users/profile/picture-update", values);
+    // console.log(values)
+    let response = await http.patch("/users/profile/bank", values);
+    return { error: false, data: response?.data, status: response?.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err.response.data,
+      status: err.response.status,
+    };
+  }
+};
+
+export const updateProfileImage = async (values: any) => {
+  try {
+    let response = await http.patch("/users/profile/picture-update", values, formDataConfig);
     console.log(response);
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
@@ -41,7 +62,7 @@ export const updateProfileImage = async (values) => {
 
 
 // FOR TALENT
-export const updateService = async (values) => {
+export const updateService = async (values: any) => {
   try {
     let response = await http.patch("/users/service", values);
     console.log(response);
@@ -55,7 +76,7 @@ export const updateService = async (values) => {
   }
 };
 
-export const getService = async (values) => {
+export const getService = async (values: any) => {
   try {
     let response = await http.patch("/users/:id/service?service_type=cleaning", values);
     console.log(response);
@@ -68,3 +89,30 @@ export const getService = async (values) => {
     };
   }
 };
+export const updateEducationProfile = async (values: any) => {
+  try {
+    // console.log(values);
+    let response = await http.patch("/users/profile/education", values);
+    return { error: false, data: response?.data, status: response?.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err.response.data,
+      status: err.response.status,
+    };
+  }
+};
+
+// export const updateBankProfile = async (values: any) => {
+//   try {
+//     // console.log(values);
+//     let response = await http.patch("/users/profile/bank", values);
+//     return { error: false, data: response?.data, status: response?.status };
+//   } catch (err: any) {
+//     return {
+//       error: true,
+//       data: err.response.data,
+//       status: err.response.status,
+//     };
+//   }
+// };

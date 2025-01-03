@@ -1,0 +1,9 @@
+for talent" {
+    email: kehadconnect01@gmail.com,
+    password: kehadtalent,
+} 
+
+for customer {
+    email: keahnney01@gmail.com,
+    password: 123456789
+}

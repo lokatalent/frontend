@@ -59,7 +59,8 @@ const TalentDynamicForm: React.FC<FormFieldProps> = ({
   }) => {
     switch (type) {
       case "select": {
-        const { options, defaultOption } = props as SelectFieldProps;
+        const { options = [], defaultOption } = props as SelectFieldProps;
+
         return (
           <div className="w-full space-y-2">
             <select
@@ -68,19 +69,24 @@ const TalentDynamicForm: React.FC<FormFieldProps> = ({
               disabled={disabled}
               aria-invalid={!!error}
               aria-required={required}
+              aria-describedby={`${name}-error`}
             >
-              {!defaultOption && <option value="">{placeholder || "Select an option"}</option>}
-              {options ? (
-                options.map((option) => (
-                  <option key={option.value} value={option.value}>
-                    {option.label}
+              <option value="">{placeholder || "Select an option"}</option>
+              {options.length > 0 ? (
+                options.map(({ value, label }) => (
+                  <option key={value} value={value}>
+                    {label}
                   </option>
                 ))
               ) : (
-                <option value={defaultOption}>{defaultOption}</option>
+                <option disabled>No options available</option>
               )}
             </select>
-            {error && <FormFieldError error={{ message: error.message }} />}
+            {error && (
+              <FormFieldError
+                error={{ message: error.message || "Invalid selection" }}
+              />
+            )}
           </div>
         );
       }

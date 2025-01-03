@@ -1,16 +1,21 @@
-// "use client";
+"use client";
+
+import React, { useEffect, useState } from "react";
 import EmptyNotification from "@/components/notifications/EmptyNotification";
 import NotificationsBar from "@/components/notifications/NotificationsBar";
 import OverallNotification from "@/components/notifications/overallNotification";
 import RoleSwitch from "@/components/overview/RoleSwitch";
 import { getNotifications } from "@/services/notificationService";
+import { showToast } from "@/store/auth/toastSlice";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 
 type Notification = {
   id: string;
   title: string;
   description: string;
   icon: string;
-  statusNotification: "read" | "unread"; // Added status property
+  statusNotification: "read" | "unread";
   name: string;
   occupation: string;
   location: string;
@@ -30,105 +35,62 @@ type NotificationResponse = {
   notification: Notification[];
 };
 
+export default function Notification() {
+  const [notifications, setNotifications] =
+    useState([]);
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
+  const router = useRouter()
 
+  const fetchData = async () => {
+    setLoading(true);
+    let data = {
+      type: "",
+      booking_id: ""
+    }
+    const response = await getNotifications(data);
+    if (!response.error) {
+      setLoading(false);
+      console.log(response);
+      // setNotifications(data);
+    } else {
+      setLoading(false);
+      if (response.status === 401) {
+        dispatch(
+          showToast({
+            status: "error",
+            message: response.data.message,
+          })
+        );
+        return router.push("/login");
+      }
 
-async function NotificationsData(): Promise<NotificationResponse> {
-  return {
-    isNotified: true, // Set to true if there are notifications
-    notification: [
-      {
-        id: "1",
-        title: "Booking accepted",
-        description:
-          "Your booking has been accepted! The talent will arrive as scheduled.",
-        icon: "/Images/sparkles.png", // Corrected path
-        statusNotification: "unread",
-        name: "Jayden Cooper",
-        occupation: "Indoor Cleaner",
-        location: "Ile-Ife, Nigeria",
-        status: "Booking Accepted",
-        bookingType: "Scheduled Booking",
-        startDate: "25/03/2024",
-        endDate: "25/03/2024",
-        locationFor: "Address - 15, aasherifa road, eleyele, Ile-Ife",
-        serviceType: "Indoor Cleaning Service",
-        startTime: "09:00 AM",
-        endTime: "04:00 PM",
-        taskDescription:
-          "I need someone to help with cleaning, washing, sweeping and other household cleaning",
-      },
-      {
-        id: "3",
-        title: "Booking accepted",
-        description:
-          "Your booking has been accepted! The talent will arrive as scheduled.",
-        icon: "/Images/sparkles.png", // Corrected path
-        statusNotification: "read",
-        name: "Gabriel Daramola",
-        occupation: "Plumber",
-        location: "Ile-Ife, Nigeria",
-        status: "Booking Pending",
-        bookingType: "Instant Booking",
-        startDate: "15/09/2024",
-        endDate: "21/08/2024",
-        locationFor: "20, Ede road, Ile-Ife",
-        serviceType: "Household Plumbing work",
-        startTime: "01:00 AM",
-        endTime: "03:00 AM",
-        taskDescription: "I need someone to help repair my house pipes",
-      },
-      {
-        id: "4",
-        title: "Booking accepted",
-        description:
-          "Your booking has been accepted! The talent will arrive as scheduled.",
-        icon: "/Images/sparkles.png", // Corrected path
-        statusNotification: "unread",
-        name: "Jayden Cooper",
-        occupation: "Indoor Cleaner",
-        location: "Ile-Ife, Nigeria",
-        status: "Booking Accepted",
-        bookingType: "Scheduled Booking",
-        startDate: "25/03/2024",
-        endDate: "25/03/2024",
-        locationFor: "Address - 15, aasherifa road, eleyele, Ile-Ife",
-        serviceType: "Indoor Cleaning Service",
-        startTime: "09:00 AM",
-        endTime: "04:00 PM",
-        taskDescription:
-          "I need someone to help with cleaning, washing, sweeping and other household cleaning",
-      },
-      {
-        id: "2",
-        title: "Booking Cancelled",
-        description:
-          "Your booking request has been cancelled lorem ipsum lorem ipsumlorem ipsum lotem lorem bbnnnnnnnlorem ",
-        icon: "/Images/booked-cancel.png", // Corrected path
-        statusNotification: "unread",
-        name: "Mavis Bacon",
-        occupation: "Driver",
-        location: "Ile-Ife, Nigeria",
-        status: "Booking Declined",
-        bookingType: "Scheduled Booking",
-        startDate: "25/03/2024",
-        endDate: "25/03/2024",
-        locationFor: "15, Texaco, Ondo road, Ile-Ife",
-        serviceType: "Indoor Cleaning Service",
-        startTime: "09:10 AM",
-        endTime: "09:00 PM",
-        taskDescription: "I need someone to help with my luggage",
-      },
-    ],
+      return dispatch(
+        showToast({
+          status: "error",
+          message: response.data.message,
+        })
+      );
+    }
   };
-}
 
-export default async function Notification() {
-  const { isNotified, notification } = await NotificationsData();
+  useEffect(() => {
+    fetchData();
+  }, []);
 
- 
+  if (loading) {
+    return <p>Loading notifications...</p>;
+  }
+
+  if (!notifications || notifications.length < 1) {
+    return <EmptyNotification />;
+  }
 
   return (
-    
-    <OverallNotification isNotified={isNotified} notifications={notification} />
+    <OverallNotification
+      isNotified={true}
+      // isNotified={notifications.isNotified}
+      notifications={notifications}
+    />
   );
 }

@@ -3,24 +3,55 @@ import TalentDynamicForm from "@/components/ui/form/TalentDynamicForm";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { updateProfile } from "@/services/profileService";
+import { useDispatch } from "react-redux";
+import { showToast } from "@/store/auth/toastSlice";
+import { errorHandler } from "@/lib/utils";
 
 // Define your schema
 const schema = z.object({
   gender: z.string().nonempty("Please select a Gender"),
   address: z.string().nonempty("Enter your address"),
   city: z.string().nonempty("Pls enter your city name"),
+  state: z.string().nonempty("Pls enter your city state"),
   country: z.string().nonempty("Please select a country name"),
   dateofbirth: z.string().nonempty("Start date is required"),
 });
 
 function PersonalInfo({ setActiveStep }: any) {
+  const dispatch = useDispatch();
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(schema),
   });
-  const onSubmit = (data: any) => {
+  const onSubmit = async (data: any) => {
     console.log(data);
-    console.log('data');
+    let temp = {
+      state: data.state,
+      city: data.city,
+      country: data.country,
+      address: data.address,
+      gender: data.gender,
+      date_of_birth: data.dateofbirth,
+    };
+    const response = await updateProfile(temp);
+    console.log(response);
+    if (response.status !== 200) {
+      dispatch(
+        showToast({
+          status: "error",
+          message: errorHandler(response.data),
+        })
+      );
+      return;
+    }
+    dispatch(
+      showToast({
+        status: "success",
+        message: "Profile updated successfully!",
+      })
+    );
     setActiveStep(1);
+    console.log("data");
     // Additional submit logic here
   };
 
@@ -59,11 +90,7 @@ function PersonalInfo({ setActiveStep }: any) {
                 label="Country"
                 control={control}
                 defaultOption="Nigeria"
-                options={[
-                  { value: "Nigeria", label: "Nigeria" },
-                  
-                ]}
-                
+                options={[{ value: "Nigeria", label: "Nigeria" }]}
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
                 required
               />
@@ -71,6 +98,14 @@ function PersonalInfo({ setActiveStep }: any) {
                 type="text"
                 name="city"
                 label="City"
+                control={control}
+                required
+                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+              />
+              <TalentDynamicForm
+                type="text"
+                name="state"
+                label="State"
                 control={control}
                 required
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"

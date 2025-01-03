@@ -7,7 +7,7 @@ import NotificationsDropdown from "./nav/NotificationPopover";
 
 const TopNav = () => {
   const user = useSelector((state: any) => state.auth.user)
-  const username = `${user.first_name} ${user.last_name}`
+  const username = `${user.first_name ?? ""} ${user.last_name ?? ""}`
   return (
     <nav className="fixed z-[15] top-0 left-0 w-full bg-white h-[70px] shadow-lg flex justify-between items-center">
       {/* Logo or Brand */}
