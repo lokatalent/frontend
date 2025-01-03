@@ -37,7 +37,7 @@ import {
   setUser,
 } from "@/store/auth/authSlice";
 import { loginTest } from "@/services/axiosTest";
-import { updateProfile } from "@/services/profileService";
+import { updateBankProfile, updateProfile } from "@/services/profileService";
 import Spinner from "../Spinner";
 
 interface DefaultValues {
@@ -54,6 +54,8 @@ interface DefaultValues {
   state?: string;
   city?: string;
   address?: string;
+  bank_name?: string;
+  acc_num?: string;
 }
 interface DynamicForm {
   fields: FieldConfig[];
@@ -85,6 +87,8 @@ const DynamicForm = ({
   const file = useSelector((state: RootStateProfile) => state.profile.file);
 
   const dispatch = useDispatch();
+
+  const user = useSelector((state: any) => state.auth.user);
 
   // const file = sessionStorage.getItem("selectedFile")
 
@@ -149,11 +153,18 @@ const DynamicForm = ({
         email: data.email,
         phone_num: formatPhone(data.number),
         password: data.newPassword,
+        service_role: "service_requester",
       };
 
       const response = await signup(temp);
       if (!response.error) {
         setLoading(false);
+        dispatch(
+          showToast({
+            status: "success",
+            message: "Account created successfully.",
+          })
+        );
         router.push(`/login`);
       } else {
         setLoading(false);
@@ -263,14 +274,41 @@ const DynamicForm = ({
       // router.push("/dashboard");
     } else if (buttonAction === "profile-edit") {
       let temp = {
-        state: data.state,
-        city: data.city,
-        country: data.country,
-        address: data.street_addr,
-        gender: data.gender
-      };  
+        phone_num: user.phone_num,
+        address:
+          data.street_addr +
+          "," +
+          data.city +
+          "," +
+          data.state +
+          "," +
+          data.country,
+        gender: data.gender,
+        date_of_birth: data.dateOfBirth,
+      };
+
+      // get bank name and code
+      let str = data.bank_name.split("&");
+      let bankData = {
+        bank_name: str[1],
+        bank_code: str[0],
+        account_num: data.acc_num,
+      };
+
+      const bankResponse = await updateBankProfile(bankData);
+      if (!bankResponse.error) {
+        setLoading(false);
+      } else {
+        setLoading(false);
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(bankResponse.data),
+          })
+        );
+      }
+
       const response = await updateProfile(temp);
-      console.log(response);
       if (!response.error) {
         setLoading(false);
         dispatch(
@@ -290,10 +328,19 @@ const DynamicForm = ({
         );
         // redirect to verify account
         // router.push("/dashboard/profile/verify");
-        
+
         router.push("/dashboard/profile");
       } else {
         setLoading(false);
+        if (response.status === 401) {
+          dispatch(
+            showToast({
+              status: "error",
+              message: response.data.message,
+            })
+          );
+          return router.push("/login");
+        }
         dispatch(
           showToast({
             status: "error",

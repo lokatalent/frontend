@@ -15,7 +15,6 @@ export const setToken = (accessToken: string, refreshToken: string) => {
 }
 
 export const errorHandler = (err: any) => {
-  console.log(err);
   if (!err) return;
   let errMsg;
   if (err.message) errMsg = err.message;
@@ -123,15 +122,17 @@ export const passwordFormSchema = z
 
 export const allowedCountries = ["Nigeria", "India", "Senegal", "Australia"];
 export const profileFormSchema = z.object({
-  // dateofBirth: z.date({
-  //   required_error: "Date of birth is required",
-  // }),
+  dateofBirth: z.date({
+    required_error: "Date of birth is required",
+  }),
 
   city: z.string().min(2, "City must be at least 3 characters"),
   state: z.string().min(2, "State must be at least 3 characters"),
   country: z.string().min(1, "You must select a valid country"),
   gender: z.string().min(1, "You must select a gender"),
   street_addr: z.string().min(5, "Address must be at least 5 characters"),
+  acc_num: z.string().min(10, "Account number must be at least 5 characters"),
+  bank_name: z.string().min(2, "Bank name must be at least 5 characters"),
 });
 
 export const editAddressFormSchema = z.object({

@@ -31,7 +31,7 @@ const BookingCard = ({ bookingPage }: { bookingPage?: boolean }) => {
           <Button
             onClick={() => router.push("/dashboard/bookings/select-service")}
             size={"lg"}
-            className={`bg-white text-primaryBlue w-full h-14 max-w-xs`}
+            className={`bg-white text-primaryBlue w-full h-14 max-w-xs hover:bg-gray-50`}
           >
             Book {!bookingPage && <FaArrowRight className="ml-2" />}
           </Button>

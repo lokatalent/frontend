@@ -1,4 +1,5 @@
 "use client"
+
 import React from "react";
 import {
   Popover,
@@ -59,6 +60,7 @@ interface NotificationItem {
 
 const NotificationPanel = () => {
   // const notifications = await getNotifications();
+  const router = useRouter()
 
   return (
     <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
@@ -76,7 +78,7 @@ const NotificationPanel = () => {
           notifications.map((notification) => (
             <div
               key={notification.id}
-              className="flex gap-4 p-4 bg-gray-50 hover:bg-white flex items-center justify-center"
+              className="gap-4 p-4 bg-gray-50 hover:bg-white flex items-center justify-center"
             >
               {notification.type === "user" ? (
                 <div className="w-10 h-10 rounded-full ">
