@@ -71,7 +71,7 @@ export default async function Bookings() {
           <DataTable
             columns={BookingColumns}
             title="Bookings"
-            data={BookingData}
+            data={[]}
             isRole={true}
             isSort={true}
             path="/dashboard/bookings/"

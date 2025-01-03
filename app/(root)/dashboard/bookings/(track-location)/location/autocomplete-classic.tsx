@@ -103,7 +103,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
             <DialogClose asChild>
               <button
                 className="text-base md:text-lg btnTwo border border-primaryBlue"
-                onClick={() => router.push("/schedule-booking")}
+                onClick={() => router.push("/dashboard/bookings/schedule-booking")}
               >
                 Schedule a Booking
               </button>
@@ -111,7 +111,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
             <DialogClose asChild>
               <button
                 className="text-base md:text-lg btnOne"
-                onClick={() => router.push("/instant-booking")}
+                onClick={() => router.push("/dashboard/bookings/instant-booking")}
               >
                 Instant Booking
               </button>
