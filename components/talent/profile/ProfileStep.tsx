@@ -12,6 +12,7 @@ import PersonalInfo from "./setup/StepNav/PersonalInfo";
 import Qualification from "./setup/StepNav/Qualification";
 import Portfolio from "./setup/StepNav/Portfolio";
 import ServiceCharge from "./setup/StepNav/ServiceCharge";
+import { Button } from "@/components/ui/button";
 
 const steps = [
   "Personal Information",
@@ -133,14 +134,18 @@ export default function ProfileStep() {
                 })}
               </div>
             )}
-            {activeStep === 1 && <PersonalInfo setActiveStep={setActiveStep} />}
-            {activeStep === 0 && <Portfolio setActiveStep={setActiveStep} />}
-            {activeStep === 2 && (
+            {activeStep === 0 && <PersonalInfo setActiveStep={setActiveStep} />}
+            {activeStep === 1 && <Portfolio setActiveStep={setActiveStep} />}
+            {activeStep === 3 && (
               <Qualification setActiveStep={setActiveStep} />
             )}
-            {activeStep === 3 && (
+            {activeStep === 2 && (
               <ServiceCharge setActiveStep={setActiveStep} />
             )}
+
+            {/* <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}> */}
+              {/* Skip */}
+            {/* </Button> */}
 
             {/* <p>{activeStep}</p> */}
           </Box>

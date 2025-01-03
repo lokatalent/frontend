@@ -90,7 +90,7 @@ function Portfolio({ setActiveStep }: any) {
       // user_id: id,
       experience_years: data.experience,
       service_type: data.service,
-      service_desc: "I can do all your cleaning work with perfection",
+      service_desc: data.service_desc,
       rate_per_hour: +data.service_rate,
       availability: {
         monday: {
@@ -122,14 +122,14 @@ function Portfolio({ setActiveStep }: any) {
           end: availability.Sunday.to,
         },
       },
-      address: "18 Street Ooni Layout, Ile-Ife, Osun, Nigeria",
+      address: data.address,
     };
     const response = await createService(temp);
     console.log(response);
     if (response.status === 200) {
       console.log(response.data);
-      setActiveStep(3);
     } else {
+      setActiveStep(3);
       dispatch(
         showToast({
           status: "error",

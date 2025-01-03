@@ -10,7 +10,7 @@ interface PortfolioProps {
   data?: string[] | null | any;
 }
 
-function Portfolio({ isData, data }: PortfolioProps) {
+function PortfolioView({ isData, data }: PortfolioProps) {
   return (
     <div className="space-y-6">
       {isData ? (
@@ -37,4 +37,4 @@ function Portfolio({ isData, data }: PortfolioProps) {
   );
 }
 
-export default Portfolio;
+export default PortfolioView;

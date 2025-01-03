@@ -7,6 +7,7 @@ import { useDispatch } from "react-redux";
 import { showToast } from "@/store/auth/toastSlice";
 import { errorHandler } from "@/lib/utils";
 import { updateEducationProfile } from "@/services/profileService";
+import { updateEducationProfileData } from "@/store/talent/profile/TalentProfileSlice";
 
 const fileSchema = z
   .instanceof(File) // Ensure it's a file instance
@@ -24,8 +25,8 @@ const fileSchema = z
 const schema = z.object({
   university: z.string().optional(),
   degree: z.string().optional(),
-  field: z.string().nonempty("Pls enter your field of field"),
-  startdate: z.string().nonempty("Start date is required"),
+  field: z.string().optional(),
+  startdate: z.string().optional(),
   enddate: z.string().optional(),
   // certificate: z.array(fileSchema).min(1, "Please upload at least one file"),
 });
@@ -46,29 +47,30 @@ function Qualification({ setActiveStep }: any) {
     };
     const response = await updateEducationProfile(temp);
     if (response.status !== 200) {
-          dispatch(
-            showToast({
-              status: "error",
-              message: errorHandler(response.data),
-            })
-          );
-          setActiveStep(2);
-          return;
-        }
-        dispatch(
-          showToast({
-            status: "success",
-            message: "Education Profile updated successfully!",
-          })
-        );
+      dispatch(
+        showToast({
+          status: "error",
+          message: errorHandler(response.data),
+        })
+      );
+      setActiveStep(2);
+      return;
+    }
+    dispatch(
+      showToast({
+        status: "success",
+        message: "Education Profile updated successfully!",
+      })
+    );
+    dispatch(updateEducationProfileData(response.data));
 
     // Additional submit logic here
   };
-   const onError = (data: any) => {
-     console.log(data);
+  const onError = (data: any) => {
+    console.log(data);
     //  setActiveStep(2);
-     // Additional submit logic here
-   };
+    // Additional submit logic here
+  };
 
   return (
     <div className="">
@@ -89,7 +91,6 @@ function Qualification({ setActiveStep }: any) {
                   { value: "UI", label: "UI" },
                   { value: "Ibadan", label: "Ibadan" },
                 ]}
-                
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
               />
               <TalentDynamicForm
@@ -132,7 +133,6 @@ function Qualification({ setActiveStep }: any) {
                 label="End Date or Expected End Date (Optional)"
                 control={control}
                 className="w-[53rem]"
-                
               />
 
               <TalentDynamicForm
@@ -140,7 +140,6 @@ function Qualification({ setActiveStep }: any) {
                 name="certificate"
                 label="Upload Your Certifications(Optional) "
                 control={control}
-                
                 className="w-[53rem]"
               />
             </div>
