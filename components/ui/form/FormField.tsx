@@ -84,7 +84,7 @@ export const FormField: React.FC<FormFieldProps> = ({
         {label}
       </label>
 
-      {type === "select" ? (
+      {type === "select" && name === "bank_name" ? (
         <div className=" w-full">
           <Controller
             name={name}
@@ -102,9 +102,46 @@ export const FormField: React.FC<FormFieldProps> = ({
                   } h-[3rem] px-3 py-1 text-sm shadow-sm transition-colors`}
                   aria-invalid={!!error}
                 >
-                  <option value=""></option>
-                  {options.map((option) => (
-                    <option value={option} key={option}>
+                  <option value="">Choose one</option>
+                  {options.map((option: any, index: any) => (
+                    <option value={option.code + "&" + option.name} key={index}>
+                      {option.name}
+                    </option>
+                  ))}
+                </select>
+                {error && <FormFieldError error={error} />}
+                {buttonAction === "addressVerification" &&
+                  field.value &&
+                  !error && (
+                    <div className="py-4">
+                      <FileUpload />
+                    </div>
+                  )}
+              </div>
+            )}
+          />
+        </div>
+      ) : type === "select" ? (
+        <div className=" w-full">
+          <Controller
+            name={name}
+            control={control}
+            rules={{
+              required: "This field is required", // Add validation rules here
+            }}
+            render={({ field }) => (
+              <div>
+                <select
+                  id={name as string}
+                  {...field}
+                  className={`flex w-full rounded-md bg-white border ${
+                    error ? "border-red-500" : "border-gray-300"
+                  } h-[3rem] px-3 py-1 text-sm shadow-sm transition-colors`}
+                  aria-invalid={!!error}
+                >
+                  <option value="">Choose one</option>
+                  {options.map((option: any, index: any) => (
+                    <option value={option} key={index}>
                       {option}
                     </option>
                   ))}
@@ -142,7 +179,7 @@ export const FormField: React.FC<FormFieldProps> = ({
                         {value && format(value, "PPP")}
                       </Button>
                     </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0">
+                    <PopoverContent className="w-auto p-0 bg-white">
                       <Calendar
                         mode="single"
                         selected={value}
@@ -161,7 +198,7 @@ export const FormField: React.FC<FormFieldProps> = ({
           id={name as string}
           {...register(name, validation)}
           type={type}
-          className={` ${styles} flex w-full rounded-md bg-white h-[3rem] px-3 py-1 text-[12px] sm:text-sm shadow-s transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+          className={` ${styles} border flex w-full rounded-md bg-white h-[3rem] px-3 py-1 text-[12px] sm:text-sm shadow-s transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium file:text-foreground placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
           ${error ? "border-red-500" : "border-gray-300"}`}
           aria-invalid={error ? "true" : "false"}
           disabled={disabled}

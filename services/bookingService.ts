@@ -79,3 +79,16 @@ export const getAllBookings = async (values: any) => {
     };
   }
 };
+
+export const getServices = async () => {
+  try {
+    let response = await http.get(`service-pricing/all`);
+    return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err?.response?.data,
+      status: err?.response?.status,
+    };
+  }
+};

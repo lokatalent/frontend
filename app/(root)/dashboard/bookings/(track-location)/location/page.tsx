@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { ControlPosition, Map, Marker } from "@vis.gl/react-google-maps";
+import { AdvancedMarker, ControlPosition, Map, Marker } from "@vis.gl/react-google-maps";
 
 import { CustomMapControl } from "./map-control";
 import MapHandler from "./map-handler";
@@ -37,8 +37,9 @@ const LocationPlace = () => {
         gestureHandling="none"
         zoomControl={false}
         disableDefaultUI={true}
+        mapId={"4ebe333352e7e56f "}
       >
-        <Marker
+        <AdvancedMarker
           position={pinLocation}
         />
       </Map>
