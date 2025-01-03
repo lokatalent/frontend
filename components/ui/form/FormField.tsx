@@ -158,7 +158,7 @@ export const FormField: React.FC<FormFieldProps> = ({
             )}
           />
         </div>
-      ) : type === "date" ? (
+      ) : type === "datee" ? (
         <Controller
           name={name}
           control={control}
