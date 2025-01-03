@@ -106,7 +106,7 @@ const FileUpload = () => {
   }, []);
 
   return (
-    <div className={cn("w-full mx-auto", className)}>
+    <div className={cn("w-full mx-auto")}>
       <div
         className={cn(
           "border-2 border-dashed rounded-lg  text-center",
@@ -134,7 +134,8 @@ const FileUpload = () => {
               >
                 <div>
                   <Image
-                    src={fileUploadImg}
+                    // src={fileUploadImg}
+                    src={""}
                     alt="File Upload"
                     className="w-10"
                   />

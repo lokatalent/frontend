@@ -102,7 +102,7 @@ export default function EditPortfolio({
     console.log('for response');
     console.log(data);
     let temp = {
-      experience_years: data.experience_years,
+      experience_years: +data.experience_years,
       service_type: "",
       service_desc: "",
       rate_per_hour: 0,
@@ -112,7 +112,17 @@ export default function EditPortfolio({
     console.log(response);
       console.log(data);
       Object.entries(localSkills).forEach(([skill, value]) => {
-        onSkillChange(skill, value);
+        // for setting 2 or more skills
+        // onSkillChange(skill, value);
+
+        // for setting 1 skills NOTE: Only for now
+        // If the current skill is the selected one, set it to true
+        if (skill === skill) {
+          onSkillChange(skill, true);
+        } else {
+          // Set all other skills to false
+          onSkillChange(skill, false);
+        }
       });
       setIsFinished(true);
     } catch (error) {

@@ -72,9 +72,9 @@ function Portfolio({ setActiveStep }: any) {
   const handleButtonClick = (): void => {
     fileInputRef.current?.click();
   };
-  const onSubmit = (data: any) => {
+  const onSubmit = (data: any, availability) => {
     console.log(data);
-    setActiveStep(3);
+    // setActiveStep(3);
     // Additional submit logic here
   };
   const onError = (data: any) => {
@@ -134,9 +134,9 @@ function Portfolio({ setActiveStep }: any) {
                 label="Service Category*"
                 control={control}
                 options={[
-                  { value: "Talent", label: "Tal  ent" },
-                  { value: "UI", label: "UI" },
-                  { value: "Ibadan", label: "Ibadan" },
+                  { value: "Driving", label: "Driving" },
+                  { value: "Cleaning", label: "Cleaning" },
+                  { value: "Washing", label: "Washing" },
                 ]}
                 required
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"

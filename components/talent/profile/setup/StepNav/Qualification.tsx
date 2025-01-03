@@ -3,6 +3,10 @@ import TalentDynamicForm from "@/components/ui/form/TalentDynamicForm";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useDispatch } from "react-redux";
+import { showToast } from "@/store/auth/toastSlice";
+import { errorHandler } from "@/lib/utils";
+import { updateEducationProfile } from "@/services/profileService";
 
 const fileSchema = z
   .instanceof(File) // Ensure it's a file instance
@@ -30,9 +34,34 @@ function Qualification({ setActiveStep }: any) {
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(schema),
   });
-  const onSubmit = (data: any) => {
+  const dispatch = useDispatch();
+  const onSubmit = async (data: any) => {
     console.log(data);
-    setActiveStep(2);
+    let temp = {
+      institute: data.university,
+      discipline: data.field,
+      degree: data.degree,
+      start: data.startdate,
+      finish: data.enddate,
+    };
+    const response = await updateEducationProfile(temp);
+    if (response.status !== 200) {
+          dispatch(
+            showToast({
+              status: "error",
+              message: errorHandler(response.data),
+            })
+          );
+          setActiveStep(2);
+          return;
+        }
+        dispatch(
+          showToast({
+            status: "success",
+            message: "Education Profile updated successfully!",
+          })
+        );
+
     // Additional submit logic here
   };
    const onError = (data: any) => {
@@ -69,8 +98,8 @@ function Qualification({ setActiveStep }: any) {
                 label="Highest Degree Qualification (Optional)"
                 control={control}
                 options={[
-                  { value: "UI", label: "UI" },
-                  { value: "Ibadan", label: "Ibadan" },
+                  { value: "MSE", label: "MSE" },
+                  { value: "B.Sc", label: "B.Sc" },
                 ]}
                 // required for not optional
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
@@ -81,8 +110,9 @@ function Qualification({ setActiveStep }: any) {
                 label="Field of Study"
                 control={control}
                 options={[
-                  { value: "Undergraduate", label: "Undergraduate" },
-                  { value: "PostGraduate", label: "PostGraduate" },
+                  { value: "Medicine", label: "Medicine" },
+                  { value: "Nursing", label: "PostGraduate" },
+                  { value: "Accounting", label: "Accounting" },
                 ]}
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
                 required

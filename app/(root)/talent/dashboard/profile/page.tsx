@@ -52,13 +52,13 @@ export default function Profiles() {
  
 
    const [data, setData] = useState([
-      { title: "Name", value: profileInformation?.name || "-" },
-      { title: "Email Address", value: profileInformation?.email || "-" },
-      { title: "Phone Number", value: "09123456789" },
+      { title: "Name", value: "-" },
+      { title: "Email Address", value:  "-" },
+      { title: "Phone Number", value: "-" },
       { title: "Country", value: "-" },
-      { title: "State", value: profileDetails?.state || "-" },
-      { title: "City", value: profileDetails?.city || "-" },
-      { title: "Address", value: profileDetails?.address || "-" },
+      { title: "State", value:  "-" },
+      { title: "City", value:  "-" },
+      { title: "Address", value: "-" },
     ]);
   
     // const data: DataItem[] = ;
@@ -97,10 +97,10 @@ export default function Profiles() {
 
   const [method, setMethod] = useState("personal");
   const IserviceRate = {
-    bankName: "Zenith Bank",
-    accountNo: "1234567789",
-    rps: "2500",
-    rph: "1100",
+    bankName: "",
+    accountNo: "",
+    rps: "",
+    rph: "",
   };
   const [serviceRate, setServiceRate] = useState(IserviceRate);
   const handleMethodChange = (method: string) => {
@@ -175,7 +175,7 @@ export default function Profiles() {
               </div>
             </div>
             <p className="text-primaryBlue text-2xl font-bold">
-              Gabriel Daramola
+              {data[0].value}
             </p>
           </div>
         </div>
