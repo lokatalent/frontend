@@ -8,7 +8,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import ServiceRate from "@/components/talent/profile/ServiceRate";
 import ReviewCard from "@/components/talent/profile/ReviewCard";
-import Portfolio from "@/components/talent/profile/Portfolio";
+import PortfolioView from "@/components/talent/profile/PortfolioView";
 import EditServiceRate from "@/components/talent/profile/editing/EditServiceRate";
 import EditPortfolio from "@/components/talent/profile/editing/EditPortfolio";
 import { getOwnProfile, getService, updateService, UpdateService } from "@/services/profileService";
@@ -248,7 +248,7 @@ export default function Profiles() {
 
         {method === "personal" ? <ProfileDetails details={data} /> : null}
         {method === "portfolio" ? (
-          <Portfolio isData={true} data={portfolioData1} />
+          <PortfolioView isData={true} data={portfolioData1} />
         ) : null}
         {method === "service" ? (
           <ServiceRate isData={true} data={serviceRate} />

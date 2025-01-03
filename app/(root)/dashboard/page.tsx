@@ -13,15 +13,14 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function Dashboard() {
   const user = useSelector((state: any) => state.auth.user);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState([]);
-  const dispatch = useDispatch()
-  const router = useRouter()
-
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   // fetch bookings
   const fetchBookings = (id: any) => {
-    setLoading(true)
+    setLoading(true);
     const data = {
       requester_id: id,
       provider_id: "",
@@ -59,8 +58,10 @@ export default function Dashboard() {
   // fetch notifications
   const BookingData: any = [];
   useEffect(() => {
-    fetchBookings(user.id)
-  }, [])
+    fetchBookings(user.id);
+    // if (user.is_verified) fetchBookings(user.id);
+    // else router.push("/dashboard/profile/edit")
+  }, []);
 
   return (
     <div className="w-full space-y-6">

@@ -12,7 +12,7 @@ import PersonalInfo from "./setup/StepNav/PersonalInfo";
 import Qualification from "./setup/StepNav/Qualification";
 import Portfolio from "./setup/StepNav/Portfolio";
 import ServiceCharge from "./setup/StepNav/ServiceCharge";
-
+import { Button } from "@/components/ui/button";
 
 const steps = [
   "Personal Information",
@@ -48,8 +48,6 @@ const steps1 = [
   },
 ];
 
-
-
 export default function ProfileStep() {
   const [activeStep, setActiveStep] = React.useState(-1);
   const [skipped, setSkipped] = React.useState(new Set<number>());
@@ -57,7 +55,7 @@ export default function ProfileStep() {
   // const isStepOptional = (step: number) => {
   //   return step === 1;
   // };
-  console.log(activeStep)
+  console.log(activeStep);
 
   const isStepSkipped = (step: number) => {
     return skipped.has(step);
@@ -73,9 +71,6 @@ export default function ProfileStep() {
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
     setSkipped(newSkipped);
   };
-
-
-
 
   return (
     <Box
@@ -111,7 +106,6 @@ export default function ProfileStep() {
           <Typography sx={{ mt: 2, mb: 1 }}>
             All steps completed - you&apos;re finished
           </Typography>
-          
         </React.Fragment>
       ) : (
         <React.Fragment>
@@ -141,17 +135,20 @@ export default function ProfileStep() {
               </div>
             )}
             {activeStep === 0 && <PersonalInfo setActiveStep={setActiveStep} />}
-            {activeStep === 1 && (
+            {activeStep === 1 && <Portfolio setActiveStep={setActiveStep} />}
+            {activeStep === 3 && (
               <Qualification setActiveStep={setActiveStep} />
             )}
-            {activeStep === 2 && <Portfolio setActiveStep={setActiveStep} />}
-            {activeStep === 3 && (
+            {activeStep === 2 && (
               <ServiceCharge setActiveStep={setActiveStep} />
             )}
 
+            {/* <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}> */}
+              {/* Skip */}
+            {/* </Button> */}
+
             {/* <p>{activeStep}</p> */}
           </Box>
-         
         </React.Fragment>
       )}
     </Box>

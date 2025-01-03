@@ -58,7 +58,7 @@ export const verifyEmail = async (values: any) => {
 
 export const verifyUser = async () => {
   try {
-    let response = await http.post("/auth/verify-user");
+    let response = await http.patch("/auth/verify-user");
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
     return {

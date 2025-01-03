@@ -5,10 +5,12 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChangeEvent, useRef, useState } from "react";
 import Image from "next/image";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setProfilePics } from "@/store/profile/profileSlice";
 import EditAvailability from "../../editing/EditAvailablity";
-
+import { createService } from "@/services/services";
+import { errorHandler } from "@/lib/utils";
+import { showToast } from "@/store/auth/toastSlice";
 
 interface Availability {
   [key: string]: {
@@ -31,10 +33,16 @@ const schema = z.object({
       (val) => val >= 0 && val <= 50,
       "Experience must be between 0 and 50 years"
     ),
+  service_rate: z.string().nonempty("Input your service rate per hour"),
+  service_desc: z.string().nonempty("Enter your service description"),
+  address: z.string().nonempty("Add your address"),
+
   // images: z.string().nonempty("Pls upload your images"),
 });
 
 function Portfolio({ setActiveStep }: any) {
+  const id = useSelector((state: any) => state.auth.user.id);
+
   const initialAvailability = {
     Monday: { isActive: true, from: "09:00", to: "17:00" },
     Tuesday: { isActive: true, from: "09:00", to: "17:00" },
@@ -47,7 +55,9 @@ function Portfolio({ setActiveStep }: any) {
 
   // State to manage availability
   const [availability, setAvailability] = useState(initialAvailability);
-  const handleSaveAvailability = (updatedAvailability: typeof initialAvailability) => {
+  const handleSaveAvailability = (
+    updatedAvailability: typeof initialAvailability
+  ) => {
     console.log(updatedAvailability);
     setAvailability(updatedAvailability);
     // Save the updated availability data to the server or elsewhere
@@ -72,9 +82,61 @@ function Portfolio({ setActiveStep }: any) {
   const handleButtonClick = (): void => {
     fileInputRef.current?.click();
   };
-  const onSubmit = (data: any, availability) => {
+  const onSubmit = async (data: any) => {
     console.log(data);
-    // setActiveStep(3);
+    console.log(availability);
+    let temp = {
+      // id: id,
+      // user_id: id,
+      experience_years: data.experience,
+      service_type: data.service,
+      service_desc: data.service_desc,
+      rate_per_hour: +data.service_rate,
+      availability: {
+        monday: {
+          start: availability.Monday.from,
+          end: availability.Monday.to,
+        },
+        tuesday: {
+          start: availability.Tuesday.from,
+          end: availability.Tuesday.to,
+        },
+        wednesday: {
+          start: availability.Wednesday.from,
+          end: availability.Wednesday.to,
+        },
+        thursday: {
+          start: availability.Thursday.from,
+          end: availability.Thursday.to,
+        },
+        friday: {
+          start: availability.Friday.from,
+          end: availability.Friday.to,
+        },
+        saturday: {
+          start: availability.Saturday.from,
+          end: availability.Saturday.to,
+        },
+        sunday: {
+          start: availability.Sunday.from,
+          end: availability.Sunday.to,
+        },
+      },
+      address: data.address,
+    };
+    const response = await createService(temp);
+    console.log(response);
+    if (response.status === 200) {
+      console.log(response.data);
+    } else {
+      setActiveStep(3);
+      dispatch(
+        showToast({
+          status: "error",
+          message: errorHandler(response.data),
+        })
+      );
+    }
     // Additional submit logic here
   };
   const onError = (data: any) => {
@@ -127,41 +189,66 @@ function Portfolio({ setActiveStep }: any) {
             onSubmit={handleSubmit(onSubmit, onError)}
             className="w-full flex flex-col justify-center items-center gap-12"
           >
-            <div className="w-full flex flex-co flex-row flex-wrap justify-center justify-centr items-center gap-12 spce-y-4">
+            <div className="w-full flex flex-co flex-row flex-wrap justify-cente justify-centr items-center gap-12 spce-y-4">
               <TalentDynamicForm
                 type="select"
                 name="service"
-                label="Service Category*"
+                label="Service Category"
                 control={control}
                 options={[
-                  { value: "Driving", label: "Driving" },
-                  { value: "Cleaning", label: "Cleaning" },
-                  { value: "Washing", label: "Washing" },
+                  { value: "driving", label: "Driving" },
+                  { value: "cleaning", label: "Cleaning" },
+                  { value: "washing", label: "Washing" },
                 ]}
                 required
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
               />
+              
               <TalentDynamicForm
                 type="number"
                 name="experience"
-                label="Years of Experience*"
+                label="Years of Experience"
                 control={control}
                 required
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
               />
               <TalentDynamicForm
-                type="file"
-                name="images"
-                label="Upload Your Images"
+                type="text"
+                name="service_rate"
+                label="Service Rate"
                 control={control}
                 required
-                className="w-[53rem]"
-                
+                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
               />
+              <TalentDynamicForm
+                type="text"
+                name="address"
+                label="Address"
+                control={control}
+                required
+                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+              />
+              <TalentDynamicForm
+                type="text"
+                name="service_desc"
+                label="Service Description"
+                control={control}
+                required
+                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+              />
+              {/* <TalentDynamicForm
+                    type="file"
+                    name="images"
+                    label="Upload Your Images"
+                    control={control}
+                    required
+                    className="w-[53rem]"
+                    
+                  /> */}
 
-              <div className="flex-start w-[53rem]">
+              {/* <div className="flex-start w-[53rem]">
                 <p className="underline">Set Service Radius</p>
-              </div>
+              </div> */}
               <div className="flex-start w-[53rem]">
                 <EditAvailability
                   trigger={true}

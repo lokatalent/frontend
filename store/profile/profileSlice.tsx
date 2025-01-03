@@ -56,6 +56,7 @@ export interface RootStateProfile {
       city: string;
       address: string;
       state: string;
+      date_of_birth?: string
     };
     profilePics: string;
     information: {
