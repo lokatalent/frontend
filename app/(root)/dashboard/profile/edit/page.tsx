@@ -194,18 +194,18 @@ function Edit() {
           </div>
         </div>
       </section>
-      <div className="flex gap-4 items-center flex-col justify-center">
+      <div className="flex gap-4 items-center flex-col justify-center py-10">
         <div className="space-y-3">
-          <p className="text-black text-base text-center sm:text-4xl font-bold">
+          <p className="text-black text-center text-xl md:text-3xl font-bold">
             Set Up Your Profile
           </p>
           <p className="text-gray-500 text-sm sm:text-base text-center">
-            Please enter your details to proceed
+            Please enter your details to start booking on Lokatalent today.
           </p>
         </div>
 
         <div className="flex items-center justify-between space-x-6">
-          <div className="relative w-20 h-20 sm:w-32 sm:h-32 rounded-full">
+          <div className="relative w-14 h-14 sm:w-24 sm:h-24 rounded-full">
             <div className="flex items-center justify-center bg-[#C4C4C424] shadow-lg p-2 w-full h-full rounded-full">
               {selectedImage ? (
                 <Image

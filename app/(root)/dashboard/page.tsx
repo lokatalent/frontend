@@ -4,6 +4,7 @@ import { BookingColumns } from "@/components/columns/Columns";
 import BalanceCard from "@/components/overview/BalanceCard";
 import BookingCard from "@/components/overview/BookingCard";
 import DataTable from "@/components/ui/gen/DataTable";
+import PageSpinner from "@/components/ui/PageSpinner";
 import { getAllBookings } from "@/services/bookingService";
 import { showToast } from "@/store/auth/toastSlice";
 import Link from "next/link";
@@ -32,8 +33,9 @@ export default function Dashboard() {
       start_date: "",
       end_date: "",
     };
-    const response: any = getAllBookings(data);
+    const response: any = getAllBookings({data});
     if (!response.error) {
+      setLoading(false)
       console.log("Bookings", response.data);
     } else {
       setLoading(false);
@@ -58,52 +60,57 @@ export default function Dashboard() {
   // fetch notifications
   const BookingData: any = [];
   useEffect(() => {
-    fetchBookings(user.id);
-    // if (user.is_verified) fetchBookings(user.id);
-    // else router.push("/dashboard/profile/edit")
+    if (user.is_verified) fetchBookings(user.id);
+    else router.push("/dashboard/profile/edit");
   }, []);
 
   return (
-    <div className="w-full space-y-6">
-      <div className="w-full flex justify-between items-center">
-        <div className="flex flex-col space-y-3">
-          <p className="text-3xl text-black font-bold">
-            Hello {user?.first_name}👋
-          </p>
-          <p className="text-[#6C727F]">
-            Ready to book? We’ve got you covered.
-          </p>
-        </div>
-      </div>
-      <div className="w-full flex flex-col md:flex-row gap-4">
-        <BalanceCard text="Balance" number={0} />
-        <BookingCard />
-      </div>
-
-      <h1 className="font-medium text-2xl">Bookings</h1>
-      <div>
-        <div className="card">
-          <DataTable
-            columns={BookingColumns}
-            title="Bookings"
-            data={BookingData}
-            isRole={true}
-            isSort={true}
-            path="/"
-          />
-
-          {BookingData.length > 0 && (
-            <div className="flex justify-center mt-5">
-              <Link
-                href="/dashboard/bookings"
-                className="px-10 py-4 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-              >
-                View all bookings
-              </Link>
+    <div>
+      {loading ? (
+        <PageSpinner />
+      ) : (
+        <div className="w-full space-y-6">
+          <div className="w-full flex justify-between items-center">
+            <div className="flex flex-col space-y-3">
+              <p className="text-3xl text-black font-bold">
+                Hello {user?.first_name}👋
+              </p>
+              <p className="text-[#6C727F]">
+                Ready to book? We’ve got you covered.
+              </p>
             </div>
-          )}
+          </div>
+          <div className="w-full flex flex-col md:flex-row gap-4">
+            <BalanceCard text="Balance" number={0} />
+            <BookingCard />
+          </div>
+
+          <h1 className="font-medium text-2xl">Bookings</h1>
+          <div>
+            <div className="card">
+              <DataTable
+                columns={BookingColumns}
+                title="Bookings"
+                data={BookingData}
+                isRole={true}
+                isSort={true}
+                path="/"
+              />
+
+              {BookingData.length > 0 && (
+                <div className="flex justify-center mt-5">
+                  <Link
+                    href="/dashboard/bookings"
+                    className="px-10 py-4 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+                  >
+                    View all bookings
+                  </Link>
+                </div>
+              )}
+            </div>
+          </div>
         </div>
-      </div>
+      )}
     </div>
   );
 }

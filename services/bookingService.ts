@@ -69,7 +69,7 @@ export const getBooking = async (id: any) => {
 
 export const getAllBookings = async (values: any) => {
   try {
-    let response = await http.post(`booking/all`, values.data);
+    let response = await http.post(`booking/all?page=1&size=10`, values.data);
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
     return {

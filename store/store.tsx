@@ -3,6 +3,7 @@ import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authReducer from "./auth/authSlice";
 import profileReducer from "./profile/profileSlice";
 import toastReducer from "./auth/toastSlice";
+import bookingReducer from "./profile/bookingSlice";
 import settingsReducer from "./settings/SettingsSlice";
 import talentProfileReducer from "./talent/profile/TalentProfileSlice";
 import thunk from "redux-thunk";
@@ -32,6 +33,7 @@ const reducers = combineReducers({
   talentProfile: talentProfileReducer,
   auth: authReducer,
   toast: toastReducer,
+  booking: bookingReducer,
 });
 
 const persistedReducer = persistReducer<any>(persistConfig, reducers);

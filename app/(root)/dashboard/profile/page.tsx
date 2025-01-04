@@ -1,7 +1,7 @@
 "use client";
 import ProfileCompletion from "@/components/profile/ProfileCompletion";
 import ProfileDetails from "@/components/profile/ProfileDetails";
-import Spinner from "@/components/ui/Spinner";
+import PageSpinner from "@/components/ui/PageSpinner";
 import { signin, verifyUser } from "@/services/authService";
 import { getOwnProfile } from "@/services/profileService";
 import { setUser } from "@/store/auth/authSlice";
@@ -122,9 +122,7 @@ export default function Profile() {
   return (
     <div>
       {loading ? (
-        <div className="pt-10">
-          <Spinner />
-        </div>
+        <PageSpinner />
       ) : (
         <div className="ml-8 h-screen sm:ml-0">
           <div className="h-[5rem] sm:h-[10rem] mb-24 w-full bg-gradient-to-r to-[#CCD6B0] from-[#6B705C]">
