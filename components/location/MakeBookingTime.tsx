@@ -1,4 +1,5 @@
 "use client";
+
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -17,6 +18,7 @@ import { Controller, useForm } from "react-hook-form";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { Spacer } from "../Spacer";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
 type FormValues = {
   startTime: string;
@@ -25,7 +27,12 @@ type FormValues = {
 };
 
 const MakeBookingTime = () => {
+  const service = useSelector((state: any) => state.booking.service);
+  const location = useSelector((state: any) => state.booking.location);
+  const user = useSelector((state: any) => state.auth.user);
+
   const router = useRouter();
+
   const { handleSubmit, control, register } = useForm<FormValues>({
     defaultValues: {
       startTime: "",
@@ -35,6 +42,19 @@ const MakeBookingTime = () => {
   });
 
   const onSubmit = () => {
+    let dateToday = new Date();
+    let data = {
+      requester_id: user.id,
+      requester_addr: location,
+      service_type: service,
+      booking_type: "instant",
+      service_desc: "I want someone who can clean my compound efficiently",
+      start_time: "9:00:00+01:00",
+      end_time: "17:00:00+01:00",
+      start_date: dateToday,
+      end_date: dateToday,
+      total_price: 876, //how to get this
+    };
     // console.log(data);
     // handle submission logic here
     router.push("talents");
@@ -43,7 +63,6 @@ const MakeBookingTime = () => {
   const [count, setCount] = useState(3.5);
   const [showDuration, setShowDutration] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-
   const time = [
     {
       text: "7:00 - 7:30",

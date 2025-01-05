@@ -3,8 +3,8 @@ import TalentDynamicForm from "@/components/ui/form/TalentDynamicForm";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { updateProfile } from "@/services/profileService";
-import { useDispatch } from "react-redux";
+import { updateProfile, updateProfileImage } from "@/services/profileService";
+import { useDispatch, useSelector } from "react-redux";
 import { showToast } from "@/store/auth/toastSlice";
 import { errorHandler } from "@/lib/utils";
 import Image from "next/image";
@@ -27,17 +27,58 @@ function PersonalInfo({ setActiveStep }: any) {
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(schema),
   });
-    const [selectedImage, setSelectedImage] = useState<any>();
-    const fileInputRef = useRef<HTMLInputElement>();
+    
+  const fileInputRef = useRef<HTMLInputElement>();
+    const user = useSelector((state: any) => state.auth.user);
+    const [imageLoading, setImageLoading] = useState(false);
+    const [selectedImage, setSelectedImage] = useState<any>(
+      user.avatar ?? null
+    );
+  
 
-    const handleImageSelect = (event: ChangeEvent<HTMLInputElement>): void => {
-      const file = event.target.files?.[0];
-      if (file) {
-        const imageUrl: string = URL.createObjectURL(file);
-        setSelectedImage(imageUrl); // Make sure setSelectedImage is defined in your component
-        dispatch(setProfilePics(imageUrl));
-      }
-    };
+    const handleImageSelect = async (event: ChangeEvent<HTMLInputElement>) => {
+        const file = event.target.files?.[0];
+        if (file) {
+          setImageLoading(true);
+          const imageUrl: string = URL.createObjectURL(file);
+          const images = {
+            image: file,
+          };
+          const response = await updateProfileImage(images);
+          console.log(response)
+          if (!response.error) {
+            setImageLoading(false);
+            dispatch(
+              showToast({
+                status: "success",
+                message: "Image updated successfully",
+              })
+            );
+            let tempBio = {
+                  state: user.state,
+                  city: user.city,
+                  country: user.country,
+                  address: user.address,
+                  gender: user.gender,
+                  date_of_birth: user.dateofbirth,
+                  bio: response.data
+                };
+                  const responseBio = await updateProfile(tempBio);
+                  console.log(responseBio);
+                  dispatch(setUser(responseBio.data));
+          } else {
+            dispatch(
+              showToast({
+                status: "error",
+                message: response.data.message,
+              })
+            );
+          }
+          setSelectedImage(imageUrl);
+          // Make sure setSelectedImage is defined in your component
+          dispatch(setProfilePics(imageUrl));
+        }
+      };
 
     const handleButtonClick = (): void => {
       fileInputRef.current?.click();

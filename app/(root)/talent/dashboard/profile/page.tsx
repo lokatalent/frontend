@@ -90,7 +90,9 @@ export default function Profiles() {
     (state: RootStateTalentService) => state.service.service
   );
   const userId = useSelector((state: any) => state.auth.user.id);
-  const userBio= useSelector((state: any) => state.auth.user.bio);
+  const userBio = useSelector((state: any) => state.auth.user.bio);
+    const avatar = useSelector((state: string) => state.auth.user.avatar)
+  
 
   const [portfolioData, setPortfolioData] = useState<PortfolioData>({
     experience: service?.experience_years || 0,
@@ -218,9 +220,9 @@ export default function Profiles() {
         <div className="bg-white translate-y-1/2 w-[80%] mx-auto rounded-md p-6 flex justify-between items-center">
           <div className="flex items-center space-x-6">
             <div className="relative flex items-center justify-center bg-[#C4C4C424] shadow-lg p-2 w-[100px] h-[100px] rounded-full">
-              {profilePics ? (
+              {avatar ? (
                 <Image
-                  src={profilePics}
+                  src={avatar}
                   alt="Profile"
                   layout="fill"
                   className="object-cover rounded-[100px]"

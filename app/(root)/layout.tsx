@@ -21,7 +21,7 @@ export default function RootLayout({
   if (!loggedIn) return router.push("/login");
 
   return (
-    <>
+    <div>
       {loggedIn && (
         <div className="bg-bgWhite main-contain min-h-screen">
           <div className="flex flex-row">
@@ -37,6 +37,6 @@ export default function RootLayout({
           </div>
         </div>
       )}
-    </>
+    </div>
   );
 }

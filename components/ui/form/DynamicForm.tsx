@@ -295,56 +295,59 @@ const DynamicForm = ({
         account_num: data.acc_num,
       };
 
+      const onUpdateProfile = async () => {
+        const response = await updateProfile(temp);
+        if (!response.error) {
+          setLoading(false);
+          dispatch(
+            showToast({
+              status: "success",
+              message: "Your Profile has been updated",
+            })
+          );
+          dispatch(setProfileDetails(data));
+          dispatch(
+            setInformation({
+              state: data.state,
+              address: data.address,
+              city: data.city,
+              dateOfBirth: data.dateofBirth,
+            })
+          );
+          // redirect to verify account
+          // router.push("/dashboard/profile/verify");
+
+          router.push("/dashboard/profile");
+        } else {
+          setLoading(false);
+          if (response.status === 401) {
+            dispatch(
+              showToast({
+                status: "error",
+                message: response.data.message,
+              })
+            );
+            return router.push("/login");
+          }
+          dispatch(
+            showToast({
+              status: "error",
+              message: errorHandler(response.data),
+            })
+          );
+        }
+      };
+
       const bankResponse = await updateBankProfile(bankData);
       if (!bankResponse.error) {
         setLoading(false);
+        onUpdateProfile();
       } else {
         setLoading(false);
         dispatch(
           showToast({
             status: "error",
             message: errorHandler(bankResponse.data),
-          })
-        );
-      }
-
-      const response = await updateProfile(temp);
-      if (!response.error) {
-        setLoading(false);
-        dispatch(
-          showToast({
-            status: "success",
-            message: "Your Profile has been updated",
-          })
-        );
-        dispatch(setProfileDetails(data));
-        dispatch(
-          setInformation({
-            state: data.state,
-            address: data.address,
-            city: data.city,
-            dateOfBirth: data.dateofBirth,
-          })
-        );
-        // redirect to verify account
-        // router.push("/dashboard/profile/verify");
-
-        router.push("/dashboard/profile");
-      } else {
-        setLoading(false);
-        if (response.status === 401) {
-          dispatch(
-            showToast({
-              status: "error",
-              message: response.data.message,
-            })
-          );
-          return router.push("/login");
-        }
-        dispatch(
-          showToast({
-            status: "error",
-            message: errorHandler(response.data),
           })
         );
       }

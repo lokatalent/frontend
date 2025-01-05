@@ -8,12 +8,15 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { getServices } from "@/services/bookingService";
+import { setBookingService } from "@/store/profile/bookingSlice";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { CiSearch } from "react-icons/ci";
+import { useDispatch } from "react-redux";
 
 function SelectService() {
   const router = useRouter();
+  const dispatch = useDispatch()
   const [selectedService, setSelectedService] = useState("");
 
   const fetchServices = async () => {
@@ -27,6 +30,7 @@ function SelectService() {
   };
 
   const bookService = (service: any) => {
+    dispatch(setBookingService(service))
     router.push(
       `/dashboard/bookings/location?service=${encodeURIComponent(
         service
