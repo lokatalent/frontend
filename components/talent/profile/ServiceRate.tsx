@@ -20,7 +20,7 @@ const ServiceRate: React.FC<ServiceRateProps> = ({ isData, data = {} }) => {
       {isData ? (
         <div>
           {/* Rates Section */}
-          <div className="flex items-center gap-16">
+          {/* <div className="flex items-center gap-16">
             <div>
               <div className="text-gray-500 font-medium">Rate per hour</div>
               <div className="flex items-end">
@@ -36,7 +36,7 @@ const ServiceRate: React.FC<ServiceRateProps> = ({ isData, data = {} }) => {
               <div className="text-gray-500 font-medium">Per service</div>
               <div className="text-orange-500 font-bold text-4xl">₦{rps}</div>
             </div>
-          </div>
+          </div> */}
 
           {/* Bank Details Section */}
           <div className="mt-6">

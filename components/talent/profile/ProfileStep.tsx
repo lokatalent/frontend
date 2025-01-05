@@ -13,6 +13,15 @@ import Qualification from "./setup/StepNav/Qualification";
 import Portfolio from "./setup/StepNav/Portfolio";
 import ServiceCharge from "./setup/StepNav/ServiceCharge";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { IoIosSend } from "react-icons/io";
+import { useRouter } from "next/navigation";
 
 const steps = [
   "Personal Information",
@@ -51,10 +60,10 @@ const steps1 = [
 export default function ProfileStep() {
   const [activeStep, setActiveStep] = React.useState(-1);
   const [skipped, setSkipped] = React.useState(new Set<number>());
+    const [isFinished, setIsFinished] = React.useState(false);
+    const router = useRouter();
+  
 
-  // const isStepOptional = (step: number) => {
-  //   return step === 1;
-  // };
   console.log(activeStep);
 
   const isStepSkipped = (step: number) => {
@@ -69,6 +78,23 @@ export default function ProfileStep() {
     }
 
     setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setSkipped(newSkipped);
+  };
+
+    const resetDialog = () => {
+      setIsFinished(false);
+    };
+
+    const finishedStepHandler = () => {
+      router.push("/dashboard/profile");
+    };
+
+  const handleSkip = () => {
+    // setActiveStep((prevActiveStep) => prevActiveStep + 1);
+    setIsFinished(true)
+    // Add the current step to skipped steps
+    const newSkipped = new Set(skipped);
+    newSkipped.add(activeStep);
     setSkipped(newSkipped);
   };
 
@@ -88,11 +114,10 @@ export default function ProfileStep() {
           const labelProps: { optional?: React.ReactNode; className?: string } =
             {};
 
-          // Apply conditional styling to the label
           labelProps.className =
             index === activeStep && activeStep === 0
-              ? "text-red-500" // Add a class for gray text
-              : "text-green-500"; // Add a class for
+              ? "text-red-500"
+              : "text-green-500";
 
           return (
             <Step key={label} {...stepProps} className="my-10">
@@ -113,18 +138,13 @@ export default function ProfileStep() {
             {activeStep === -1 && (
               <div className="space-y-4">
                 {steps1.map((step) => {
-                  // const currentStep = activeStep.find((s) => s.id === step.id);
                   return (
                     <button
                       key={step.id}
-                      // onClick={() => onStepClick(step.id, "in-progress")}
                       onClick={handleNext}
                       className={cn(
                         "w-full p-4 flex items-center justify-between ",
                         "rounded-lg transition-colors duration-200 bg-gray-100 hover:bg-gray-200 text-gray-700 w-[30rem]"
-                        // currentStep?.status === "in-progress"
-                        //   ? "bg-blue-50 text-primaryBlue"
-                        //   : "bg-gray-100 hover:bg-gray-200 text-gray-700"
                       )}
                     >
                       <span className="text-sm font-medium">{step.title}</span>
@@ -136,21 +156,55 @@ export default function ProfileStep() {
             )}
             {activeStep === 0 && <PersonalInfo setActiveStep={setActiveStep} />}
             {activeStep === 1 && <Portfolio setActiveStep={setActiveStep} />}
-            {activeStep === 3 && (
-              <Qualification setActiveStep={setActiveStep} />
-            )}
             {activeStep === 2 && (
               <ServiceCharge setActiveStep={setActiveStep} />
             )}
+            {activeStep === 3 && (
+              <div className="space-y-4">
+                <Qualification
+                  setActiveStep={setActiveStep}
+                  handleSkip={handleSkip}
+                />
 
-            {/* <Button color="inherit" onClick={handleSkip} sx={{ mr: 1 }}> */}
-              {/* Skip */}
-            {/* </Button> */}
-
-            {/* <p>{activeStep}</p> */}
+                <Dialog open={isFinished} onOpenChange={resetDialog}>
+                  <DialogContent
+                    className="w-full p-[3rem] sm:max-w-lg lg:max-w-[25rem]"
+                    aria-describedby={undefined}
+                  >
+                    <DialogHeader>
+                      <DialogTitle className="text-center">
+                        Changes Saved
+                      </DialogTitle>
+                    </DialogHeader>
+                    <div className="w-full space-y-3">
+                      <div className="w-full text-center mt-2 flex-center">
+                        <IoIosSend color="#3377FF" size={50} />
+                      </div>
+                      <p className="w-full text-center flex-center">
+                        Your profile is complete! You can now proceed to verify
+                        your address and ID in the settings to start accepting
+                        bookings
+                      </p>
+                    </div>
+                    <div className="text-center mt-4">
+                      <DialogClose>
+                        <Button
+                          type="button"
+                          className="px-24 py-6 flex-center"
+                          onClick={finishedStepHandler}
+                        >
+                          Done
+                        </Button>
+                      </DialogClose>
+                    </div>
+                  </DialogContent>
+                </Dialog>
+              </div>
+            )}
           </Box>
         </React.Fragment>
       )}
     </Box>
   );
 }
+

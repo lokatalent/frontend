@@ -18,6 +18,7 @@ import { showToast } from "@/store/auth/toastSlice";
 import { errorHandler } from "@/lib/utils";
 import { updateBankProfile } from "@/services/profileService";
 import { useDispatch } from "react-redux";
+import { setBankDetailsData } from "@/store/talent/profile/TalentProfileSlice";
 
 interface EditServiceRateProps {
   serviceRateEdited: (data: any) => void; // Adjust type as needed
@@ -83,6 +84,7 @@ function EditServiceRate({ serviceRateEdited }: EditServiceRateProps) {
         message: "Bank details updated successfully!",
       })
     );
+    dispatch(setBankDetailsData(response.data))
     setIsFinished(true); // Transition to confirmation view
   };
 

@@ -120,6 +120,6 @@ const talentProfileSlice = createSlice({
 });
 
 // Export actions and reducer
-export const { addFile, removeFile, clearFiles, updateEducationProfileData, setBankDetailsDataankDetailsData } =
+export const { addFile, removeFile, clearFiles, updateEducationProfileData, setBankDetailsData } =
   talentProfileSlice.actions;
 export default talentProfileSlice.reducer;

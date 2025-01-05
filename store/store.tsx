@@ -5,6 +5,7 @@ import profileReducer from "./profile/profileSlice";
 import toastReducer from "./auth/toastSlice";
 import settingsReducer from "./settings/SettingsSlice";
 import talentProfileReducer from "./talent/profile/TalentProfileSlice";
+import talentServiceReducer from "./talent/service/TalentServiceSlice";
 import thunk from "redux-thunk";
 import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 import {
@@ -32,6 +33,7 @@ const reducers = combineReducers({
   talentProfile: talentProfileReducer,
   auth: authReducer,
   toast: toastReducer,
+  service: talentServiceReducer,
 });
 
 const persistedReducer = persistReducer<any>(persistConfig, reducers);
