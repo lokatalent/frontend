@@ -1,8 +1,9 @@
-"use client"
+"use client";
 
 import { BookingColumns, BookingType } from "@/components/columns/Columns";
 import BookingCard from "@/components/overview/BookingCard";
 import DataTable from "@/components/ui/gen/DataTable";
+import PageSpinner from "@/components/ui/PageSpinner";
 import { getAllBookings } from "@/services/bookingService";
 import { showToast } from "@/store/auth/toastSlice";
 import { useRouter } from "next/navigation";
@@ -58,15 +59,14 @@ async function getData(): Promise<BookingType[]> {
 
 export default function Bookings() {
   const user = useSelector((state: any) => state.auth.user);
-  const [loading, setLoading] = useState(true)
+  const [loading, setLoading] = useState(true);
   const [bookings, setBookings] = useState([]);
-  const dispatch = useDispatch()
-  const router = useRouter()
-
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   // fetch bookings
   const fetchBookings = (id: any) => {
-    setLoading(true)
+    setLoading(true);
     const data = {
       requester_id: id,
       provider_id: "",
@@ -78,8 +78,10 @@ export default function Bookings() {
       start_date: "",
       end_date: "",
     };
-    const response: any = getAllBookings(data);
+    const response: any = getAllBookings({ data });
     if (!response.error) {
+      setLoading(false);
+      setBookings(response.data);
       console.log("Bookings", response.data);
     } else {
       setLoading(false);
@@ -102,34 +104,42 @@ export default function Bookings() {
     }
   };
   useEffect(() => {
-      fetchBookings(user.id)
-    }, [])
+    fetchBookings(user.id);
+  }, []);
   return (
-    <div className="w-full space-y-6">
-      <div className="w-full flex justify-between items-center">
-        <div className="flex flex-col space-y-3">
-          <p className="text-3xl text-black font-bold">Hello {user.first_name}👋</p>
-          <p className="text-[#6C727F]">
-            Ready to book? We’ve got you covered.
-          </p>
+    <div>
+      {loading ? (
+        <PageSpinner />
+      ) : (
+        <div className="w-full space-y-6">
+          <div className="w-full flex justify-between items-center">
+            <div className="flex flex-col space-y-3">
+              <p className="text-3xl text-black font-bold">
+                Hello {user.first_name}👋
+              </p>
+              <p className="text-[#6C727F]">
+                Ready to book? We’ve got you covered.
+              </p>
+            </div>
+          </div>
+          <div className="w-full flex flex-col md:flex-row  gap-4">
+            <BookingCard bookingPage={true} />
+          </div>
+          <h1 className="font-medium text-2xl">Bookings</h1>
+          <div>
+            <div className="card">
+              <DataTable
+                columns={BookingColumns}
+                title="Bookings"
+                data={[]}
+                isRole={true}
+                isSort={true}
+                path="/dashboard/bookings/"
+              />
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="w-full flex flex-col md:flex-row  gap-4">
-        <BookingCard bookingPage={true} />
-      </div>
-      <h1 className="font-medium text-2xl">Bookings</h1>
-      <div>
-        <div className="card">
-          <DataTable
-            columns={BookingColumns}
-            title="Bookings"
-            data={[]}
-            isRole={true}
-            isSort={true}
-            path="/dashboard/bookings/"
-          />
-        </div>
-      </div>
+      )}
     </div>
   );
 }

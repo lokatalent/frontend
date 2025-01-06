@@ -5,8 +5,9 @@ import BalanceCard from "@/components/overview/BalanceCard";
 import BookingCard from "@/components/overview/BookingCard";
 import DataTable from "@/components/ui/gen/DataTable";
 import PageSpinner from "@/components/ui/PageSpinner";
-import { getAllBookings } from "@/services/bookingService";
+import { getAllBookings, getServices } from "@/services/bookingService";
 import { showToast } from "@/store/auth/toastSlice";
+import { setAllServices } from "@/store/profile/bookingSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -20,7 +21,7 @@ export default function Dashboard() {
   const router = useRouter();
 
   // fetch bookings
-  const fetchBookings = (id: any) => {
+  const fetchBookings = async (id: any) => {
     setLoading(true);
     const data = {
       requester_id: id,
@@ -33,9 +34,10 @@ export default function Dashboard() {
       start_date: "",
       end_date: "",
     };
-    const response: any = getAllBookings({data});
+    const response: any = await getAllBookings({data});
     if (!response.error) {
       setLoading(false)
+      setBookings(response.data);
       console.log("Bookings", response.data);
     } else {
       setLoading(false);
@@ -57,11 +59,54 @@ export default function Dashboard() {
       );
     }
   };
+
+  // fetch services
+    const fetchServices = async () => {
+      setLoading(true);
+      const response = await getServices();
+      if (!response.error) {
+        setLoading(false);
+        // ask Paul to modify this object to add the name and value
+        dispatch(setAllServices(response.data))
+      } else {
+        setLoading(false);
+        if (response.status === 401) {
+          dispatch(
+            showToast({
+              status: "error",
+              message: response.data.message,
+            })
+          );
+          return router.push("/login");
+        }
+  
+        return dispatch(
+          showToast({
+            status: "error",
+            message: response.data.message,
+          })
+        );
+      }
+    };
+
   // fetch notifications
+
   const BookingData: any = [];
+
   useEffect(() => {
-    if (user.is_verified) fetchBookings(user.id);
-    else router.push("/dashboard/profile/edit");
+    if (user.is_verified) {
+      fetchBookings(user.id);
+      fetchServices()
+    }
+    else {
+      dispatch(
+        showToast({
+          status: "success",
+          message: "Complete your profile to access your account",
+        })
+      );
+      router.push("/dashboard/profile/edit");
+    }
   }, []);
 
   return (

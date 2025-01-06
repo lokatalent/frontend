@@ -5,7 +5,6 @@ import {
   AdvancedMarker,
   ControlPosition,
   Map,
-  Marker,
 } from "@vis.gl/react-google-maps";
 
 import { CustomMapControl } from "./map-control";
