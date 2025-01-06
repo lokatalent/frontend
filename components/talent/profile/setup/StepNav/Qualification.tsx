@@ -3,7 +3,7 @@ import TalentDynamicForm from "@/components/ui/form/TalentDynamicForm";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { showToast } from "@/store/auth/toastSlice";
 import { errorHandler } from "@/lib/utils";
 import { updateEducationProfile } from "@/services/profileService";
@@ -19,6 +19,8 @@ import {
 import { Button } from "@/components/ui/button";
 import { IoIosSend } from "react-icons/io";
 import { useState } from "react";
+import { verifyUser } from "@/services/authService";
+import { RootStateAuth } from "@/store/auth/authSlice";
 
 const fileSchema = z
   .instanceof(File)
@@ -47,6 +49,7 @@ function Qualification({ setActiveStep, handleSkip }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [isFinished, setIsFinished] = useState(false);
+  const userIsVerified = useSelector((state: RootStateAuth) => state.auth.user.is_verified)
 
   const resetDialog = () => {
     setIsFinished(false);
@@ -55,6 +58,25 @@ function Qualification({ setActiveStep, handleSkip }: any) {
   const finishedStepHandler = () => {
     router.push("/dashboard/profile");
   };
+
+  const onVerifyUser = async () => {
+      const response = await verifyUser();
+      if (!response.error) {
+        dispatch(
+          showToast({
+            status: "success",
+            message: "Your account has been verified successfully",
+          })
+        );
+      } else {
+        dispatch(
+          showToast({
+            status: "error",
+            message: response.data.message,
+          })
+        );
+      }
+    };
 
   const onSubmit = async (data: any) => {
     console.log(data);
@@ -83,6 +105,7 @@ function Qualification({ setActiveStep, handleSkip }: any) {
       })
     );
     dispatch(updateEducationProfileData(response.data));
+    if (!userIsVerified) onVerifyUser();
     setIsFinished(true);
   };
 

@@ -39,21 +39,21 @@ const steps1 = [
   },
   {
     id: 2,
-    title: "Add your Qualifications",
-    step: 0,
-    status: "undone",
-  },
-  {
-    id: 3,
     title: "Set up your Portfolio",
     step: 0,
     status: "undone",
   },
   {
-    id: 4,
+    id: 3,
     title: "Add your service charge and bank details",
     step: 0,
     status: "completed",
+  },
+  {
+    id: 4,
+    title: "Add your Qualifications",
+    step: 0,
+    status: "undone",
   },
 ];
 
