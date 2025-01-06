@@ -1,11 +1,10 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  APIProvider,
+  AdvancedMarker,
   ControlPosition,
   Map,
-  useMap,
 } from "@vis.gl/react-google-maps";
 
 import ControlPanel from "./control-panel";
@@ -31,16 +30,29 @@ const LocationPlace = () => {
   const [selectedPlace, setSelectedPlace] =
     useState<google.maps.places.PlaceResult | null>(null);
 
-  const map = useMap();
-  console.log(map);
+  const [pinLocation, setPinLocation] = useState<{ lat: number; lng: number }>({
+    lat: 7.4667,
+    lng: 4.5667,
+  });
+
+  useEffect(() => {
+    let lat = selectedPlace?.geometry?.location?.lat() ?? 0;
+    let lng = selectedPlace?.geometry?.location?.lng() ?? 0;
+    setPinLocation({ lat, lng });
+  }, [selectedPlace]);
+
 
   return (
     <div className="w-screen h-screen">
-      <Map
+       <Map
         defaultZoom={12}
         defaultCenter={{ lat: 7.4667, lng: 4.5667 }}
-        gestureHandling={"greedy"}
-        disableDefaultUI={true}>
+        gestureHandling="none"
+        zoomControl={false}
+        disableDefaultUI={true}
+        mapId={"4ebe333352e7e56f "}
+      >
+        <AdvancedMarker position={pinLocation} />
       </Map>
       
       <CustomMapControl

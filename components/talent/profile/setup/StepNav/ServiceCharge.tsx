@@ -1,24 +1,18 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
+import axios from "axios";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogHeader,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Button } from "@/components/ui/button";
-import { IoIosSend } from "react-icons/io";
-import { FormFieldError } from "@/components/ui/form/FormFieldError";
-import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import axios from "axios";
+import { useRouter } from "next/navigation";
+
+
+import { FormFieldError } from "@/components/ui/form/FormFieldError";
 import { updateBankProfile } from "@/services/profileService";
 import { showToast } from "@/store/auth/toastSlice";
 import { errorHandler } from "@/lib/utils";
+import { Button } from "@/components/ui/button";
 import { setBankDetailsData } from "@/store/talent/profile/TalentProfileSlice";
 
 interface ServiceChargeProps {
@@ -45,8 +39,8 @@ function ServiceCharge({ setActiveStep }: any) {
 
   const router = useRouter();
   useEffect(() => {
-    function extractBankDetails(bankArray) {
-      return bankArray.map((bank) => ({
+    function extractBankDetails(bankArray: any) {
+      return bankArray.map((bank: any) => ({
         id: bank.id,
         name: bank.name,
         code: bank.code,
@@ -55,14 +49,12 @@ function ServiceCharge({ setActiveStep }: any) {
     }
     let getBanks = async () => {
       let response = await axios.get("https://api.paystack.co/bank");
-      // setBankData(response.data.data);
-      // Example usage:
       const simplifiedBanks = extractBankDetails(response.data.data);
       setBankData(simplifiedBanks);
     };
     getBanks();
   }, []);
-  console.log(bankData);
+  // console.log(bankData);
 
   const {
     handleSubmit,
@@ -87,7 +79,7 @@ function ServiceCharge({ setActiveStep }: any) {
       account_num: data.accountNo,
       bank_code: "",
     };
-    const matchedBank = bankData.find((bank) => bank.name === temp.bank_name);
+    const matchedBank: any = bankData.find((bank: any) => bank.name === temp.bank_name);
     if (matchedBank) {
       temp.bank_code = matchedBank.code; // Update bank_code with the matching bank's code
     }
@@ -112,7 +104,9 @@ function ServiceCharge({ setActiveStep }: any) {
       })
     );
     dispatch(setBankDetailsData(response.data));
-    setIsFinished(true);
+    setActiveStep(3);
+
+    // setIsFinished(true);
   };
 
   const resetDialog = () => {
@@ -122,45 +116,45 @@ function ServiceCharge({ setActiveStep }: any) {
 
   const finishedStepHandler = () => {
     router.push("/talent/dashboard/profile");
-    setActiveStep(4);
+    setActiveStep(3);
   };
 
   // Success Dialog
-  if (isFinished) {
-    return (
-      <Dialog open={isFinished} onOpenChange={resetDialog}>
-        <DialogContent
-          className="w-full p-[3rem] sm:max- lg:max-w-[25rem]"
-          aria-describedby={undefined}
-        >
-          <DialogHeader>
-            <DialogTitle className="text-center">Changes Saved</DialogTitle>
-          </DialogHeader>
-          <div className="w-full space-y-3">
-            <div className="w-full text-center mt-2 flex-center">
-              <IoIosSend color="#3377FF" size={50} />
-            </div>
-            <p className="w-full text-center flex-center">
-              Your profile is complete! You can now proceed to verify your
-              address and ID in the settings to start accepting bookings
-            </p>
-            <div className="w-full text-center flex-center"></div>
-          </div>
-          <div className="text-center mt-4">
-            <DialogClose>
-              <Button
-                type="button"
-                className="px-24 py-6 flex-center"
-                onClick={finishedStepHandler}
-              >
-                Done
-              </Button>
-            </DialogClose>
-          </div>
-        </DialogContent>
-      </Dialog>
-    );
-  }
+  // if (isFinished) {
+  //   return (
+  //     <Dialog open={isFinished} onOpenChange={resetDialog}>
+  //       <DialogContent
+  //         className="w-full p-[3rem] sm:max- lg:max-w-[25rem]"
+  //         aria-describedby={undefined}
+  //       >
+  //         <DialogHeader>
+  //           <DialogTitle className="text-center">Changes Saved</DialogTitle>
+  //         </DialogHeader>
+  //         <div className="w-full space-y-3">
+  //           <div className="w-full text-center mt-2 flex-center">
+  //             <IoIosSend color="#3377FF" size={50} />
+  //           </div>
+  //           <p className="w-full text-center flex-center">
+  //             Your profile is complete! You can now proceed to verify your
+  //             address and ID in the settings to start accepting bookings
+  //           </p>
+  //           <div className="w-full text-center flex-center"></div>
+  //         </div>
+  //         <div className="text-center mt-4">
+  //           <DialogClose>
+  //             <Button
+  //               type="button"
+  //               className="px-24 py-6 flex-center"
+  //               onClick={finishedStepHandler}
+  //             >
+  //               Done
+  //             </Button>
+  //           </DialogClose>
+  //         </div>
+  //       </DialogContent>
+  //     </Dialog>
+  //   );
+  // }
 
   // Edit Form Content
   const formContent = (
@@ -227,7 +221,7 @@ function ServiceCharge({ setActiveStep }: any) {
                   className="flex w-full rounded-md bg-white  h-[3.5rem] px-3 py-1 text-sm shadow-sm transition-colors"
                 >
                   <option value="">Select a bank</option>
-                  {bankData.map((option) => (
+                  {bankData.map((option: any) => (
                     <option value={option.name} key={option.name}>
                       {option.name}
                     </option>

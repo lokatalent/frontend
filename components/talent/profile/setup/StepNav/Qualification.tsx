@@ -8,9 +8,20 @@ import { showToast } from "@/store/auth/toastSlice";
 import { errorHandler } from "@/lib/utils";
 import { updateEducationProfile } from "@/services/profileService";
 import { updateEducationProfileData } from "@/store/talent/profile/TalentProfileSlice";
+import { useRouter } from "next/navigation";
+import {
+  Dialog,
+  DialogClose,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
+import { Button } from "@/components/ui/button";
+import { IoIosSend } from "react-icons/io";
+import { useState } from "react";
 
 const fileSchema = z
-  .instanceof(File) // Ensure it's a file instance
+  .instanceof(File)
   .refine((file) => file.size <= 5 * 1024 * 1024, {
     message: "File size must not exceed 5MB",
   })
@@ -21,21 +32,30 @@ const fileSchema = z
     }
   );
 
-// Define your schema
 const schema = z.object({
-  university: z.string().optional(),
-  degree: z.string().optional(),
-  field: z.string().optional(),
-  startdate: z.string().optional(),
+  university: z.string().nonempty("Enter your university"),
+  degree: z.string().nonempty("Select a degree"),
+  field: z.string().nonempty("Enter your field of study"),
+  startdate: z.string().nonempty("Enter your start date"),
   enddate: z.string().optional(),
-  // certificate: z.array(fileSchema).min(1, "Please upload at least one file"),
 });
 
-function Qualification({ setActiveStep }: any) {
+function Qualification({ setActiveStep, handleSkip }: any) {
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(schema),
   });
   const dispatch = useDispatch();
+  const router = useRouter();
+  const [isFinished, setIsFinished] = useState(false);
+
+  const resetDialog = () => {
+    setIsFinished(false);
+  };
+
+  const finishedStepHandler = () => {
+    router.push("/dashboard/profile");
+  };
+
   const onSubmit = async (data: any) => {
     console.log(data);
     let temp = {
@@ -53,7 +73,7 @@ function Qualification({ setActiveStep }: any) {
           message: errorHandler(response.data),
         })
       );
-      setActiveStep(2);
+      // setActiveStep(4);
       return;
     }
     dispatch(
@@ -63,13 +83,11 @@ function Qualification({ setActiveStep }: any) {
       })
     );
     dispatch(updateEducationProfileData(response.data));
-
-    // Additional submit logic here
+    setIsFinished(true);
   };
+
   const onError = (data: any) => {
     console.log(data);
-    //  setActiveStep(2);
-    // Additional submit logic here
   };
 
   return (
@@ -84,7 +102,7 @@ function Qualification({ setActiveStep }: any) {
               <TalentDynamicForm
                 type="select"
                 name="university"
-                label="Select University (Optional)"
+                label="Select University "
                 control={control}
                 options={[
                   { value: "OAU", label: "OAU" },
@@ -92,18 +110,19 @@ function Qualification({ setActiveStep }: any) {
                   { value: "Ibadan", label: "Ibadan" },
                 ]}
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+                required
               />
               <TalentDynamicForm
                 type="select"
                 name="degree"
-                label="Highest Degree Qualification (Optional)"
+                label="Highest Degree Qualification"
                 control={control}
                 options={[
                   { value: "MSE", label: "MSE" },
                   { value: "B.Sc", label: "B.Sc" },
                 ]}
-                // required for not optional
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+                required
               />
               <TalentDynamicForm
                 type="select"
@@ -126,35 +145,69 @@ function Qualification({ setActiveStep }: any) {
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
                 required
               />
-
               <TalentDynamicForm
                 type="date"
                 name="enddate"
-                label="End Date or Expected End Date (Optional)"
+                label="End Date or Expected End Date "
                 control={control}
                 className="w-[53rem]"
+                required
               />
-
               <TalentDynamicForm
                 type="file"
                 name="certificate"
-                label="Upload Your Certifications(Optional) "
+                label="Upload Your Certifications (Optional)"
                 control={control}
                 className="w-[53rem]"
+                
               />
             </div>
 
-            <div>
+            <div className="flex flex-col sm:flex-row sm:gap-6">
+              <Button variant="outline" onClick={handleSkip} className="mt-4">
+                Skip this step
+              </Button>
               <button
                 type="submit"
                 className="text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[10rem] md:w-[15rem] lg:w-[30rem] rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff]"
               >
-                Done
+                Submit
               </button>
             </div>
           </form>
         </div>
       </div>
+
+      <Dialog open={isFinished} onOpenChange={resetDialog}>
+        <DialogContent
+          className="w-full p-[3rem] sm:max-w-lg lg:max-w-[25rem]"
+          aria-describedby={undefined}
+        >
+          <DialogHeader>
+            <DialogTitle className="text-center">Changes Saved</DialogTitle>
+          </DialogHeader>
+          <div className="w-full space-y-3">
+            <div className="w-full text-center mt-2 flex-center">
+              <IoIosSend color="#3377FF" size={50} />
+            </div>
+            <p className="w-full text-center flex-center">
+              Your profile is complete! You can now proceed to verify your
+              address and ID in the settings to start accepting bookings
+            </p>
+          </div>
+          <div className="text-center mt-4">
+            <DialogClose>
+              <Button
+                type="button"
+                className="px-24 py-6 flex-center"
+                onClick={finishedStepHandler}
+              >
+                Done
+              </Button>
+            </DialogClose>
+          </div>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

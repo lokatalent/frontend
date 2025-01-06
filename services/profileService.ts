@@ -46,6 +46,21 @@ export const updateBankProfile = async (values: any) => {
   }
 };
 
+export const getBankProfile = async () => {
+  try {
+    // console.log(values)
+    let response = await http.get("users/profile/bank");
+    return { error: false, data: response?.data, status: response?.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err.response.data,
+      status: err.response.status,
+    };
+  }
+};
+
+
 export const updateProfileImage = async (values: any) => {
   try {
     let response = await http.patch("/users/profile/picture-update", values, formDataConfig);
@@ -61,34 +76,8 @@ export const updateProfileImage = async (values: any) => {
 };
 
 
-// FOR TALENT
-export const updateService = async (values: any) => {
-  try {
-    let response = await http.patch("/users/service", values);
-    console.log(response);
-    return { error: false, data: response.data, status: response.status };
-  } catch (err: any) {
-    return {
-      error: true,
-      data: err.response.data,
-      status: err.response.status,
-    };
-  }
-};
 
-export const getService = async (values: any) => {
-  try {
-    let response = await http.patch("/users/:id/service?service_type=cleaning", values);
-    console.log(response);
-    return { error: false, data: response.data, status: response.status };
-  } catch (err: any) {
-    return {
-      error: true,
-      data: err.response.data,
-      status: err.response.status,
-    };
-  }
-};
+
 export const updateEducationProfile = async (values: any) => {
   try {
     // console.log(values);

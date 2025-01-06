@@ -1,16 +1,17 @@
 "use client";
-import TalentDynamicForm from "@/components/ui/form/TalentDynamicForm";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { ChangeEvent, useRef, useState } from "react";
-import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
-import { setProfilePics } from "@/store/profile/profileSlice";
-import EditAvailability from "../../editing/EditAvailablity";
-import { createService } from "@/services/services";
+
+import { createService, getServiceType } from "@/services/services";
 import { errorHandler } from "@/lib/utils";
 import { showToast } from "@/store/auth/toastSlice";
+import { setService } from "@/store/talent/service/TalentServiceSlice";
+import EditAvailability from "../../editing/EditAvailablity";
+import TalentDynamicForm from "@/components/ui/form/TalentDynamicForm";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 interface Availability {
   [key: string]: {
@@ -39,6 +40,8 @@ const schema = z.object({
 
   // images: z.string().nonempty("Pls upload your images"),
 });
+const capitalize = (str) =>
+  str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
 function Portfolio({ setActiveStep }: any) {
   const id = useSelector((state: any) => state.auth.user.id);
@@ -55,6 +58,7 @@ function Portfolio({ setActiveStep }: any) {
 
   // State to manage availability
   const [availability, setAvailability] = useState(initialAvailability);
+  const [serviceType, setServiceType] = useState();
   const handleSaveAvailability = (
     updatedAvailability: typeof initialAvailability
   ) => {
@@ -63,28 +67,34 @@ function Portfolio({ setActiveStep }: any) {
     // Save the updated availability data to the server or elsewhere
   };
 
+  useEffect(() => {
+    const getBanks = async () => {
+      try {
+        const response = await getServiceType();
+        console.log(response);
+        const newResponse = response.data.map((type) => ({
+          value: type.service_type,
+          label: capitalize(type.service_type),
+        }));
+        console.log(newResponse);
+        setServiceType(newResponse);
+      } catch (error) {
+        // console.error("Error fetching service types:", error);
+        console.log(error);
+      }
+    };
+    getBanks();
+  }, []);
+
+
   const dispatch = useDispatch();
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(schema),
   });
-  const [selectedImage, setSelectedImage] = useState<any>();
-  const fileInputRef = useRef<HTMLInputElement>();
 
-  const handleImageSelect = (event: ChangeEvent<HTMLInputElement>): void => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const imageUrl: string = URL.createObjectURL(file);
-      setSelectedImage(imageUrl); // Make sure setSelectedImage is defined in your component
-      dispatch(setProfilePics(imageUrl));
-    }
-  };
-
-  const handleButtonClick = (): void => {
-    fileInputRef.current?.click();
-  };
   const onSubmit = async (data: any) => {
-    console.log(data);
-    console.log(availability);
+    // console.log(data);
+    // console.log(availability);
     let temp = {
       // id: id,
       // user_id: id,
@@ -125,11 +135,12 @@ function Portfolio({ setActiveStep }: any) {
       address: data.address,
     };
     const response = await createService(temp);
-    console.log(response);
+    // console.log(response);
     if (response.status === 200) {
       console.log(response.data);
+      dispatch(setService(response.data));
+      setActiveStep(2);
     } else {
-      setActiveStep(3);
       dispatch(
         showToast({
           status: "error",
@@ -140,7 +151,7 @@ function Portfolio({ setActiveStep }: any) {
     // Additional submit logic here
   };
   const onError = (data: any) => {
-    console.log(data);
+    // console.log(data);
     // setActiveStep(3);
     // Additional submit logic here
   };
@@ -148,42 +159,6 @@ function Portfolio({ setActiveStep }: any) {
   return (
     <div className="">
       <div className="flex gap-4 items-center flex-col justify-center">
-        <div className="flex items-center justify-between space-x-6">
-          <div className="relative w-32 h-32 rounded-full">
-            <div className="flex items-center justify-center bg-[#C4C4C424] shadow-lg p-2 w-full h-full rounded-full">
-              {selectedImage ? (
-                <Image
-                  src={selectedImage}
-                  alt="Profile"
-                  layout="fill"
-                  className="object-cover rounded-[100px]"
-                />
-              ) : (
-                <Image
-                  src="/Images/camera.png"
-                  alt="Notification Bing"
-                  width={20}
-                  height={20}
-                />
-              )}
-            </div>
-          </div>
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleImageSelect}
-            accept="image/*"
-            className="hidden"
-          />
-          <div>
-            <button
-              className="text-sm text-white bg-primaryBlue px-6 py-2 rounded"
-              onClick={handleButtonClick}
-            >
-              Add Profile Image
-            </button>
-          </div>
-        </div>
         <div className="w-full wmax mx-auto p-6">
           <form
             onSubmit={handleSubmit(onSubmit, onError)}
@@ -195,15 +170,11 @@ function Portfolio({ setActiveStep }: any) {
                 name="service"
                 label="Service Category"
                 control={control}
-                options={[
-                  { value: "driving", label: "Driving" },
-                  { value: "cleaning", label: "Cleaning" },
-                  { value: "washing", label: "Washing" },
-                ]}
+                options={serviceType}
                 required
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
               />
-              
+
               <TalentDynamicForm
                 type="number"
                 name="experience"
@@ -263,7 +234,7 @@ function Portfolio({ setActiveStep }: any) {
                 type="submit"
                 className="text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[10rem] md:w-[15rem] lg:w-[30rem] rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff]"
               >
-                Done
+                Next
               </button>
             </div>
           </form>

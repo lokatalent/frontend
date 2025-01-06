@@ -11,13 +11,16 @@ import Link from "next/link";
 import { IoSettingsOutline } from "react-icons/io5";
 import { FaRegUser } from "react-icons/fa";
 import { DivideSquare } from "lucide-react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 import { setLoggedin } from "@/store/auth/authSlice";
+import { Avatar } from "../ui/avatar";
+import Image from "next/image";
 
 const Menu: React.FC<{ username: string }> = ({ username }) => {
   const dispatch = useDispatch()
   const router = useRouter();
+  const avatar = useSelector((state) => state.auth.user.avatar)
   const logout = () => {
     dispatch(setLoggedin(false));
     sessionStorage.removeItem("lokaToken");
@@ -27,9 +30,14 @@ const Menu: React.FC<{ username: string }> = ({ username }) => {
     <Popover>
       <PopoverTrigger>
         <div className="flex items-center space-x-2 hover:bg-gray-100 target:bg-gray-100 rounded-md p-1">
-          <div className="flex h-8 w-8 items-center justify-center rounded-full bg-blue-500 text-white">
+          {!avatar ? <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white">
             {username.charAt(0)}
-          </div>
+          </div> :
+          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white">
+           <Image src={avatar} alt="My Avatar" height="40" width="40" className="rounded-full" />
+          </div>}
+
+          
           <p className="hidden md:block">{username}</p>
           <MdKeyboardArrowDown size={20} />
         </div>

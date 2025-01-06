@@ -15,8 +15,20 @@ import { FaPen } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Check, Info } from "lucide-react";
 import ChangesSaved from "../ChangesSaved";
-import { useSelector } from "react-redux";
-import { getService, updateService } from "@/services/profileService";
+import { useDispatch, useSelector } from "react-redux";
+// import { getService } from "@/services/profileService";
+// import {
+//   RootStateTalentService,
+//   setService,
+// } from "@/store/talent/service/TalentServiceSlice";
+
+import { errorHandler } from "@/lib/utils";
+import { showToast } from "@/store/auth/toastSlice";
+import { updateService } from "@/services/services";
+import { setService } from "@/store/talent/service/TalentServiceSlice";
+import { updateProfile } from "@/services/profileService";
+import { setUser } from "@/store/auth/authSlice";
+
 
 interface EditPortfolioProps {
   portfolioRateEdited: (data: EditPortfolioFormValues) => void;
@@ -50,8 +62,11 @@ export default function EditPortfolio({
   const [localSkills, setLocalSkills] = useState(skills);
   const [isOnline, setIsOnline] = useState(false);
   const [charCount, setCharCount] = useState(0);
-    const user = useSelector((state: any) => state.auth.user);
-
+  const user = useSelector((state: any) => state.auth.user);
+  const service = useSelector(
+    (state: any) => state.service.service
+  );
+  const dispatch = useDispatch();
 
   const {
     handleSubmit,
@@ -61,8 +76,8 @@ export default function EditPortfolio({
   } = useForm<EditPortfolioFormValues>({
     resolver: zodResolver(editPortfolioSchema),
     defaultValues: {
-      bio: "",
-      experience_years: "",
+      bio: user?.bio,
+      experience_years: service?.experience_years,
     },
   });
 
@@ -92,25 +107,42 @@ export default function EditPortfolio({
   const onSubmit = async (data: EditPortfolioFormValues) => {
     try {
       // await portfolioRateEdited(data);
-       console.log(user.id)
-    let requestTemp = {
-      id: user.id,
-    }
-    const responseGet = getService(requestTemp);
-    console.log('for response');
-    console.log(responseGet);
-    console.log('for response');
-    console.log(data);
-    let temp = {
-      experience_years: +data.experience_years,
-      service_type: "",
-      service_desc: "",
-      rate_per_hour: 0,
-      address: ''
+    let tempBio = {
+      state: user.state,
+      city: user.city,
+      country: user.country,
+      address: user.address,
+      gender: user.gender,
+      date_of_birth: user.dateofbirth,
+      bio: data.bio
     };
-    const response = await updateService( temp);
-    console.log(response);
+      const responseBio = await updateProfile(tempBio);
+      console.log(responseBio);
+      dispatch(setUser(responseBio.data));
+      
       console.log(data);
+      let temp = {
+        experience_years: +data.experience_years,
+        service_type: service?.service_type,
+        service_desc: service?.service_desc,
+        rate_per_hour: service?.rate_per_hour,
+        address: service?.address,
+        availablity: service?.availablity,
+      };
+      const response = await updateService(temp);
+      console.log(response);
+      if (response.status === 200) {
+        console.log(response.data);
+        dispatch(setService(response.data));
+      } else {
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(response.data),
+          })
+        );
+      }
+
       Object.entries(localSkills).forEach(([skill, value]) => {
         // for setting 2 or more skills
         // onSkillChange(skill, value);

@@ -12,6 +12,8 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import schedule from "@/public/Images/schedule.png";
+import { useDispatch } from "react-redux";
+import { setBookingLocation } from "@/store/profile/bookingSlice";
 
 interface Props {
   onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
@@ -34,17 +36,22 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
     setPlaceAutocomplete(new places.Autocomplete(inputRef.current, options));
   }, [places]);
 
+  const [selectedLocation, setSelectedLocation] = useState<any>(null);
+  const [isDisabled, setIsDisabled] = useState(false);
+  const router = useRouter();
+  const dispatch = useDispatch()
+
   useEffect(() => {
     if (!placeAutocomplete) return;
 
     placeAutocomplete.addListener("place_changed", () => {
       onPlaceSelect(placeAutocomplete.getPlace());
+      const place = placeAutocomplete.getPlace();
+      setSelectedLocation(place.formatted_address);
+      dispatch(setBookingLocation(place.formatted_address));
+      setIsDisabled(false);
     });
   }, [onPlaceSelect, placeAutocomplete]);
-
-  const [selectedLocation, setSelectedLocation] = useState("");
-  const [isDisabled, setIsDisabled] = useState(false);
-  const router = useRouter();
 
   return (
     <div className="border rounded-md w-full max-w-[350px] bg-white p-4">
@@ -57,7 +64,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
           placeholder="Apartment No/Name (optional)"
         />
         <input
-        placeholder="Street address/landmark"
+          placeholder="Street address/landmark"
           className="border-gray-200 rounded mb-3 px-3 text-sm border h-10 w-full focus:outline-blue-500"
           ref={inputRef}
         />

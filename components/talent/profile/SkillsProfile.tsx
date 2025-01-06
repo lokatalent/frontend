@@ -17,8 +17,8 @@ const SkillsProfile: React.FC<SkillsProfileProps> = ({ skillsSet }) => {
           Bio: {skillsSet.bio}
         </div>
         <div>
-          <p>Service Radius</p>
-          <p>1-4 KM</p>
+          <p>Rate per hour</p>
+          <p>{skillsSet.rate_per_hour}</p>
         </div>
         <div>
           <p>Years of Experience</p>

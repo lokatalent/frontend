@@ -12,6 +12,8 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import schedule from "@/public/Images/schedule.png";
+import { useDispatch } from "react-redux";
+import { setBookingLocation } from "@/store/profile/bookingSlice";
 
 interface Props {
   onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
@@ -37,6 +39,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
   const [selectedLocation, setSelectedLocation] = useState<any>(null);
   const [isDisabled, setIsDisabled] = useState(true);
   const router = useRouter();
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (!placeAutocomplete) return;
@@ -45,6 +48,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
       onPlaceSelect(placeAutocomplete.getPlace());
       const place = placeAutocomplete.getPlace()
       setSelectedLocation(place.formatted_address)
+      dispatch(setBookingLocation(place.formatted_address))
       setIsDisabled(false)
     });
   }, [onPlaceSelect, placeAutocomplete]);

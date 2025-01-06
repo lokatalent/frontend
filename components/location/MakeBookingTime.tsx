@@ -1,4 +1,5 @@
 "use client";
+
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 
@@ -17,6 +18,10 @@ import { Controller, useForm } from "react-hook-form";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { Spacer } from "../Spacer";
 import { useRouter } from "next/navigation";
+import { useDispatch, useSelector } from "react-redux";
+import { createBooking } from "@/services/bookingService";
+import { showToast } from "@/store/auth/toastSlice";
+import Spinner from "../ui/Spinner";
 
 type FormValues = {
   startTime: string;
@@ -25,7 +30,14 @@ type FormValues = {
 };
 
 const MakeBookingTime = () => {
+  const service = useSelector((state: any) => state.booking.service);
+  const services = useSelector((state: any) => state.booking.allServices);
+  const location = useSelector((state: any) => state.booking.location);
+  const user = useSelector((state: any) => state.auth.user);
+
   const router = useRouter();
+  const dispatch = useDispatch()
+
   const { handleSubmit, control, register } = useForm<FormValues>({
     defaultValues: {
       startTime: "",
@@ -34,16 +46,7 @@ const MakeBookingTime = () => {
     },
   });
 
-  const onSubmit = () => {
-    // console.log(data);
-    // handle submission logic here
-    router.push("talents");
-  };
-
   const [count, setCount] = useState(3.5);
-  const [showDuration, setShowDutration] = useState(false);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-
   const time = [
     {
       text: "7:00 - 7:30",
@@ -94,7 +97,7 @@ const MakeBookingTime = () => {
       value: "17",
     },
   ];
-
+  const [description, setDescription] = useState("");
   const [selectedTime, setSelectedTime] = useState("7");
   const [timeCheck, setTimeCheck] = useState(11);
 
@@ -110,8 +113,63 @@ const MakeBookingTime = () => {
     }
   };
 
-  const setDuration = () => {
-    setShowDutration(true);
+  const getPrice = () => {
+    let selected = services.filter(
+      (item: any) => item.service_type === service
+    );
+    return Number(selected[0].rate_per_hour) * Number(count);
+  };
+
+  const roundUpIfDecimal = (num: any) => {
+    if (num % 1 !== 0) {
+      // If the number has a fractional part, round it up
+      return Number(Math.ceil(num));
+    }
+    // If the number is already an integer, return it as is
+    return Number(num);
+  };
+
+  const [loading, setLoading] = useState(false)
+
+  const onSubmit = async () => {
+    let dateToday = new Date();
+    let data = {
+      requester_id: user.id,
+      requester_addr: location,
+      service_type: service,
+      booking_type: "instant",
+      service_desc: description,
+      start_time: `${selectedTime}:00:00+01:00`,
+      end_time: `${Number(selectedTime) + roundUpIfDecimal(count)}:00:00+01:00`,
+      start_date: dateToday.toISOString().split('T')[0],
+      end_date: dateToday.toISOString().split('T')[0],
+      total_price: getPrice(),
+    };
+    // handle submission logic here
+      setLoading(true);
+    const response = await createBooking(data);
+    if (!response.error) {
+      setLoading(false);
+      router.push(`talents?id=${response.data.id}`);
+    } else {
+      setLoading(false);
+      if (response.status === 401) {
+        dispatch(
+          showToast({
+            status: "error",
+            message: response.data.message,
+          })
+        );
+        return router.push("/login");
+      }
+
+      return dispatch(
+        showToast({
+          status: "error",
+          message: response.data.message,
+        })
+      );
+    }
   };
 
   useEffect(() => {
@@ -121,57 +179,6 @@ const MakeBookingTime = () => {
   return (
     <div className="p-6 pb-10 w-full max-w-[567px] mx-auto">
       <div className="">
-        <div className="hidden flex-row space-x-2">
-          {/* Start Time Input */}
-
-          <Controller
-            name="startTime"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <div className="flex flex-col w-full">
-                <Label htmlFor="description" className="text-md pb-3">
-                  Start Time*
-                </Label>
-                <div className="flex items-center  bg-white">
-                  <div className="relative w-full">
-                    <Input
-                      type="time"
-                      onChange={onChange}
-                      value={value}
-                      className="w-full p-6 pl-10"
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-          />
-
-          {/* End Time Input */}
-          <Controller
-            name="endTime"
-            control={control}
-            render={({ field: { onChange, value } }) => (
-              <div className="flex flex-col w-full">
-                <Label htmlFor="description" className="text-md pb-3">
-                  End Time*
-                </Label>
-                <div className="flex items-center  bg-white">
-                  <div className="relative w-full">
-                    <Input
-                      type="time"
-                      onChange={onChange}
-                      value={value}
-                      className="w-full p-6 pl-10"
-                    />
-                  </div>
-                </div>
-              </div>
-            )}
-          />
-        </div>
-        <p className="hidden text-xs text-textGray3 ">
-          Click on the clock icon to set time
-        </p>
         <div>
           <Label htmlFor="description" className="text-md pb-3">
             Start time
@@ -181,7 +188,7 @@ const MakeBookingTime = () => {
             id="time"
             value={selectedTime}
             onChange={(e) => setSelectedTime(e.target.value)}
-            className="h-12 w-full rounded-full border px-5 focus:outline-none"
+            className="h-14 w-full rounded-full border px-5 focus:outline-none mt-3"
           >
             {time.map((item, index) => (
               <option
@@ -204,69 +211,30 @@ const MakeBookingTime = () => {
               <FaMinus size={24} color={count <= 3.5 ? "#909090" : "black"} />
             </button>
             <h1 className="text-2xl">{count}</h1>
-            <button onClick={increase} disabled={count + Number(selectedTime) >= 17}>
-              <FaPlus size={24}  color={count + Number(selectedTime) >= 17 ? "#909090" : "black"} />
+            <button
+              onClick={increase}
+              disabled={count + Number(selectedTime) >= 17}
+            >
+              <FaPlus
+                size={24}
+                color={count + Number(selectedTime) >= 17 ? "#909090" : "black"}
+              />
             </button>
           </div>
         </div>
         <Spacer size={20} />
         {/* Description Text Area */}
-        <div>
+        <div className="flex flex-col">
           <Label htmlFor="description" className="text-md pb-3">
             Describe Your Task*
           </Label>
-          <Textarea className="bg-white h-40" {...register("description")} />
-        </div>
-        <div className="hidden">
-          <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-            <DialogTrigger className=" underline underline-offset-4 text-md ">
-              Set Hours Duration*
-            </DialogTrigger>
-            <DialogContent className="px-5 md:px-16 ">
-              <DialogHeader>
-                <DialogTitle className="text-lg md:text-3xl mt-5 text-center font-semibold">
-                  Booking Duration
-                </DialogTitle>
-                <DialogDescription className=" flex flex-col justify-center items-center">
-                  <p className="text-lg text-center py-3">
-                    Set the number of hours you want to book this talent for the
-                    job
-                  </p>
-                </DialogDescription>
-              </DialogHeader>
-              <Spacer />
-              <div className="flex flex-row justify-between shadow-lg rounded-full py-4 px-8 m-w-[496px]">
-                <button onClick={decrease} disabled={count <= 3.5}>
-                  <FaMinus size={24} />
-                </button>
-                <h1 className="text-2xl">{count}</h1>
-                <button onClick={increase} disabled={count >= 10}>
-                  <FaPlus size={24} />
-                </button>
-              </div>
-              <Spacer />
-              <div className="flex flex-row justify-center space-x-3 w-full">
-                <DialogClose asChild>
-                  <button className="btnOne" onClick={setDuration}>
-                    Accept
-                  </button>
-                </DialogClose>
-              </div>
-            </DialogContent>
-          </Dialog>
-
-          {showDuration && (
-            <div className="flex flex-row space-x-6 bg-white p-5 rounded-sm my-5">
-              <p>{count} hrs</p>
-
-              <button
-                className="text-primaryBlue cursor-pointer"
-                onClick={() => setIsDialogOpen(true)}
-              >
-                Edit Hours Duration
-              </button>
-            </div>
-          )}
+          <textarea
+            onChange={(e) => setDescription(e.target.value)}
+            className="p-5 focus:outline-none h-36 border rounded-lg"
+            name="description"
+            id="description"
+            value={description}
+          ></textarea>
         </div>
         <Spacer size={20} />
         <div className="w-full flex justify-center mt-8">
@@ -275,8 +243,7 @@ const MakeBookingTime = () => {
             className="btnOne max-w-[567px] p-4"
             onClick={onSubmit}
           >
-            {" "}
-            Proceed
+            {loading ? <Spinner /> : "Proceed"}
           </button>
         </div>
       </div>

@@ -24,11 +24,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className={nunito.className}>
-        <Navbar />
-        <div className="">{children}</div>
-      </body>
-    </html>
+    <div>
+      <Navbar />
+      <div className="">{children}</div>
+    </div>
   );
 }
