@@ -3,6 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
     service: '',
     location: '',
+    allServices: '',
 }
 
 const bookingSlice = createSlice({
@@ -15,8 +16,11 @@ const bookingSlice = createSlice({
       setBookingLocation: (state, {payload}) => {
         state.location = payload;
       },
+      setAllServices: (state, {payload}) => {
+        state.allServices = payload;
+      },
     }
   })
 
-  export const {setBookingLocation, setBookingService} = bookingSlice.actions
+  export const {setBookingLocation, setBookingService, setAllServices} = bookingSlice.actions
   export default bookingSlice.reducer

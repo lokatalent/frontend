@@ -7,20 +7,24 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { setBookingService } from "@/store/profile/bookingSlice";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CiSearch } from "react-icons/ci";
+import { useDispatch } from "react-redux";
 
 function DropDownElement() {
   const router = useRouter();
+  const dispatch = useDispatch();
   const [selectedService, setSelectedService] = useState("");
 
   const handleServiceChange = (value: string) => {
     setSelectedService(value);
-    bookService(value)
+    bookService(value);
   };
 
   const bookService = (selectedService: any) => {
+    dispatch(setBookingService(selectedService));
     router.push(`/location?service=${encodeURIComponent(selectedService)}`);
   };
 
@@ -59,9 +63,7 @@ function DropDownElement() {
           </SelectContent>
         </Select>
       </div>
-      <div
-        className="bg-[#ede8e8] h-12 md:h-14 xl:h-16 w-16 rounded flex items-center justify-center cursor-pointer"
-      >
+      <div className="bg-[#ede8e8] h-12 md:h-14 xl:h-16 w-16 rounded flex items-center justify-center cursor-pointer">
         <CiSearch color="black" />
       </div>
     </div>
