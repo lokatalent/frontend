@@ -56,7 +56,7 @@ const ServiceRate: React.FC<ServiceRateProps> = ({ isData, data = {} }) => {
                   <div className="absolute w-[10px] h-[10px] bg-orange-500 rounded-full right-0 top-1/2 -translate-y-1/2"></div>
                 </div>
                 <div className="text-gray-700 font-medium">
-                  {bankDetails.bank_name || ""}
+                  {bankDetails.bank_name || "Empty"}
                 </div>
               </div>
               {/* Account Number */}

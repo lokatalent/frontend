@@ -5,10 +5,13 @@ import {
   RootStateTalentService,
   setService,
 } from "@/store/talent/service/TalentServiceSlice";
-import { updateService } from "@/services/services";
+import { getAllService, updateService } from "@/services/services";
 import { showToast } from "@/store/auth/toastSlice";
 import { errorHandler } from "@/lib/utils";
 import EditAvailability from "./editing/EditAvailablity";
+import { RootStateProfile } from "@/store/profile/profileSlice";
+import { RootStateTalentProfileState } from "@/store/talent/profile/TalentProfileSlice";
+import { RootStateAuth } from "@/store/auth/authSlice";
 
 // type DayOfWeek =
 //   | "Monday"
@@ -43,7 +46,6 @@ interface DayAvailability {
 interface Availability {
   [key: string]: DayAvailability;
 }
-
 
 interface ServiceAvailability {
   [key: string]: TimeSlot;
@@ -94,7 +96,7 @@ function HoursProfile() {
   const service = useSelector(
     (state: RootStateTalentService) => state.service.service
   );
-  
+  const userID = useSelector((state: RootStateAuth) => state.auth.user.id);
 
   const mapServiceToAvailability = (serviceData: any): Availability => {
     return DAYS_OF_WEEK.reduce((acc, day) => {
@@ -130,7 +132,55 @@ function HoursProfile() {
 
   const handleSaveAvailability = async (updatedAvailability: Availability) => {
     try {
-      setAvailability(updatedAvailability);
+      // setAvailability(updatedAvailability);
+      const response1 = await getAllService(userID);
+      // if (response1?.data || response1.data.length > 0) {
+      if (!response1?.data || response1.data.length === 0) {
+        // dispatch(
+        //   setService({
+        //     experience_years: "",
+        //     service_type: "",
+        //     service_desc: "",
+        //     rate_per_hour: 0,
+        //     availability: {
+        //       monday: {
+        //         start: "",
+        //         end: "",
+        //       },
+        //       tuesday: {
+        //         start: "",
+        //         end: "",
+        //       },
+        //       wednesday: {
+        //         start: "",
+        //         end: "",
+        //       },
+        //       thursday: {
+        //         start: "",
+        //         end: "",
+        //       },
+        //       friday: {
+        //         start: "",
+        //         end: "",
+        //       },
+        //       saturday: {
+        //         start: "",
+        //         end: "",
+        //       },
+        //       sunday: {
+        //         start: "",
+        //         end: "",
+        //       },
+        //     },
+        //     address: "",
+        //   })
+        // );
+        dispatch(showToast({
+          status: "error",
+          message: "No services found for the user.",
+        }));
+        return;
+      }
 
       const updatedService = {
         experience_years: service.experience_years,
@@ -140,9 +190,7 @@ function HoursProfile() {
         address: service.address,
         availability: mapAvailabilityToService(updatedAvailability),
       };
-
       const response = await updateService(updatedService);
-
       if (response.status === 200) {
         dispatch(setService(response.data));
         dispatch(
@@ -154,6 +202,7 @@ function HoursProfile() {
       } else {
         throw new Error(errorHandler(response.data));
       }
+      // }
     } catch (error) {
       dispatch(
         showToast({
