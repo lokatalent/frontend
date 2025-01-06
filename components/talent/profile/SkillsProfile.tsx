@@ -16,6 +16,7 @@ const SkillsProfile: React.FC<SkillsProfileProps> = ({ skillsSet }) => {
    const service = useSelector(
      (state: RootStateTalentService) => state.service.service
    );
+   console.log(service.service_type)
           // Bio: {
           //   skillsSet.bio;
           // }
@@ -35,7 +36,7 @@ const SkillsProfile: React.FC<SkillsProfileProps> = ({ skillsSet }) => {
           {/* <p className="text-[#DF8600]">₦{skillsSet.rate_per_hour}/hr</p> */}
           <div className="flex items-end">
             <div className="text-orange-500 font-bold text-xl">
-              ₦{skillsSet.rate_per_hour}
+              ₦{service.rate_per_hour}
             </div>
             <div className="text-gray-500 font-medium">/hr</div>
           </div>
@@ -46,7 +47,7 @@ const SkillsProfile: React.FC<SkillsProfileProps> = ({ skillsSet }) => {
             <div className="absolute w-[30px] h-[2px] bg-orange-500 top-1/2 transform -translate-y-1/2"></div>
             <div className="absolute w-[5px] h-[5px] bg-orange-500 rounded-full right-0 top-1/2 transform -translate-y-1/2"></div>
           </div>
-          <p>{service.experience_years} Years</p>
+          <p>{service.experience_years|| 0}  Years</p>
         </div>
         <div className="flex items-center gap-4 sm:block">
           <p>Available to Work</p>

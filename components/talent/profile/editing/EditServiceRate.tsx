@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -19,6 +19,8 @@ import { errorHandler } from "@/lib/utils";
 import { updateBankProfile } from "@/services/profileService";
 import { useDispatch } from "react-redux";
 import { setBankDetailsData } from "@/store/talent/profile/TalentProfileSlice";
+import { useRouter } from "next/navigation";
+import axios from "axios";
 
 interface EditServiceRateProps {
   serviceRateEdited: (data: any) => void; // Adjust type as needed
@@ -32,7 +34,7 @@ const editServiceRateSchema = z.object({
     .regex(/^\d{10}$/, "Account number must be 10 digits")
     .nonempty("Account number is required"),
   rph: z.string().nonempty("Rate per hour must be a number"),
-  rps: z.string().nonempty("Rate per service must be a number"),
+  // rps: z.string().nonempty("Rate per service must be a number"),
 });
 
 type EditServiceRateFormValues = z.infer<typeof editServiceRateSchema>;
@@ -40,6 +42,25 @@ type EditServiceRateFormValues = z.infer<typeof editServiceRateSchema>;
 function EditServiceRate({ serviceRateEdited }: EditServiceRateProps) {
   const [isFinished, setIsFinished] = useState(false);
   const dispatch = useDispatch();
+   let [bankData, setBankData] = useState([]);
+
+   const router = useRouter();
+   useEffect(() => {
+     function extractBankDetails(bankArray: any) {
+       return bankArray.map((bank: any) => ({
+         id: bank.id,
+         name: bank.name,
+         code: bank.code,
+       }));
+       // .map(bank => bank.name);
+     }
+     let getBanks = async () => {
+       let response = await axios.get("https://api.paystack.co/bank");
+       const simplifiedBanks = extractBankDetails(response.data.data);
+       setBankData(simplifiedBanks);
+     };
+     getBanks();
+   }, []);
 
   const {
     handleSubmit,
@@ -48,10 +69,10 @@ function EditServiceRate({ serviceRateEdited }: EditServiceRateProps) {
   } = useForm<EditServiceRateFormValues>({
     resolver: zodResolver(editServiceRateSchema),
     defaultValues: {
-      bankName: "GTBank",
-      accountNo: "1234567890",
-      rps: "11098",
-      rph: "98745",
+      bankName: "",
+      accountNo: "",
+      // rps: "",
+      rph: "",
     },
   });
 
@@ -59,32 +80,36 @@ function EditServiceRate({ serviceRateEdited }: EditServiceRateProps) {
 
   const onSubmit = async (data: EditServiceRateFormValues) => {
     console.log("Submitted Data:", data);
-    serviceRateEdited(data);
-
-    let temp = {
-      bank_name: data.bankName,
-      bank_code: "044",
-      account_num: data.accountNo,
-      account_name: 'Kehad Talent'
-    };
-    const response = await updateBankProfile(temp);
-    console.log(response);
-    if (response.status !== 200) {
-      dispatch(
-        showToast({
-          status: "error",
-          message: errorHandler(response.data),
-        })
-      );
-      return;
-    }
-    dispatch(
-      showToast({
-        status: "success",
-        message: "Bank details updated successfully!",
-      })
-    );
-    dispatch(setBankDetailsData(response.data))
+        let temp = {
+          bank_name: data.bankName,
+          account_num: data.accountNo,
+          bank_code: "",
+        };
+        const matchedBank: any = bankData.find((bank: any) => bank.name === temp.bank_name);
+        if (matchedBank) {
+          temp.bank_code = matchedBank.code; // Update bank_code with the matching bank's code
+        }
+        console.log(temp);
+        // serviceRateEdited(data);
+    
+        const response = await updateBankProfile(temp);
+        console.log(response);
+        if (response.status !== 200) {
+          dispatch(
+            showToast({
+              status: "error",
+              message: errorHandler(response.data),
+            })
+          );
+          return;
+        }
+        dispatch(
+          showToast({
+            status: "success",
+            message: "Bank details updated successfully!",
+          })
+        );
+        dispatch(setBankDetailsData(response.data));
     setIsFinished(true); // Transition to confirmation view
   };
 
@@ -148,9 +173,9 @@ function EditServiceRate({ serviceRateEdited }: EditServiceRateProps) {
                       className="flex w-full rounded-md bg-white border border-gray-300 h-[3rem] px-3 py-1 text-sm shadow-sm transition-colors"
                     >
                       <option value="">Select a bank</option>
-                      {options.map((option) => (
-                        <option value={option} key={option}>
-                          {option}
+                      {bankData.map((option: any) => (
+                        <option value={option.name} key={option.name}>
+                          {option.name}
                         </option>
                       ))}
                     </select>
@@ -188,7 +213,7 @@ function EditServiceRate({ serviceRateEdited }: EditServiceRateProps) {
                 </p>
               )}
             </div>
-            <div className="w-[16rem]">
+            {/* <div className="w-[16rem]">
               <label htmlFor="rps" className="block text-sm font-medium mb-2">
                 Rate per Service
               </label>
@@ -207,7 +232,7 @@ function EditServiceRate({ serviceRateEdited }: EditServiceRateProps) {
               {errors.rps && (
                 <p className="text-red-500 text-sm">{errors.rps.message}</p>
               )}
-            </div>
+            </div> */}
             <div className="w-[16rem]">
               <label htmlFor="rph" className="block text-sm font-medium mb-2">
                 Rate per Hour

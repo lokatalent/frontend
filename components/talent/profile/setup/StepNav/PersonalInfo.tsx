@@ -83,10 +83,10 @@ function PersonalInfo({ setActiveStep }: any) {
   const onSubmit = async (data: any) => {
     // console.log(data);
     let temp = {
-      state: data.state,
-      city: data.city,
-      country: data.country,
-      address: data.address,
+      // state: data.state,
+      // city: data.city,
+      // country: data.country,
+      address: `${data.address}, ${data.city},${data.state}, ${data.country}, `,
       gender: data.gender,
       date_of_birth: data.dateofbirth,
     };

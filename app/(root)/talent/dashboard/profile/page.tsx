@@ -22,7 +22,6 @@ import { showToast } from "@/store/auth/toastSlice";
 import { errorHandler } from "@/lib/utils";
 import { RootStateProfile } from "@/store/profile/profileSlice";
 import {
-  RootStateTalentProfile,
   setBankDetailsData,
 } from "@/store/talent/profile/TalentProfileSlice";
 
@@ -86,8 +85,8 @@ export default function Profiles() {
   const { profileDetails, profilePics } = useSelector(
     (state: RootStateProfile) => state.profile
   );
-  const { bankDetails } = useSelector(
-    (state: RootStateTalentProfile) => state.talentProfile
+  const  bankDetails  = useSelector(
+    (state: any) => state.talentProfile.bankDetails
   );
   const service = useSelector(
     (state: RootStateTalentService) => state.service.service
@@ -97,7 +96,7 @@ export default function Profiles() {
   const avatar = useSelector((state: any) => state.auth.user.avatar);
 
   const [portfolioData, setPortfolioData] = useState<PortfolioData>({
-    experience: +service?.experience_years || 0,
+    experience: service?.experience_years || 0,
     bio: userBio || "",
     rate_per_hour: service?.rate_per_hour || 0,
     skillsSet: {
@@ -109,6 +108,20 @@ export default function Profiles() {
     },
   });
 
+  // setPortfolioData({
+  //   experience: service?.experience_years || 0,
+  //   bio: userBio || "",
+  //   rate_per_hour: service?.rate_per_hour || 0,
+  //   skillsSet: {
+  //     Washing: service?.service_type === "washing",
+  //     Sweeping: service?.service_type === "sweeping",
+  //     Cleaning: service?.service_type === "cleaning",
+  //     Driving: service?.service_type === "driving",
+  //     Cooking: service?.service_type === "cooking",
+  //   },
+  // })
+
+  console.log()
   const [serviceRate, setServiceRate] = useState<ServiceRateData>({
     bankName: bankDetails.bank_name,
     accountNo: bankDetails.account_num,
@@ -127,7 +140,8 @@ export default function Profiles() {
             message: "Failed to fetch profile data",
           })
         );
-        router.push('/login')
+        console.log(error);
+        // router.push('/login')
       }
     };
 
@@ -165,25 +179,100 @@ export default function Profiles() {
 
   const fetchService = async () => {
     const response1 = await getAllService(userId);
-   
+    console.log("All Services Response:", response1);
+
+    if (!response1?.data || response1.data.length === 0) {
+      dispatch(
+        setService({
+          experience_years: "",
+          service_type: "",
+          service_desc: "",
+          rate_per_hour: 0,
+          availability: {
+            monday: {
+              start: "",
+              end: "",
+            },
+            tuesday: {
+              start: "",
+              end: "",
+            },
+            wednesday: {
+              start: "",
+              end: "",
+            },
+            thursday: {
+              start: "",
+              end: "",
+            },
+            friday: {
+              start: "",
+              end: "",
+            },
+            saturday: {
+              start: "",
+              end: "",
+            },
+            sunday: {
+              start: "",
+              end: "",
+            },
+          },
+          address: "",
+        })
+      );
+      showToast({status: 'error', message: "No services found for the user."});
+      return;
+    }
+
+    // Fetch details for the first service type
     const response = await getService({
       id: userId,
-      service_type: response1.data[0].service_type,
+      service_type: response1.data[0]?.service_type,
     });
-  
+    console.log("Service Details Response:", response);
+
+    // Check if the response is successful
     if (response.status === 200) {
       dispatch(setService(response.data));
     } else {
+      console.error("Service Fetch Error:", response.data);
       throw new Error(errorHandler(response.data));
     }
+
+    // Handle errors gracefully
   };
 
   const fetchBankDetails = async () => {
-    const response = await getBankProfile();
-    if (response.status === 200) {
-      dispatch(setBankDetailsData(response.data));
-    } else {
-      throw new Error(errorHandler(response.data));
+    try {
+      const response = await getBankProfile();
+      console.log("Bank Profile Response:", response);
+
+      if (response.status === 200) {
+        // Dispatch bank details if the request is successful
+        dispatch(setBankDetailsData(response.data));
+        console.log("Bank Details Data:", response.data);
+      } else {
+        console.warn("Failed to fetch bank details:", response.data);
+        const noBankDetails = {
+          user_id: "",
+          bank_name: "",
+          account_name: "",
+          account_num: "",
+          bank_code: "",
+          created_at: "",
+          updated_at: "",
+        };
+
+        // Dispatch empty bank details in case of failure
+        dispatch(setBankDetailsData(noBankDetails));
+
+        // Throw an error with the handled message
+        throw new Error(errorHandler(response.data));
+      }
+    } catch (error) {
+      // Log any unexpected errors
+      console.error("Error fetching bank details:", error);
     }
   };
 
@@ -265,9 +354,9 @@ export default function Profiles() {
         linkTo="/talent/dashboard/profile/edit"
       />
 
-      <div className="card overflow-scrol mt-12">
+      <div className="card sm:overflow-hidden overflow-scrol mt-12">
         <div className="flex items-center mb-8 justify-between">
-          <div className="flex flex-row flex-wrap sm:space-x-6 text-sm">
+          <div className="flex flex-row flex-wrap sm:space-x-6 text-sm sm:text-xm">
             {["personal", "portfolio", "service", "reviews"].map((tab) => (
               <Button
                 key={tab}
@@ -275,7 +364,7 @@ export default function Profiles() {
                   activeTab === tab
                     ? "rounded-none border-b-2 border-primaryBlue text-primaryBlue pb-1"
                     : ""
-                } hover:no-underline text-[10px]`}
+                } hover:no-underline text-[10px] sm:text-[14px]`}
                 variant="link"
                 onClick={() => setActiveTab(tab as typeof activeTab)}
               >
@@ -302,4 +391,3 @@ export default function Profiles() {
     </div>
   );
 }
-

@@ -12,8 +12,8 @@ export const getOwnProfile = async () => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response.data,
+      status: err?.response.status,
     };
   }
 };
@@ -26,8 +26,8 @@ export const updateProfile = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response.data,
+      status: err?.response.status,
     };
   }
 };
@@ -40,8 +40,8 @@ export const updateBankProfile = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response.data,
+      status: err?.response.status,
     };
   }
 };
@@ -54,8 +54,8 @@ export const getBankProfile = async () => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response.data,
+      status: err?.response.status,
     };
   }
 };
@@ -69,8 +69,8 @@ export const updateProfileImage = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response.data,
+      status: err?.response.status,
     };
   }
 };
@@ -86,8 +86,8 @@ export const updateEducationProfile = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response.data,
+      status: err?.response.status,
     };
   }
 };

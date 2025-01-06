@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { RootStateTalentProfileState } from "@/store/talent/profile/TalentProfileSlice";
 
 interface ServiceRateProps {
   isData: boolean;
@@ -14,6 +16,9 @@ interface ServiceRateProps {
 
 const ServiceRate: React.FC<ServiceRateProps> = ({ isData, data = {} }) => {
   const { bankName = "N/A", accountNo = "N/A", rps = "0", rph = "0" } = data;
+  const bankDetails = useSelector(
+    (state: RootStateTalentProfileState) => state.talentProfile.bankDetails
+  );
 
   return (
     <div className="card p-6">
@@ -50,7 +55,9 @@ const ServiceRate: React.FC<ServiceRateProps> = ({ isData, data = {} }) => {
                   <div className="absolute w-full h-[2px] bg-orange-500 top-1/2 -translate-y-1/2"></div>
                   <div className="absolute w-[10px] h-[10px] bg-orange-500 rounded-full right-0 top-1/2 -translate-y-1/2"></div>
                 </div>
-                <div className="text-gray-700 font-medium">{bankName}</div>
+                <div className="text-gray-700 font-medium">
+                  {bankDetails.bank_name || ""}
+                </div>
               </div>
               {/* Account Number */}
               <div className="flex gap-2 items-center">
@@ -59,7 +66,9 @@ const ServiceRate: React.FC<ServiceRateProps> = ({ isData, data = {} }) => {
                   <div className="absolute w-full h-[2px] bg-orange-500 top-1/2 -translate-y-1/2"></div>
                   <div className="absolute w-[10px] h-[10px] bg-orange-500 rounded-full right-0 top-1/2 -translate-y-1/2"></div>
                 </div>
-                <div className="text-gray-700 font-medium">{accountNo}</div>
+                <div className="text-gray-700 font-medium">
+                  {bankDetails.account_num || 0}
+                </div>
               </div>
             </div>
           </div>
@@ -84,4 +93,3 @@ const ServiceRate: React.FC<ServiceRateProps> = ({ isData, data = {} }) => {
 };
 
 export default ServiceRate;
-
