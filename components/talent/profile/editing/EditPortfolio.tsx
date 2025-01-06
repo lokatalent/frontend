@@ -106,7 +106,7 @@ export default function EditPortfolio({
 
   const onSubmit = async (data: EditPortfolioFormValues) => {
     try {
-      // await portfolioRateEdited(data);
+      // portfolioRateEdited(data);
     let tempBio = {
       state: user.state,
       city: user.city,
@@ -267,7 +267,7 @@ export default function EditPortfolio({
             </div>
 
             {/* Skills Section */}
-            <div className="space-y-3">
+            {/* <div className="space-y-3">
               <label className="text-sm font-medium">Skills & Expertise</label>
               <div className="flex flex-wrap gap-3">
                 {Object.entries(localSkills).map(([skill, selected]) => (
@@ -291,10 +291,10 @@ export default function EditPortfolio({
                   </div>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             {/* Service Radius */}
-            <div className="flex items-center gap-6 p-4 rounded-lg">
+            {/* <div className="flex items-center gap-6 p-4 rounded-lg">
               <div className="flex  items-center gap-2">
                 <p className="text-sm font-medium">Service Radius</p>
 
@@ -306,7 +306,7 @@ export default function EditPortfolio({
               >
                 Change
               </button>
-            </div>
+            </div> */}
 
             {/* Online Status */}
             <div className="space-y-2">

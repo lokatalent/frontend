@@ -94,6 +94,7 @@ function HoursProfile() {
   const service = useSelector(
     (state: RootStateTalentService) => state.service.service
   );
+  
 
   const mapServiceToAvailability = (serviceData: any): Availability => {
     return DAYS_OF_WEEK.reduce((acc, day) => {
@@ -178,7 +179,7 @@ function HoursProfile() {
         </div>
       </div>
 
-      <div className="grid grid-cols-7 gap-4">
+      <div className="flex flex-wrap justify-center  sm:grid sm:grid-cols-7 gap-4">
         {DAYS_OF_WEEK.map((day) => (
           <DayDisplay
             key={day}

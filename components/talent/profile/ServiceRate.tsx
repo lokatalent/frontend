@@ -34,7 +34,8 @@ const ServiceRate: React.FC<ServiceRateProps> = ({ isData, data = {} }) => {
             </div>
             <div>
               <div className="text-gray-500 font-medium">Per service</div>
-              <div className="text-orange-500 font-bold text-4xl">₦{rps}</div>
+              <div className="text-orange-500 font-bold text-4xl">₦
+              {rps}</div>
             </div>
           </div> */}
 

@@ -27,62 +27,59 @@ function PersonalInfo({ setActiveStep }: any) {
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(schema),
   });
-    
+
   const fileInputRef = useRef<HTMLInputElement>();
-    const user = useSelector((state: any) => state.auth.user);
-    const [imageLoading, setImageLoading] = useState(false);
-    const [selectedImage, setSelectedImage] = useState<any>(
-      user.avatar ?? null
-    );
-  
+  const user = useSelector((state: any) => state.auth.user);
+  const [imageLoading, setImageLoading] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<any>(user.avatar ?? null);
 
-    const handleImageSelect = async (event: ChangeEvent<HTMLInputElement>) => {
-        const file = event.target.files?.[0];
-        if (file) {
-          setImageLoading(true);
-          const imageUrl: string = URL.createObjectURL(file);
-          const images = {
-            image: file,
-          };
-          const response = await updateProfileImage(images);
-          console.log(response)
-          if (!response.error) {
-            setImageLoading(false);
-            dispatch(
-              showToast({
-                status: "success",
-                message: "Image updated successfully",
-              })
-            );
-            let tempBio = {
-                  state: user.state,
-                  city: user.city,
-                  country: user.country,
-                  address: user.address,
-                  gender: user.gender,
-                  date_of_birth: user.dateofbirth,
-                  bio: response.data
-                };
-                  const responseBio = await updateProfile(tempBio);
-                  console.log(responseBio);
-                  dispatch(setUser(responseBio.data));
-          } else {
-            dispatch(
-              showToast({
-                status: "error",
-                message: response.data.message,
-              })
-            );
-          }
-          setSelectedImage(imageUrl);
-          // Make sure setSelectedImage is defined in your component
-          dispatch(setProfilePics(imageUrl));
-        }
+  const handleImageSelect = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      setImageLoading(true);
+      const imageUrl: string = URL.createObjectURL(file);
+      const images = {
+        image: file,
       };
+      const response = await updateProfileImage(images);
+      console.log(response);
+      if (!response.error) {
+        setImageLoading(false);
+        dispatch(
+          showToast({
+            status: "success",
+            message: "Image updated successfully",
+          })
+        );
+        let tempBio = {
+          state: user.state,
+          city: user.city,
+          country: user.country,
+          address: user.address,
+          gender: user.gender,
+          date_of_birth: user.dateofbirth,
+          bio: response.data,
+        };
+        const responseBio = await updateProfile(tempBio);
+        console.log(responseBio);
+        dispatch(setUser(responseBio.data));
+      } else {
+        dispatch(
+          showToast({
+            status: "error",
+            message: response.data.message,
+          })
+        );
+      }
+      setSelectedImage(imageUrl);
+      // Make sure setSelectedImage is defined in your component
+      dispatch(setProfilePics(imageUrl));
+    }
+  };
 
-    const handleButtonClick = (): void => {
-      fileInputRef.current?.click();
-    };
+  const handleButtonClick = (): void => {
+    fileInputRef.current?.click();
+  };
   const onSubmit = async (data: any) => {
     // console.log(data);
     let temp = {
@@ -94,7 +91,7 @@ function PersonalInfo({ setActiveStep }: any) {
       date_of_birth: data.dateofbirth,
     };
     const response = await updateProfile(temp);
-    
+
     if (response.status !== 200) {
       dispatch(
         showToast({
@@ -112,7 +109,7 @@ function PersonalInfo({ setActiveStep }: any) {
     );
     dispatch(setUser(response.data));
     setActiveStep(1);
-    
+
     // Additional submit logic here
   };
 
