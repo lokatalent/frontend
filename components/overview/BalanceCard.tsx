@@ -22,7 +22,7 @@ const BalanceCard = ({ text, number }: CardProp) => {
     <div className="w-full md:w-1/2 bg-balance-card bg-cover bg-center shadow-lg p-4 pl-6  border border-neutral-50 rounded-2xl flex flex-col justify-center items-center">
       <div className="flex flex-col justify-between w-full">
         <p className="text-sm  text-white">{text}</p>
-        <p className="text-2xl pt-0  font-bold text-white">${number}</p>
+        <p className="text-2xl pt-0  font-bold text-white">₦{number}</p>
         <div className="flex pt-5 gap-2">
           <Button
             size={"lg"}

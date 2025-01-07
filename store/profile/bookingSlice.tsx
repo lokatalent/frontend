@@ -19,8 +19,13 @@ const bookingSlice = createSlice({
       setAllServices: (state, {payload}) => {
         state.allServices = payload;
       },
+      resetBooking: (state) => {
+        state.service = "";
+        state.location = "";
+        state.allServices = "";
+      },
     }
   })
 
-  export const {setBookingLocation, setBookingService, setAllServices} = bookingSlice.actions
+  export const {setBookingLocation, setBookingService, setAllServices, resetBooking} = bookingSlice.actions
   export default bookingSlice.reducer
