@@ -33,7 +33,6 @@ export default function DeleteModal() {
 
   const modalDeleteHandler = () => {
     setIsDelete(false);
-    console.log("delete");
   };
 
   return (
