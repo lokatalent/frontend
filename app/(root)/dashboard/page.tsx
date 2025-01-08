@@ -19,6 +19,7 @@ export default function Dashboard() {
   const [bookings, setBookings] = useState([]);
   const dispatch = useDispatch();
   const router = useRouter();
+  const [bookingType, setBookingType] = useState("");
 
   // fetch bookings
   const fetchBookings = async (id: any) => {
@@ -27,18 +28,17 @@ export default function Dashboard() {
       requester_id: id,
       provider_id: "",
       service_type: "",
-      booking_type: "",
+      booking_type: bookingType,
       status: "",
       start_time: "",
       end_time: "",
       start_date: "",
       end_date: "",
     };
-    const response: any = await getAllBookings({data});
+    const response: any = await getAllBookings({ data });
     if (!response.error) {
-      setLoading(false)
+      setLoading(false);
       setBookings(response.data);
-      console.log("Bookings", response.data);
     } else {
       setLoading(false);
       if (response.status === 401) {
@@ -61,44 +61,45 @@ export default function Dashboard() {
   };
 
   // fetch services
-    const fetchServices = async () => {
-      setLoading(true);
-      const response = await getServices();
-      if (!response.error) {
-        setLoading(false);
-        // ask Paul to modify this object to add the name and value
-        dispatch(setAllServices(response.data))
-      } else {
-        setLoading(false);
-        if (response.status === 401) {
-          dispatch(
-            showToast({
-              status: "error",
-              message: response.data.message,
-            })
-          );
-          return router.push("/login");
-        }
-  
-        return dispatch(
+  const fetchServices = async () => {
+    setLoading(true);
+    const response = await getServices();
+    if (!response.error) {
+      setLoading(false);
+      // ask Paul to modify this object to add the name and value
+      dispatch(setAllServices(response.data));
+    } else {
+      setLoading(false);
+      if (response.status === 401) {
+        dispatch(
           showToast({
             status: "error",
             message: response.data.message,
           })
         );
+        return router.push("/login");
       }
-    };
+
+      return dispatch(
+        showToast({
+          status: "error",
+          message: response.data.message,
+        })
+      );
+    }
+  };
 
   // fetch notifications
 
-  const BookingData: any = [];
+  const changeType = (val: any) => {
+    setBookingType(val);
+  };
 
   useEffect(() => {
     if (user.is_verified) {
       fetchBookings(user.id);
-      fetchServices()
-    }
-    else {
+      fetchServices();
+    } else {
       dispatch(
         showToast({
           status: "success",
@@ -107,55 +108,56 @@ export default function Dashboard() {
       );
       router.push("/dashboard/profile/edit");
     }
-  }, []);
+  }, [bookingType]);
 
   return (
     <div>
-      {loading ? (
-        <PageSpinner />
-      ) : (
-        <div className="w-full space-y-6">
-          <div className="w-full flex justify-between items-center">
-            <div className="flex flex-col space-y-3">
-              <p className="text-3xl text-black font-bold">
-                Hello {user?.first_name}👋
-              </p>
-              <p className="text-[#6C727F]">
-                Ready to book? We’ve got you covered.
-              </p>
-            </div>
+      <div className="w-full space-y-6">
+        <div className="w-full flex justify-between items-center">
+          <div className="flex flex-col space-y-3">
+            <p className="text-3xl text-black font-bold">
+              Hello {user?.first_name}👋
+            </p>
+            <p className="text-[#6C727F]">
+              Ready to book? We’ve got you covered.
+            </p>
           </div>
-          <div className="w-full flex flex-col md:flex-row gap-4">
-            <BalanceCard text="Balance" number={0} />
-            <BookingCard />
-          </div>
+        </div>
+        <div className="w-full flex flex-col md:flex-row gap-4">
+          <BalanceCard text="Balance" number={0} />
+          <BookingCard />
+        </div>
 
-          <h1 className="font-medium text-2xl">Bookings</h1>
-          <div>
-            <div className="card">
+        <h1 className="font-medium text-2xl">Bookings</h1>
+        <div>
+          <div className="card">
+            {loading ? (
+              <PageSpinner />
+            ) : (
               <DataTable
                 columns={BookingColumns}
                 title="Bookings"
-                data={BookingData}
+                data={bookings}
                 isRole={true}
                 isSort={true}
                 path="/"
+                changeType={changeType}
+                bookingType={bookingType}
               />
-
-              {BookingData.length > 0 && (
-                <div className="flex justify-center mt-5">
-                  <Link
-                    href="/dashboard/bookings"
-                    className="px-10 py-4 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-                  >
-                    View all bookings
-                  </Link>
-                </div>
-              )}
-            </div>
+            )}
+            {bookings.length > 0 && (
+              <div className="flex justify-center mt-8">
+                <Link
+                  href="/dashboard/bookings"
+                  className="px-10 py-4 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+                >
+                  View all bookings
+                </Link>
+              </div>
+            )}
           </div>
         </div>
-      )}
+      </div>
     </div>
   );
 }

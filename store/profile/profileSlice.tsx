@@ -111,6 +111,25 @@ const profileSlice = createSlice({
         ...action.payload,
       };
     },
+    resetProfile: (state) => {
+      state.verification = "";
+      state.file = "";
+      state.profileDetails = { dateofBirth: "", city: "", address: "", state: "" };
+      state.profilePics = "";
+      state.information = {
+        name: "",
+        reason: "",
+        email: "",
+        phoneNumber: "",
+        altPhoneNumber: "",
+        address: "",
+        country: "",
+        state: "",
+        city: "",
+        dateOfBirth: "",
+        gender: "",
+      };
+    },
   },
 });
 
@@ -120,5 +139,6 @@ export const {
   setProfileDetails,
   setProfilePics,
   setInformation,
+  resetProfile,
 } = profileSlice.actions;
 export default profileSlice.reducer;

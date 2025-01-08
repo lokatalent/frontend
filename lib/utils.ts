@@ -10,21 +10,26 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 // utils/errorHandlers.js
-export const handleUnauthorizedError = (response: any, dispatch: any, router: any, showToast: any) => {
-  const errorMessage = response?.data?.message || "Unauthorized access. Please login again.";
-  
+export const handleUnauthorizedError = (
+  response: any,
+  dispatch: any,
+  router: any,
+  showToast: any
+) => {
+  const errorMessage =
+    response?.data?.message || "Unauthorized access. Please login again.";
+
   // Dispatch the error toast message
   dispatch(showToast({ status: "error", message: errorMessage }));
-  
+
   // Redirect to login page
   router.push("/login");
 };
 
-
 export const setToken = (accessToken: string, refreshToken: string) => {
-  sessionStorage.setItem("lokaToken", accessToken)
-  sessionStorage.setItem("lokaRefreshToken", refreshToken)
-}
+  sessionStorage.setItem("lokaToken", accessToken);
+  sessionStorage.setItem("lokaRefreshToken", refreshToken);
+};
 
 export const errorHandler = (err: any) => {
   if (!err) return;
@@ -76,16 +81,14 @@ export const SignUpFormSchema = z
       .string()
       .min(1, "Phone number is required")
       .regex(/^[0-9]{10,15}$/, "Invalid phone number format"),
-    newPassword: z
-      .string()
-      .min(8, "Password must be at least 8 characters"),
-      // ADD THIS IF A SYMBOL IS REQUIRED
-      
-      // .regex(
-      //   /[!@#$%^&*(),.?":{}|<>]/,
-      //   "Password must contain at least one symbol"
-      // )
-      // .regex(/\d/, "Password must contain at least one number"),
+    newPassword: z.string().min(8, "Password must be at least 8 characters"),
+    // ADD THIS IF A SYMBOL IS REQUIRED
+
+    // .regex(
+    //   /[!@#$%^&*(),.?":{}|<>]/,
+    //   "Password must contain at least one symbol"
+    // )
+    // .regex(/\d/, "Password must contain at least one number"),
     confirmPassword: z
       .string()
       .min(8, "Password must be at least 8 characters"),
@@ -134,7 +137,7 @@ export const passwordFormSchema = z
 
 export const allowedCountries = ["Nigeria", "India", "Senegal", "Australia"];
 export const profileFormSchema = z.object({
-  dateofBirth: z.string({
+  dateOfBirth: z.string({
     required_error: "Date of birth is required",
   }),
 
@@ -200,6 +203,13 @@ export const securityPhoneNumberSchema = z.object({
     .max(15, "Phone number cannot exceed 15 digits"),
   // .regex(/^\+?[1-9]\d{1,14}$/, "Invalid phone number format"),
 });
+
+export const shortenSentence = (str: string, val: number) => {
+  if (!str) return "";
+  val = val ? val : 400;
+  let temp = str?.slice(0, val);
+  return temp?.length < val ? temp : temp + "...";
+};
 
 export const formatPhone = (phone: string) => {
   phone = phone.toString();

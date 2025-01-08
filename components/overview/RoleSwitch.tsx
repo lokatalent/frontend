@@ -22,7 +22,7 @@ type Role = string;
 
 const RoleSwitch: React.FC<RoleSwitchProps> = ({
   roles,
-  initialRole = "",
+  initialRole,
   onRoleChange,
   className,
   type,
@@ -31,14 +31,6 @@ const RoleSwitch: React.FC<RoleSwitchProps> = ({
   const [selectedRole, setSelectedRole] = useState(initialRole);
   const pathname = usePathname();
   const router = useRouter();
-
-  useEffect(() => {
-    // Automatically set selected role based on pathname if it matches
-    const matchedRole = roles.find((role) => pathname.includes(role.value));
-    if (matchedRole) {
-      setSelectedRole(matchedRole.value);
-    }
-  }, [pathname, roles]);
 
   // Default active and disabled styles
   const defaultActiveClass =
@@ -69,7 +61,7 @@ const RoleSwitch: React.FC<RoleSwitchProps> = ({
               onClick={() => handleRoleChange(role.value)}
               variant="ghost"
               className={`${
-                selectedRole === role.value || pathname.includes(role.value)
+                selectedRole === role.value
                   ? defaultActiveClass
                   : defaultDisabledClass
               } px-3 py-2`}

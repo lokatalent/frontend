@@ -38,7 +38,7 @@ const links = [
   },
   {
     id: 4,
-    name: "Notification",
+    name: "Notifications",
     icon: <IoWalletOutline />,
     link: "/dashboard/notification",
   },
@@ -56,7 +56,7 @@ const SideNav = ({ talent }: { talent?: boolean }) => {
 
   return (
     <div>
-      <div className="bg-primaryBlue w-[200px] h-screen fixed z-[20] text-white p-8 flex-col justify-between hidden xl:flex">
+      <div className="bg-primaryBlue w-[200px] h-screen fixed z-[20] text-white py-8 px-5 flex-col justify-between hidden xl:flex">
         <div>
           <Link href="/landing">
             <span className="text-lg font-bold text-white">LokaTalent</span>
@@ -77,7 +77,7 @@ const SideNav = ({ talent }: { talent?: boolean }) => {
                   pathname === link.link ? "bg-white/30" : ""
                 } text-white flex space-x-3 items-center font-semibold p-3 hover:p-3 focus:p-3 hover:bg-white/30 ocus:bg-white/30 rounded-lg`}
               >
-                {link.icon}
+                <span className="shrink-0">{link.icon}</span>
                 <p>{link.name}</p>
               </Link>
             ))}
@@ -155,20 +155,25 @@ const SideNav = ({ talent }: { talent?: boolean }) => {
                 <div className="text-white">
                   <Link
                     href={
-              talent
-                ? "/talent/dashboard/settings/profile"
-                : "/dashboard/settings/profile"
-            }
+                      talent
+                        ? "/talent/dashboard/settings/profile"
+                        : "/dashboard/settings/profile"
+                    }
                     className="flex space-x-3 items-center font-semibold p-3 hover:p-3 focus:p-3 hover:bg-white/30 focus:bg-white/30 rounded-lg"
                   >
-                    <IoSettingsOutline /> <p>Settings</p>
+                    <span className="shrink-0">
+                      <IoSettingsOutline />{" "}
+                    </span>
+                    <p>Settings</p>
                   </Link>
                   <div className="font-semibold p-3 hover:p-3 focus:p-3 hover:text-white hover:bg-white/30 focus:bg-white/30 rounded-lg">
                     <button
                       onClick={() => router.push("/login")}
                       className="flex space-x-3 items-center"
                     >
-                      <HiArrowRightEndOnRectangle />
+                      <span className="shrink-0">
+                        <HiArrowRightEndOnRectangle />
+                      </span>
                       <p>Logout</p>
                     </button>
                   </div>

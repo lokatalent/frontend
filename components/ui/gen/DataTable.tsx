@@ -37,6 +37,8 @@ interface DataTableProps<TData, TValue> {
   isSort: boolean;
   isRole: boolean;
   talent?: boolean;
+  changeType?: any;
+  bookingType?: any;
 }
 interface GlobalFilter {
   globalFilter: any;
@@ -59,6 +61,8 @@ function DataTable<TData, TValue>({
   isSort,
   isRole,
   talent,
+  changeType,
+  bookingType,
 }: DataTableProps<TData, TValue>) {
   const router = useRouter();
   const [sort, setSort] = useState(""); // Initial selected option
@@ -87,12 +91,14 @@ function DataTable<TData, TValue>({
     );
   };
 
-  const roleHandler = (role: string) => {};
+  const roleHandler = (role: string) => {
+    changeType(role);
+  };
 
   const bookingRoles = [
-    { value: "all", label: "All" },
-    { value: "instant-bookings", label: "Instant" },
-    { value: "schedule-bookings", label: "Scheduled" },
+    { value: "", label: "All" },
+    { value: "instant", label: "Instant" },
+    { value: "scheduled", label: "Scheduled" },
   ];
 
   const sortHandler = (role: string) => {
@@ -108,7 +114,7 @@ function DataTable<TData, TValue>({
         <div className="flex flex-col sm:flex-row gap-5 justify-between items-start sm:items-center">
           {isRole ? (
             <RoleSwitch
-              initialRole="all"
+              initialRole={bookingType}
               roles={bookingRoles}
               onRoleChange={roleHandler}
             />
@@ -143,6 +149,7 @@ function DataTable<TData, TValue>({
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
                 <TableRow
+                  className="h-14"
                   key={row.id}
                   data-state={row.getIsSelected() && "selected"}
                   onClick={() =>
@@ -152,7 +159,7 @@ function DataTable<TData, TValue>({
                   }
                 >
                   {row.getVisibleCells().map((cell) => (
-                    <TableCell key={cell.id} className="w-1/5">
+                    <TableCell key={cell.id} className="w-1/5 h-14">
                       {flexRender(
                         cell.column.columnDef.cell,
                         cell.getContext()
