@@ -1,4 +1,4 @@
-"use client"
+"use client";
 import React, { useState } from "react";
 import {
   Dialog,
@@ -11,16 +11,24 @@ import {
 import { Button } from "@/components/ui/button";
 import { RiDeleteBinLine } from "react-icons/ri";
 import { deleteUserAccount } from "@/services/authService";
-
+import { handleUnauthorizedError } from "@/lib/utils";
+import { showToast } from "@/store/auth/toastSlice";
+import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 
 export default function DeleteModal() {
   const [isDelete, setIsDelete] = useState(false);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const modalSwitchHandler = async () => {
-    setIsDelete(true);
-    console.log("delete done");
     const response = await deleteUserAccount();
     console.log(response);
+    if (!response.error) {
+      setIsDelete(true);
+    } else {
+      handleUnauthorizedError(response, dispatch, router, showToast);
+    }
   };
 
   const modalDeleteHandler = () => {

@@ -39,6 +39,9 @@ const schema = z.object({
   service_rate: z.string().nonempty("Input your service rate per hour"),
   service_desc: z.string().nonempty("Enter your service description"),
   address: z.string().nonempty("Add your address"),
+  city: z.string().nonempty("Pls enter your city name"),
+  state: z.string().nonempty("Pls enter your city state"),
+  country: z.string().nonempty("Please select a country name"),
 
   // images: z.string().nonempty("Pls upload your images"),
 });
@@ -54,7 +57,7 @@ function extractCityStateAndCountry(address: string) {
   if (city && state && country) {
     return `${city}, ${state}, ${country}`;
   } else {
-    return 'city, state, Nigeria';
+    return "city, state, Nigeria";
   }
 }
 
@@ -63,10 +66,12 @@ const address = "6, Broad street, Lagos,Lagos, Nigeria,";
 const result = extractCityStateAndCountry(address);
 console.log(result); // Outputs: Lagos, Nigeria
 
-
 function Portfolio({ setActiveStep }: any) {
-  const userAddress = useSelector((state: RootStateAuth) => state.auth.user.address);
+  const userAddress = useSelector(
+    (state: RootStateAuth) => state.auth.user.address
+  );
   const router = useRouter();
+  const [error, setError] = useState<string[] | null | string>("");
   
 
   const initialAvailability = {
@@ -109,7 +114,6 @@ function Portfolio({ setActiveStep }: any) {
     getBanks();
   }, []);
 
-
   const dispatch = useDispatch();
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(schema),
@@ -118,7 +122,7 @@ function Portfolio({ setActiveStep }: any) {
   const onSubmit = async (data: any) => {
     // console.log(data);
     // console.log(availability);
-    let extractedAddress = extractCityStateAndCountry(address);
+ ;
     let temp = {
       // id: id,
       // user_id: id,
@@ -157,8 +161,7 @@ function Portfolio({ setActiveStep }: any) {
         },
       },
       // address: data.address,
-      address: `${data.address}, ${extractedAddress}`,
-
+      address: `${data.address}, ${data.city},${data.state}, ${data.country}`,
     };
     const response = await createService(temp);
     if (!response.error) {
@@ -179,7 +182,8 @@ function Portfolio({ setActiveStep }: any) {
     // Additional submit logic here
   };
   const onError = (data: any) => {
-    // console.log(data);
+    console.log(data);
+    setError(data)
     // setActiveStep(3);
     // Additional submit logic here
   };
@@ -199,6 +203,7 @@ function Portfolio({ setActiveStep }: any) {
                 label="Service Category"
                 control={control}
                 options={serviceType}
+            
                 required
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
               />
@@ -219,14 +224,7 @@ function Portfolio({ setActiveStep }: any) {
                 required
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
               />
-              <TalentDynamicForm
-                type="text"
-                name="address"
-                label="Address"
-                control={control}
-                required
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-              />
+
               <TalentDynamicForm
                 type="text"
                 name="service_desc"
@@ -235,6 +233,41 @@ function Portfolio({ setActiveStep }: any) {
                 required
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
               />
+              <TalentDynamicForm
+                type="select"
+                name="country"
+                label="Country"
+                control={control}
+                defaultOption="Nigeria"
+                options={[{ value: "Nigeria", label: "Nigeria" }]}
+                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+                required
+              />
+              <TalentDynamicForm
+                type="text"
+                name="city"
+                label="City"
+                control={control}
+                required
+                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+              />
+              <TalentDynamicForm
+                type="text"
+                name="state"
+                label="State"
+                control={control}
+                required
+                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+              />
+              <TalentDynamicForm
+                type="text"
+                name="address"
+                label="Address"
+                control={control}
+                required
+                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+              />
+
               {/* <TalentDynamicForm
                     type="file"
                     name="images"

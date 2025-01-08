@@ -182,12 +182,12 @@ export default function ProfileStep() {
                 })}
               </div>
             )}
-            {activeStep === 11 && <PersonalInfo setActiveStep={setActiveStep} />}
-            {activeStep === 1 && <Portfolio setActiveStep={setActiveStep} />}
+            {activeStep === 1 && <PersonalInfo setActiveStep={setActiveStep} />}
+            {activeStep === 0 && <Portfolio setActiveStep={setActiveStep} />}
             {activeStep === 2 && (
               <ServiceCharge setActiveStep={setActiveStep} />
             )}
-            {activeStep === 0 && (
+            {activeStep === 4 && (
               <div className="space-y-4">
                 <Qualification
                   setActiveStep={setActiveStep}

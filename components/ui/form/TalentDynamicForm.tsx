@@ -14,6 +14,7 @@ type BaseFieldProps = {
   required?: boolean;
   disabled?: boolean;
   placeholder?: string;
+  error?: any;
 };
 
 type TextFieldProps = BaseFieldProps & {
@@ -55,8 +56,10 @@ const TalentDynamicForm: React.FC<FormFieldProps> = ({
     fieldState: { error },
   }: {
     field: any;
-    fieldState: { error?: FieldError };
+      fieldState: { error?: FieldError };
+    
   }) => {
+    console.log(field, error);
     switch (type) {
       case "select": {
         const { options = [], defaultOption } = props as SelectFieldProps;
