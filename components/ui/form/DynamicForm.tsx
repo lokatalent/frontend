@@ -338,19 +338,21 @@ const DynamicForm = ({
         }
       };
 
-      const bankResponse = await updateBankProfile(bankData);
-      if (!bankResponse.error) {
-        setLoading(false);
-        onUpdateProfile();
-      } else {
-        setLoading(false);
-        dispatch(
-          showToast({
-            status: "error",
-            message: errorHandler(bankResponse.data),
-          })
-        );
-      }
+      onUpdateProfile()
+
+      // const bankResponse = await updateBankProfile(bankData);
+      // if (!bankResponse.error) {
+      //   setLoading(false);
+      //   onUpdateProfile();
+      // } else {
+      //   setLoading(false);
+      //   dispatch(
+      //     showToast({
+      //       status: "error",
+      //       message: errorHandler(bankResponse.data),
+      //     })
+      //   );
+      // }
     } else if (buttonAction === "edit-address") {
       setLoading(false);
       dispatch(

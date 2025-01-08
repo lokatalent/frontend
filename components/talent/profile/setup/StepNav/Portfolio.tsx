@@ -5,13 +5,15 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 
 import { createService, getServiceType } from "@/services/services";
-import { errorHandler } from "@/lib/utils";
+import { errorHandler, handleUnauthorizedError } from "@/lib/utils";
 import { showToast } from "@/store/auth/toastSlice";
 import { setService } from "@/store/talent/service/TalentServiceSlice";
 import EditAvailability from "../../editing/EditAvailablity";
 import TalentDynamicForm from "@/components/ui/form/TalentDynamicForm";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { RootStateAuth } from "@/store/auth/authSlice";
+import { useRouter } from "next/navigation";
 
 interface Availability {
   [key: string]: {
@@ -40,11 +42,32 @@ const schema = z.object({
 
   // images: z.string().nonempty("Pls upload your images"),
 });
-const capitalize = (str) =>
+const capitalize = (str: any) =>
   str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
+function extractCityStateAndCountry(address: string) {
+  const parts = address.split(",").map((part) => part.trim()); // Split and trim each part
+  const city = parts[parts.length - 3];
+  const state = parts[parts.length - 4];
+  const country = parts[parts.length - 2];
+
+  if (city && state && country) {
+    return `${city}, ${state}, ${country}`;
+  } else {
+    return 'city, state, Nigeria';
+  }
+}
+
+// Example usage:
+const address = "6, Broad street, Lagos,Lagos, Nigeria,";
+const result = extractCityStateAndCountry(address);
+console.log(result); // Outputs: Lagos, Nigeria
+
+
 function Portfolio({ setActiveStep }: any) {
-  const id = useSelector((state: any) => state.auth.user.id);
+  const userAddress = useSelector((state: RootStateAuth) => state.auth.user.address);
+  const router = useRouter();
+  
 
   const initialAvailability = {
     Monday: { isActive: true, from: "09:00", to: "17:00" },
@@ -72,7 +95,7 @@ function Portfolio({ setActiveStep }: any) {
       try {
         const response = await getServiceType();
         console.log(response);
-        const newResponse = response.data.map((type) => ({
+        const newResponse = response.data.map((type: any) => ({
           value: type.service_type,
           label: capitalize(type.service_type),
         }));
@@ -95,6 +118,7 @@ function Portfolio({ setActiveStep }: any) {
   const onSubmit = async (data: any) => {
     // console.log(data);
     // console.log(availability);
+    let extractedAddress = extractCityStateAndCountry(address);
     let temp = {
       // id: id,
       // user_id: id,
@@ -132,15 +156,19 @@ function Portfolio({ setActiveStep }: any) {
           end: availability.Sunday.to,
         },
       },
-      address: data.address,
+      // address: data.address,
+      address: `${data.address}, ${extractedAddress}`,
+
     };
     const response = await createService(temp);
-    // console.log(response);
-    if (response.status === 200) {
+    if (!response.error) {
+      // success
       console.log(response.data);
       dispatch(setService(response.data));
       setActiveStep(2);
     } else {
+      // error
+      handleUnauthorizedError(response, dispatch, router, showToast);
       dispatch(
         showToast({
           status: "error",

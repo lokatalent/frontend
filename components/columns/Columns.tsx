@@ -1,4 +1,5 @@
 "use client";
+import { shortenSentence } from "@/lib/utils";
 import { ColumnDef } from "@tanstack/react-table";
 import { StaticImageData } from "next/image";
 
@@ -60,6 +61,17 @@ export const BookingColumns: ColumnDef<BookingType>[] = [
   {
     accessorKey: "requester_addr",
     header: "Location",
+    cell: ({ row }) => {
+      const location: string = row.getValue("requester_addr");
+
+      return (
+        <div className="flex items-center">
+          <p className="capitalize">
+            {shortenSentence(location, 30)}
+          </p>
+        </div>
+      );
+    },
   },
   {
     accessorKey: "status",

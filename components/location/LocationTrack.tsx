@@ -16,7 +16,7 @@ import { MdLocationSearching } from "react-icons/md";
 import schedule from "@/public/Images/schedule.png";
 import { useRouter } from "next/navigation";
 
-const LocationTrack = ({ mapping, setMapping, dashboard }) => {
+const LocationTrack = ({ mapping, setMapping, dashboard, onTrack }: any) => {
   const [streetName, setStreetName] = useState("");
   const [locationError, setLocationError] = useState(false);
 
@@ -29,7 +29,7 @@ const LocationTrack = ({ mapping, setMapping, dashboard }) => {
       navigator.geolocation.getCurrentPosition(
         (position) => {
           const { latitude, longitude } = position.coords;
-          console.log("LATITUDE", latitude);
+          console.log("LOCATION", latitude, longitude);
 
           // Use Google Maps Geocoding API to get the address;
           const geocodingUrl = `https://maps.googleapis.com/maps/api/geocode/json?latlng=${latitude},${longitude}&key=${process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY}`;
@@ -38,6 +38,7 @@ const LocationTrack = ({ mapping, setMapping, dashboard }) => {
             .then((response) => response.json())
             .then((data) => {
               const addressComponents = data.results[0].address_components;
+              onTrack(data.results[0].formatted_address)
               const streetNumber = addressComponents.find((component) =>
                 component.types.includes("street_number")
               );
@@ -72,7 +73,7 @@ const LocationTrack = ({ mapping, setMapping, dashboard }) => {
   return (
     <div className="flex justify-center ">
       {mapping ? (
-        <div className="bg-map h-svh max-h-[700px] w-full">
+        <div className="hidden bg-map h-svh max-h-[700px] w-full">
           <button onClick={() => setMapping(false)} className="m-8">
             <FaArrowLeft />
           </button>

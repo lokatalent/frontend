@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 type Notification = {
   id: string;
   title: string;
-  description: string;
+  message: string;
   icon: string;
   statusNotification: "read" | "unread"; // Added status property
   name: string;
@@ -31,12 +31,14 @@ type NotificationResponse = {
 };
 type Role = "all" | "unread";
 
-
-export default function OverallNotification({ isNotified, notifications}: NotificationResponse) {
-    const [role, setRole] = useState<Role>("all");
-    const [filteredNotifications, setFilteredNotifications] = useState<
-      Notification[]
-    >([]);
+export default function OverallNotification({
+  isNotified,
+  notifications,
+}: NotificationResponse) {
+  const [role, setRole] = useState<Role>("all");
+  const [filteredNotifications, setFilteredNotifications] = useState<
+    Notification[]
+  >([]);
 
   const bookingRoles = [
     { value: "all", label: "All" },
@@ -44,41 +46,41 @@ export default function OverallNotification({ isNotified, notifications}: Notifi
   ];
 
   useEffect(() => {
-    
-  })
-   const body = {
-     type: "5f68d6ba-c4e4-436c-8049-150d0ed5085b",
-     booking_id: "5f68d6ba-c4e4-436c-8049-150d0ed5085b",
-   };
+    async function getAllNotifications() {
+      const notificationss = await getNotifications();
 
-  //  const notificationss = await getNotifications(body);
-
-  //  console.log(notificationss);
-
-
-  const handleRoleChange = (role: Role) => {    
-      setRole(role); // Update the state to reflect the selected role
+      console.log(notificationss);
+    }
+    getAllNotifications();
+  }, []);
+  const body = {
+    type: "5f68d6ba-c4e4-436c-8049-150d0ed5085b",
+    booking_id: "5f68d6ba-c4e4-436c-8049-150d0ed5085b",
   };
 
-  
+  const handleRoleChange = (role: Role) => {
+    setRole(role); // Update the state to reflect the selected role
+  };
+
   function filterNotifications(data: Notification[], role: string) {
-      if (role === "all") {
-          // Return all notifications if the role is "all"
-          return data;
-        } else if (role === "unread") {
-            // Return only notifications with `statusNotification` equal to "unread"
-            return data.filter(
-                (notification: Notification) => notification.statusNotification === "unread"
-            );
-        }
-        // If role doesn't match "all" or "unread", return an empty array or handle as needed
-        return [];
+    if (role === "all") {
+      // Return all notifications if the role is "all"
+      return data;
+    } else if (role === "unread") {
+      // Return only notifications with `statusNotification` equal to "unread"
+      return data.filter(
+        (notification: Notification) =>
+          notification.statusNotification === "unread"
+      );
     }
-    
-    useEffect(() => {
-        const OldNor: Notification[] = filterNotifications(notifications, role);
-        setFilteredNotifications(OldNor);
-    }, [role])
+    // If role doesn't match "all" or "unread", return an empty array or handle as needed
+    return [];
+  }
+
+  useEffect(() => {
+    const OldNor: Notification[] = filterNotifications(notifications, role);
+    setFilteredNotifications(OldNor);
+  }, [role]);
 
   return (
     <div className="ml-8 h-screen">

@@ -7,11 +7,10 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 
-
 import { FormFieldError } from "@/components/ui/form/FormFieldError";
 import { updateBankProfile } from "@/services/profileService";
 import { showToast } from "@/store/auth/toastSlice";
-import { errorHandler } from "@/lib/utils";
+import { errorHandler, handleUnauthorizedError } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { setBankDetailsData } from "@/store/talent/profile/TalentProfileSlice";
 
@@ -79,7 +78,9 @@ function ServiceCharge({ setActiveStep }: any) {
       account_num: data.accountNo,
       bank_code: "",
     };
-    const matchedBank: any = bankData.find((bank: any) => bank.name === temp.bank_name);
+    const matchedBank: any = bankData.find(
+      (bank: any) => bank.name === temp.bank_name
+    );
     if (matchedBank) {
       temp.bank_code = matchedBank.code; // Update bank_code with the matching bank's code
     }
@@ -88,25 +89,28 @@ function ServiceCharge({ setActiveStep }: any) {
 
     const response = await updateBankProfile(temp);
     console.log(response);
-    if (response.status !== 200) {
+    if (!response.error) {
+      // success
+      dispatch(
+        showToast({
+          status: "success",
+          message: "Bank details updated successfully!",
+        })
+      );
+      dispatch(setBankDetailsData(response.data));
+      setActiveStep(3);
+    } else {
+      // error
+              handleUnauthorizedError(response, dispatch, router, showToast);
+      
       dispatch(
         showToast({
           status: "error",
           message: errorHandler(response.data),
         })
       );
-      return;
+      
     }
-    dispatch(
-      showToast({
-        status: "success",
-        message: "Bank details updated successfully!",
-      })
-    );
-    dispatch(setBankDetailsData(response.data));
-    setActiveStep(3);
-
-    // setIsFinished(true);
   };
 
   const resetDialog = () => {

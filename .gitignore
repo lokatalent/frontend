@@ -36,8 +36,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+/test.tsx
 
 /components/api
 /components/api/page.tsx
-test.tsx
+/test.tsx
 logindetails

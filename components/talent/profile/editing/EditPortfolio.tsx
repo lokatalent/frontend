@@ -24,11 +24,11 @@ import { useDispatch, useSelector } from "react-redux";
 
 import { errorHandler } from "@/lib/utils";
 import { showToast } from "@/store/auth/toastSlice";
-import { updateService } from "@/services/services";
+import { getAllService, updateService } from "@/services/services";
 import { setService } from "@/store/talent/service/TalentServiceSlice";
 import { updateProfile } from "@/services/profileService";
 import { setUser } from "@/store/auth/authSlice";
-
+import { useRouter } from "next/navigation";
 
 interface EditPortfolioProps {
   portfolioRateEdited: (data: EditPortfolioFormValues) => void;
@@ -58,15 +58,14 @@ export default function EditPortfolio({
   skills,
   onSkillChange,
 }: EditPortfolioProps) {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.auth.user);
+  const service = useSelector((state: any) => state.service.service);
   const [isFinished, setIsFinished] = useState(false);
   const [localSkills, setLocalSkills] = useState(skills);
   const [isOnline, setIsOnline] = useState(false);
   const [charCount, setCharCount] = useState(0);
-  const user = useSelector((state: any) => state.auth.user);
-  const service = useSelector(
-    (state: any) => state.service.service
-  );
-  const dispatch = useDispatch();
 
   const {
     handleSubmit,
@@ -106,20 +105,20 @@ export default function EditPortfolio({
 
   const onSubmit = async (data: EditPortfolioFormValues) => {
     try {
-      // await portfolioRateEdited(data);
-    let tempBio = {
-      state: user.state,
-      city: user.city,
-      country: user.country,
-      address: user.address,
-      gender: user.gender,
-      date_of_birth: user.dateofbirth,
-      bio: data.bio
-    };
+      // portfolioRateEdited(data);
+      let tempBio = {
+        state: user.state,
+        city: user.city,
+        country: user.country,
+        address: user.address,
+        gender: user.gender,
+        date_of_birth: user.dateofbirth,
+        bio: data.bio,
+      };
       const responseBio = await updateProfile(tempBio);
       console.log(responseBio);
       dispatch(setUser(responseBio.data));
-      
+
       console.log(data);
       let temp = {
         experience_years: +data.experience_years,
@@ -129,33 +128,43 @@ export default function EditPortfolio({
         address: service?.address,
         availablity: service?.availablity,
       };
-      const response = await updateService(temp);
-      console.log(response);
-      if (response.status === 200) {
-        console.log(response.data);
-        dispatch(setService(response.data));
-      } else {
-        dispatch(
-          showToast({
-            status: "error",
-            message: errorHandler(response.data),
-          })
-        );
+      const response1 = await getAllService(user.id);
+      console.log("All Services Response:", response1);
+
+      if (response1?.data || response1.data.length > 0) {
+        const response = await updateService(temp);
+
+        if (!response.error) {
+          dispatch(setService(response.data));
+        } else {
+                  handleUnauthorizedError(response, dispatch, router, showToast);
+          
+          dispatch(
+            showToast({
+              status: "error",
+              message: errorHandler({
+                message: "You need to create a service before editing",
+              }),
+            })
+          );
+        }
+        setIsFinished(true);
+        return;
       }
 
-      Object.entries(localSkills).forEach(([skill, value]) => {
-        // for setting 2 or more skills
-        // onSkillChange(skill, value);
+      // Object.entries(localSkills).forEach(([skill, value]) => {
+      //   // for setting 2 or more skills
+      //   // onSkillChange(skill, value);
 
-        // for setting 1 skills NOTE: Only for now
-        // If the current skill is the selected one, set it to true
-        if (skill === skill) {
-          onSkillChange(skill, true);
-        } else {
-          // Set all other skills to false
-          onSkillChange(skill, false);
-        }
-      });
+      //   // for setting 1 skills NOTE: Only for now
+      //   // If the current skill is the selected one, set it to true
+      //   if (skill === skill) {
+      //     onSkillChange(skill, true);
+      //   } else {
+      //     // Set all other skills to false
+      //     onSkillChange(skill, false);
+      //   }
+      // });
       setIsFinished(true);
     } catch (error) {
       console.error("Error saving changes:", error);
@@ -267,7 +276,7 @@ export default function EditPortfolio({
             </div>
 
             {/* Skills Section */}
-            <div className="space-y-3">
+            {/* <div className="space-y-3">
               <label className="text-sm font-medium">Skills & Expertise</label>
               <div className="flex flex-wrap gap-3">
                 {Object.entries(localSkills).map(([skill, selected]) => (
@@ -291,10 +300,10 @@ export default function EditPortfolio({
                   </div>
                 ))}
               </div>
-            </div>
+            </div> */}
 
             {/* Service Radius */}
-            <div className="flex items-center gap-6 p-4 rounded-lg">
+            {/* <div className="flex items-center gap-6 p-4 rounded-lg">
               <div className="flex  items-center gap-2">
                 <p className="text-sm font-medium">Service Radius</p>
 
@@ -306,7 +315,7 @@ export default function EditPortfolio({
               >
                 Change
               </button>
-            </div>
+            </div> */}
 
             {/* Online Status */}
             <div className="space-y-2">

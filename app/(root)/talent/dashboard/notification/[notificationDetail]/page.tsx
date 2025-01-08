@@ -1,3 +1,4 @@
+"use client"
 import React from "react";
 import ProfileCard from "@/components/notifications/ProfileCard";
 import ProfileDetails from "@/components/profile/ProfileDetails";
@@ -5,6 +6,7 @@ import ProfileDetails from "@/components/profile/ProfileDetails";
 import { TbCurrencyNaira } from "react-icons/tb";
 import { IoCheckmarkCircle } from "react-icons/io5";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/navigation";
 // import { useParams, useRouter } from "next/navigation";
 
 const data = [
@@ -50,7 +52,7 @@ const NotificationDetail = ({
 }) => {
   // console.log(params.notificationDetail); // send a request to get the notofication details using the params
 
-  // const router = useRouter();
+  const router = useRouter();
   const profileData = {
     name: "Jayden Cooper",
     occupation: "Indoor Cleaner",
@@ -62,8 +64,8 @@ const NotificationDetail = ({
     <div>
       <section className="bg-primaryBg bg-red relative">
         <div className="self-start cursor-pointer absolut top-[10%] sm:top-[1%] md:top-[1%] lg:top-[10%] left-[3%] h-12 w-12">
-          <div >
-          {/* <div onClick={() => router.back()}> */}
+          {/* <div > */}
+          <div onClick={() => router.back()}>
             <svg
               width="35"
               height="35"

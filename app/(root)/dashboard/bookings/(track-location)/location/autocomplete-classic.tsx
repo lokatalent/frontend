@@ -14,12 +14,15 @@ import { useRouter } from "next/navigation";
 import schedule from "@/public/Images/schedule.png";
 import { useDispatch } from "react-redux";
 import { setBookingLocation } from "@/store/profile/bookingSlice";
+import LocationTrack from "@/components/location/LocationTrack";
+import { Spacer } from "@/components/Spacer";
 
 interface Props {
   onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
 }
 
 export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
+  const [mapping, setMapping] = useState(false);
   const [placeAutocomplete, setPlaceAutocomplete] =
     useState<google.maps.places.Autocomplete | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -39,37 +42,48 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
   const [selectedLocation, setSelectedLocation] = useState<any>(null);
   const [isDisabled, setIsDisabled] = useState(true);
   const router = useRouter();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  const onTrackLocation = (address: string) => {
+    setSelectedLocation(address);
+    dispatch(setBookingLocation(address));
+    setIsDisabled(false);
+  };
 
   useEffect(() => {
     if (!placeAutocomplete) return;
 
     placeAutocomplete.addListener("place_changed", () => {
       onPlaceSelect(placeAutocomplete.getPlace());
-      const place = placeAutocomplete.getPlace()
-      setSelectedLocation(place.formatted_address)
-      dispatch(setBookingLocation(place.formatted_address))
-      setIsDisabled(false)
+      const place = placeAutocomplete.getPlace();
+      setSelectedLocation(place.formatted_address);
+      dispatch(setBookingLocation(place.formatted_address));
+      setIsDisabled(false);
     });
   }, [onPlaceSelect, placeAutocomplete]);
-
 
   return (
     <div className="border rounded-md w-full bg-white p-4 mt-24">
       <h1 className="text-center text-lg font-medium mb-3">
         Where do you need help?
       </h1>
-      <div className="">
-        <input
-          className="hidden border-gray-200 rounded mb-3 px-3 text-sm border h-10 w-full focus:outline-blue-500"
-          placeholder="Apartment No/Name (optional)"
-        />
-        <input
-        placeholder="Street address/landmark"
-          className="border-gray-200 rounded mb-3 px-3 text-sm border h-10 sm:w-[350px] md:w-[400px] focus:outline-blue-500"
-          ref={inputRef}
-        />
-      </div>
+      {mapping ? (
+        <div className=" sm:w-[350px] md:w-[400px]">
+        <p className="text-sm mb-1">Current Location</p> 
+        <p className="border-gray-200 rounded mb-3 px-3 text-sm border py-2 sm:w-[350px] md:w-[400px]">{selectedLocation}</p></div>
+      ) : (
+        <div className="">
+          <input
+            className="hidden border-gray-200 rounded mb-3 px-3 text-sm border h-10 w-full focus:outline-blue-500"
+            placeholder="Apartment No/Name (optional)"
+          />
+          <input
+            placeholder="Street address/landmark"
+            className="border-gray-200 rounded mb-3 px-3 text-sm border h-10 sm:w-[350px] md:w-[400px] focus:outline-blue-500"
+            ref={inputRef}
+          />
+        </div>
+      )}
       {/* <button className='bg-navBlue text-white rounded mb-2 px-3 text-sm h-10 w-full'>Set Location</button> */}
       <Dialog>
         <DialogTrigger asChild className="w-full">
@@ -107,7 +121,9 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
             <DialogClose asChild>
               <button
                 className="text-base md:text-lg btnTwo border border-primaryBlue"
-                onClick={() => router.push("/dashboard/bookings/schedule-booking")}
+                onClick={() =>
+                  router.push("/dashboard/bookings/schedule-booking")
+                }
               >
                 Schedule a Booking
               </button>
@@ -115,7 +131,9 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
             <DialogClose asChild>
               <button
                 className="text-base md:text-lg btnOne"
-                onClick={() => router.push("/dashboard/bookings/instant-booking")}
+                onClick={() =>
+                  router.push("/dashboard/bookings/instant-booking")
+                }
               >
                 Instant Booking
               </button>
@@ -123,6 +141,13 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
           </div>
         </DialogContent>
       </Dialog>
+      <Spacer size={10} />
+      <LocationTrack
+        mapping={mapping}
+        setMapping={setMapping}
+        dashboard={true}
+        onTrack={onTrackLocation}
+      />
       {/* <p className="text-center text-sm text-primaryBlue mt-4 font-medium cursor">Track my location</p> */}
     </div>
   );

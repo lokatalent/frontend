@@ -22,6 +22,10 @@ import {
 } from "@/components/ui/dialog";
 import { IoIosSend } from "react-icons/io";
 import { useRouter } from "next/navigation";
+import { RootStateAuth } from "@/store/auth/authSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { verifyUser } from "@/services/authService";
+import { showToast } from "@/store/auth/toastSlice";
 
 const steps = [
   "Personal Information",
@@ -39,30 +43,33 @@ const steps1 = [
   },
   {
     id: 2,
-    title: "Add your Qualifications",
-    step: 0,
-    status: "undone",
-  },
-  {
-    id: 3,
     title: "Set up your Portfolio",
     step: 0,
     status: "undone",
   },
   {
-    id: 4,
+    id: 3,
     title: "Add your service charge and bank details",
     step: 0,
     status: "completed",
+  },
+  {
+    id: 4,
+    title: "Add your Qualifications",
+    step: 0,
+    status: "undone",
   },
 ];
 
 export default function ProfileStep() {
   const [activeStep, setActiveStep] = React.useState(-1);
   const [skipped, setSkipped] = React.useState(new Set<number>());
-    const [isFinished, setIsFinished] = React.useState(false);
-    const router = useRouter();
-  
+  const [isFinished, setIsFinished] = React.useState(false);
+  const router = useRouter();
+  const userIsVerified = useSelector(
+    (state: RootStateAuth) => state.auth.user.is_verified
+  );
+  const dispatch = useDispatch();
 
   console.log(activeStep);
 
@@ -81,17 +88,38 @@ export default function ProfileStep() {
     setSkipped(newSkipped);
   };
 
-    const resetDialog = () => {
-      setIsFinished(false);
-    };
+  const resetDialog = () => {
+    setIsFinished(false);
+  };
 
-    const finishedStepHandler = () => {
-      router.push("/dashboard/profile");
-    };
-
+  const finishedStepHandler = () => {
+    router.push("/dashboard/profile");
+  };
+  
+  
+  const onVerifyUser = async () => {
+    const response = await verifyUser();
+    if (!response.error) {
+      dispatch(
+        showToast({
+          status: "success",
+          message: "Your account has been verified successfully",
+        })
+      );
+    } else {
+      dispatch(
+        showToast({
+          status: "error",
+          message: response.data.message,
+        })
+      );
+    }
+  };
+  
   const handleSkip = () => {
     // setActiveStep((prevActiveStep) => prevActiveStep + 1);
-    setIsFinished(true)
+    if (!userIsVerified) onVerifyUser();
+    setIsFinished(true);
     // Add the current step to skipped steps
     const newSkipped = new Set(skipped);
     newSkipped.add(activeStep);
@@ -154,12 +182,12 @@ export default function ProfileStep() {
                 })}
               </div>
             )}
-            {activeStep === 0 && <PersonalInfo setActiveStep={setActiveStep} />}
+            {activeStep === 11 && <PersonalInfo setActiveStep={setActiveStep} />}
             {activeStep === 1 && <Portfolio setActiveStep={setActiveStep} />}
             {activeStep === 2 && (
               <ServiceCharge setActiveStep={setActiveStep} />
             )}
-            {activeStep === 3 && (
+            {activeStep === 0 && (
               <div className="space-y-4">
                 <Qualification
                   setActiveStep={setActiveStep}
@@ -207,4 +235,3 @@ export default function ProfileStep() {
     </Box>
   );
 }
-
