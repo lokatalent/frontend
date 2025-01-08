@@ -157,7 +157,7 @@ const ScheduleBooking = () => {
       requester_id: user.id,
       requester_addr: location,
       service_type: service,
-      booking_type: "instant",
+      booking_type: "scheduled",
       service_desc: description,
       start_time: `${selectedTime}:00:00+01:00`,
       end_time: `${Number(selectedTime) + roundUpIfDecimal(count)}:00:00+01:00`,
