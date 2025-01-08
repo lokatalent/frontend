@@ -191,12 +191,12 @@ function Portfolio({ setActiveStep }: any) {
   return (
     <div className="">
       <div className="flex gap-4 items-center flex-col justify-center">
-        <div className="w-full wmax mx-auto p-6">
+        <div className="w-full mx-auto p-6">
           <form
             onSubmit={handleSubmit(onSubmit, onError)}
             className="w-full flex flex-col justify-center items-center gap-12"
           >
-            <div className="w-full flex flex-co flex-row flex-wrap justify-cente justify-centr items-center gap-12 spce-y-4">
+            <div className="max-w-3xl mx-auto grid grid-cols-2 gap-5">
               <TalentDynamicForm
                 type="select"
                 name="service"
@@ -205,7 +205,7 @@ function Portfolio({ setActiveStep }: any) {
                 options={serviceType}
             
                 required
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+                className=""
               />
 
               <TalentDynamicForm
@@ -214,15 +214,15 @@ function Portfolio({ setActiveStep }: any) {
                 label="Years of Experience"
                 control={control}
                 required
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+                className=""
               />
               <TalentDynamicForm
                 type="text"
                 name="service_rate"
-                label="Service Rate"
+                label="Service rate per hour"
                 control={control}
                 required
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+                className=""
               />
 
               <TalentDynamicForm
@@ -231,7 +231,7 @@ function Portfolio({ setActiveStep }: any) {
                 label="Service Description"
                 control={control}
                 required
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+                className=""
               />
               <TalentDynamicForm
                 type="select"
@@ -240,7 +240,7 @@ function Portfolio({ setActiveStep }: any) {
                 control={control}
                 defaultOption="Nigeria"
                 options={[{ value: "Nigeria", label: "Nigeria" }]}
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+                className=""
                 required
               />
               <TalentDynamicForm
@@ -249,7 +249,7 @@ function Portfolio({ setActiveStep }: any) {
                 label="City"
                 control={control}
                 required
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+                className=""
               />
               <TalentDynamicForm
                 type="text"
@@ -257,7 +257,7 @@ function Portfolio({ setActiveStep }: any) {
                 label="State"
                 control={control}
                 required
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+                className=""
               />
               <TalentDynamicForm
                 type="text"
@@ -265,7 +265,7 @@ function Portfolio({ setActiveStep }: any) {
                 label="Address"
                 control={control}
                 required
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
+                className=""
               />
 
               {/* <TalentDynamicForm

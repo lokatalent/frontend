@@ -18,9 +18,9 @@ import { Avatar } from "../ui/avatar";
 import Image from "next/image";
 
 const Menu: React.FC<{ username: string }> = ({ username }) => {
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   const router = useRouter();
-  const avatar = useSelector((state) => state.auth.user.avatar)
+  const avatar = useSelector((state: any) => state.auth.user.avatar);
   const logout = () => {
     dispatch(setLoggedin(false));
     sessionStorage.removeItem("lokaToken");
@@ -30,14 +30,23 @@ const Menu: React.FC<{ username: string }> = ({ username }) => {
     <Popover>
       <PopoverTrigger>
         <div className="flex items-center space-x-2 hover:bg-gray-100 target:bg-gray-100 rounded-md p-1">
-          {!avatar ? <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white">
-            {username.charAt(0)}
-          </div> :
-          <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white">
-           <Image src={avatar} alt="My Avatar" height="40" width="40" className="rounded-full" />
-          </div>}
+          {!avatar ? (
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white">
+              {username.charAt(0)}
+            </div>
+          ) : (
+            <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-500 text-white">
+              <div className="relative shrink-0 w-10 h-10 rounded-full">
+                <Image
+                  src={avatar}
+                  alt="My Avatar"
+                  fill
+                  className="rounded-full object-cover"
+                />
+              </div>
+            </div>
+          )}
 
-          
           <p className="hidden md:block">{username}</p>
           <MdKeyboardArrowDown size={20} />
         </div>

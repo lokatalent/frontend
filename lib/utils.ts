@@ -16,14 +16,21 @@ export const handleUnauthorizedError = (
   router: any,
   showToast: any
 ) => {
-  const errorMessage =
-    response?.data?.message || "Unauthorized access. Please login again.";
-
-  // Dispatch the error toast message
-  dispatch(showToast({ status: "error", message: errorMessage }));
-
-  // Redirect to login page
-  router.push("/login");
+  if (response.status === 401) {
+    dispatch(
+      showToast({
+        status: "error",
+        message: response.data.message,
+      })
+    );
+    return router.push("/login");
+  }
+  dispatch(
+    showToast({
+      status: "error",
+      message: errorHandler(response.data),
+    })
+  );
 };
 
 export const setToken = (accessToken: string, refreshToken: string) => {

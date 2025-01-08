@@ -11,6 +11,8 @@ import Image from "next/image";
 import { ChangeEvent, useRef, useState } from "react";
 import { setProfilePics } from "@/store/profile/profileSlice";
 import { setUser } from "@/store/auth/authSlice";
+import { useRouter } from "next/navigation";
+import Spinner from "@/components/ui/Spinner";
 
 // Define your schema
 const schema = z.object({
@@ -24,11 +26,12 @@ const schema = z.object({
 
 function PersonalInfo({ setActiveStep }: any) {
   const dispatch = useDispatch();
+  const router = useRouter();
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(schema),
   });
 
-  const fileInputRef = useRef<HTMLInputElement>();
+  const fileInputRef = useRef<HTMLInputElement | null>();
   const user = useSelector((state: any) => state.auth.user);
   const [imageLoading, setImageLoading] = useState(false);
   const [selectedImage, setSelectedImage] = useState<any>(user.avatar ?? null);
@@ -42,7 +45,6 @@ function PersonalInfo({ setActiveStep }: any) {
         image: file,
       };
       const response = await updateProfileImage(images);
-      console.log(response);
       if (!response.error) {
         setImageLoading(false);
         dispatch(
@@ -51,25 +53,9 @@ function PersonalInfo({ setActiveStep }: any) {
             message: "Image updated successfully",
           })
         );
-        let tempBio = {
-          state: user.state,
-          city: user.city,
-          country: user.country,
-          address: user.address,
-          gender: user.gender,
-          date_of_birth: user.dateofbirth,
-          bio: response.data,
-        };
-        const responseBio = await updateProfile(tempBio);
-        console.log(responseBio);
-        dispatch(setUser(responseBio.data));
       } else {
-        dispatch(
-          showToast({
-            status: "error",
-            message: response.data.message,
-          })
-        );
+        setImageLoading(false);
+        handleUnauthorizedError(response, dispatch, router, showToast);
       }
       setSelectedImage(imageUrl);
       // Make sure setSelectedImage is defined in your component
@@ -80,40 +66,32 @@ function PersonalInfo({ setActiveStep }: any) {
   const handleButtonClick = (): void => {
     fileInputRef.current?.click();
   };
+
   const onSubmit = async (data: any) => {
     // console.log(data);
     let temp = {
-      // state: data.state,
-      // city: data.city,
-      // country: data.country,
-      address: `${data.address}, ${data.city},${data.state}, ${data.country}`,
+      address: `${data.address}, ${data.city}, ${data.state}, ${data.country}`,
       gender: data.gender,
       date_of_birth: data.dateofbirth,
     };
     const response = await updateProfile(temp);
 
-     if (!response.error) {
-       // success
-       dispatch(
-         showToast({
-           status: "success",
-           message: "Profile updated successfully!",
-         })
-       );
-       dispatch(setUser(response.data));
-       setActiveStep(1);
-     } else {
-       // error
-               handleUnauthorizedError(response, dispatch, router, showToast);
-       
-       dispatch(
-         showToast({
-           status: "error",
-           message: errorHandler(response.data),
-         })
-       );
-       return;
-     }
+    if (!response.error) {
+      // success
+      dispatch(
+        showToast({
+          status: "success",
+          message: "Profile updated successfully!",
+        })
+      );
+      dispatch(setUser(response.data));
+      setActiveStep(1);
+    } else {
+      // error
+      handleUnauthorizedError(response, dispatch, router, showToast);
+
+      return;
+    }
   };
 
   return (
@@ -150,8 +128,9 @@ function PersonalInfo({ setActiveStep }: any) {
             <button
               className="text-sm text-white bg-primaryBlue px-6 py-2 rounded"
               onClick={handleButtonClick}
+              disabled={imageLoading}
             >
-              Add Profile Image
+              {imageLoading ? <Spinner /> : "Update Profile Image"}
             </button>
           </div>
         </div>

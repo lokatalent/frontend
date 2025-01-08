@@ -37,12 +37,18 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
     };
 
     setPlaceAutocomplete(new places.Autocomplete(inputRef.current, options));
-  }, [places]);
+  }, [places, mapping]);
 
   const [selectedLocation, setSelectedLocation] = useState<any>(null);
   const [isDisabled, setIsDisabled] = useState(true);
   const router = useRouter();
   const dispatch = useDispatch();
+
+  const changeType = () => {
+    setIsDisabled(true)
+    setMapping(false)
+    setSelectedLocation(null)
+  }
 
   const onTrackLocation = (address: string) => {
     setSelectedLocation(address);
@@ -70,7 +76,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
       {mapping ? (
         <div className=" sm:w-[350px] md:w-[400px]">
         <p className="text-sm mb-1">Current Location</p> 
-        <p className="border-gray-200 rounded mb-3 px-3 text-sm border py-2 sm:w-[350px] md:w-[400px]">{selectedLocation}</p></div>
+        <p className="border-gray-200 rounded mb-3 px-3 text-sm border py-2 sm:w-[350px] md:w-[400px] min-h-[40px]">{selectedLocation}</p></div>
       ) : (
         <div className="">
           <input
@@ -145,6 +151,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
       <LocationTrack
         mapping={mapping}
         setMapping={setMapping}
+        changeType={changeType}
         dashboard={true}
         onTrack={onTrackLocation}
       />

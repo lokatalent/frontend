@@ -7,7 +7,13 @@ import { useState } from "react";
 import { useForm } from "react-hook-form";
 
 import ResetDialog from "@/components/auth/ResetDialog";
-import { errorHandler, FieldConfig, formatPhone, setToken } from "@/lib/utils";
+import {
+  errorHandler,
+  FieldConfig,
+  formatPhone,
+  handleUnauthorizedError,
+  setToken,
+} from "@/lib/utils";
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { FcGoogle } from "react-icons/fc";
@@ -129,12 +135,8 @@ const DynamicForm = ({
         router.push("./reset-password/verify");
       } else {
         setLoading(false);
-        dispatch(
-          showToast({
-            status: "error",
-            message: errorHandler(response.data),
-          })
-        );
+
+        handleUnauthorizedError(response, dispatch, router, showToast);
       }
     } else if (buttonAction === "sign-up") {
       // check passwords
@@ -168,12 +170,8 @@ const DynamicForm = ({
         router.push(`/login`);
       } else {
         setLoading(false);
-        dispatch(
-          showToast({
-            status: "error",
-            message: errorHandler(response.data),
-          })
-        );
+
+        handleUnauthorizedError(response, dispatch, router, showToast);
       }
     } else if (buttonAction === "sign-up-talent") {
       // check passwords
@@ -201,12 +199,8 @@ const DynamicForm = ({
         router.push(`/login`);
       } else {
         setLoading(false);
-        dispatch(
-          showToast({
-            status: "error",
-            message: errorHandler(response.data),
-          })
-        );
+
+        handleUnauthorizedError(response, dispatch, router, showToast);
       }
     } else if (buttonAction === "log-in") {
       let temp = {
@@ -254,22 +248,13 @@ const DynamicForm = ({
             return router.push(`/verify`);
           } else {
             setLoading(false);
-            dispatch(
-              showToast({
-                status: "error",
-                message: errorHandler(response.data),
-              })
-            );
+            handleUnauthorizedError(response, dispatch, router, showToast);
           }
         }
       } else {
         setLoading(false);
-        dispatch(
-          showToast({
-            status: "error",
-            message: errorHandler(response.data),
-          })
-        );
+
+        handleUnauthorizedError(response, dispatch, router, showToast);
       }
       // router.push("/dashboard");
     } else if (buttonAction === "profile-edit") {
@@ -320,39 +305,23 @@ const DynamicForm = ({
           router.push("/dashboard/profile");
         } else {
           setLoading(false);
-          if (response.status === 401) {
-            dispatch(
-              showToast({
-                status: "error",
-                message: response.data.message,
-              })
-            );
-            return router.push("/login");
-          }
-          dispatch(
-            showToast({
-              status: "error",
-              message: errorHandler(response.data),
-            })
-          );
+          handleUnauthorizedError(response, dispatch, router, showToast);
         }
       };
 
-      onUpdateProfile()
-
-      // const bankResponse = await updateBankProfile(bankData);
-      // if (!bankResponse.error) {
-      //   setLoading(false);
-      //   onUpdateProfile();
-      // } else {
-      //   setLoading(false);
-      //   dispatch(
-      //     showToast({
-      //       status: "error",
-      //       message: errorHandler(bankResponse.data),
-      //     })
-      //   );
-      // }
+      const bankResponse = await updateBankProfile(bankData);
+      if (!bankResponse.error) {
+        setLoading(false);
+        onUpdateProfile();
+      } else {
+        setLoading(false);
+        dispatch(
+          showToast({
+            status: "error",
+            message: errorHandler(bankResponse.data),
+          })
+        );
+      }
     } else if (buttonAction === "edit-address") {
       setLoading(false);
       dispatch(

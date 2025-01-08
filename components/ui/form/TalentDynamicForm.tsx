@@ -59,7 +59,7 @@ const TalentDynamicForm: React.FC<FormFieldProps> = ({
       fieldState: { error?: FieldError };
     
   }) => {
-    console.log(field, error);
+    // console.log(field, error);
     switch (type) {
       case "select": {
         const { options = [], defaultOption } = props as SelectFieldProps;

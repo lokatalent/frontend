@@ -2,7 +2,11 @@
 import Image from "next/image";
 import React, { ChangeEvent, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
-import { FieldConfig, profileFormSchema } from "@/lib/utils";
+import {
+  FieldConfig,
+  handleUnauthorizedError,
+  profileFormSchema,
+} from "@/lib/utils";
 import DynamicForm from "@/components/ui/form/DynamicForm";
 import { setProfilePics } from "@/store/profile/profileSlice";
 import { useDispatch, useSelector } from "react-redux";
@@ -134,12 +138,7 @@ function Edit() {
           })
         );
       } else {
-        dispatch(
-          showToast({
-            status: "error",
-            message: response.data.message,
-          })
-        );
+        handleUnauthorizedError(response, dispatch, router, showToast);
       }
       setSelectedImage(imageUrl);
       // Make sure setSelectedImage is defined in your component
@@ -160,12 +159,12 @@ function Edit() {
     city: "",
     street_addr: "",
     bank_name: "",
-    acc_num: "", 
+    acc_num: "",
   };
 
   useEffect(() => {
-    getBanks()
-  }, [])
+    getBanks();
+  }, []);
 
   return (
     <div className="">
@@ -231,6 +230,7 @@ function Edit() {
             <button
               className="text-[12px] sm:text-sm text-white bg-primaryBlue px-6 py-2 rounded"
               onClick={handleButtonClick}
+              disabled={imageLoading}
             >
               {imageLoading ? <Spinner /> : "Update Profile Image"}
             </button>

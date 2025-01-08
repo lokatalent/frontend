@@ -64,6 +64,7 @@ export default function Bookings() {
   useEffect(() => {
     fetchBookings(user.id);
   }, [bookingType]);
+  
   return (
     <div>
       <div className="w-full space-y-6">

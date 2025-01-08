@@ -134,25 +134,27 @@ export default function Dashboard() {
             {loading ? (
               <PageSpinner />
             ) : (
-              <DataTable
-                columns={BookingColumns}
-                title="Bookings"
-                data={bookings}
-                isRole={true}
-                isSort={true}
-                path="/"
-                changeType={changeType}
-                bookingType={bookingType}
-              />
-            )}
-            {bookings.length > 0 && (
-              <div className="flex justify-center mt-8">
-                <Link
-                  href="/dashboard/bookings"
-                  className="px-10 py-4 text-white bg-blue-500 rounded-md hover:bg-blue-600"
-                >
-                  View all bookings
-                </Link>
+              <div>
+                <DataTable
+                  columns={BookingColumns}
+                  title="Bookings"
+                  data={bookings}
+                  isRole={true}
+                  isSort={true}
+                  path="/"
+                  changeType={changeType}
+                  bookingType={bookingType}
+                />
+                {bookings.length > 0 && (
+                  <div className="flex justify-center mt-8">
+                    <Link
+                      href="/dashboard/bookings"
+                      className="px-10 py-4 text-white bg-blue-500 rounded-md hover:bg-blue-600"
+                    >
+                      View all bookings
+                    </Link>
+                  </div>
+                )}
               </div>
             )}
           </div>
