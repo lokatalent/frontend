@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { updateProfile, updateProfileImage } from "@/services/profileService";
 import { useDispatch, useSelector } from "react-redux";
 import { showToast } from "@/store/auth/toastSlice";
-import { errorHandler } from "@/lib/utils";
+import { errorHandler, handleUnauthorizedError } from "@/lib/utils";
 import Image from "next/image";
 import { ChangeEvent, useRef, useState } from "react";
 import { setProfilePics } from "@/store/profile/profileSlice";
@@ -86,31 +86,34 @@ function PersonalInfo({ setActiveStep }: any) {
       // state: data.state,
       // city: data.city,
       // country: data.country,
-      address: `${data.address}, ${data.city},${data.state}, ${data.country}, `,
+      address: `${data.address}, ${data.city},${data.state}, ${data.country}`,
       gender: data.gender,
       date_of_birth: data.dateofbirth,
     };
     const response = await updateProfile(temp);
 
-    if (response.status !== 200) {
-      dispatch(
-        showToast({
-          status: "error",
-          message: errorHandler(response.data),
-        })
-      );
-      return;
-    }
-    dispatch(
-      showToast({
-        status: "success",
-        message: "Profile updated successfully!",
-      })
-    );
-    dispatch(setUser(response.data));
-    setActiveStep(1);
-
-    // Additional submit logic here
+     if (!response.error) {
+       // success
+       dispatch(
+         showToast({
+           status: "success",
+           message: "Profile updated successfully!",
+         })
+       );
+       dispatch(setUser(response.data));
+       setActiveStep(1);
+     } else {
+       // error
+               handleUnauthorizedError(response, dispatch, router, showToast);
+       
+       dispatch(
+         showToast({
+           status: "error",
+           message: errorHandler(response.data),
+         })
+       );
+       return;
+     }
   };
 
   return (

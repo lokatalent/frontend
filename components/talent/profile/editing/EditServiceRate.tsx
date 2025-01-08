@@ -15,7 +15,7 @@ import { FaPen } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import ChangesSaved from "../ChangesSaved";
 import { showToast } from "@/store/auth/toastSlice";
-import { errorHandler } from "@/lib/utils";
+import { errorHandler, handleUnauthorizedError } from "@/lib/utils";
 import { updateBankProfile } from "@/services/profileService";
 import { useDispatch } from "react-redux";
 import { setBankDetailsData } from "@/store/talent/profile/TalentProfileSlice";
@@ -42,25 +42,25 @@ type EditServiceRateFormValues = z.infer<typeof editServiceRateSchema>;
 function EditServiceRate({ serviceRateEdited }: EditServiceRateProps) {
   const [isFinished, setIsFinished] = useState(false);
   const dispatch = useDispatch();
-   let [bankData, setBankData] = useState([]);
+  let [bankData, setBankData] = useState([]);
 
-   const router = useRouter();
-   useEffect(() => {
-     function extractBankDetails(bankArray: any) {
-       return bankArray.map((bank: any) => ({
-         id: bank.id,
-         name: bank.name,
-         code: bank.code,
-       }));
-       // .map(bank => bank.name);
-     }
-     let getBanks = async () => {
-       let response = await axios.get("https://api.paystack.co/bank");
-       const simplifiedBanks = extractBankDetails(response.data.data);
-       setBankData(simplifiedBanks);
-     };
-     getBanks();
-   }, []);
+  const router = useRouter();
+  useEffect(() => {
+    function extractBankDetails(bankArray: any) {
+      return bankArray.map((bank: any) => ({
+        id: bank.id,
+        name: bank.name,
+        code: bank.code,
+      }));
+      // .map(bank => bank.name);
+    }
+    let getBanks = async () => {
+      let response = await axios.get("https://api.paystack.co/bank");
+      const simplifiedBanks = extractBankDetails(response.data.data);
+      setBankData(simplifiedBanks);
+    };
+    getBanks();
+  }, []);
 
   const {
     handleSubmit,
@@ -80,37 +80,44 @@ function EditServiceRate({ serviceRateEdited }: EditServiceRateProps) {
 
   const onSubmit = async (data: EditServiceRateFormValues) => {
     console.log("Submitted Data:", data);
-        let temp = {
-          bank_name: data.bankName,
-          account_num: data.accountNo,
-          bank_code: "",
-        };
-        const matchedBank: any = bankData.find((bank: any) => bank.name === temp.bank_name);
-        if (matchedBank) {
-          temp.bank_code = matchedBank.code; // Update bank_code with the matching bank's code
-        }
-        console.log(temp);
-        // serviceRateEdited(data);
-    
-        const response = await updateBankProfile(temp);
-        console.log(response);
-        if (response.status !== 200) {
-          dispatch(
-            showToast({
-              status: "error",
-              message: errorHandler(response.data),
-            })
-          );
-          return;
-        }
-        dispatch(
-          showToast({
-            status: "success",
-            message: "Bank details updated successfully!",
-          })
-        );
-        dispatch(setBankDetailsData(response.data));
-    setIsFinished(true); // Transition to confirmation view
+    let temp = {
+      bank_name: data.bankName,
+      account_num: data.accountNo,
+      bank_code: "",
+    };
+    const matchedBank: any = bankData.find(
+      (bank: any) => bank.name === temp.bank_name
+    );
+    if (matchedBank) {
+      temp.bank_code = matchedBank.code; // Update bank_code with the matching bank's code
+    }
+    console.log(temp);
+    // serviceRateEdited(data);
+
+    const response = await updateBankProfile(temp);
+    console.log(response);
+    if (!response.error) {
+      // success
+      dispatch(
+        showToast({
+          status: "success",
+          message: "Bank details updated successfully!",
+        })
+      );
+      dispatch(setBankDetailsData(response.data));
+      setIsFinished(true); // Transition to confirmation view
+    } else {
+      // error
+             handleUnauthorizedError(response, dispatch, router, showToast);
+     
+      dispatch(
+        showToast({
+          status: "error",
+          message: errorHandler(response.data),
+        })
+      );
+      return;
+    }
   };
 
   const resetDialog = () => {

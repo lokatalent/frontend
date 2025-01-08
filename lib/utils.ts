@@ -9,6 +9,18 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+// utils/errorHandlers.js
+export const handleUnauthorizedError = (response: any, dispatch: any, router: any, showToast: any) => {
+  const errorMessage = response?.data?.message || "Unauthorized access. Please login again.";
+  
+  // Dispatch the error toast message
+  dispatch(showToast({ status: "error", message: errorMessage }));
+  
+  // Redirect to login page
+  router.push("/login");
+};
+
+
 export const setToken = (accessToken: string, refreshToken: string) => {
   sessionStorage.setItem("lokaToken", accessToken)
   sessionStorage.setItem("lokaRefreshToken", refreshToken)

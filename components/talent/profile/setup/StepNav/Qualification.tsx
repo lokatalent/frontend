@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { showToast } from "@/store/auth/toastSlice";
-import { errorHandler } from "@/lib/utils";
+import { errorHandler, handleUnauthorizedError } from "@/lib/utils";
 import { updateEducationProfile } from "@/services/profileService";
 import { updateEducationProfileData } from "@/store/talent/profile/TalentProfileSlice";
 import { useRouter } from "next/navigation";
@@ -69,6 +69,8 @@ function Qualification({ setActiveStep, handleSkip }: any) {
           })
         );
       } else {
+                handleUnauthorizedError(response, dispatch, router, showToast);
+        
         dispatch(
           showToast({
             status: "error",
@@ -88,23 +90,26 @@ function Qualification({ setActiveStep, handleSkip }: any) {
       finish: data.enddate,
     };
     const response = await updateEducationProfile(temp);
-    if (response.status !== 200) {
+    if (!response.error) {
+      // success
+      dispatch(
+        showToast({
+          status: "success",
+          message: "Education Profile updated successfully!",
+        })
+      );
+      dispatch(updateEducationProfileData(response.data));
+    } else {
+      // error
       dispatch(
         showToast({
           status: "error",
           message: errorHandler(response.data),
         })
       );
-      // setActiveStep(4);
-      return;
+      // throw new Error(response.data.message);
     }
-    dispatch(
-      showToast({
-        status: "success",
-        message: "Education Profile updated successfully!",
-      })
-    );
-    dispatch(updateEducationProfileData(response.data));
+
     if (!userIsVerified) onVerifyUser();
     setIsFinished(true);
   };
@@ -133,7 +138,7 @@ function Qualification({ setActiveStep, handleSkip }: any) {
                   { value: "Ibadan", label: "Ibadan" },
                 ]}
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-                required
+               
               />
               <TalentDynamicForm
                 type="select"
@@ -145,7 +150,7 @@ function Qualification({ setActiveStep, handleSkip }: any) {
                   { value: "B.Sc", label: "B.Sc" },
                 ]}
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-                required
+               
               />
               <TalentDynamicForm
                 type="select"
@@ -158,7 +163,7 @@ function Qualification({ setActiveStep, handleSkip }: any) {
                   { value: "Accounting", label: "Accounting" },
                 ]}
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-                required
+               
               />
               <TalentDynamicForm
                 type="date"
@@ -166,7 +171,7 @@ function Qualification({ setActiveStep, handleSkip }: any) {
                 label="Start Date"
                 control={control}
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-                required
+               
               />
               <TalentDynamicForm
                 type="date"
@@ -174,12 +179,12 @@ function Qualification({ setActiveStep, handleSkip }: any) {
                 label="End Date or Expected End Date "
                 control={control}
                 className="w-[53rem]"
-                required
+               
               />
               <TalentDynamicForm
                 type="file"
                 name="certificate"
-                label="Upload Your Certifications (Optional)"
+                label="Upload Your Certifications"
                 control={control}
                 className="w-[53rem]"
                 

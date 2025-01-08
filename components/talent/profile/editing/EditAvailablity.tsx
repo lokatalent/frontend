@@ -168,7 +168,7 @@ const EditAvailability: React.FC<EditAvailabilityProps> = ({
         )}
       </DialogTrigger>
 
-      <DialogContent className="w-full p-[3rem] max-w-[22rem] sm:max-w-[30rem] lg:max-w-[40rem] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-full p-[3rem] max-w-[22rem] sm:max-w-[33rem] lg:max-w-[43rem] max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle className="text-center">Edit Availability</DialogTitle>
           <p className="text-[14px] text-center text-[#6C727F]">
@@ -186,7 +186,7 @@ const EditAvailability: React.FC<EditAvailabilityProps> = ({
               className="flex flex-col sm:flex-col sm:items-center justify-between space-y-2 sm:space-y-0 sm:space-x-4 py-2 px-4"
             >
               <div className="flex flex-row sm:items-cente  ustify-between w-full">
-                <div className="flex items-center space-x-4">
+                <div className="flex items-center space-x-4 mr-4">
                   <div className="relative inline-block w-12 h-6">
                     <div
                       className={`w-12 h-6 flex items-center rounded-full cursor-pointer transition-colors duration-200 

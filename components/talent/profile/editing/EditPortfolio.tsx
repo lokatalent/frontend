@@ -28,6 +28,7 @@ import { getAllService, updateService } from "@/services/services";
 import { setService } from "@/store/talent/service/TalentServiceSlice";
 import { updateProfile } from "@/services/profileService";
 import { setUser } from "@/store/auth/authSlice";
+import { useRouter } from "next/navigation";
 
 interface EditPortfolioProps {
   portfolioRateEdited: (data: EditPortfolioFormValues) => void;
@@ -57,13 +58,14 @@ export default function EditPortfolio({
   skills,
   onSkillChange,
 }: EditPortfolioProps) {
+  const router = useRouter();
+  const dispatch = useDispatch();
+  const user = useSelector((state: any) => state.auth.user);
+  const service = useSelector((state: any) => state.service.service);
   const [isFinished, setIsFinished] = useState(false);
   const [localSkills, setLocalSkills] = useState(skills);
   const [isOnline, setIsOnline] = useState(false);
   const [charCount, setCharCount] = useState(0);
-  const user = useSelector((state: any) => state.auth.user);
-  const service = useSelector((state: any) => state.service.service);
-  const dispatch = useDispatch();
 
   const {
     handleSubmit,
@@ -131,11 +133,12 @@ export default function EditPortfolio({
 
       if (response1?.data || response1.data.length > 0) {
         const response = await updateService(temp);
-        console.log(response);
-        if (response.status === 200) {
-          console.log(response.data);
+
+        if (!response.error) {
           dispatch(setService(response.data));
         } else {
+                  handleUnauthorizedError(response, dispatch, router, showToast);
+          
           dispatch(
             showToast({
               status: "error",
