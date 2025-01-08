@@ -123,6 +123,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
           </div>
         </DialogContent>
       </Dialog>
+      {/* <p className="text-center text-sm text-primaryBlue mt-4 font-medium cursor">Track my location</p> */}
     </div>
   );
 };

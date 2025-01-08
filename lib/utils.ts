@@ -122,7 +122,7 @@ export const passwordFormSchema = z
 
 export const allowedCountries = ["Nigeria", "India", "Senegal", "Australia"];
 export const profileFormSchema = z.object({
-  dateofBirth: z.string({
+  dateOfBirth: z.string({
     required_error: "Date of birth is required",
   }),
 

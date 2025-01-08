@@ -30,15 +30,11 @@ function Edit() {
       },
     },
     {
-      name: "dateofBirth",
+      name: "dateOfBirth",
       type: "date",
       label: "Date of Birth*",
       validation: {
         required: "Date of Birth is required",
-        minLength: {
-          value: 1,
-          message: "Date of Birth must be at least 6 characters",
-        },
       },
     },
     {

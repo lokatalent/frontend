@@ -43,7 +43,6 @@ export interface RootStateAuth {
   // other reducers...
 }
 
-
 const authSlice = createSlice({
   name: "auth",
   initialState,
@@ -70,6 +69,15 @@ const authSlice = createSlice({
       console.log(payload);
       state.logout = payload;
     },
+    resetAuth: (state) => {
+      state.signUpEmail = "";
+      state.forgotPasswordEmail = "";
+      state.otp = "";
+      state.resetToken = "";
+      state.user = {};
+      state.loggedIn = true;
+      state.logout = false;
+    },
   },
 });
 
@@ -81,5 +89,6 @@ export const {
   setUser,
   setLoggedin,
   setLogout,
+  resetAuth,
 } = authSlice.actions;
 export default authSlice.reducer;

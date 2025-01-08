@@ -92,3 +92,16 @@ export const getServices = async () => {
     };
   }
 };
+
+export const findProviders = async (id: any) => {
+  try {
+    let response = await http.get(`/booking/${id}/find-providers?page=1&size=50`);
+    return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err?.response?.data,
+      status: err?.response?.status,
+    };
+  }
+};

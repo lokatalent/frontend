@@ -1,20 +1,7 @@
 "use client";
 
 import { Label } from "@/components/ui/label";
-import { Textarea } from "@/components/ui/textarea";
-
-import {
-  Dialog,
-  DialogClose,
-  DialogContent,
-  DialogDescription,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
 import { useEffect, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
 import { FaMinus, FaPlus } from "react-icons/fa6";
 import { Spacer } from "../Spacer";
 import { useRouter } from "next/navigation";
@@ -23,12 +10,6 @@ import { createBooking } from "@/services/bookingService";
 import { showToast } from "@/store/auth/toastSlice";
 import Spinner from "../ui/Spinner";
 
-type FormValues = {
-  startTime: string;
-  endTime: string;
-  description: string;
-};
-
 const MakeBookingTime = () => {
   const service = useSelector((state: any) => state.booking.service);
   const services = useSelector((state: any) => state.booking.allServices);
@@ -36,15 +17,7 @@ const MakeBookingTime = () => {
   const user = useSelector((state: any) => state.auth.user);
 
   const router = useRouter();
-  const dispatch = useDispatch()
-
-  const { handleSubmit, control, register } = useForm<FormValues>({
-    defaultValues: {
-      startTime: "",
-      endTime: "",
-      description: "",
-    },
-  });
+  const dispatch = useDispatch();
 
   const [count, setCount] = useState(3.5);
   const time = [
@@ -97,6 +70,8 @@ const MakeBookingTime = () => {
       value: "17",
     },
   ];
+
+  const [loading, setLoading] = useState(false);
   const [description, setDescription] = useState("");
   const [selectedTime, setSelectedTime] = useState("7");
   const [timeCheck, setTimeCheck] = useState(11);
@@ -129,9 +104,14 @@ const MakeBookingTime = () => {
     return Number(num);
   };
 
-  const [loading, setLoading] = useState(false)
-
   const onSubmit = async () => {
+    if (!description)
+      return dispatch(
+        showToast({
+          status: "error",
+          message: "Add a desription for the booking",
+        })
+      );
     let dateToday = new Date();
     let data = {
       requester_id: user.id,
@@ -141,15 +121,21 @@ const MakeBookingTime = () => {
       service_desc: description,
       start_time: `${selectedTime}:00:00+01:00`,
       end_time: `${Number(selectedTime) + roundUpIfDecimal(count)}:00:00+01:00`,
-      start_date: dateToday.toISOString().split('T')[0],
-      end_date: dateToday.toISOString().split('T')[0],
+      start_date: dateToday.toISOString().split("T")[0],
+      end_date: dateToday.toISOString().split("T")[0],
       total_price: getPrice(),
     };
     // handle submission logic here
-      setLoading(true);
+    setLoading(true);
     const response = await createBooking(data);
     if (!response.error) {
       setLoading(false);
+      dispatch(
+        showToast({
+          status: "success",
+          message: "Booking has been created successfully",
+        })
+      );
       router.push(`talents?id=${response.data.id}`);
     } else {
       setLoading(false);
@@ -180,7 +166,7 @@ const MakeBookingTime = () => {
     <div className="p-6 pb-10 w-full max-w-[567px] mx-auto">
       <div className="">
         <div>
-          <Label htmlFor="description" className="text-md pb-3">
+          <Label htmlFor="description" className="text-md pb-1">
             Start time
           </Label>
           <select
@@ -188,7 +174,7 @@ const MakeBookingTime = () => {
             id="time"
             value={selectedTime}
             onChange={(e) => setSelectedTime(e.target.value)}
-            className="h-14 w-full rounded-full border px-5 focus:outline-none mt-3"
+            className="h-14 w-full rounded-lg border px-5 focus:outline-none"
           >
             {time.map((item, index) => (
               <option
@@ -203,12 +189,12 @@ const MakeBookingTime = () => {
         </div>
         <Spacer size={20} />
         <div>
-          <Label htmlFor="description" className="text-md pb-3">
+          <Label htmlFor="description" className="text-md pb-1">
             Set hours duration
           </Label>
-          <div className="bg-white flex flex-row items-center justify-between border rounded-full h-14 mt-3 px-8 m-w-[496px]">
+          <div className="bg-white flex flex-row items-center justify-between border rounded-lg h-14 px-8 m-w-[496px]">
             <button onClick={decrease} disabled={count <= 3.5}>
-              <FaMinus size={24} color={count <= 3.5 ? "#909090" : "black"} />
+              <FaMinus size={16} color={count <= 3.5 ? "#909090" : "black"} />
             </button>
             <h1 className="text-2xl">{count}</h1>
             <button
@@ -216,7 +202,7 @@ const MakeBookingTime = () => {
               disabled={count + Number(selectedTime) >= 17}
             >
               <FaPlus
-                size={24}
+                size={16}
                 color={count + Number(selectedTime) >= 17 ? "#909090" : "black"}
               />
             </button>
@@ -225,7 +211,7 @@ const MakeBookingTime = () => {
         <Spacer size={20} />
         {/* Description Text Area */}
         <div className="flex flex-col">
-          <Label htmlFor="description" className="text-md pb-3">
+          <Label htmlFor="description" className="text-md pb-1">
             Describe Your Task*
           </Label>
           <textarea
@@ -236,11 +222,10 @@ const MakeBookingTime = () => {
             value={description}
           ></textarea>
         </div>
-        <Spacer size={20} />
         <div className="w-full flex justify-center mt-8">
           <button
             type="button"
-            className="btnOne max-w-[567px] p-4"
+            className="btnOne max-w-[567px] p-4 rounded-lg"
             onClick={onSubmit}
           >
             {loading ? <Spinner /> : "Proceed"}
