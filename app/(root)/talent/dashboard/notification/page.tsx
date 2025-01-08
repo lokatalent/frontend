@@ -7,7 +7,7 @@ import RoleSwitch from "@/components/overview/RoleSwitch";
 type Notification = {
   id: string;
   title: string;
-  description: string;
+  message: string;
   icon: string;
   statusNotification: "read" | "unread"; // Added status property
   name: string;
@@ -35,7 +35,7 @@ const notificationsData: NotificationResponse = {
     {
       id: "1",
       title: "Booking accepted",
-      description:
+      message:
         "Your booking has been accepted! The talent will arrive as scheduled.",
       icon: "/Images/sparkles.png", // Corrected path
       statusNotification: "unread",
@@ -56,7 +56,7 @@ const notificationsData: NotificationResponse = {
     {
       id: "3",
       title: "Booking accepted",
-      description:
+      message:
         "Your booking has been accepted! The talent will arrive as scheduled.",
       icon: "/Images/sparkles.png", // Corrected path
       statusNotification: "read",
@@ -76,7 +76,7 @@ const notificationsData: NotificationResponse = {
     {
       id: "4",
       title: "Booking accepted",
-      description:
+      message:
         "Your booking has been accepted! The talent will arrive as scheduled.",
       icon: "/Images/sparkles.png", // Corrected path
       statusNotification: "unread",
@@ -97,7 +97,7 @@ const notificationsData: NotificationResponse = {
     {
       id: "2",
       title: "Booking Cancelled",
-      description:
+      message:
         "Your booking request has been cancelled lorem ipsum lorem ipsumlorem ipsum lotem lorem bbnnnnnnnlorem ",
       icon: "/Images/booked-cancel.png", // Corrected path
       statusNotification: "unread",

@@ -4,6 +4,7 @@ import { useSelector } from "react-redux";
 import SettingsProfileCard from "@/components/settings/profile/SettingsProfileCard";
 import EditModal from "@/components/settings/profile/EditModal";
 import { RootStateProfile } from "@/store/profile/profileSlice";
+import { RootStateAuth } from "@/store/auth/authSlice";
 
 function Profile() {
      const profileDetails = useSelector(
@@ -11,23 +12,26 @@ function Profile() {
   );
   const profileInformation = useSelector(
        (state: RootStateProfile) => state.profile.information
-     );
+  );
+  const user = useSelector(
+    (state: RootStateAuth) => state.auth.user
+  );
   const forms = [
     {
       label: "Full Name",
-      text: profileInformation.name,
+      text: ` ${user.first_name} ${user.last_name}`,
       type: "text",
     },
     {
       label: "Email",
-      text: profileInformation.email,
+      text: user.email,
       type: "email",
     },
   ];
   const Phone = [
     {
       label: "Phone Number",
-      text: profileInformation.phoneNumber,
+      text: user.phone_num,
       type: "phone",
     },
     {
@@ -39,7 +43,7 @@ function Profile() {
   const Address = [
     {
       label: "Address",
-      text: profileInformation.address.length > 0 ? profileInformation.address : "-",
+      text: user.address.length > 0 ? user.address : "-",
       type: "address",
     },
     {
@@ -49,12 +53,12 @@ function Profile() {
     },
     {
       label: "State",
-      text: profileInformation.state.length > 0 ? profileInformation.state : "-",
+      text:  "-",
       type: "state",
     },
     {
       label: "City",
-      text: profileInformation.city.length > 0 ? profileDetails.city : "-",
+      text:  "-",
       type: 'city',
     },
   ];

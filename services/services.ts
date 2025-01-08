@@ -8,8 +8,8 @@ export const createService = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response.data,
+      status: err?.response.status,
     };
   }
 };
@@ -24,8 +24,8 @@ export const getService = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response.data,
+      status: err?.response.status,
     };
   }
 };
@@ -38,8 +38,8 @@ export const getAllService = async (id: string) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response.data,
+      status: err?.response.status,
     };
   }
 };
@@ -53,8 +53,8 @@ export const updateService = async (values: any) => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response.data,
+      status: err?.response.status,
     };
   }
 };
@@ -67,8 +67,8 @@ export const getServiceType = async () => {
   } catch (err: any) {
     return {
       error: true,
-      data: err.response.data,
-      status: err.response.status,
+      data: err?.response.data,
+      status: err?.response.status,
     };
   }
 };

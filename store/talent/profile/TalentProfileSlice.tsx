@@ -12,9 +12,11 @@ interface ImageNew {
 
 interface EducationProfile {
   user_id: string;
-  bank_name: string;
-  account_name: string;
-  account_num: string;
+  institute: string;
+  degree: string;
+  discipline: string;
+  start: string;
+  finish: string;
   created_at: string;
   updated_at: string;
 }
@@ -30,13 +32,15 @@ interface BankDetails {
 }
 
 interface TalentProfileState {
-  files: ImageNew[]; // Array to store images
+  files: ImageNew[];
   educationProfile: EducationProfile;
-  bankDetails: BankDetails; // Object to store bank details
+  bankDetails: BankDetails;
 }
 
-export interface RootStateTalentProfile {
-  talentProfile: TalentProfileState; // Nested state structure
+export interface RootStateTalentProfileState {
+  files: ImageNew[];
+  educationProfile: EducationProfile;
+  bankDetails: BankDetails;
 }
 
 // Initial state
@@ -53,9 +57,11 @@ const initialState: TalentProfileState = {
   ],
   educationProfile: {
     user_id: "",
-    bank_name: "",
-    account_name: "",
-    account_num: "",
+    institute: "",
+    degree: "",
+    discipline: "",
+    start: "",
+    finish: "",
     created_at: "",
     updated_at: "",
   },
@@ -75,37 +81,18 @@ const talentProfileSlice = createSlice({
   name: "TalentProfile",
   initialState,
   reducers: {
-    /**
-     * Add a new image to the list.
-     * @param state - Current state.
-     * @param action - Payload containing the new image.
-     */
     addFile: (state, action: PayloadAction<ImageNew>) => {
       state.files.push(action.payload);
     },
 
-    /**
-     * Remove an image by its URL.
-     * @param state - Current state.
-     * @param action - Payload containing the URL of the image to remove.
-     */
     removeFile: (state, action: PayloadAction<string>) => {
       state.files = state.files.filter((file) => file.url !== action.payload);
     },
 
-    /**
-     * Clear all images from the list.
-     * @param state - Current state.
-     */
     clearFiles: (state) => {
       state.files = [];
     },
 
-    /**
-     * Update the bank details.
-     * @param state - Current state.
-     * @param action - Payload containing the updated bank details.
-     */
     updateEducationProfileData: (
       state,
       action: PayloadAction<EducationProfile>
@@ -114,12 +101,17 @@ const talentProfileSlice = createSlice({
     },
 
     setBankDetailsData: (state, action: PayloadAction<BankDetails>) => {
+      console.log("setBankDetails", action.payload);
       state.bankDetails = action.payload;
-    }
+    },
   },
 });
 
-// Export actions and reducer
-export const { addFile, removeFile, clearFiles, updateEducationProfileData, setBankDetailsData } =
-  talentProfileSlice.actions;
+export const {
+  addFile,
+  removeFile,
+  clearFiles,
+  updateEducationProfileData,
+  setBankDetailsData,
+} = talentProfileSlice.actions;
 export default talentProfileSlice.reducer;

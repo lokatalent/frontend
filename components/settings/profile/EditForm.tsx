@@ -113,7 +113,7 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
   return (
     <>
       <Dialog open={editModal} onOpenChange={onOpenChange}>
-        <DialogContent className="w-full w-[25rem]">
+        <DialogContent className="sm:w-full w[40rem]">
           <DialogHeader>
             <DialogTitle className="text-xl font-normal mt-5 px-3 text-center">
               Change {form.label === "Full Name" ? "Name" : "Email"}
