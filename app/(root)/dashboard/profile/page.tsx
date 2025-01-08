@@ -2,6 +2,7 @@
 import ProfileCompletion from "@/components/profile/ProfileCompletion";
 import ProfileDetails from "@/components/profile/ProfileDetails";
 import PageSpinner from "@/components/ui/PageSpinner";
+import { setToken } from "@/lib/utils";
 import { signin, verifyUser } from "@/services/authService";
 import { getOwnProfile } from "@/services/profileService";
 import { setUser } from "@/store/auth/authSlice";
@@ -65,9 +66,6 @@ export default function Profile() {
         },
         { title: "Email Address", value: profileData.email || "-" },
         { title: "Phone Number", value: profileData.phone_num || "-" },
-        // { title: "Country", value: profileData.country || "-" },
-        // { title: "State", value: profileData.state || "-" },
-        // { title: "City", value: profileData.city || "-" },
         { title: "Address", value: profileData.address || "-" },
         {
           title: "Date of birth",
@@ -104,13 +102,12 @@ export default function Profile() {
           message: "Your account has been verified successfully",
         })
       );
+      let data = response.data;
+
+      // save tokens
+      setToken(data.tokens.access_token, data.tokens.refresh_token);
+      dispatch(setUser(data.user))
     } else {
-      // return dispatch(
-      //   showToast({
-      //     status: "error",
-      //     message: response.data.message,
-      //   })
-      // );
     }
   };
 

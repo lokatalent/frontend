@@ -71,7 +71,7 @@ export default function ProfileStep() {
   );
   const dispatch = useDispatch();
 
-  console.log(activeStep);
+  // console.log(activeStep);
 
   const isStepSkipped = (step: number) => {
     return skipped.has(step);
@@ -93,7 +93,7 @@ export default function ProfileStep() {
   };
 
   const finishedStepHandler = () => {
-    router.push("/dashboard/profile");
+    router.push("/talent/dashboard/profile");
   };
   
   
@@ -182,12 +182,12 @@ export default function ProfileStep() {
                 })}
               </div>
             )}
-            {activeStep === 11 && <PersonalInfo setActiveStep={setActiveStep} />}
+            {activeStep === 0 && <PersonalInfo setActiveStep={setActiveStep} />}
             {activeStep === 1 && <Portfolio setActiveStep={setActiveStep} />}
             {activeStep === 2 && (
               <ServiceCharge setActiveStep={setActiveStep} />
             )}
-            {activeStep === 0 && (
+            {activeStep === 4 && (
               <div className="space-y-4">
                 <Qualification
                   setActiveStep={setActiveStep}

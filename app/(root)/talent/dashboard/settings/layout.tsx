@@ -28,8 +28,8 @@ export default function SettingsLayout({
 
   return (
     <div className="space-y-10">
-      {!shouldHideRoleSwitch && (
-        <div className="hidden w-full space-y-6">
+      {/* {!shouldHideRoleSwitch && ( */}
+        <div className="hidde w-full space-y-6">
           <RoleSwitch
             type="link"
             roles={SettingsRoles}
@@ -38,7 +38,8 @@ export default function SettingsLayout({
             talent={true}
           />
         </div>
-      )}
+        
+      {/* )} */}
       {children}
     </div>
   );

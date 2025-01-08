@@ -92,6 +92,20 @@ export const updateEducationProfile = async (values: any) => {
   }
 };
 
+export const deleteUserAccount = async () => {
+  try {
+    // console.log(values);
+    let response = await http.patch("/users");
+    return { error: false, data: response?.data, status: response?.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err?.response.data,
+      status: err?.response.status,
+    };
+  }
+};
+
 // export const updateBankProfile = async (values: any) => {
 //   try {
 //     // console.log(values);

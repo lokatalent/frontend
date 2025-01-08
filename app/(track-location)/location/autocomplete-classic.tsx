@@ -14,12 +14,15 @@ import { useRouter } from "next/navigation";
 import schedule from "@/public/Images/schedule.png";
 import { useDispatch } from "react-redux";
 import { setBookingLocation } from "@/store/profile/bookingSlice";
+import { Spacer } from "@/components/Spacer";
+import LocationTrack from "@/components/location/LocationTrack";
 
 interface Props {
   onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
 }
 
 export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
+  const [mapping, setMapping] = useState(false);
   const [placeAutocomplete, setPlaceAutocomplete] =
     useState<google.maps.places.Autocomplete | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -34,12 +37,24 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
     };
 
     setPlaceAutocomplete(new places.Autocomplete(inputRef.current, options));
-  }, [places]);
+  }, [places, mapping]);
 
   const [selectedLocation, setSelectedLocation] = useState<any>(null);
   const [isDisabled, setIsDisabled] = useState(false);
   const router = useRouter();
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
+
+  const changeType = () => {
+    setIsDisabled(true);
+    setMapping(false);
+    setSelectedLocation(null);
+  };
+
+  const onTrackLocation = (address: string) => {
+    setSelectedLocation(address);
+    dispatch(setBookingLocation(address));
+    setIsDisabled(false);
+  };
 
   useEffect(() => {
     if (!placeAutocomplete) return;
@@ -122,6 +137,14 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
           </div>
         </DialogContent>
       </Dialog>
+      <Spacer size={10} />
+      <LocationTrack
+        mapping={mapping}
+        setMapping={setMapping}
+        changeType={changeType}
+        dashboard={true}
+        onTrack={onTrackLocation}
+      />
     </div>
   );
 };
