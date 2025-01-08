@@ -8,7 +8,7 @@ import { useEffect, useState } from "react";
 type Notification = {
   id: string;
   title: string;
-  description: string;
+  message: string;
   icon: string;
   statusNotification: "read" | "unread"; // Added status property
   name: string;

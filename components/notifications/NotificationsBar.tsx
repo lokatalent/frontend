@@ -7,7 +7,7 @@ import Link from "next/link";
 type Notification = {
   id: string;
   title: string;
-  description: string;
+  taskDescription: string;
   icon: string;
   statusNotification: "read" | "unread"; // Added status property
 };
@@ -42,7 +42,7 @@ const NotificationsBar: React.FC<NotificationsBarProps> = ({
               <p className="text-primaryBlue text-sm">{notification.title}</p>
               <BiSolidRightArrowAlt className="hidden md:block text-primaryBlue" />
               <p className="text-black text-sm w-full md:w-[75%]">
-                {notification.description}
+                {notification.taskDescription}
               </p>
             </div>
           </div>
