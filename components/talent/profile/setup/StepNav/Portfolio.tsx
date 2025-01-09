@@ -90,7 +90,7 @@ function Portfolio({ setActiveStep }: any) {
   const handleSaveAvailability = (
     updatedAvailability: typeof initialAvailability
   ) => {
-    console.log(updatedAvailability);
+
     setAvailability(updatedAvailability);
     // Save the updated availability data to the server or elsewhere
   };
@@ -99,16 +99,15 @@ function Portfolio({ setActiveStep }: any) {
     const getBanks = async () => {
       try {
         const response = await getServiceType();
-        console.log(response);
+
         const newResponse = response.data.map((type: any) => ({
           value: type.service_type,
           label: capitalize(type.service_type),
         }));
-        console.log(newResponse);
+   
         setServiceType(newResponse);
       } catch (error) {
-        // console.error("Error fetching service types:", error);
-        console.log(error);
+
       }
     };
     getBanks();
@@ -120,8 +119,7 @@ function Portfolio({ setActiveStep }: any) {
   });
 
   const onSubmit = async (data: any) => {
-    // console.log(data);
-    // console.log(availability);
+
  ;
     let temp = {
       // id: id,
@@ -166,7 +164,7 @@ function Portfolio({ setActiveStep }: any) {
     const response = await createService(temp);
     if (!response.error) {
       // success
-      console.log(response.data);
+
       dispatch(setService(response.data));
       setActiveStep(2);
     } else {
@@ -182,7 +180,7 @@ function Portfolio({ setActiveStep }: any) {
     // Additional submit logic here
   };
   const onError = (data: any) => {
-    console.log(data);
+
     setError(data)
     // setActiveStep(3);
     // Additional submit logic here

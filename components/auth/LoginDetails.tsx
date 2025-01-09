@@ -12,7 +12,7 @@ interface LoginDetailsProps {
 const LoginDetails: React.FC<LoginDetailsProps> = ({ isFormValid }) => {
 	const [passwordVisible, setPasswordVisible] = useState(false);
 	const pathname = usePathname();
-	console.log(pathname);
+	
 
 	// Toggle the visibility
 	const togglePasswordVisibility = () => {

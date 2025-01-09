@@ -18,11 +18,9 @@ const Verification: React.FC<VerificationProps> = ({ isCorrect }) => {
 	const [value, setValue] = useState("");
 	const router = useRouter();
 	const pathname = usePathname();
-	console.log(pathname);
 	// console.log(pathname.includes("email"))
 	const IsEmail = pathname.includes("email");
-	console.log(IsEmail);
-	console.log(pathname);
+
 
 	function resendHandler() {
 		setIsResend((resend) => !resend);

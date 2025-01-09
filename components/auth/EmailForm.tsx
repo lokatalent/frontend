@@ -23,7 +23,6 @@ export default function EmailForm({ type }: { type: string }) {
       email: "",
     },
   });
-  // console.log(form);
 
   function navigateTo(path: string) {
     router.push(path);
@@ -32,8 +31,6 @@ export default function EmailForm({ type }: { type: string }) {
   
 
   const onSubmit = (data, e) => {
-    console.log(data, e);
-    console.log('data')
     router.push("reset-password/mail-verification");
   };
   const onError = (errors, e) => console.log(errors, e);

@@ -22,7 +22,7 @@ import { useDispatch, useSelector } from "react-redux";
 //   setService,
 // } from "@/store/talent/service/TalentServiceSlice";
 
-import { errorHandler } from "@/lib/utils";
+import { errorHandler, handleUnauthorizedError } from "@/lib/utils";
 import { showToast } from "@/store/auth/toastSlice";
 import { getAllService, updateService } from "@/services/services";
 import { setService } from "@/store/talent/service/TalentServiceSlice";
@@ -117,7 +117,9 @@ export default function EditPortfolio({
       };
       const responseBio = await updateProfile(tempBio);
       console.log(responseBio);
-      dispatch(setUser(responseBio.data));
+      if (!responseBio.error) {
+        dispatch(setUser(responseBio.data));
+      }
 
       console.log(data);
       let temp = {
