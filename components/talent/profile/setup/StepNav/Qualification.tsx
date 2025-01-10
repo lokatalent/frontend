@@ -5,7 +5,7 @@ import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { showToast } from "@/store/auth/toastSlice";
-import { errorHandler, handleUnauthorizedError } from "@/lib/utils";
+import { errorHandler, handleUnauthorizedError, setToken } from "@/lib/utils";
 import { updateEducationProfile } from "@/services/profileService";
 import { updateEducationProfileData } from "@/store/talent/profile/TalentProfileSlice";
 import { useRouter } from "next/navigation";
@@ -20,7 +20,7 @@ import { Button } from "@/components/ui/button";
 import { IoIosSend } from "react-icons/io";
 import { useState } from "react";
 import { verifyUser } from "@/services/authService";
-import { RootStateAuth } from "@/store/auth/authSlice";
+import { RootStateAuth, setUser } from "@/store/auth/authSlice";
 
 const fileSchema = z
   .instanceof(File)
@@ -49,39 +49,38 @@ function Qualification({ setActiveStep, handleSkip }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
   const [isFinished, setIsFinished] = useState(false);
-  const userIsVerified = useSelector((state: RootStateAuth) => state.auth.user.is_verified)
+  const userIsVerified = useSelector(
+    (state: RootStateAuth) => state.auth.user.is_verified
+  );
 
   const resetDialog = () => {
     setIsFinished(false);
   };
 
   const finishedStepHandler = () => {
-    router.push("/dashboard/profile");
+    router.push("/talent/dashboard/profile");
   };
 
   const onVerifyUser = async () => {
-      const response = await verifyUser();
-      if (!response.error) {
-        dispatch(
-          showToast({
-            status: "success",
-            message: "Your account has been verified successfully",
-          })
-        );
-      } else {
-                handleUnauthorizedError(response, dispatch, router, showToast);
-        
-        dispatch(
-          showToast({
-            status: "error",
-            message: response.data.message,
-          })
-        );
-      }
-    };
+    const response = await verifyUser();
+    if (!response.error) {
+      dispatch(
+        showToast({
+          status: "success",
+          message: "Your account has been verified successfully",
+        })
+      );
+      let data = response.data;
+      // save tokens
+      setToken(data.tokens.access_token, data.tokens.refresh_token);
+      dispatch(setUser(data.user));
+    } else {
+      // handleUnauthorizedError(response, dispatch, router, showToast);
+    }
+  };
 
   const onSubmit = async (data: any) => {
-    console.log(data);
+    // console.log(data);
     let temp = {
       institute: data.university,
       discipline: data.field,
@@ -114,6 +113,11 @@ function Qualification({ setActiveStep, handleSkip }: any) {
     setIsFinished(true);
   };
 
+  const skipStep = () => {
+    handleSkip();
+    setIsFinished(true);
+  };
+
   const onError = (data: any) => {
     console.log(data);
   };
@@ -138,7 +142,6 @@ function Qualification({ setActiveStep, handleSkip }: any) {
                   { value: "Ibadan", label: "Ibadan" },
                 ]}
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-               
               />
               <TalentDynamicForm
                 type="select"
@@ -150,7 +153,6 @@ function Qualification({ setActiveStep, handleSkip }: any) {
                   { value: "B.Sc", label: "B.Sc" },
                 ]}
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-               
               />
               <TalentDynamicForm
                 type="select"
@@ -163,7 +165,6 @@ function Qualification({ setActiveStep, handleSkip }: any) {
                   { value: "Accounting", label: "Accounting" },
                 ]}
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-               
               />
               <TalentDynamicForm
                 type="date"
@@ -171,7 +172,6 @@ function Qualification({ setActiveStep, handleSkip }: any) {
                 label="Start Date"
                 control={control}
                 className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-               
               />
               <TalentDynamicForm
                 type="date"
@@ -179,7 +179,6 @@ function Qualification({ setActiveStep, handleSkip }: any) {
                 label="End Date or Expected End Date "
                 control={control}
                 className="w-[53rem]"
-               
               />
               <TalentDynamicForm
                 type="file"
@@ -187,12 +186,11 @@ function Qualification({ setActiveStep, handleSkip }: any) {
                 label="Upload Your Certifications"
                 control={control}
                 className="w-[53rem]"
-                
               />
             </div>
 
             <div className="flex flex-col sm:flex-row sm:gap-6">
-              <Button variant="outline" onClick={handleSkip} className="mt-4">
+              <Button variant="outline" onClick={skipStep} className="h-14">
                 Skip this step
               </Button>
               <button
@@ -219,8 +217,8 @@ function Qualification({ setActiveStep, handleSkip }: any) {
               <IoIosSend color="#3377FF" size={50} />
             </div>
             <p className="w-full text-center flex-center">
-              Your profile is complete! You can now proceed to verify your
-              address and ID in the settings to start accepting bookings
+              Your profile setup is complete! You can now start accepting
+              bookings
             </p>
           </div>
           <div className="text-center mt-4">

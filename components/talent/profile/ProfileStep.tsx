@@ -49,7 +49,7 @@ const steps1 = [
   },
   {
     id: 3,
-    title: "Add your service charge and bank details",
+    title: "Add your bank details",
     step: 0,
     status: "completed",
   },
@@ -187,7 +187,7 @@ export default function ProfileStep() {
             {activeStep === 2 && (
               <ServiceCharge setActiveStep={setActiveStep} />
             )}
-            {activeStep === 4 && (
+            {activeStep === 3 && (
               <div className="space-y-4">
                 <Qualification
                   setActiveStep={setActiveStep}
@@ -209,9 +209,7 @@ export default function ProfileStep() {
                         <IoIosSend color="#3377FF" size={50} />
                       </div>
                       <p className="w-full text-center flex-center">
-                        Your profile is complete! You can now proceed to verify
-                        your address and ID in the settings to start accepting
-                        bookings
+                      Your profile setup is complete! You can now start accepting bookings
                       </p>
                     </div>
                     <div className="text-center mt-4">
