@@ -77,7 +77,7 @@ const Profiles = () => {
   const user = useSelector((state: any) => state.auth.user);
 
   const [activeTab, setActiveTab] = useState<
-    "personal" | "portfolio" | "service" | "reviews"
+    "personal" | "portfolio" | "Bank Details" | "reviews"
   >("personal");
 
   const [profileData, setProfileData] =
@@ -263,7 +263,7 @@ const Profiles = () => {
         return <ProfileDetails details={profileData} />;
       case "portfolio":
         return <PortfolioView isData={true} data={portfolioData} />;
-      case "service":
+      case "Bank Details":
         return <ServiceRate isData={true} data={serviceRate} />;
       case "reviews":
         return MOCK_REVIEWS.length ? (
@@ -337,23 +337,25 @@ const Profiles = () => {
           <div className="card sm:overflow-hidden overflow-scroll mt-12">
             <div className="flex items-center mb-8 justify-between">
               <div className="flex flex-row flex-wrap sm:space-x-6 text-sm sm:text-xm">
-                {["personal", "portfolio", "service", "reviews"].map((tab) => (
-                  <Button
-                    key={tab}
-                    className={`${
-                      activeTab === tab
-                        ? "rounded-none border-b-2 border-primaryBlue text-primaryBlue pb-1"
-                        : ""
-                    } hover:no-underline text-[10px] sm:text-[14px]`}
-                    variant="link"
-                    onClick={() => setActiveTab(tab as typeof activeTab)}
-                  >
-                    {tab.charAt(0).toUpperCase() + tab.slice(1)}
-                  </Button>
-                ))}
+                {["personal", "portfolio", "Bank Details", "reviews"].map(
+                  (tab) => (
+                    <Button
+                      key={tab}
+                      className={`${
+                        activeTab === tab
+                          ? "rounded-none border-b-2 border-primaryBlue text-primaryBlue pb-1"
+                          : ""
+                      } hover:no-underline text-[10px] sm:text-[14px]`}
+                      variant="link"
+                      onClick={() => setActiveTab(tab as typeof activeTab)}
+                    >
+                      {tab.charAt(0).toUpperCase() + tab.slice(1)}
+                    </Button>
+                  )
+                )}
               </div>
 
-              {activeTab === "service" && (
+              {activeTab === "Bank Details" && (
                 <EditServiceRate serviceRateEdited={setServiceRate} />
               )}
               {activeTab === "portfolio" && (

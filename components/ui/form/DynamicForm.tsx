@@ -331,6 +331,8 @@ const DynamicForm = ({
           city: data.city,
         })
       );
+    } else if (buttonAction === 'create-password') {
+
     }
 
     setError(null);

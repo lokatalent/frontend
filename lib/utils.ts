@@ -127,12 +127,12 @@ export const passwordFormSchema = z
   .object({
     newPassword: z
       .string()
-      .min(8, "Password must be at least 8 characters")
-      .regex(
-        /[!@#$%^&*(),.?":{}|<>]/,
-        "Password must contain at least one symbol"
-      )
-      .regex(/\d/, "Password must contain at least one number"),
+      .min(8, "Password must be at least 8 characters"),
+      // .regex(
+      //   /[!@#$%^&*(),.?":{}|<>]/,
+      //   "Password must contain at least one symbol"
+      // )
+      // .regex(/\d/, "Password must contain at least one number"),
     confirmPassword: z
       .string()
       .min(8, "Password must be at least 8 characters"),
