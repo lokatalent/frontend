@@ -4,6 +4,7 @@ import { BookingColumns, BookingType } from "@/components/columns/Columns";
 import BookingCard from "@/components/overview/BookingCard";
 import DataTable from "@/components/ui/gen/DataTable";
 import PageSpinner from "@/components/ui/PageSpinner";
+import { handleUnauthorizedError } from "@/lib/utils";
 import { getAllBookings } from "@/services/bookingService";
 import { showToast } from "@/store/auth/toastSlice";
 import { useRouter } from "next/navigation";
@@ -38,22 +39,7 @@ export default function Bookings() {
       setBookings(response.data);
     } else {
       setLoading(false);
-      if (response.status === 401) {
-        dispatch(
-          showToast({
-            status: "error",
-            message: response.data.message,
-          })
-        );
-        return router.push("/login");
-      }
-
-      return dispatch(
-        showToast({
-          status: "error",
-          message: response.data.message,
-        })
-      );
+      handleUnauthorizedError(response, dispatch, router, showToast);
     }
   };
 
@@ -64,7 +50,7 @@ export default function Bookings() {
   useEffect(() => {
     fetchBookings(user.id);
   }, [bookingType]);
-  
+
   return (
     <div>
       <div className="w-full space-y-6">

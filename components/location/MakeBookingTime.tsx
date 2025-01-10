@@ -136,7 +136,7 @@ const MakeBookingTime = () => {
           message: "Booking has been created successfully",
         })
       );
-      router.push(`talents?id=${response.data.id}`);
+      router.push(`talents?id=${encodeURIComponent(response.data.id)}`);
     } else {
       setLoading(false);
       if (response.status === 401) {
