@@ -6,6 +6,7 @@ import Image from "next/image";
 import { useDispatch, useSelector } from "react-redux";
 import { RootStateProfile, setFileStore } from "@/store/profile/profileSlice";
 import { FormFieldError } from "../ui/form/FormFieldError";
+import { FaUpload } from "react-icons/fa";
 
 type FileConfig = {
   allowedTypes: string[];
@@ -133,12 +134,13 @@ const FileUpload = () => {
                 className={` bg-white text-[#3377FF] rounded px-[1rem] py-4 flex items-center justify-content flex-col`}
               >
                 <div>
-                  <Image
-                    // src={fileUploadImg}
+                  {/* <Image
+                    src={fileUploadImg}
                     src={""}
                     alt="File Upload"
                     className="w-10"
-                  />
+                  /> */}
+                  <FaUpload />
                 </div>
                 <Button
                   variant="ghost"

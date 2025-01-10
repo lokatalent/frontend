@@ -118,7 +118,9 @@ const Profiles = () => {
 
   const fetchData = async () => {
     try {
-      await Promise.all([fetchProfile(), fetchService(), fetchBankDetails()]);
+      if (user.is_verified)
+        await Promise.all([fetchProfile(), fetchService(), fetchBankDetails()]);
+      else fetchProfile();
     } catch (error) {
       dispatch(
         showToast({
@@ -138,15 +140,32 @@ const Profiles = () => {
     const response = await getOwnProfile();
     if (!response.error) {
       setLoading(false);
-      const { first_name, last_name, email, phone_num, address, date_of_birth } =
-        response.data;
-      setProfileData([
-        { title: "Name", value: `${first_name} ${last_name}` || "-" },
-        { title: "Email Address", value: email || "-" },
-        { title: "Phone Number", value: phone_num || "-" },
-        { title: "Address", value: address || "-" },
-        { title: "Date of birth", value: new Date(date_of_birth).toDateString() || "-"},
-      ]);
+      const {
+        first_name,
+        last_name,
+        email,
+        phone_num,
+        address,
+        date_of_birth,
+      } = response.data;
+      setProfileData(
+        user?.is_verified
+          ? [
+              { title: "Name", value: `${first_name} ${last_name}` || "-" },
+              { title: "Email Address", value: email || "-" },
+              { title: "Phone Number", value: phone_num || "-" },
+              { title: "Address", value: address || "-" },
+              {
+                title: "Date of birth",
+                value: new Date(date_of_birth).toDateString() || "-",
+              },
+            ]
+          : [
+              { title: "Name", value: `${first_name} ${last_name}` || "-" },
+              { title: "Email Address", value: email || "-" },
+              { title: "Phone Number", value: phone_num || "-" },
+            ]
+      );
     } else {
       setLoading(false);
       handleUnauthorizedError(response, dispatch, router, showToast);
@@ -226,7 +245,7 @@ const Profiles = () => {
       if (!response.error) {
         dispatch(setBankDetailsData(response.data));
       } else {
-        handleUnauthorizedError(response, dispatch, router, showToast);
+        // handleUnauthorizedError(response, dispatch, router, showToast);
         dispatch(
           setBankDetailsData({
             user_id: "",
@@ -238,21 +257,12 @@ const Profiles = () => {
             updated_at: "",
           })
         );
-        //  if (response.status === 401) {
-        //    dispatch(
-        //      showToast({
-        //        status: "error",
-        //        message: response?.data?.message,
-        //      })
-        //    );
-        //    return router.push("/login");
-        //  }
       }
     } catch (error) {
-      showToast({
-        status: "error",
-        message: "No bank details found for the user.",
-      });
+      // showToast({
+      //   status: "error",
+      //   message: "No bank details found for the user.",
+      // });
       return;
     }
   };
