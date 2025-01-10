@@ -13,16 +13,26 @@ import { Button } from "@/components/ui/button";
 import { FaEye, FaEyeSlash } from "react-icons/fa6";
 import { useState } from "react";
 import { FormFieldError } from "@/components/ui/form/FormFieldError";
+import { updatePassword } from "@/services/authService";
+import { errorHandler, handleUnauthorizedError } from "@/lib/utils";
+import { showToast } from "@/store/auth/toastSlice";
+import { useDispatch } from "react-redux";
+
+interface changePasswordType {
+  confirmPassword: string;
+  currentPassword: string;
+  newPassword: string;
+}
 
 const passwordSchema = z
   .object({
     currentPassword: z
       .string()
-      .min(8, "Password must be at least 8 characters")
-      .regex(
-        /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
-        "Password must contain at least one letter and one number"
-      ),
+      .min(8, "Password must be at least 8 characters"),
+    // .regex(
+    //   /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
+    //   "Password must contain at least one letter and one number"
+    // ),
     newPassword: z.string().min(8, "Password must be at least 8 characters"),
     //   .regex(
     //     /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
@@ -42,6 +52,8 @@ const SecurityForm = () => {
   const [showNewPassword, setShowNewPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [successModal, setSuccessModal] = useState(false);
+  const dispatch = useDispatch();
+  const router = useRouter();
 
   const {
     register,
@@ -52,9 +64,25 @@ const SecurityForm = () => {
     resolver: zodResolver(passwordSchema),
   });
 
-  const onSubmit = (data) => {
+  const onSubmit = async (data: changePasswordType) => {
     console.log(data);
-    setSuccessModal(true);
+    let temp = {
+      old_password: data.currentPassword,
+      new_password: data.newPassword,
+    };
+    const response = await updatePassword(temp);
+    console.log(response);
+    if (!response.error) {
+      setSuccessModal(true);
+    } else {
+      handleUnauthorizedError(response, dispatch, showToast, router);
+      dispatch(
+        showToast({
+          status: "error",
+          message: errorHandler(response.data),
+        })
+      );
+    }
     reset();
   };
 

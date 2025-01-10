@@ -56,7 +56,7 @@ type FormProps = {
 
 const Form: React.FC<FormProps> = ({ children }) => {
 	const pathname = usePathname();
-	console.log(pathname);
+
 
 	return (
 		<div className="sm:px-[4rem]  md:px-[6rem] lg:px-[7rem] py-12 flex justify-cnter flex-col items-cener gap-12 ">

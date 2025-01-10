@@ -72,7 +72,7 @@ const StraightForm: React.FC = () => {
   ];
 
   const onSubmit = (data: FormData): void => {
-    console.log(data)
+
     setSavedData(data);
     reset();
   };

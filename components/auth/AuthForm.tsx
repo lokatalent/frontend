@@ -19,7 +19,7 @@ export default function AuthForm({ type }: { type: string }) {
   // const router = useRouter();
 
   const formSchema = authFormSchema(type);
-  console.log(formSchema, type)
+
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -28,7 +28,7 @@ export default function AuthForm({ type }: { type: string }) {
       password: "ssssssddss",
     },
   });
-  console.log(form);  
+ 
 
 
   // function navigateTo(path: string) {
@@ -40,7 +40,7 @@ export default function AuthForm({ type }: { type: string }) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     setLoading(true);
-    console.log(values);
+
     // type === "log-in" ? console.log('mama') : router.push("/signup/verify-email");
     setLoading(false);
   }

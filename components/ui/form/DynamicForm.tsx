@@ -339,10 +339,10 @@ const DynamicForm = ({
 
   // console.log(pathname);
   const onError = (data: any) => {
-    console.log("error");
+
     setError(data);
     // setSavedData(data);
-    console.log(data);
+
     setShowModal(false);
     // reset();
   };
