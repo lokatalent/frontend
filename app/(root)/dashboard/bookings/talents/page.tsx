@@ -12,19 +12,17 @@ export default function DashboardTalentsHome() {
   const [loading, setLoading] = useState(true);
   const router = useRouter();
   const dispatch = useDispatch();
-  // const params = useSearchParams();
-  // const userId = params.get("id");
-  let userId = "12345"
+  const params = useSearchParams();
+  const userId = params.get("id");
 
   const getProviders = async () => {
-    console.log("Hi")
-    // const response = await findProviders(userId);
-    // if (!response.error) {
-    //   console.log("Talents", response);
-    // } else {
-    //   setLoading(false);
-    //   handleUnauthorizedError(response, dispatch, router, showToast);
-    // }
+    const response = await findProviders(userId);
+    if (!response.error) {
+      console.log("Talents", response);
+    } else {
+      setLoading(false);
+      handleUnauthorizedError(response, dispatch, router, showToast);
+    }
   };
 
   useEffect(() => {
