@@ -15,9 +15,12 @@ import EditForm from "./EditForm";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, setEditModal } from "@/store/settings/SettingsSlice";
 import { IoWarningOutline } from "react-icons/io5";
-import { securityPhoneNumberSchema } from "@/lib/utils";
+import { handleUnauthorizedError, securityPhoneNumberSchema } from "@/lib/utils";
 import { setInformation } from "@/store/profile/profileSlice";
 import { useRouter } from "next/navigation";
+import { RootStateAuth, setUser } from "@/store/auth/authSlice";
+import { updateProfile } from "@/services/profileService";
+import { showToast } from "@/store/auth/toastSlice";
 
 interface RoleSwitchProps {
   forms: Array<{
@@ -33,6 +36,8 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
   const [error, setError] = useState("");
   const numberRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
+  const user = useSelector((state: RootStateAuth) => state.auth.user);
+  
 
   const mainModal = useSelector((state: RootState) => state.settings.mainModal);
   const editModal = useSelector((state: RootState) => state.settings.editModal);
@@ -46,7 +51,10 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
 
   const handleAddressForm = () => {
     if (title === "Address") {
-      router.push("/dashboard/settings/profile/address");
+      if (user.service_role === "service_provider") {
+
+        router.push("/talent/dashboard/settings/profile/address");
+      }
     }
   };
 
@@ -55,12 +63,32 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
     setIsEditModalOpen(false);
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     const number = numberRef.current?.value || "";
 
     try {
       const validatedNumber = securityPhoneNumberSchema.parse({ number });
-      dispatch(setInformation({ phoneNumber: validatedNumber.number }));
+      console.log(number, validatedNumber)
+      let temp = {
+        address: user.address,
+        number: validatedNumber.number
+        // gender: user.gender,
+        // date_of_birth: user.dateofbirth
+      };
+      const response = await updateProfile(temp);
+      console.log(response);
+      if (!response.error) {
+        dispatch(setUser(response.data));
+        dispatch(setInformation({ phoneNumber: validatedNumber.number }));
+      } else {
+        handleUnauthorizedError(response, dispatch, showToast, router);
+        dispatch(
+          showToast({
+            status: "error",
+            message: response.data.message,
+          })
+        );
+      }
       setError("");
       handleConfirmationClose();
     } catch (validationError: any) {

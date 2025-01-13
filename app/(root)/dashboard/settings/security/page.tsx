@@ -25,7 +25,7 @@ function Security() {
   const activeTwoStepVerification = useSelector(
     (state: RootState) => state.settings.activeTwoStepVerification
   );
-  console.log(ProfileInfo);
+
   const fields: FieldConfig[] = [
     {
       name: "currentPassword",

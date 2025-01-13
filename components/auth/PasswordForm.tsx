@@ -13,7 +13,6 @@ export default function PasswordForm({ type }: { type: string }) {
 	// const [loading, setLoading] = useState(false);
 
 	const formSchema = passwordFormSchema(type);
-	console.log(formSchema);
 
 	const form = useForm<z.infer<typeof formSchema>>({
 		resolver: zodResolver(formSchema),
@@ -29,8 +28,6 @@ export default function PasswordForm({ type }: { type: string }) {
 
 	const onSubmit = (data, e) => {
 		// e.preventDefault();
-		console.log(data, e);
-		console.log("data");
 		// router.push("reset-password/mail-verification");
 	};
 	// const onError = (errors, e) => console.log(errors, e);

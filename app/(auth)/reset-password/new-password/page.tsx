@@ -126,7 +126,7 @@ function NewPassword() {
           fields={fields}
           defaultValues={defaultValues}
           schemaType={passwordFormSchema}
-          buttonAction="password"
+          buttonAction="create-password"
           width="w-full max-w-2xl mx-auto"
         />
       </div>

@@ -11,6 +11,18 @@ import { useDispatch } from "react-redux";
 
 const fields: FieldConfig[] = [
   {
+    name: "city",
+    type: "text",
+    label: "City*",
+    validation: {
+      required: "Select a City",
+      minLength: {
+        value: 6,
+        message: "City must be at least 3 characters",
+      },
+    },
+  },
+  {
     name: "state",
     type: "text",
     label: "State*",
@@ -23,11 +35,11 @@ const fields: FieldConfig[] = [
     },
   },
   {
-    name: "city",
+    name: "country",
     type: "text",
-    label: "City*",
+    label: "Country",
     validation: {
-      required: "Select a City",
+      required: "Select a Country",
       minLength: {
         value: 6,
         message: "City must be at least 3 characters",
@@ -46,20 +58,20 @@ const fields: FieldConfig[] = [
       },
     },
   },
-  {
-    name: "addressVerification",
-    type: "select",
-    label: "Address Verification*",
-    options: [
-      "Electricity bill",
-      "Waste Bill",
-      "Tenancy of Agreement",
-      "Bank Statement with Address",
-    ],
-    validation: {
-      required: "Select the type Address Verification",
-    },
-  },
+  // {
+  //   name: "addressVerification",
+  //   type: "select",
+  //   label: "Address Verification*",
+  //   options: [
+  //     "Electricity bill",
+  //     "Waste Bill",
+  //     "Tenancy of Agreement",
+  //     "Bank Statement with Address",
+  //   ],
+  //   validation: {
+  //     required: "Select the type Address Verification",
+  //   },
+  // },
 ];
 
 const schemaType = editAddressFormSchema;
@@ -105,7 +117,7 @@ function Edit() {
       </section>
       <div className="flex gap-4 items-center flex-col justify-center">
         <div className="space-y-3">
-          <p className="text-black text-4xl font-bold">
+          <p className="text-black text-center text-4xl font-bold">
             Edit your Address Details
           </p>
           <p className="text-gray-500  text-center">

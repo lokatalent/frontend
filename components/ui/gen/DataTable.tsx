@@ -46,7 +46,7 @@ interface GlobalFilter {
 const fuzzyFilter: FilterFn<any> = (row, columnId, value, addMeta) => {
   // Rank the item
   const itemRank = rankItem(row.getValue(columnId), value);
-  console.log(itemRank, row, columnId, value);
+
 
   // Store the itemRank info
   addMeta({ itemRank });
@@ -84,7 +84,7 @@ function DataTable<TData, TValue>({
     },
     onGlobalFilterChange: setGlobalFilter,
   });
-  // console.log(path);
+
   const handleNavigate = (id: number) => {
     router.push(
       talent ? `/talent/dashboard/bookings/${id}` : `/dashboard/bookings/${id}`

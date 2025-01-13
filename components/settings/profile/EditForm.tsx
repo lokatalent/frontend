@@ -21,6 +21,11 @@ import {
 } from "@/store/settings/SettingsSlice";
 import { setInformation } from "@/store/profile/profileSlice";
 import ConfirmationMailModal from "@/components/settings/profile/ConfirmationMailModal";
+import { updateProfile } from "@/services/profileService";
+import { setUser } from "@/store/auth/authSlice";
+import { showToast } from "@/store/auth/toastSlice";
+import { handleUnauthorizedError } from "@/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface FormField {
   type: "name" | "email";
@@ -32,7 +37,19 @@ interface EditFormProps {
   form: FormField;
   open: boolean;
   onOpenChange: () => void;
-}
+};
+
+const validateEmail = (email, setNameError) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(email)) {
+    setNameError("Please enter a valid email address");
+    return false;
+  } else {
+    setNameError("");
+    return true;
+  }
+};
 
 const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
   console.log(open);
@@ -40,9 +57,12 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
   const [isResponseModalOpen, setIsResponseModalOpen] = useState(false);
   const nameRef = useRef<HTMLInputElement>(null);
   const emailRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
   const reasonRef = useRef<HTMLInputElement>(null);
   const [nameError, setNameError] = useState("");
   const [reasonError, setReasonError] = useState("");
+  
+  const user = useSelector((state: any) => state.auth.user);
 
   //////// redux
   const editModal = useSelector((state: RootState) => state.settings.editModal);
@@ -59,39 +79,77 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
     return reason.trim().split(/\s+/).length >= 5;
   };
 
-  const handleContinue = () => {
+  function splitWords(input: string): [string, string] {
+    const words = input.split(" "); // Split the string by spaces
+    // if (words.length !== 2) {
+    //   throw new Error("Input must contain exactly two words.");
+    // }
+    return [words[0], words[1]];
+  }
+  const email = emailRef.current?.value || "";
+
+  const handleContinue = async () => {
     const name = nameRef.current?.value || "";
-    const email = emailRef.current?.value || "";
     const reason = reasonRef.current?.value || "";
 
     let isValid = true;
 
     // Validate name if changing name
-    if (form.label === "Full name") {
+    if (form.label === "Full Name") {
       if (!validateName(name)) {
         setNameError("Please enter a valid full name (first and last name)");
         isValid = false;
       } else {
+        console.log(name);
+
         setNameError("");
       }
 
       if (!validateReason(reason)) {
         setReasonError("Please provide a reason with at least 5 words");
         isValid = false;
+        return;
       } else {
         setReasonError("");
+      }
+
+      const [firstName, lastName] = splitWords(name);
+      console.log(firstName, lastName);
+      let tempBio = {
+        first_name: firstName,
+        last_name: lastName,
+        address: user.address,
+        // gender: user.gender,
+        // date_of_birth: user.dateofbirth
+      };
+      const responseBio = await updateProfile(tempBio);
+      console.log(responseBio);
+      if (!responseBio.error) {
+        dispatch(setUser(responseBio.data));
+      } else {
+        handleUnauthorizedError(responseBio, dispatch, showToast, router)
+        dispatch(showToast({
+          status: "error",
+          message: responseBio.data.message,
+        }))
       }
     }
 
     // If email, just validate email
     if (form.type === "email") {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
+      console.log(email);
+      const emailValid = validateEmail(email, setNameError);
+      if (emailValid) {
+        console.log("Email is valid!");
+        setNameError("");
+        // Proceed with form submission or other logic
+      } else {
+        console.log("Invalid email");
         setNameError("Please enter a valid email address");
         isValid = false;
-      } else {
-        setNameError("");
       }
+
+
     }
 
     // If all validations pass, open response modal
@@ -100,7 +158,7 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
         dispatch(setInformation({ name: name, reason: reason }));
         dispatch(setNameResponseModal(true));
       } else {
-        dispatch(setInformation({ email: email }));
+        // dispatch(setInformation({ email: email }));
         dispatch(setConfirmationMailModal(true));
       }
       setIsResponseModalOpen(true);
@@ -213,7 +271,7 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
         onOpenChange={() => setIsResponseModalOpen(false)}
       />
 
-      <ConfirmationMailModal />
+      <ConfirmationMailModal email={email ?? ""} />
     </>
   );
 };

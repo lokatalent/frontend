@@ -16,8 +16,16 @@ import {
 import Image from "next/image";
 import InputOTPDemo from "@/components/auth/InputOTP";
 import { IoIosSend } from "react-icons/io";
+import { updateProfile } from "@/services/profileService";
+import { setUser } from "@/store/auth/authSlice";
+import { handleUnauthorizedError } from "@/lib/utils";
+import { showToast } from "@/store/auth/toastSlice";
+import { useRouter } from "next/navigation";
+import { sendEmailOTP } from "@/services/authService";
 
-const ConfirmationMailModal: React.FC = () => {
+const ConfirmationMailModal: React.FC = ({ email }): string => {
+  const user = useSelector((state: any) => state.auth.user);
+  const router = useRouter();
   const [confirmModal, setConfirmModal] = useState<
     "confirm" | "confirmed" | "done"
   >("confirm");
@@ -27,6 +35,7 @@ const ConfirmationMailModal: React.FC = () => {
     (state: RootState) => state.settings.confirmationMailModal
   );
 
+  console.log(email);
   const dispatch = useDispatch();
 
   const otp = "111111";
@@ -38,15 +47,46 @@ const ConfirmationMailModal: React.FC = () => {
     dispatch(setConfirmationMailModal(false));
   };
 
-  const handleButtonClick = () => {
+  const handleButtonClick = async () => {
     switch (confirmModal) {
       case "confirm":
-        setConfirmModal("confirmed");
+        const response = await sendEmailOTP();
+        if (!response.error) {
+          setConfirmModal("confirmed");
+        } else {
+          handleUnauthorizedError(response, dispatch, showToast, router);
+          dispatch(
+            showToast({
+              status: "error",
+              message: response.data.message,
+            })
+          );
+        }
+
         break;
       case "confirmed":
-        if (value === otp) {
+        let temp = {
+          address: user.address,
+          email: email,
+          // gender: user.gender,
+          // date_of_birth: user.dateofbirth
+        };
+        const responseProfile = await updateProfile(temp);
+        console.log(responseProfile);
+        if (!responseProfile.error) {
+          dispatch(setUser(responseProfile.data));
           setConfirmModal("done");
           setError("");
+        } else {
+          handleUnauthorizedError(responseProfile, dispatch, showToast, router);
+          dispatch(
+            showToast({
+              status: "error",
+              message: responseProfile.data.message,
+            })
+          );
+        }
+        if (value === otp) {
         } else {
           setError("Enter a correct OTP");
         }
@@ -85,8 +125,8 @@ const ConfirmationMailModal: React.FC = () => {
               />
             </div>
             <p className="text-center">
-              Click Send Email below, and we will send an email to
-              gabamazing25@gmail.com with a link to confirm the update
+              {`Click Send Email below, and we will send an email to 
+                  ${email} with a link to confirm the update`}
             </p>
           </div>
         )}

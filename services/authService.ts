@@ -99,6 +99,21 @@ export const forgotPassword = async (values: any) => {
   }
 };
 
+
+export const updatePassword = async (values: any) => {
+  try {
+    let response = await http.patch("/auth/update-password", values);
+    return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err?.response?.data,
+      status: err?.response?.status,
+    };
+  }
+};
+
+
 export const resendMail = async (values: any) => {
   try {
     let response = await http.post("auth/email/resend-notification", values);

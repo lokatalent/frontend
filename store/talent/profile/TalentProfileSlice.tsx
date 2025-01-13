@@ -2,12 +2,15 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 interface ImageNew {
-  newFile: {
+  newFile?: {
     name: string;
     size: number;
     type: string;
   };
+  id: string;
+  service_type: string;
   url: string;
+  user_id: string;
 }
 
 interface EducationProfile {
@@ -45,16 +48,15 @@ export interface RootStateTalentProfileState {
 
 // Initial state
 const initialState: TalentProfileState = {
-  files: [
-    {
-      newFile: {
-        name: "",
-        size: 1,
-        type: "1",
-      },
-      url: "/Images/Gallery1.png",
-    },
-  ],
+  files: [],
+  // {
+  //   newFile: {
+  //     name: "",
+  //     size: 1,
+  //     type: "1",
+  //   },
+  //   url: "/Images/Gallery1.png",
+  // },
   educationProfile: {
     user_id: "",
     institute: "",
@@ -81,12 +83,21 @@ const talentProfileSlice = createSlice({
   name: "TalentProfile",
   initialState,
   reducers: {
-    addFile: (state, action: PayloadAction<ImageNew>) => {
-      state.files.push(action.payload);
+    addFile: (state, action: PayloadAction<ImageNew[]>) => {
+      console.log(action.payload);
+      state.files = action.payload;
+    },
+    updateFile: (state, action: PayloadAction<ImageNew | ImageNew[]>) => {
+      console.log(action.payload);
+      if (Array.isArray(action.payload)) {
+        state.files.push(...action.payload); // Spread for an array
+      } else {
+        state.files.push(action.payload); // Direct push for a single object
+      }
     },
 
     removeFile: (state, action: PayloadAction<string>) => {
-      state.files = state.files.filter((file) => file.url !== action.payload);
+      state.files = state.files.filter((file) => file.id !== action.payload);
     },
 
     clearFiles: (state) => {
@@ -113,5 +124,6 @@ export const {
   clearFiles,
   updateEducationProfileData,
   setBankDetailsData,
+  updateFile,
 } = talentProfileSlice.actions;
 export default talentProfileSlice.reducer;
