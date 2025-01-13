@@ -18,7 +18,7 @@ import { IoWarningOutline } from "react-icons/io5";
 import { handleUnauthorizedError, securityPhoneNumberSchema } from "@/lib/utils";
 import { setInformation } from "@/store/profile/profileSlice";
 import { useRouter } from "next/navigation";
-import { setUser } from "@/store/auth/authSlice";
+import { RootStateAuth, setUser } from "@/store/auth/authSlice";
 import { updateProfile } from "@/services/profileService";
 import { showToast } from "@/store/auth/toastSlice";
 
@@ -36,7 +36,7 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
   const [error, setError] = useState("");
   const numberRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
-  const user = useSelector((state: any) => state.auth.user);
+  const user = useSelector((state: RootStateAuth) => state.auth.user);
   
 
   const mainModal = useSelector((state: RootState) => state.settings.mainModal);
@@ -51,7 +51,10 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
 
   const handleAddressForm = () => {
     if (title === "Address") {
-      router.push("/dashboard/settings/profile/address");
+      if (user.service_role === "service_provider") {
+
+        router.push("/talent/dashboard/settings/profile/address");
+      }
     }
   };
 

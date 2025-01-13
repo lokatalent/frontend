@@ -37,7 +37,19 @@ interface EditFormProps {
   form: FormField;
   open: boolean;
   onOpenChange: () => void;
-}
+};
+
+const validateEmail = (email, setNameError) => {
+  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+  if (!emailRegex.test(email)) {
+    setNameError("Please enter a valid email address");
+    return false;
+  } else {
+    setNameError("");
+    return true;
+  }
+};
 
 const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
   console.log(open);
@@ -49,6 +61,7 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
   const reasonRef = useRef<HTMLInputElement>(null);
   const [nameError, setNameError] = useState("");
   const [reasonError, setReasonError] = useState("");
+  
   const user = useSelector((state: any) => state.auth.user);
 
   //////// redux
@@ -73,10 +86,10 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
     // }
     return [words[0], words[1]];
   }
+  const email = emailRef.current?.value || "";
 
   const handleContinue = async () => {
     const name = nameRef.current?.value || "";
-    const email = emailRef.current?.value || "";
     const reason = reasonRef.current?.value || "";
 
     let isValid = true;
@@ -124,32 +137,19 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
 
     // If email, just validate email
     if (form.type === "email") {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
+      console.log(email);
+      const emailValid = validateEmail(email, setNameError);
+      if (emailValid) {
+        console.log("Email is valid!");
+        setNameError("");
+        // Proceed with form submission or other logic
+      } else {
+        console.log("Invalid email");
         setNameError("Please enter a valid email address");
         isValid = false;
-      } else {
-        setNameError("");
-        let tempBio = {
-          address: user.address,
-          email: email
-          // gender: user.gender,
-          // date_of_birth: user.dateofbirth
-        };
-        const responseBio = await updateProfile(tempBio);
-        console.log(responseBio);
-        if (!responseBio.error) {
-          dispatch(setUser(responseBio.data));
-        } else {
-          handleUnauthorizedError(responseBio, dispatch, showToast, router);
-          dispatch(
-            showToast({
-              status: "error",
-              message: responseBio.data.message,
-            })
-          );
-        }
       }
+
+
     }
 
     // If all validations pass, open response modal
@@ -158,7 +158,7 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
         dispatch(setInformation({ name: name, reason: reason }));
         dispatch(setNameResponseModal(true));
       } else {
-        dispatch(setInformation({ email: email }));
+        // dispatch(setInformation({ email: email }));
         dispatch(setConfirmationMailModal(true));
       }
       setIsResponseModalOpen(true);
@@ -271,7 +271,7 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
         onOpenChange={() => setIsResponseModalOpen(false)}
       />
 
-      <ConfirmationMailModal />
+      <ConfirmationMailModal email={email ?? ""} />
     </>
   );
 };

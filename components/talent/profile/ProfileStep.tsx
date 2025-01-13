@@ -99,6 +99,7 @@ export default function ProfileStep() {
   
   const onVerifyUser = async () => {
     const response = await verifyUser();
+    console.log(response);
     if (!response.error) {
       dispatch(
         showToast({
