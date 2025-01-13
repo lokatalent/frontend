@@ -323,6 +323,43 @@ const DynamicForm = ({
         );
       }
     } else if (buttonAction === "edit-address") {
+      let temp = {
+        address:
+          data.street_addr +
+          "," +
+          data.city +
+          "," +
+          data.state +
+          "," +
+          data.country,
+      };
+
+      const onUpdateProfile = async () => {
+        const response = await updateProfile(temp);
+        if (!response.error) {
+          setLoading(false);
+          dispatch(
+            showToast({
+              status: "success",
+              message: "Your Profile has been updated",
+            })
+          );
+          dispatch(setUser(response.data));
+          router.push(
+            user.service_role === "service_provider"
+              ? `/talent/dashboard/profile`
+              : `/dashboard/profile`
+          );
+          // redirect to verify account
+          // router.push("/dashboard/profile/verify");
+
+          router.push("/dashboard/profile");
+        } else {
+          setLoading(false);
+          handleUnauthorizedError(response, dispatch, router, showToast);
+        }
+      };
+      onUpdateProfile();
       setLoading(false);
       dispatch(
         setInformation({
@@ -331,6 +368,7 @@ const DynamicForm = ({
           city: data.city,
         })
       );
+    } else if (buttonAction === "create-password") {
     }
 
     setError(null);
@@ -339,7 +377,6 @@ const DynamicForm = ({
 
   // console.log(pathname);
   const onError = (data: any) => {
-
     setError(data);
     // setSavedData(data);
 

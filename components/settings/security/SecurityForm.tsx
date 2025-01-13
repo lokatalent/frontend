@@ -17,6 +17,7 @@ import { updatePassword } from "@/services/authService";
 import { errorHandler, handleUnauthorizedError } from "@/lib/utils";
 import { showToast } from "@/store/auth/toastSlice";
 import { useDispatch } from "react-redux";
+import { useRouter } from "next/navigation";
 
 interface changePasswordType {
   confirmPassword: string;
