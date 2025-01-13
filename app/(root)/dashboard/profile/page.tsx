@@ -148,16 +148,10 @@ export default function Profile() {
             </div>
           </div>
 
-          {
-            <ProfileCompletion
-              addText="Finish setting up your profile to get the most out of our services"
-              linkTo="/dashboard/profile/edit"
-            />
-          }
-          {/* {!user.is_verified && <ProfileCompletion
+          {!user.is_verified && <ProfileCompletion
             addText="Finish setting up your profile to get the most out of our services"
             linkTo="/dashboard/profile/edit"
-          />} */}
+          />}
 
           <div>
             <ProfileDetails details={data} />

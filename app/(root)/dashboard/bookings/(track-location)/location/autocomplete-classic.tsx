@@ -62,6 +62,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
     placeAutocomplete.addListener("place_changed", () => {
       onPlaceSelect(placeAutocomplete.getPlace());
       const place = placeAutocomplete.getPlace();
+      console.log("Place", place)
       setSelectedLocation(place.formatted_address);
       dispatch(setBookingLocation(place.formatted_address));
       setIsDisabled(false);
