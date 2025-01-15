@@ -16,8 +16,15 @@ import { MdLocationSearching } from "react-icons/md";
 import schedule from "@/public/Images/schedule.png";
 import { useRouter } from "next/navigation";
 
-const LocationTrack = ({ mapping, setMapping, dashboard, changeType, onTrack }: any) => {
+const LocationTrack = ({
+  mapping,
+  setMapping,
+  dashboard,
+  changeType,
+  onTrack,
+}: any) => {
   const [streetName, setStreetName] = useState("");
+  const [locationCoords, setLocationCoords] = useState("")
   const [locationError, setLocationError] = useState(false);
 
   //TODO: Location autocomplete only works when i refresh the location screen on the browser
@@ -38,14 +45,13 @@ const LocationTrack = ({ mapping, setMapping, dashboard, changeType, onTrack }: 
             .then((response) => response.json())
             .then((data) => {
               const addressComponents = data.results[0].address_components;
-              onTrack(data.results[0].formatted_address)
+              onTrack(data.results[0].formatted_address);
               const streetNumber = addressComponents.find((component) =>
                 component.types.includes("street_number")
               );
               const route = addressComponents.find((component) =>
                 component.types.includes("route")
               );
-
               setStreetName(`${streetNumber?.long_name} ${route?.long_name}`);
             })
             .catch((error) => {
@@ -54,7 +60,8 @@ const LocationTrack = ({ mapping, setMapping, dashboard, changeType, onTrack }: 
         },
         (error) => {
           setLocationError(error?.message);
-        }
+        },
+        { enableHighAccuracy: true }
       );
     } else {
       console.error("Geolocation is not supported by this browser.");
@@ -73,7 +80,14 @@ const LocationTrack = ({ mapping, setMapping, dashboard, changeType, onTrack }: 
   return (
     <div className="flex justify-center ">
       {mapping ? (
-        <p className="text-primaryBlue underline underline-offset-4 font-semibold cursor-pointer" onClick={changeType}>Enter location manually</p>
+        <div>
+          <p
+            className="text-primaryBlue underline underline-offset-4 font-semibold cursor-pointer"
+            onClick={changeType}
+          >
+            Enter location manually
+          </p>
+        </div>
       ) : (
         <Dialog>
           <DialogTrigger className="text-primaryBlue underline underline-offset-4 font-semibold">

@@ -15,7 +15,7 @@ export default function DashboardTalentsHome() {
   const params = useSearchParams();
   const userId = params.get("id");
 
-  const getProviders = async () => {
+  const getProvidersData = async () => {
     const response = await findProviders(userId);
     if (!response.error) {
       console.log("Talents", response);
@@ -26,7 +26,7 @@ export default function DashboardTalentsHome() {
   };
 
   useEffect(() => {
-    getProviders();
+    getProvidersData();
   }, []);
   return (
     <div className="py-5 bg-bgWhite">
