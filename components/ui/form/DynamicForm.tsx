@@ -35,6 +35,7 @@ import {
   sendEmailOTP,
   signin,
   signup,
+  verifyUser,
 } from "@/services/authService";
 import {
   onForgotPassword,
@@ -310,9 +311,26 @@ const DynamicForm = ({
       };
 
       const bankResponse = await updateBankProfile(bankData);
+      console.log(bankResponse);
       if (!bankResponse.error) {
         setLoading(false);
         onUpdateProfile();
+
+        const response = await verifyUser();
+        if (!response.error) {
+          dispatch(
+            showToast({
+              status: "success",
+              message: "Your account has been verified successfully",
+            })
+          );
+          let data = response.data;
+          console.log(data);
+          // save tokens
+          setToken(data.tokens.access_token, data.tokens.refresh_token);
+          dispatch(setUser(data.user));
+        } else {
+        }
       } else {
         setLoading(false);
         dispatch(

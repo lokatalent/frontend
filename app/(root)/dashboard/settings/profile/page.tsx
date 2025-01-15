@@ -52,13 +52,12 @@ function ProfileSettings() {
     },
     {
       label: "State",
-      text:
-        profileInformation?.state?.length > 0 ? profileInformation.state : "-",
+      text: "-",
       type: "state",
     },
     {
       label: "City",
-      text: profileInformation?.city?.length > 0 ? profileDetails.city : "-",
+      text: "-",
       type: "city",
     },
   ];
