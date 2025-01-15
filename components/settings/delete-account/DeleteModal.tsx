@@ -26,6 +26,11 @@ export default function DeleteModal() {
     console.log(response);
     if (!response.error) {
       setIsDelete(true);
+      dispatch(showToast({
+        status: "success",
+        message: "Account deleted successfully"
+      }))
+      router.push('/login')
     } else {
       handleUnauthorizedError(response, dispatch, router, showToast);
     }

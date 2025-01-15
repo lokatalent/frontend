@@ -103,7 +103,7 @@ export default function Profile() {
         })
       );
       let data = response.data;
-
+      console.log(data);  
       // save tokens
       setToken(data.tokens.access_token, data.tokens.refresh_token);
       dispatch(setUser(data.user))

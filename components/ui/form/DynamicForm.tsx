@@ -323,9 +323,10 @@ const DynamicForm = ({
         );
       }
     } else if (buttonAction === "edit-address") {
+      console.log(data);
       let temp = {
         address:
-          data.street_addr +
+          data.address +
           "," +
           data.city +
           "," +
