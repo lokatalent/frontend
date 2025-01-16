@@ -246,6 +246,9 @@ export const formatPhone = (phone: string) => {
   else return "";
 };
 
+export const capitalize = (str: any) =>
+  str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
 interface FormData {
   username: string;
   email: string;

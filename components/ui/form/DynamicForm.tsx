@@ -88,10 +88,12 @@ const DynamicForm = ({
   const [fileValue, setFileValue] = useState<string>("");
   const [showModal, setShowModal] = useState<boolean>(false);
   const [loading, setLoading] = useState(false);
-  const verificationResult = useSelector(
-    (state: RootStateProfile) => state.profile.verification
-  );
-  const file = useSelector((state: RootStateProfile) => state.profile.file);
+  // const verificationResult = useSelector(
+  //   (state: RootStateProfile) => state.profile.verification
+  // ); // removing profile store
+  // const file = useSelector((state: RootStateProfile) => state.profile.file); // remving profile store
+  const file = 'ss'
+  const verificationResult = 's';
 
   const dispatch = useDispatch();
 

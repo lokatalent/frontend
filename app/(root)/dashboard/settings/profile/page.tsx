@@ -50,16 +50,16 @@ function ProfileSettings() {
       text: "Nigeria",
       type: "country",
     },
-    {
-      label: "State",
-      text: "-",
-      type: "state",
-    },
-    {
-      label: "City",
-      text: "-",
-      type: "city",
-    },
+    // {
+    //   label: "State",
+    //   text: "-",
+    //   type: "state",
+    // },
+    // {
+    //   label: "City",
+    //   text: "-",
+    //   type: "city",
+    // },
   ];
 
   return (

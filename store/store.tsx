@@ -29,7 +29,7 @@ const persistConfig = {
 };
 
 const reducers = combineReducers({
-  profile: profileReducer,
+  // profile: profileReducer,
   settings: settingsReducer,
   talentProfile: talentProfileReducer,
   auth: authReducer,
