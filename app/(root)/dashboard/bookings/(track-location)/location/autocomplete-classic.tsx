@@ -33,26 +33,35 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
 
     const options = {
       componentRestrictions: { country: "ng" },
-      fields: ["geometry", "name", "formatted_address"],
+      fields: ["geometry", "name", "formatted_address", "address_components"],
     };
 
     setPlaceAutocomplete(new places.Autocomplete(inputRef.current, options));
   }, [places, mapping]);
 
   const [selectedLocation, setSelectedLocation] = useState<any>(null);
+  const [selectedRegion, setSelectedRegion] = useState<any>(null);
+  const [selectedAddress, setSelectedAddress] = useState<any>(null);
   const [isDisabled, setIsDisabled] = useState(true);
   const router = useRouter();
   const dispatch = useDispatch();
 
   const changeType = () => {
-    setIsDisabled(true)
-    setMapping(false)
-    setSelectedLocation(null)
-  }
+    setIsDisabled(true);
+    setMapping(false);
+    setSelectedLocation(null);
+  };
 
-  const onTrackLocation = (address: string) => {
-    setSelectedLocation(address);
-    dispatch(setBookingLocation(address));
+  useEffect(() => {
+    setSelectedLocation(selectedAddress + ", " + selectedRegion);
+    dispatch(setBookingLocation(selectedAddress + ", " + selectedRegion));
+  }, [selectedAddress]);
+
+  const onTrackLocation = (address: string, region: string) => {
+    setSelectedAddress(address);
+    setSelectedRegion(region);
+    setSelectedLocation(address + ", " + region);
+    dispatch(setBookingLocation(address + ", " + region));
     setIsDisabled(false);
   };
 
@@ -62,8 +71,10 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
     placeAutocomplete.addListener("place_changed", () => {
       onPlaceSelect(placeAutocomplete.getPlace());
       const place = placeAutocomplete.getPlace();
-      setSelectedLocation(place.formatted_address);
-      dispatch(setBookingLocation(place.formatted_address));
+      const location =
+        place.name ?? place.name + ", " + place.formatted_address;
+      setSelectedLocation(location);
+      dispatch(setBookingLocation(location));
       setIsDisabled(false);
     });
   }, [onPlaceSelect, placeAutocomplete]);
@@ -74,9 +85,19 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
         Where do you need help?
       </h1>
       {mapping ? (
-        <div className=" sm:w-[350px] md:w-[400px]">
-        <p className="text-sm mb-1">Current Location</p> 
-        <p className="border-gray-200 rounded mb-3 px-3 text-sm border py-2 sm:w-[350px] md:w-[400px] min-h-[40px]">{selectedLocation}</p></div>
+        <div className="w-[90%] sm:w-[350px] md:w-[400px]">
+          <p className="text-sm mb-1">Current Location</p>
+          <textarea
+            value={selectedAddress}
+            onChange={(e) => setSelectedAddress(e.target.value)}
+            className="border-gray-200 rounded mb-3 px-3 text-sm border h-10 w-full focus:outline-blue-500 py-2 min-h-14"
+            placeholder="Address"
+          ></textarea>
+          <p className="text-sm mb-1">Region</p>
+          <p className="border-gray-200 rounded mb-3 px-3 text-sm border py-2 sm:w-[350px] md:w-[400px] min-h-[40px]">
+            {selectedRegion}
+          </p>
+        </div>
       ) : (
         <div className="">
           <input

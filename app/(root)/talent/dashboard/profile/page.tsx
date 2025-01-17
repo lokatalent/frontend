@@ -412,7 +412,7 @@ const Profiles = () => {
                 )}
               </div>
 
-              {/* {activeTab === "Bank Details" && (
+              {activeTab === "Bank Details" && (
                 <EditServiceRate serviceRateEdited={setServiceRate} />
               )}
               {activeTab === "portfolio" && (
@@ -426,7 +426,7 @@ const Profiles = () => {
                     }))
                   }
                 />
-              )} */}
+              )}
             </div>
 
             {renderTabContent()}

@@ -7,12 +7,6 @@ import { RootStateProfile } from "@/store/profile/profileSlice";
 import { RootStateAuth } from "@/store/auth/authSlice";
 
 function ProfileSettings() {
-  const profileDetails = useSelector(
-    (state: RootStateProfile) => state.profile.profileDetails
-  );
-  const profileInformation = useSelector(
-    (state: RootStateProfile) => state.profile.information
-  );
   const profileAuth = useSelector((state: RootStateAuth) => state.auth.user);
 
   const forms = [

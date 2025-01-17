@@ -13,6 +13,7 @@ const InstantBooking = () => {
 	const router = useRouter();
 	const service = useSelector((state: any) => state.booking.service);
 	const location = useSelector((state: any) => state.booking.location);
+  console.log(location)
 
   useEffect(() => {
     if (!service) return router.push("/dashboard/bookings/select-service");
