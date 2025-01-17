@@ -159,7 +159,7 @@ const FileUpload = ({ onFileUpload}: FileConfig) => {
                     or drag and drop
                   </span>
                 </Button>
-                <p className="text-[11px] text-black">SVG, HEIC, PNG, JPG</p>
+                <p className="text-[11px] text-black">SVG, HEIC, PNaG, JPG</p>
               </div>
             </div>
           </>

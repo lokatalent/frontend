@@ -33,6 +33,9 @@ export const handleUnauthorizedError = (
   );
 };
 
+
+
+
 export const setToken = (accessToken: string, refreshToken: string) => {
   sessionStorage.setItem("lokaToken", accessToken);
   sessionStorage.setItem("lokaRefreshToken", refreshToken);

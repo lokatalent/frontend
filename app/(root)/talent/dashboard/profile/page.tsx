@@ -97,17 +97,17 @@ const Profiles = () => {
   const userBio = useSelector((state: any) => state.auth.user.bio);
   const avatar = useSelector((state: any) => state.auth.user.avatar);
 
-   useEffect(() => {
-    const serviceTypeHandler= async () => {
+  useEffect(() => {
+    const serviceTypeHandler = async () => {
       const response = await getServiceType();
-  
+
       const newResponse = response.data.map((type: any) => ({
         value: type.service_type,
         label: capitalize(type.service_type),
       }));
       setServiceType(newResponse);
       console.log(response, newResponse);
-    }
+    };
     serviceTypeHandler();
   }, []);
 
@@ -148,7 +148,6 @@ const Profiles = () => {
   //     );
   //   }
   // };
- 
 
   useEffect(() => {
     // fetchData();
@@ -156,7 +155,7 @@ const Profiles = () => {
     setLoading(true);
     const initializeData = async () => {
       setLoading(true);
-      await fetchProfile()
+      await fetchProfile();
       await fetchService();
       await fetchBankDetails();
     };
@@ -201,6 +200,8 @@ const Profiles = () => {
       handleUnauthorizedError(response, dispatch, router, showToast);
     }
   };
+
+   
 
   const fetchService = async () => {
     setLoading(true);
@@ -252,15 +253,6 @@ const Profiles = () => {
         status: "error",
         message: "No services found for the user.",
       });
-      // if (allServicesResponse.status === 401) {
-      //   dispatch(
-      //     showToast({
-      //       status: "error",
-      //       message: allServicesResponse?.data?.message,
-      //     })
-      //   );
-      //   return router.push("/login");
-      // }
       return;
     }
 
@@ -281,7 +273,7 @@ const Profiles = () => {
         Indoor_cleaning: newService?.service_type === "sweeping",
         Cleaning: newService?.service_type === "cleaning",
         Driving: newService?.service_type === "driving",
-        Cooking: newService?.service_type === "cooking",       
+        Cooking: newService?.service_type === "cooking",
       },
     });
   };
@@ -384,7 +376,7 @@ const Profiles = () => {
             </div>
           </div>
 
-          {!user.is_verified && (
+          {user.is_verified ? null : (
             <ProfileCompletion
               addText="You are not done with your profile setup. Complete it now"
               linkTo="/talent/dashboard/profile/edit"

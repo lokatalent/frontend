@@ -15,7 +15,7 @@ export default function RootLayout({
 				<div className="sidenav-container">
 					<SideNav />
 				</div>
-				<div className="flex-1 md:ml-[200px] ">
+				<div className="flex-1 md:ml-[200px]">
 					<TopNav />
 				</div>
 			</div>

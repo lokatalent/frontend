@@ -17,7 +17,7 @@ import { IoMdClose } from "react-icons/io";
 import {
   addFile,
   removeFile,
-  RootStateTalentProfile,
+  RootStateTalentProfileState,
   updateFile,
 } from "@/store/talent/profile/TalentProfileSlice";
 import { RootStateTalentService } from "@/store/talent/service/TalentServiceSlice";
@@ -30,6 +30,182 @@ import {
 import { handleUnauthorizedError } from "@/lib/utils";
 import { showToast } from "@/store/auth/toastSlice";
 import { BsPlusCircleDotted, BsThreeDotsVertical } from "react-icons/bs";
+import Spinner from "@/components/ui/Spinner";
+import PageSpinner from "@/components/ui/PageSpinner";
+
+// const ImageProfile: React.FC = () => {
+//   const serviceType = useSelector(
+//     (state: RootStateTalentService) => state.service.service.service_type
+//   );
+//   const userID = useSelector((state: RootStateAuth) => state.auth.user.id);
+//   const [isPics, setIsPics] = useState(false);
+//   const fileInputRef = useRef<HTMLInputElement>(null);
+//   const serviceImage = useSelector(
+//     (state: RootStateTalentProfileState) => state.talentProfile.files
+//   );
+//   console.log(serviceImage);
+
+//   // const [images, setImages] = useState<string[]>(
+//   //   serviceImage.map((photo) => photo.url)
+//   // );
+//   const [selectedImage, setSelectedImage] = useState<string | null>(null);
+//   const [modeView, setModeView] = useState<number | null>(null);
+//   const router = useRouter();
+//   const dispatch = useDispatch();
+
+//   useEffect(() => {
+//     const getServiceImageHandler = async () => {
+//       let temp = {
+//         id: userID,
+//         service_type: serviceType,
+//       };
+//       const response = await getServiceImages(temp);
+//       console.log(response);
+//       if (!response.error) {
+//         dispatch(addFile(response.data));
+//       }
+//     };
+//     getServiceImageHandler();
+//   }, []);
+
+//   useEffect(() => {
+//     // const updatedImages = [
+//     //   ...images.filter((img) => !serviceImage.some((photo) => photo.url === img)),
+//     //   ...serviceImage.map((photo) => photo.url),
+//     // ];
+//     // setImages(updatedImages);
+//     // setIsPics(updatedImages.length > 0);
+//   }, []);
+
+//   const handleDelete = async (index: any) => {
+//     setModeView(null);
+//     // setImages((prevImages) => prevImages.filter((_, i) => i !== index));
+//     let temp = {
+//       id: userID,
+//       service_type: serviceType,
+//     };
+//     const response = await deleteServiceImage(temp);
+//     console.log(response);
+//     if (!response.error) {
+//       dispatch(
+//         showToast({
+//           status: "success",
+//           message: "Image deleted successfully",
+//         })
+//       );
+//       dispatch(removeFile(index));
+//     }
+//   };
+
+//   const handleView = (image: string) => {
+//     setSelectedImage(image);
+//     setModeView(null);
+//   };
+
+//   const toggleModeView = (index: number) => {
+//     setModeView((prev) => (prev === index ? null : index));
+//   };
+
+//   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
+//     const files = event.target.files?.[0];
+//     if (files) {
+//       const newImageUrls = Array.from(files).map((file) =>
+//         URL.createObjectURL(file)
+//       );
+//       // setImages((prevImages) => [...prevImages, ...newImageUrls]);
+//       console.log(files, newImageUrls);
+
+//       let temp = {
+//         // images: newImageUrls,
+//         images: files,
+//         service_type: serviceType,
+//       };
+//       const uploadServiceImagesHandler = async () => {
+//         const response = await uploadServiceImages(temp);
+//         console.log(response);
+//         if (!response.error) {
+//           dispatch(updateFile(response.data)); // Fixed spread argument error
+//           // success
+//           dispatch(
+//             showToast({
+//               status: "success",
+//               message: "Images uploaded successfully",
+//             })
+//           );
+//         } else {
+//           handleUnauthorizedError(response, dispatch, router, showToast);
+//           dispatch(
+//             showToast({
+//               status: "error",
+//               message: response.error,
+//             })
+//           );
+//         }
+//       };
+
+//       uploadServiceImagesHandler();
+//     }
+//   };
+
+//   const triggerFileInput = () => {
+//     fileInputRef.current?.click();
+//   };
+
+//   return (
+//     <div className="card">
+//       <h2 className="text-base font-normal mb-6">Images</h2>
+
+//       {serviceImage.length > 0 ? (
+//         <div
+//           className={`flex ${serviceImage.length > 3 ? "flex-wrap" : ""} gap-4`}
+//         >
+//           {serviceImage.map((image, index) => (
+//             <ImageCard
+//               key={image.id}
+//               image={image.url}
+//               index={image.id}
+//               modeView={modeView}
+//               onToggleModeView={toggleModeView}
+//               onView={handleView}
+//               onDelete={handleDelete}
+//             />
+//           ))}
+//           <div
+//             onClick={triggerFileInput}
+//             className="relative h-[188px] w-[210px] bg-[#C4C4C414] flex items-center justify-center rounded-lg cursor-pointer hover:bg-gray-100"
+//           >
+//             <BsPlusCircleDotted size={40} color="#3377FF" />
+//             <input
+//               ref={fileInputRef}
+//               type="file"
+//               accept="image/*"
+//               multiple
+//               onChange={handleFileSelect}
+//               className="hidden"
+//             />
+//           </div>
+//         </div>
+//       ) : (
+//         <div className="flex flex-col items-center space-y-3">
+//           <Image
+//             src="/Images/gallery-slash.png"
+//             alt="No photos available"
+//             width={100}
+//             height={100}
+//           />
+//           <p className="text-[#9390908F]">No photos added yet</p>
+//           <AddPhoto />
+//         </div>
+//       )}
+//       {selectedImage && (
+//         <ImageViewer
+//           image={selectedImage}
+//           onClose={() => setSelectedImage(null)}
+//         />
+//       )}
+//     </div>
+//   );
+// };
 
 const ImageProfile: React.FC = () => {
   const serviceType = useSelector(
@@ -37,63 +213,15 @@ const ImageProfile: React.FC = () => {
   );
   const userID = useSelector((state: RootStateAuth) => state.auth.user.id);
   const [isPics, setIsPics] = useState(false);
+  const [loading, setLoading] = useState(false); // Add loading state
   const fileInputRef = useRef<HTMLInputElement>(null);
-  const addedPhoto = useSelector(
-    (state: RootStateTalentProfile) => state.talentProfile.files
-  );
-  console.log(addedPhoto);
   const serviceImage = useSelector(
-    (state: RootStateTalentProfile) => state.talentProfile.files
+    (state: RootStateTalentProfileState) => state.talentProfile.files
   );
-  // const [images, setImages] = useState<string[]>(
-  //   addedPhoto.map((photo) => photo.url)
-  // );
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [modeView, setModeView] = useState<number | null>(null);
   const router = useRouter();
   const dispatch = useDispatch();
-
-  const getServiceImageHandler = async () => {
-    let temp = {
-      id: userID,
-      service_type: serviceType,
-    };
-    const response = await getServiceImages(temp);
-    console.log(response);
-    if (!response.error) {
-      dispatch(addFile(response.data));
-    }
-  };
-
-  // useEffect(() => {
-  //   const updatedImages = [
-  //     ...images.filter((img) => !addedPhoto.some((photo) => photo.url === img)),
-  //     ...addedPhoto.map((photo) => photo.url),
-  //   ];
-  //   setImages(updatedImages);
-  //   setIsPics(updatedImages.length > 0);
-  //   getServiceImageHandler();
-  // }, []);
-
-  const handleDelete = async (index: any) => {
-    setModeView(null);
-    setImages((prevImages) => prevImages.filter((_, i) => i !== index));
-    let temp = {
-      id: userID,
-      service_type: serviceType,
-    };
-    const response = await deleteServiceImage(temp);
-    console.log(response);
-    if (!response.error) {
-      dispatch(
-        showToast({
-          status: "success",
-          message: "Image deleted successfully",
-        })
-      );
-      dispatch(removeFile(index))
-    }
-  };
 
   const handleView = (image: string) => {
     setSelectedImage(image);
@@ -103,27 +231,58 @@ const ImageProfile: React.FC = () => {
   const toggleModeView = (index: number) => {
     setModeView((prev) => (prev === index ? null : index));
   };
+    const triggerFileInput = () => {
+      fileInputRef.current?.click();
+    };
+
+  useEffect(() => {
+    const getServiceImageHandler = async () => {
+      setLoading(true); // Start loading
+      let temp = {
+        id: userID,
+        service_type: serviceType,
+      };
+      const response = await getServiceImages(temp);
+      if (!response.error) {
+        dispatch(addFile(response.data));
+      }
+      setLoading(false); // Stop loading
+    };
+    getServiceImageHandler();
+  }, []);
+
+  const handleDelete = async (index: number) => {
+    setModeView(null);
+    setLoading(true); // Start loading
+    let temp = {
+      id: userID,
+      service_type: serviceType,
+    };
+    const response = await deleteServiceImage(temp);
+    if (!response.error) {
+      dispatch(
+        showToast({
+          status: "success",
+          message: "Image deleted successfully",
+        })
+      );
+      dispatch(removeFile(index));
+    }
+    setLoading(false); // Stop loading
+  };
 
   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
     const files = event.target.files?.[0];
     if (files) {
-      const newImageUrls = Array.from(files).map((file) =>
-        URL.createObjectURL(file)
-      );
-      setImages((prevImages) => [...prevImages, ...newImageUrls]);
-      console.log(files, newImageUrls);
-
-      let temp = {
-        // images: newImageUrls,
-        images: files,
-        service_type: serviceType,
-      };
+      setLoading(true); // Start loading
       const uploadServiceImagesHandler = async () => {
+        let temp = {
+          images: files,
+          service_type: serviceType,
+        };
         const response = await uploadServiceImages(temp);
-        console.log(response);
         if (!response.error) {
-          dispatch(updateFile(response.data)); // Fixed spread argument error
-          // success
+          dispatch(updateFile(response.data));
           dispatch(
             showToast({
               status: "success",
@@ -139,34 +298,33 @@ const ImageProfile: React.FC = () => {
             })
           );
         }
+        setLoading(false); // Stop loading
       };
-
       uploadServiceImagesHandler();
     }
-  };
-
-  const triggerFileInput = () => {
-    fileInputRef.current?.click();
   };
 
   return (
     <div className="card">
       <h2 className="text-base font-normal mb-6">Images</h2>
 
-      {isPics ? (
-        <div className={`flex ${images.length > 3 ? "flex-wrap" : ""} gap-4`}>
-          {/* {addedPhoto.map((image, index) => ( */}
-            {/* <ImageCard
+      {loading && <PageSpinner />}
+
+      {serviceImage.length > 0 ? (
+        <div
+          className={`flex ${serviceImage.length > 3 ? "flex-wrap" : ""} gap-4`}
+        >
+          {serviceImage.map((image, index) => (
+            <ImageCard
               key={image.id}
               image={image.url}
               index={image.id}
               modeView={modeView}
               onToggleModeView={toggleModeView}
               onView={handleView}
-              onDelete={handleDelete} */}
-            {/* /> */}
-          {/* ))} */}
-
+              onDelete={handleDelete}
+            />
+          ))}
           <div
             onClick={triggerFileInput}
             className="relative h-[188px] w-[210px] bg-[#C4C4C414] flex items-center justify-center rounded-lg cursor-pointer hover:bg-gray-100"
@@ -183,17 +341,20 @@ const ImageProfile: React.FC = () => {
           </div>
         </div>
       ) : (
-        <div className="flex flex-col items-center space-y-3">
-          <Image
-            src="/Images/gallery-slash.png"
-            alt="No photos available"
-            width={100}
-            height={100}
-          />
-          <p className="text-[#9390908F]">No photos added yet</p>
-          <AddPhoto />
-        </div>
+        !loading && (
+          <div className="flex flex-col items-center space-y-3">
+            <Image
+              src="/Images/gallery-slash.png"
+              alt="No photos available"
+              width={100}
+              height={100}
+            />
+            <p className="text-[#9390908F]">No photos added yet</p>
+            <AddPhoto />
+          </div>
+        )
       )}
+
       {selectedImage && (
         <ImageViewer
           image={selectedImage}
@@ -204,9 +365,10 @@ const ImageProfile: React.FC = () => {
   );
 };
 
+
 const ImageCard: React.FC<{
   image: string;
-  index: number;
+  index: number | string;
   modeView: number | null;
   onToggleModeView: (index: number) => void;
   onView: (image: string) => void;
@@ -216,7 +378,7 @@ const ImageCard: React.FC<{
     <div className="relative h-[188px] w-[210px] bg-gray-100 rounded-lg">
       <Image
         src={image}
-        alt={`Gallery Image ${index + 1}`}
+        alt={`Gallery Image ${index}`}
         className="object-cover rounded-lg"
         fill
       />
@@ -331,202 +493,3 @@ const DeleteImageProfile: React.FC<{
 };
 
 export default ImageProfile;
-
-// import React, { useState, useRef, useEffect } from "react";
-// import Image from "next/image";
-// import { useDispatch, useSelector } from "react-redux";
-// import { useRouter } from "next/navigation";
-// import {
-//   Dialog,
-//   DialogContent,
-//   DialogHeader,
-//   DialogTrigger,
-//   DialogClose,
-// } from "@/components/ui/dialog";
-// import { Button } from "@/components/ui/button";
-// import AddPhoto from "./AddPhoto";
-// import { IoMdClose } from "react-icons/io";
-// import {
-//   addFile,
-//   RootStateTalentProfile,
-// } from "@/store/talent/profile/TalentProfileSlice";
-// import { RootStateTalentService } from "@/store/talent/service/TalentServiceSlice";
-// import { RootStateAuth } from "@/store/auth/authSlice";
-// import {
-//   deleteServiceImage,
-//   getServiceImages,
-//   uploadServiceImages,
-// } from "@/services/services";
-// import { handleUnauthorizedError } from "@/lib/utils";
-// import { showToast } from "@/store/auth/toastSlice";
-// import { BsPlusCircleDotted, BsThreeDotsVertical } from "react-icons/bs";
-
-// const LoadingSpinner: React.FC<{ className?: string }> = ({ className }) => (
-//   <div
-//     className={`animate-spin border-4 border-t-transparent rounded-full ${
-//       className || "h-6 w-6"
-//     }`}
-//   />
-// );
-
-// const ImageProfile: React.FC = () => {
-//   const serviceType = useSelector(
-//     (state: RootStateTalentService) => state.service.service.service_type
-//   );
-//   const userID = useSelector((state: RootStateAuth) => state.auth.user.id);
-//   const addedPhoto = useSelector(
-//     (state: RootStateTalentProfile) => state.talentProfile.files
-//   );
-//   console.log(addedPhoto);
-//   const [images, setImages] = useState<string[]>(
-//     addedPhoto.map((photo) => photo.url)
-//   );
-//   console.log(images);
-//   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-//   const [modeView, setModeView] = useState<number | null>(null);
-//   const [isFetching, setIsFetching] = useState(false);
-//   const [isUploading, setIsUploading] = useState(false);
-//   const [isDeleting, setIsDeleting] = useState<number | null>(null);
-
-//   const fileInputRef = useRef<HTMLInputElement>(null);
-//   const router = useRouter();
-//   const dispatch = useDispatch();
-
-//   const fetchServiceImages = async () => {
-//     setIsFetching(true);
-//     try {
-//       const response = await getServiceImages({
-//         id: userID,
-//         service_type: serviceType,
-//       });
-//       console.log(response);
-//       if (!response.error) {
-//         dispatch(addFile(response.data));
-//       }
-//     } catch (error) {
-//       console.error("Failed to fetch service images", error);
-//     } finally {
-//       setIsFetching(false);
-//     }
-//   };
-
-//   useEffect(() => {
-//     fetchServiceImages();
-//   }, []);
-
-//   const handleDelete = async (index: number) => {
-//     setIsDeleting(index);
-//     try {
-//       const response = await deleteServiceImage({
-//         id: userID,
-//         service_type: serviceType,
-//       });
-//       if (!response.error) {
-//         setImages((prev) => prev.filter((_, i) => i !== index));
-//       }
-//     } catch (error) {
-//       console.error("Failed to delete image", error);
-//     } finally {
-//       setIsDeleting(null);
-//     }
-//   };
-
-//   const handleFileSelect = (event: React.ChangeEvent<HTMLInputElement>) => {
-//     const files = event.target.files;
-//     if (!files || files.length === 0) return;
-
-//     setIsUploading(true);
-//     const uploadHandler = async () => {
-//       try {
-//         const response = await uploadServiceImages({
-//           images: files,
-//           service_type: serviceType,
-//         });
-//         console.log(response);
-//         if (!response.error) {
-//           dispatch(addFile(response.data));
-//           dispatch(
-//             showToast({
-//               status: "success",
-//               message: "Images uploaded successfully",
-//             })
-//           );
-//         } else {
-//           handleUnauthorizedError(response, dispatch, router, showToast);
-//           dispatch(showToast({ status: "error", message: response.error }));
-//         }
-//       } catch (error) {
-//         console.error("Failed to upload images", error);
-//       } finally {
-//         setIsUploading(false);
-//       }
-//     };
-
-//     uploadHandler();
-//   };
-
-//   const triggerFileInput = () => fileInputRef.current?.click();
-
-//   return (
-//     <div className="card">
-//       <h2 className="text-base font-normal mb-6">Images</h2>
-//       {isFetching ? (
-//         <div className="flex justify-center items-center h-32">
-//           <LoadingSpinner className="h-12 w-12 border-primaryBlue" />
-//         </div>
-//       ) : addedPhoto.length >= 0 ? (
-//         <div className={`flex ${images.length > 3 ? "flex-wrap" : ""} gap-4`}>
-//           {addedPhoto.map((image, index) => (
-//             <ImageCard
-//               key={index}
-//               image={image}
-//               index={index}
-//               modeView={modeView}
-//               onToggleModeView={setModeView}
-//               onView={setSelectedImage}
-//               onDelete={handleDelete}
-//               isDeleting={isDeleting === index}
-//             />
-//           ))}
-//           <div
-//             onClick={triggerFileInput}
-//             className="relative h-[188px] w-[210px] bg-[#C4C4C414] flex items-center justify-center rounded-lg cursor-pointer hover:bg-gray-100"
-//           >
-//             {isUploading ? (
-//               <LoadingSpinner className="h-10 w-10 border-primaryBlue" />
-//             ) : (
-//               <BsPlusCircleDotted size={40} color="#3377FF" />
-//             )}
-//             <input
-//               ref={fileInputRef}
-//               type="file"
-//               accept="image/*"
-//               multiple
-//               onChange={handleFileSelect}
-//               className="hidden"
-//             />
-//           </div>
-//         </div>
-//       ) : (
-//         <div className="flex flex-col items-center space-y-3">
-//           <Image
-//             src="/Images/gallery-slash.png"
-//             alt="No photos available"
-//             width={100}
-//             height={100}
-//           />
-//           <p className="text-[#9390908F]">No photos added yet</p>
-//           <AddPhoto />
-//         </div>
-//       )}
-//       {selectedImage && (
-//         <ImageViewer
-//           image={selectedImage}
-//           onClose={() => setSelectedImage(null)}
-//         />
-//       )}
-//     </div>
-//   );
-// };
-
-// export default ImageProfile;

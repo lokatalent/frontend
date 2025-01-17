@@ -28,11 +28,11 @@ export default function RootLayout({
             <div className="sidenav-container">
               <SideNav talent={role === "service_provider"} />
             </div>
-            <div className="flex-1 xl:ml-[200px]">
+            <div className="flex-1 xl:m-[200px">
               <TopNav />
             </div>
           </div>
-          <div className="main-content xl:pl-[200px] pt-24 pb-10">
+          <div className="main-content xl:p-[200px pt-24 pb-10">
             <div className="px-[5%] xl:px-[3%] mx-auto">{children}</div>
           </div>
         </div>

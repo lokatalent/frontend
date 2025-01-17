@@ -1,5 +1,6 @@
 "use client";
 import ProfileCompletion from "@/components/profile/ProfileCompletion";
+import ProfileDetails from "@/components/profile/ProfileDetails";
 import PageSpinner from "@/components/ui/PageSpinner";
 import { setToken } from "@/lib/utils";
 import { signin, verifyUser } from "@/services/authService";

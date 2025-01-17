@@ -1,7 +1,8 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import {
   Dialog,
+  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -9,7 +10,12 @@ import {
 } from "@/components/ui/dialog";
 import FileUpload from "@/components/profile/FileUpload";
 import { addFile, removeFile } from "@/store/talent/profile/TalentProfileSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { Button } from "@/components/ui/button";
+import { uploadServiceImages } from "@/services/services";
+import { handleUnauthorizedError } from "@/lib/utils";
+import { showToast } from "@/store/auth/toastSlice";
+import { RootStateTalentService } from "@/store/talent/service/TalentServiceSlice";
 
 interface ReviewModalProps {
   linkTo: string;
@@ -17,6 +23,26 @@ interface ReviewModalProps {
 
 export default function AddPhoto() {
   const dispatch = useDispatch();
+  const [filehandler, setFileHandler] = useState(null);
+  const serviceType = useSelector((state: RootStateTalentService) => state.service.service.service_type)
+
+  const handleFileUpload = async (e: any) => {
+    let temp = {
+      service_type: serviceType,
+      images: filehandler,
+    };
+    const response = await uploadServiceImages(temp);
+    console.log(response);
+    if (!response.error) {
+      handleUnauthorizedError(dispatch, showToast, response, dispatch);
+      dispatch(
+        showToast({
+          status: response.status,
+          message: response.data.message
+        })
+      );
+    }
+  };
 
   return (
     <Dialog>
@@ -38,20 +64,22 @@ export default function AddPhoto() {
             </li>
             <li className="text-sm">
               <span className="text-[#DF8600] text-xl  mr-10">•</span>Photo must
-              be either SVG, JPG or{" "}
+              be either SVG, JPG or
             </li>
             <li className="text-sm">
               <span className="text-[#DF8600] text-xl  mr-10">•</span>
               Photo should have a resolution of at least 800 x 800 pixels
             </li>
           </ul>
+
           <div>
             <FileUpload
               allowedTypes={["image/jpeg", "image/png"]}
               maxFileSizeMB={10}
               onFileUpload={(file, url) => {
-                console.log(file, url)
-                console.log('aa')
+                console.log(file, url);
+                setFileHandler(file);
+                console.log("aa");
                 const newFile = {
                   name: file.name,
                   size: file.size,
@@ -66,6 +94,14 @@ export default function AddPhoto() {
               uploadLabel="Upload File"
               dragDropLabel=" or drop here"
             />
+          </div>
+
+          <div>
+            <DialogClose asChild>
+              <Button variant="default" onClick={handleFileUpload}>
+                Done
+              </Button>
+            </DialogClose>
           </div>
         </div>
       </DialogContent>
