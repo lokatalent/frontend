@@ -45,9 +45,9 @@ const ImageProfile: React.FC = () => {
   const serviceImage = useSelector(
     (state: RootStateTalentProfile) => state.talentProfile.files
   );
-  const [images, setImages] = useState<string[]>(
-    addedPhoto.map((photo) => photo.url)
-  );
+  // const [images, setImages] = useState<string[]>(
+  //   addedPhoto.map((photo) => photo.url)
+  // );
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
   const [modeView, setModeView] = useState<number | null>(null);
   const router = useRouter();
@@ -65,15 +65,15 @@ const ImageProfile: React.FC = () => {
     }
   };
 
-  useEffect(() => {
-    const updatedImages = [
-      ...images.filter((img) => !addedPhoto.some((photo) => photo.url === img)),
-      ...addedPhoto.map((photo) => photo.url),
-    ];
-    setImages(updatedImages);
-    setIsPics(updatedImages.length > 0);
-    getServiceImageHandler();
-  }, []);
+  // useEffect(() => {
+  //   const updatedImages = [
+  //     ...images.filter((img) => !addedPhoto.some((photo) => photo.url === img)),
+  //     ...addedPhoto.map((photo) => photo.url),
+  //   ];
+  //   setImages(updatedImages);
+  //   setIsPics(updatedImages.length > 0);
+  //   getServiceImageHandler();
+  // }, []);
 
   const handleDelete = async (index: any) => {
     setModeView(null);
@@ -155,17 +155,17 @@ const ImageProfile: React.FC = () => {
 
       {isPics ? (
         <div className={`flex ${images.length > 3 ? "flex-wrap" : ""} gap-4`}>
-          {addedPhoto.map((image, index) => (
-            <ImageCard
+          {/* {addedPhoto.map((image, index) => ( */}
+            {/* <ImageCard
               key={image.id}
               image={image.url}
               index={image.id}
               modeView={modeView}
               onToggleModeView={toggleModeView}
               onView={handleView}
-              onDelete={handleDelete}
-            />
-          ))}
+              onDelete={handleDelete} */}
+            {/* /> */}
+          {/* ))} */}
 
           <div
             onClick={triggerFileInput}

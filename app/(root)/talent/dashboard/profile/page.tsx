@@ -273,9 +273,9 @@ const Profiles = () => {
     const newService = serviceResponse.data;
 
     setPortfolioData({
-      experience: service?.experience_years || 0,
+      experience: newService?.experience_years || 0,
       bio: userBio || "",
-      rate_per_hour: service?.rate_per_hour || 0,
+      rate_per_hour: newService?.rate_per_hour || 0,
       skillsSet: {
         Plumbing: newService?.service_type === "plumbing",
         Indoor_cleaning: newService?.service_type === "sweeping",

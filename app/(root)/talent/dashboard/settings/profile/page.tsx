@@ -2,17 +2,17 @@
 import React from "react";
 import { useSelector } from "react-redux";
 import SettingsProfileCard from "@/components/settings/profile/SettingsProfileCard";
-import EditModal from "@/components/settings/profile/EditModal";
-import { RootStateProfile } from "@/store/profile/profileSlice";
+// import EditModal from "@/components/settings/profile/EditModal";
+// import { RootStateProfile } from "@/store/profile/profileSlice";
 import { RootStateAuth } from "@/store/auth/authSlice";
 
 function Profile() {
-     const profileDetails = useSelector(
-       (state: RootStateProfile) => state.profile.profileDetails
-  );
-  const profileInformation = useSelector(
-       (state: RootStateProfile) => state.profile.information
-  );
+  //    const profileDetails = useSelector(
+  //      (state: RootStateProfile) => state.profile.profileDetails
+  // );
+  // const profileInformation = useSelector(
+  //      (state: RootStateProfile) => state.profile.information
+  // );
   const user = useSelector(
     (state: RootStateAuth) => state.auth.user
   );

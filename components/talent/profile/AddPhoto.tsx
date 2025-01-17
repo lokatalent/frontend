@@ -51,6 +51,7 @@ export default function AddPhoto() {
               maxFileSizeMB={10}
               onFileUpload={(file, url) => {
                 console.log(file, url)
+                console.log('aa')
                 const newFile = {
                   name: file.name,
                   size: file.size,

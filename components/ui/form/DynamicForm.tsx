@@ -92,8 +92,8 @@ const DynamicForm = ({
   //   (state: RootStateProfile) => state.profile.verification
   // ); // removing profile store
   // const file = useSelector((state: RootStateProfile) => state.profile.file); // remving profile store
-  const file = 'ss'
-  const verificationResult = 's';
+  const file = "ss";
+  const verificationResult = "s";
 
   const dispatch = useDispatch();
 
@@ -235,7 +235,7 @@ const DynamicForm = ({
               : `/dashboard`
           );
         } else {
-          setLoading(true);
+          setLoading(true); 
           // send OTP
           const response = await sendEmailOTP();
           if (!response.error) {
