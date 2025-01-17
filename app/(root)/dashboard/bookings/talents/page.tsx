@@ -9,25 +9,25 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 
 export default function DashboardTalentsHome() {
-  const [loading, setLoading] = useState(true);
-  const router = useRouter();
-  const dispatch = useDispatch();
-  const params = useSearchParams();
-  const userId = params.get("id");
+  // const [loading, setLoading] = useState(true);
+  // const router = useRouter();
+  // const dispatch = useDispatch();
+  // const params = useSearchParams();
+  // const userId = params.get("id");
 
-  const getProvidersData = async () => {
-    const response = await findProviders(userId);
-    if (!response.error) {
-      console.log("Talents", response);
-    } else {
-      setLoading(false);
-      handleUnauthorizedError(response, dispatch, router, showToast);
-    }
-  };
+  // const getProvidersData = async () => {
+  //   const response = await findProviders(userId);
+  //   if (!response.error) {
+  //     console.log("Talents", response);
+  //   } else {
+  //     setLoading(false);
+  //     handleUnauthorizedError(response, dispatch, router, showToast);
+  //   }
+  // };
 
-  useEffect(() => {
-    getProvidersData();
-  }, []);
+  // useEffect(() => {
+  //   getProvidersData();
+  // }, []);
   return (
     <div className="py-5 bg-bgWhite">
       {/* header */}
