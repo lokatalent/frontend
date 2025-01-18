@@ -119,7 +119,7 @@ const LocationTrack = ({
             className="text-primaryBlue underline underline-offset-4 font-semibold cursor-pointer"
             onClick={changeType}
           >
-            Enter location manually
+            Search Location
           </p>
         </div>
       ) : (

@@ -86,7 +86,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
       </h1>
       {mapping ? (
         <div className="w-[90%] sm:w-[350px] md:w-[400px]">
-          <p className="text-sm mb-1">Current Location</p>
+          <p className="text-sm mb-1">Address</p>
           <textarea
             value={selectedAddress}
             onChange={(e) => setSelectedAddress(e.target.value)}
@@ -94,7 +94,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
             placeholder="Address"
           ></textarea>
           <p className="text-sm mb-1">Region</p>
-          <p className="border-gray-200 rounded mb-3 px-3 text-sm border py-2 sm:w-[350px] md:w-[400px] min-h-[40px]">
+          <p className="border-gray-200 bg-gray-100 rounded mb-3 px-3 text-sm border py-2 sm:w-[350px] md:w-[400px] min-h-[40px]">
             {selectedRegion}
           </p>
         </div>

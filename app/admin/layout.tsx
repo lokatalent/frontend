@@ -20,7 +20,7 @@ export default function RootLayout({
 				</div>
 			</div>
 
-			<div className="main-content  mx-8">{children}</div>
+			<div className="main-content xl:pl-[200px] mx-8">{children}</div>
 		</div>
 	);
 }

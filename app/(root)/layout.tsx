@@ -25,7 +25,7 @@ export default function RootLayout({
       {loggedIn && (
         <div className="bg-bgWhite main-contain min-h-screen">
           <div className="flex flex-row">
-            <div className="sidenav-container">
+            <div className="sidenav-containe">
               <SideNav talent={role === "service_provider"} />
             </div>
             <div className="flex-1 xl:m-[200px">
