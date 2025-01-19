@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import EmptyNotification from "@/components/notifications/EmptyNotification";
 import NotificationsBar from "@/components/notifications/NotificationsBar";
 import OverallNotification from "@/components/notifications/overallNotification";
-import RoleSwitch from "@/components/overview/RoleSwitch";
 import { getNotifications } from "@/services/notificationService";
 import { showToast } from "@/store/auth/toastSlice";
 import { useDispatch } from "react-redux";
