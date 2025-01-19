@@ -3,7 +3,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Form } from "@/components/ui/formNew";
+import { Form } from "@/components/ui/form";
 
 import { emailFormSchema } from "@/lib/utils";
 
@@ -28,8 +28,6 @@ export default function EmailForm({ type }: { type: string }) {
     router.push(path);
   }
 
-  
-
   const onSubmit = (data, e) => {
     router.push("reset-password/mail-verification");
   };
@@ -39,7 +37,10 @@ export default function EmailForm({ type }: { type: string }) {
     <div className="w-8/12 mx-auto mt-20 mb-6 space-y-6">
       <Form {...form}>
         <div className="flex flex-col items-center justify-center">
-          <form onSubmit={form.handleSubmit(onSubmit, onError)} className="space-y-8">
+          <form
+            onSubmit={form.handleSubmit(onSubmit, onError)}
+            className="space-y-8"
+          >
             <div>
               <div className="space-y-8">
                 <CustomInput

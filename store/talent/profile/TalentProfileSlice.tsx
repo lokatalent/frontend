@@ -41,9 +41,11 @@ interface TalentProfileState {
 }
 
 export interface RootStateTalentProfileState {
-  files: ImageNew[];
-  educationProfile: EducationProfile;
-  bankDetails: BankDetails;
+  talentProfile: {
+    files: ImageNew[];
+    educationProfile: EducationProfile;
+    bankDetails: BankDetails;
+  };
 }
 
 // Initial state

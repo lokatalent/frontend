@@ -1,12 +1,13 @@
 "use client";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authReducer from "./auth/authSlice";
-import profileReducer from "./profile/profileSlice";
+// import profileReducer from "./profile/profileSice";
 import toastReducer from "./auth/toastSlice";
 import bookingReducer from "./profile/bookingSlice";
 import settingsReducer from "./settings/SettingsSlice";
 import talentProfileReducer from "./talent/profile/TalentProfileSlice";
 import talentServiceReducer from "./talent/service/TalentServiceSlice";
+import categoryReducer from "./admin/settings/categorySlice";
 import thunk from "redux-thunk";
 import autoMergeLevel2 from "redux-persist/lib/stateReconciler/autoMergeLevel2";
 import {
@@ -29,13 +30,14 @@ const persistConfig = {
 };
 
 const reducers = combineReducers({
-  profile: profileReducer,
+  // profile: profileReducer,
   settings: settingsReducer,
   talentProfile: talentProfileReducer,
   auth: authReducer,
   toast: toastReducer,
   booking: bookingReducer,
   service: talentServiceReducer,
+  categories: categoryReducer,
 });
 
 const persistedReducer = persistReducer<any>(persistConfig, reducers);

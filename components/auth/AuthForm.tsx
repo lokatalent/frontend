@@ -3,9 +3,7 @@
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import {
-  Form
-} from "@/components/ui/formNew";
+import { Form } from "@/components/ui/form";
 
 import { authFormSchema } from "@/lib/utils";
 import { Loader2 } from "lucide-react";
@@ -20,7 +18,6 @@ export default function AuthForm({ type }: { type: string }) {
 
   const formSchema = authFormSchema(type);
 
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -28,13 +25,10 @@ export default function AuthForm({ type }: { type: string }) {
       password: "ssssssddss",
     },
   });
- 
-
 
   // function navigateTo(path: string) {
   //   router.push(path);
   // }
-
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
@@ -153,7 +147,6 @@ export default function AuthForm({ type }: { type: string }) {
           </form>
         </div>
       </Form> */}
-     
 
       {type == "log-in" && (
         <footer className="flex justify-center gap-2 ">

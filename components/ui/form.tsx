@@ -1,130 +1,182 @@
-"use client";
+"use client"
 
-// import Image from "next/image";
-// import Link from "next/link";
-import { usePathname } from "next/navigation";
+import * as React from "react"
+import * as LabelPrimitive from "@radix-ui/react-label"
+import { Slot } from "@radix-ui/react-slot"
+import {
+  Controller,
+  ControllerProps,
+  FieldPath,
+  FieldValues,
+  FormProvider,
+  useFormContext,
+} from "react-hook-form"
 
-// import dpEmpty from "../../public/Images/dp-empty.png";
+import { cn } from "@/lib/utils"
+import { Label } from "@/components/ui/label"
+import { IoWarningOutline } from "react-icons/io5"
 
-interface DataItem {
-	label: string;
-	error: string;
-	type: string;
-	isImportant: boolean;
-	selection: boolean;
-	width: string;
+const Form = FormProvider
+
+type FormFieldContextValue<
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+> = {
+  name: TName
 }
 
-type FormProps = {
-	dataInput: DataItem[];
-	isFormValid: boolean;
-	children: any;
-};
-// function Selection({ width }) {
-// 	return (
-// 		<div className="flex gap-2 ">
-// 			<div className="relative inline-block">
-// 				<select
-// 					id="component-select"
-// 					className={`appearance-none  ${width} bg-white h-[3rem]  rounded px-[1rem]`} // w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]
-// 				>
-// 					<option
-// 						value=""
-// 						selected
-// 					></option>
-// 					<option
-// 						value=""
-// 						className="bg-[#3377FF21] hover:text-navBlue flex w-full cursor-default select-none bold items-center rounded- py-1.5 pl-2 pr-8 text-sm"
-// 					>
-// 						Student
-// 					</option>
-// 					<option
-// 						value=""
-// 						className="bold leading-none text-violet11 hover:font-bold hover:text-[#3377FF] hover:bg-[#3377FF3D] rounded-[7px] flex items-center h-[35px]"
-// 					>
-// 						Teacher
-// 					</option>
-// 				</select>
+const FormFieldContext = React.createContext<FormFieldContextValue>(
+  {} as FormFieldContextValue
+)
 
-// 				<div className="pointer-events-none absolute top-1/2 right-2 transform -translate-y-1/2">
-// 					<div className="w-0 h-0 border-l-[5px] border-r-[5px] border-t-[5px] border-l-transparent border-r-transparent border-t-black"></div>
-// 				</div>
-// 			</div>
-// 		</div>
-// 	);
-// }
+const FormField = <
+  TFieldValues extends FieldValues = FieldValues,
+  TName extends FieldPath<TFieldValues> = FieldPath<TFieldValues>
+>({
+  ...props
+}: ControllerProps<TFieldValues, TName>) => {
+  return (
+    <FormFieldContext.Provider value={{ name: props.name }}>
+      <Controller {...props} />
+    </FormFieldContext.Provider>
+  )
+}
 
-const Form: React.FC<FormProps> = ({ children }) => {
-	const pathname = usePathname();
+const useFormField = () => {
+  const fieldContext = React.useContext(FormFieldContext)
+  const itemContext = React.useContext(FormItemContext)
+  const { getFieldState, formState } = useFormContext()
 
+  const fieldState = getFieldState(fieldContext.name, formState)
 
-	return (
-		<div className="sm:px-[4rem]  md:px-[6rem] lg:px-[7rem] py-12 flex justify-cnter flex-col items-cener gap-12 ">
-			<div className="flex gap-4 items-center flex-col justify-center">
-				{children}
+  if (!fieldContext) {
+    throw new Error("useFormField should be used within <FormField>")
+  }
 
-				{/* <form className="flex flex-row flex-wrap justify-center">
-          <div className="flex flex-wrap items-center justify-center gap-10">
-            {dataInput.map((data: DataItem, index: number) => (
-              <div className="flex flex-col gap-[0.5rem]" key={index}>
-                <label>
-                  {data.label}
-                  <span className="text-sm">
-                    {data.isImportant ? "*" : "  (optional)"}
-                  </span>
-                </label>
-                {!data.selection ? (
-                  <>
-                    {data.type === "input" && (
-                      <input
-                        type={data.type}
-                        className={`${data.width} bg-white h-[3rem] text-[#3377FF] rounded px-[1rem]`}
-                      />
-                    )}
-                    {data.type === "file" && (
-                      <div
-                        className={`${data.width} bg-white text-[#3377FF] rounded px-[1rem] flex items-center justify-content flex-col`}
-                      >
-                        <div>
-                          <Image
-                            src={fileUpload}
-                            alt="File Upload"
-                            className="w-10"
-                          />
-                        </div>
-                        <p className="text-[11px] text-[#CD1B78]">
-                          Click to upload{" "}
-                          <span className="text-black">or drag and drop</span>
-                        </p>
-                        <p className="text-[11px] text-black">
-                          SVG, HEIC, PNG, JPG
-                        </p>
-                      </div>
-                    )}
-                  </>
-                ) : (
-                  <Selection width={data.width} />
-                )}
-                {!isFormValid ? (
-                  <div className="text-[10px] text-[#FFB82E]">{data.error}</div>
-                ) : (
-                  ""
-                )}
-              </div>
-            ))}
-          </div>
-        </form> */}
-			</div>
-			{/* <div className="flex justify-center">
-        <Link
-          href={`${pathname}/email-verification`}
-          className="font-nunito text-xl text-[#fff] bg-[#3377FF] font-normal leading-6 w-[20rem] sm:w-[30rem] md:w-[32rem] lg:w-[35rem] rounded h-12 flex items-center justify-center hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff] transition transition-all duration-[500ms]"
-        >
-          Next
-        </Link>
-      </div> */}
-		</div>
-	);
-};
+  const { id } = itemContext
 
-export default Form;
+  return {
+    id,
+    name: fieldContext.name,
+    formItemId: `${id}-form-item`,
+    formDescriptionId: `${id}-form-item-description`,
+    formMessageId: `${id}-form-item-message`,
+    ...fieldState,
+  }
+}
+
+type FormItemContextValue = {
+  id: string
+}
+
+const FormItemContext = React.createContext<FormItemContextValue>(
+  {} as FormItemContextValue
+)
+
+const FormItem = React.forwardRef<
+  HTMLDivElement,
+  React.HTMLAttributes<HTMLDivElement>
+>(({ className, ...props }, ref) => {
+  const id = React.useId()
+
+  return (
+    <FormItemContext.Provider value={{ id }}>
+      <div ref={ref} className={cn("space-y-2", className)} {...props} />
+    </FormItemContext.Provider>
+  )
+})
+FormItem.displayName = "FormItem"
+
+const FormLabel = React.forwardRef<
+  React.ElementRef<typeof LabelPrimitive.Root>,
+  React.ComponentPropsWithoutRef<typeof LabelPrimitive.Root>
+>(({ className, ...props }, ref) => {
+  const { error, formItemId } = useFormField()
+
+  return (
+    <Label
+      ref={ref}
+      className={cn(error && "text-destructive", className)}
+      htmlFor={formItemId}
+      {...props}
+    />
+  )
+})
+FormLabel.displayName = "FormLabel"
+
+const FormControl = React.forwardRef<
+  React.ElementRef<typeof Slot>,
+  React.ComponentPropsWithoutRef<typeof Slot>
+>(({ ...props }, ref) => {
+  const { error, formItemId, formDescriptionId, formMessageId } = useFormField()
+
+  return (
+    <Slot
+      ref={ref}
+      id={formItemId}
+      aria-describedby={
+        !error
+          ? `${formDescriptionId}`
+          : `${formDescriptionId} ${formMessageId}`
+      }
+      aria-invalid={!!error}
+      {...props}
+    />
+  )
+})
+FormControl.displayName = "FormControl"
+
+const FormDescription = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, ...props }, ref) => {
+  const { formDescriptionId } = useFormField()
+
+  return (
+    <p
+      ref={ref}
+      id={formDescriptionId}
+      className={cn("text-[0.8rem] text-muted-foreground", className)}
+      {...props}
+    />
+  )
+})
+FormDescription.displayName = "FormDescription"
+
+const FormMessage = React.forwardRef<
+  HTMLParagraphElement,
+  React.HTMLAttributes<HTMLParagraphElement>
+>(({ className, children, ...props }, ref) => {
+  const { error, formMessageId } = useFormField()
+  
+  const body = error ? String(error?.message) : children
+
+  if (!body) {
+    return <p></p>
+  }
+
+  return (
+    <p
+      ref={ref}
+      id={formMessageId}
+      className={cn("text-[#14141699] text-[10px] ext-destructive flex", className)}
+      {...props}
+    >
+      <IoWarningOutline color="ed" size={16} className="text-[#FFB82E] mr-1" />
+      {body}
+    </p>
+  
+  )
+})
+FormMessage.displayName = "FormMessage"
+
+export {
+  useFormField,
+  Form,
+  FormItem,
+  FormLabel,
+  FormControl,
+  FormDescription,
+  FormMessage,
+  FormField,
+}

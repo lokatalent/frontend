@@ -4,8 +4,11 @@ import { BookingColumns, type BookingType } from "@/components/columns/Columns";
 import InfoCard from "@/components/InfoCard";
 import DataTable from "@/components/ui/gen/DataTable";
 import PageSpinner from "@/components/ui/PageSpinner";
+import { setToken } from "@/components/utils";
 import { handleUnauthorizedError, errorHandler } from "@/lib/utils";
+import { verifyUser } from "@/services/authService";
 import { getAllBookings } from "@/services/bookingService";
+import { setUser } from "@/store/auth/authSlice";
 import { showToast } from "@/store/auth/toastSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -51,6 +54,32 @@ const Dashboard = () => {
   const changeType = (val: any) => {
     setBookingType(val);
   };
+
+  const onVerifyUser = async () => {
+    const response = await verifyUser();
+    if (!response.error) {
+      dispatch(
+        showToast({
+          status: "success",
+          message: "Your account has been verified successfully",
+        })
+      );
+      let data = response.data;
+      console.log(data);
+      // save tokens
+      setToken(data.tokens.access_token, data.tokens.refresh_token);
+      dispatch(setUser(data.user));
+    } else {
+    }
+  };
+
+  useEffect(() => {
+    if (user.is_verified) {
+      fetchBookings(user.id);
+    } else {
+      onVerifyUser();
+    }
+  }, []);
 
   useEffect(() => {
     if (user.is_verified) {

@@ -33,6 +33,9 @@ export const handleUnauthorizedError = (
   );
 };
 
+
+
+
 export const setToken = (accessToken: string, refreshToken: string) => {
   sessionStorage.setItem("lokaToken", accessToken);
   sessionStorage.setItem("lokaRefreshToken", refreshToken);
@@ -246,6 +249,9 @@ export const formatPhone = (phone: string) => {
   else return "";
 };
 
+export const capitalize = (str: any) =>
+  str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
 interface FormData {
   username: string;
   email: string;
@@ -260,3 +266,24 @@ export interface FieldConfig {
   validation: RegisterOptions;
   options?: string[];
 }
+
+
+// -----------------------------------------------------------------------------------------------------------------------//
+// ---------------------------------------- ADMIN SCHEMA ----------------------------------------------------------------- //
+// ------------------------------------------------------------------------------------------------------------------------//
+export const serviceFormSchema = z.object({
+  serviceType: z
+    .string()
+    .min(2, "Service type must be at least 2 characters")
+    .max(50, "Service type must be less than 50 characters"),
+  // skillSet: z
+  //   .string()
+  //   .min(2, "Skills must be at least 2 characters")
+  //   .max(200, "Skills must be less than 200 characters"),
+  averageRate: z
+    .string()
+    .min(1, "Rate is required")
+    .regex(/^\d+(\.\d{1,2})?$/, "Must be a valid rate (e.g., 10 or 10.99)"),
+});
+
+export type ServiceFormData = z.infer<typeof serviceFormSchema>;
