@@ -18,9 +18,9 @@ import {
 } from "@/store/talent/service/TalentServiceSlice";
 import { Button } from "@/components/ui/button";
 import { getBankProfile, getOwnProfile } from "@/services/profileService";
-import { getAllService, getService } from "@/services/services";
+import { getAllService, getService, getServiceType } from "@/services/services";
 import { showToast } from "@/store/auth/toastSlice";
-import { errorHandler, handleUnauthorizedError } from "@/lib/utils";
+import { capitalize, errorHandler, handleUnauthorizedError } from "@/lib/utils";
 import { RootStateProfile } from "@/store/profile/profileSlice";
 import { setBankDetailsData } from "@/store/talent/profile/TalentProfileSlice";
 import PageSpinner from "@/components/ui/PageSpinner";
@@ -75,6 +75,7 @@ const Profiles = () => {
   const router = useRouter();
   const [loading, setLoading] = useState(true);
   const user = useSelector((state: any) => state.auth.user);
+  const [serviceType, setServiceType] = useState();
 
   const [activeTab, setActiveTab] = useState<
     "personal" | "portfolio" | "Bank Details" | "reviews"
@@ -83,9 +84,9 @@ const Profiles = () => {
   const [profileData, setProfileData] =
     useState<ProfileData[]>(INITIAL_PROFILE_DATA);
 
-  const { profileDetails, profilePics } = useSelector(
-    (state: RootStateProfile) => state.profile
-  );
+  // const { profileDetails, profilePics } = useSelector(
+  //   (state: RootStateProfile) => state.profile
+  // );
   const bankDetails = useSelector(
     (state: RootStateTalentService) => state.talentProfile.bankDetails
   );
@@ -96,18 +97,35 @@ const Profiles = () => {
   const userBio = useSelector((state: any) => state.auth.user.bio);
   const avatar = useSelector((state: any) => state.auth.user.avatar);
 
-  const [portfolioData, setPortfolioData] = useState<PortfolioData>({
-    experience: service?.experience_years || 0,
-    bio: userBio || "",
-    rate_per_hour: service?.rate_per_hour || 0,
+  useEffect(() => {
+    const serviceTypeHandler = async () => {
+      const response = await getServiceType();
+
+      const newResponse = response.data.map((type: any) => ({
+        value: type.service_type,
+        label: capitalize(type.service_type),
+      }));
+      setServiceType(newResponse);
+      console.log(response, newResponse);
+    };
+    serviceTypeHandler();
+  }, []);
+
+  const serviceData = {
+    experience: "",
+    bio: "",
+    rate_per_hour: "",
     skillsSet: {
-      Washing: service?.service_type === "washing",
-      Sweeping: service?.service_type === "sweeping",
-      Cleaning: service?.service_type === "cleaning",
-      Driving: service?.service_type === "driving",
-      Cooking: service?.service_type === "cooking",
+      Indoor_cleaning: false,
+      Plumbing: false,
+      Cleaning: false,
+      Driving: false,
+      Cooking: false,
     },
-  });
+  };
+
+  const [portfolioData, setPortfolioData] =
+    useState<PortfolioData>(serviceData);
 
   const [serviceRate, setServiceRate] = useState<ServiceRateData>({
     bankName: bankDetails?.bank_name || "",
@@ -116,28 +134,39 @@ const Profiles = () => {
     rph: "",
   });
 
-  const fetchData = async () => {
-    try {
-      if (user.is_verified)
-        await Promise.all([fetchProfile(), fetchService(), fetchBankDetails()]);
-      else fetchProfile();
-    } catch (error) {
-      dispatch(
-        showToast({
-          status: "error",
-          message: "Failed to fetch profile data",
-        })
-      );
-    }
-  };
+  // const fetchData = async () => {
+  //   try {
+  //     if (user.is_verified)
+  //       await Promise.all([fetchProfile(), fetchService(), fetchBankDetails()]);
+  //     else fetchProfile();
+  //   } catch (error) {
+  //     dispatch(
+  //       showToast({
+  //         status: "error",
+  //         message: "Failed to fetch profile data",
+  //       })
+  //     );
+  //   }
+  // };
 
   useEffect(() => {
-    fetchData();
+    // fetchData();
+
+    setLoading(true);
+    const initializeData = async () => {
+      setLoading(true);
+      await fetchProfile();
+      await fetchService();
+      await fetchBankDetails();
+    };
+
+    initializeData();
   }, []);
 
   const fetchProfile = async () => {
     setLoading(true);
     const response = await getOwnProfile();
+    console.log(response);
     if (!response.error) {
       setLoading(false);
       const {
@@ -172,8 +201,13 @@ const Profiles = () => {
     }
   };
 
+   
+
   const fetchService = async () => {
+    setLoading(true);
     const allServicesResponse = await getAllService(userId);
+    console.log(allServicesResponse);
+    console.log("allServicesResponse");
     if (!allServicesResponse?.data?.length) {
       handleUnauthorizedError(allServicesResponse, dispatch, router, showToast);
       dispatch(
@@ -219,15 +253,6 @@ const Profiles = () => {
         status: "error",
         message: "No services found for the user.",
       });
-      // if (allServicesResponse.status === 401) {
-      //   dispatch(
-      //     showToast({
-      //       status: "error",
-      //       message: allServicesResponse?.data?.message,
-      //     })
-      //   );
-      //   return router.push("/login");
-      // }
       return;
     }
 
@@ -235,8 +260,22 @@ const Profiles = () => {
       id: userId,
       service_type: allServicesResponse.data[0]?.service_type,
     });
-
+    console.log(serviceResponse);
     dispatch(setService(serviceResponse.data));
+    const newService = serviceResponse.data;
+
+    setPortfolioData({
+      experience: newService?.experience_years || 0,
+      bio: userBio || "",
+      rate_per_hour: newService?.rate_per_hour || 0,
+      skillsSet: {
+        Plumbing: newService?.service_type === "plumbing",
+        Indoor_cleaning: newService?.service_type === "sweeping",
+        Cleaning: newService?.service_type === "cleaning",
+        Driving: newService?.service_type === "driving",
+        Cooking: newService?.service_type === "cooking",
+      },
+    });
   };
 
   const fetchBankDetails = async () => {
@@ -298,7 +337,7 @@ const Profiles = () => {
 
   return (
     <div>
-      {loading ? (
+      {!loading ? (
         <PageSpinner />
       ) : (
         <div className="ml-8 h-screen sm:ml-0">
@@ -337,7 +376,7 @@ const Profiles = () => {
             </div>
           </div>
 
-          {!user.is_verified && (
+          {user.is_verified ? null : (
             <ProfileCompletion
               addText="You are not done with your profile setup. Complete it now"
               linkTo="/talent/dashboard/profile/edit"

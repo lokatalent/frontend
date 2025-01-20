@@ -24,9 +24,7 @@ export default function Profile() {
   const router = useRouter();
   const user = useSelector((state: any) => state.auth.user);
 
-  const profileDetails = useSelector(
-    (state: RootStateProfile) => state.profile.profileDetails
-  );
+ 
 
   const [profilePics, setProfilePics] = useState("");
 
@@ -34,19 +32,19 @@ export default function Profile() {
   //   (state: RootStateProfile) => state.profile.profilePics
   // );
 
-  const profileInformation = useSelector(
-    (state: RootStateProfile) => state.profile.information
-  );
+  // const profileInformation = useSelector(
+  //   (state: RootStateProfile) => state.profile.information
+  // );
 
   const [data, setData] = useState([
-    { title: "Name", value: profileInformation?.name || "-" },
-    { title: "Email Address", value: profileInformation?.email || "-" },
+    { title: "Name", value: "-" },
+    { title: "Email Address", value: "-" },
     { title: "Phone Number", value: "-" },
     // { title: "Country", value: "-" },
     // { title: "State", value: profileDetails?.state || "-" },
     // { title: "City", value: profileDetails?.city || "-" },
-    { title: "Address", value: profileDetails?.address || "-" },
-    { title: "Date of birth", value: profileDetails?.date_of_birth || "-" },
+    { title: "Address", value:  "-" },
+    { title: "Date of birth", value:  "-" },
   ]);
 
   // const data: DataItem[] = ;
@@ -103,7 +101,7 @@ export default function Profile() {
         })
       );
       let data = response.data;
-
+      console.log(data);  
       // save tokens
       setToken(data.tokens.access_token, data.tokens.refresh_token);
       dispatch(setUser(data.user))

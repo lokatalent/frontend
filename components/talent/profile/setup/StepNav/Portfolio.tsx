@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 
 import { createService, getServiceType } from "@/services/services";
-import { errorHandler, handleUnauthorizedError } from "@/lib/utils";
+import { capitalize, errorHandler, handleUnauthorizedError } from "@/lib/utils";
 import { showToast } from "@/store/auth/toastSlice";
 import { setService } from "@/store/talent/service/TalentServiceSlice";
 import EditAvailability from "../../editing/EditAvailablity";
@@ -45,8 +45,7 @@ const schema = z.object({
 
   // images: z.string().nonempty("Pls upload your images"),
 });
-const capitalize = (str: any) =>
-  str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
+
 
 function extractCityStateAndCountry(address: string) {
   const parts = address.split(",").map((part) => part.trim()); // Split and trim each part
@@ -96,7 +95,7 @@ function Portfolio({ setActiveStep }: any) {
   };
 
   useEffect(() => {
-    const getBanks = async () => {
+    const ServiceTypeHandler = async () => {
       try {
         const response = await getServiceType();
 
@@ -110,7 +109,7 @@ function Portfolio({ setActiveStep }: any) {
 
       }
     };
-    getBanks();
+    ServiceTypeHandler();
   }, []);
 
   const dispatch = useDispatch();

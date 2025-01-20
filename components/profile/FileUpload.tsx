@@ -14,17 +14,18 @@ type FileConfig = {
   uploadLabel: string;
   dragDropLabel: string;
   errorMessage: string;
+  onFileUpload: any;
 };
 
 
-const FileUpload = () => {
+const FileUpload = ({ onFileUpload}: FileConfig) => {
   const [isDragging, setIsDragging] = useState(false);
   const [file, setFile] = useState<File | null>(null);
   const [error, setError] = useState<MessageObject>({ message: 'Select a file to continue' });
   const dispatch = useDispatch();
-  const files = useSelector(
-    (state: RootStateProfile) => state.profile.file
-  );
+  // const files = useSelector(
+  //   (state: RootStateProfile) => state.profile.file
+  // );
 
   // Allowed file types
   const allowedTypes = [
@@ -76,7 +77,8 @@ const FileUpload = () => {
     if (droppedFile && validateFile(droppedFile)) {
       setFile(droppedFile);
       const url = URL.createObjectURL(droppedFile);
-        dispatch(setFileStore(url));
+      dispatch(setFileStore(url));
+      onFileUpload(droppedFile, url);
      
     }
   }, []);
@@ -91,6 +93,7 @@ const FileUpload = () => {
         // URL.createObjectURL;
          const url = URL.createObjectURL(selectedFile);
         dispatch(setFileStore(url));
+      onFileUpload(selectedFile, url);
         // sessionStorage.setItem('selectedFile', URL.createObjectURL(selectedFile));
       }
     },
@@ -156,7 +159,7 @@ const FileUpload = () => {
                     or drag and drop
                   </span>
                 </Button>
-                <p className="text-[11px] text-black">SVG, HEIC, PNG, JPG</p>
+                <p className="text-[11px] text-black">SVG, HEIC, PNaG, JPG</p>
               </div>
             </div>
           </>
@@ -180,7 +183,7 @@ const FileUpload = () => {
         )}
       </div>
 
-      {!files && <FormFieldError error={error} />}
+      {/* {!files && <FormFieldError error={error} />} */}
     </div>
   );
 };

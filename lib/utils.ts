@@ -33,6 +33,9 @@ export const handleUnauthorizedError = (
   );
 };
 
+
+
+
 export const setToken = (accessToken: string, refreshToken: string) => {
   sessionStorage.setItem("lokaToken", accessToken);
   sessionStorage.setItem("lokaRefreshToken", refreshToken);
@@ -245,6 +248,9 @@ export const formatPhone = (phone: string) => {
     return prefix + phone;
   else return "";
 };
+
+export const capitalize = (str: any) =>
+  str.charAt(0).toUpperCase() + str.slice(1).toLowerCase();
 
 interface FormData {
   username: string;

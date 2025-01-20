@@ -7,12 +7,6 @@ import { RootStateProfile } from "@/store/profile/profileSlice";
 import { RootStateAuth } from "@/store/auth/authSlice";
 
 function ProfileSettings() {
-  const profileDetails = useSelector(
-    (state: RootStateProfile) => state.profile.profileDetails
-  );
-  const profileInformation = useSelector(
-    (state: RootStateProfile) => state.profile.information
-  );
   const profileAuth = useSelector((state: RootStateAuth) => state.auth.user);
 
   const forms = [
@@ -50,17 +44,16 @@ function ProfileSettings() {
       text: "Nigeria",
       type: "country",
     },
-    {
-      label: "State",
-      text:
-        profileInformation?.state?.length > 0 ? profileInformation.state : "-",
-      type: "state",
-    },
-    {
-      label: "City",
-      text: profileInformation?.city?.length > 0 ? profileDetails.city : "-",
-      type: "city",
-    },
+    // {
+    //   label: "State",
+    //   text: "-",
+    //   type: "state",
+    // },
+    // {
+    //   label: "City",
+    //   text: "-",
+    //   type: "city",
+    // },
   ];
 
   return (
