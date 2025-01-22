@@ -1,5 +1,4 @@
 "use client";
-
 import SecurityForm from "@/components/settings/security/SecurityForm";
 import TwoStepVerification from "@/components/settings/security/TwoStepVerification";
 import { Button } from "@/components/ui/button";

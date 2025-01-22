@@ -51,6 +51,7 @@ const ConfirmationMailModal: React.FC = ({ email }): string => {
     switch (confirmModal) {
       case "confirm":
         const response = await sendEmailOTP();
+        console.log(response)
         if (!response.error) {
           setConfirmModal("confirmed");
         } else {

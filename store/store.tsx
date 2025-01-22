@@ -1,7 +1,7 @@
 "use client";
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import authReducer from "./auth/authSlice";
-import profileReducer from "./profile/profileSlice";
+// import profileReducer from "./profile/profileSice";
 import toastReducer from "./auth/toastSlice";
 import bookingReducer from "./profile/bookingSlice";
 import settingsReducer from "./settings/SettingsSlice";
@@ -29,7 +29,7 @@ const persistConfig = {
 };
 
 const reducers = combineReducers({
-  profile: profileReducer,
+  // profile: profileReducer,
   settings: settingsReducer,
   talentProfile: talentProfileReducer,
   auth: authReducer,

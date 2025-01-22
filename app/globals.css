@@ -146,6 +146,10 @@ body {
 	padding-right: 5%;
 }
 
+.map_wrap {
+	/* width: 100% !important; */
+}
+
 .waitlist_bg {
 	background-image: linear-gradient(rgba(1, 33, 54, 0.75), rgba(1, 33, 54, 0.75)), url("../public/Images/waitlist.png");
 	background-size: cover;

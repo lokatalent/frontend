@@ -102,7 +102,6 @@ export const uploadServiceImages = async (value: any) => {
       `/users/service/images?service_type=${value.service_type}`,
       {images: value.images}, formDataConfig
     );
-
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
     return {

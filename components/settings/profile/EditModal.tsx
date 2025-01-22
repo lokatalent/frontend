@@ -21,6 +21,7 @@ import { useRouter } from "next/navigation";
 import { RootStateAuth, setUser } from "@/store/auth/authSlice";
 import { updateProfile } from "@/services/profileService";
 import { showToast } from "@/store/auth/toastSlice";
+import { format } from "date-fns";
 
 interface RoleSwitchProps {
   forms: Array<{
@@ -29,6 +30,33 @@ interface RoleSwitchProps {
   }>;
   title: string;
 }
+const formatDate = (dateString: string) => {
+  return format(new Date(dateString), 'yyyy-MM-dd');
+};
+
+const formatPhoneNumber = (phoneNumber: string) => {
+  // Remove any whitespace for cleaner processing
+  const trimmedNumber = phoneNumber.trim();
+
+  // Check if the number starts with "+234"
+  if (trimmedNumber.startsWith("+234")) {
+    return trimmedNumber;
+  }
+
+  // If it starts with "0", replace the leading "0" with "+234"
+  if (trimmedNumber.startsWith("0")) {
+    return `+234${trimmedNumber.slice(1)}`;
+  }
+
+  // Otherwise, just prepend "+234"
+  return `+234${trimmedNumber}`;
+};
+
+// Usage Examples
+console.log(formatPhoneNumber("08123456789")); // Output: +2348123456789
+console.log(formatPhoneNumber("+2348123456789")); // Output: +2348123456789
+console.log(formatPhoneNumber("  8123456789  ")); // Output: +2348123456789
+
 
 const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
@@ -50,11 +78,12 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
   };
 
   const handleAddressForm = () => {
+    console.log("Title", title, user.service_role)
     if (title === "Address") {
-      if (user.service_role === "service_provider") {
-
-        router.push("/talent/dashboard/settings/profile/address");
-      }
+      // if (user.service_role === "service_provider") {
+      //   router.push("/talent/dashboard/settings/profile/address");
+      // }
+      // router.push("/dashboard/settings/profile/address");
     }
   };
 
@@ -66,14 +95,13 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
   const handleSubmit = async () => {
     const number = numberRef.current?.value || "";
 
-    try {
+    // try {
       const validatedNumber = securityPhoneNumberSchema.parse({ number });
       console.log(number, validatedNumber)
       let temp = {
-        address: user.address,
-        number: validatedNumber.number
-        // gender: user.gender,
-        // date_of_birth: user.dateofbirth
+        ...user,
+        phone_num: formatPhoneNumber(number),
+        date_of_birth: formatDate(user.date_of_birth),
       };
       const response = await updateProfile(temp);
       console.log(response);
@@ -81,7 +109,7 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
         dispatch(setUser(response.data));
         dispatch(setInformation({ phoneNumber: validatedNumber.number }));
       } else {
-        handleUnauthorizedError(response, dispatch, showToast, router);
+          handleUnauthorizedError(response, dispatch, router, showToast);
         dispatch(
           showToast({
             status: "error",
@@ -91,9 +119,9 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
       }
       setError("");
       handleConfirmationClose();
-    } catch (validationError: any) {
-      setError(validationError.errors[0].message);
-    }
+    // } catch (validationError: any) {
+    //   setError(validationError.errors[0].message);
+    // }
   };
 
   return (

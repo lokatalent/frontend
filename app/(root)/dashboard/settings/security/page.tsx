@@ -19,9 +19,9 @@ function Security() {
   const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(true);
   const [showPassword, setShowPassword] = useState(false);
 
-  const ProfileInfo = useSelector(
-    (state: RootStateProfile) => state.profile.information.phoneNumber
-  );
+  // const ProfileInfo = useSelector(
+  //   (state: RootStateProfile) => state.profile.information.phoneNumber
+  // );
   const activeTwoStepVerification = useSelector(
     (state: RootState) => state.settings.activeTwoStepVerification
   );

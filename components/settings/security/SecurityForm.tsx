@@ -75,6 +75,7 @@ const SecurityForm = () => {
     console.log(response);
     if (!response.error) {
       setSuccessModal(true);
+      router.push('/login')
     } else {
       handleUnauthorizedError(response, dispatch, showToast, router);
       dispatch(
