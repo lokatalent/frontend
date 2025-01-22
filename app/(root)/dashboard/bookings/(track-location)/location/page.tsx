@@ -59,7 +59,7 @@ const LocationPlace = () => {
       </Map>
 
       <CustomMapControl
-        controlPosition={ControlPosition.TOP}
+        controlPosition={ControlPosition.TOP_CENTER}
         selectedAutocompleteMode={selectedAutocompleteMode}
         onPlaceSelect={setSelectedPlace}
       />

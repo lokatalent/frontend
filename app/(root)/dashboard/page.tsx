@@ -96,18 +96,20 @@ export default function Dashboard() {
   };
 
   useEffect(() => {
-    if (user.is_verified) {
-      fetchBookings(user.id);
-      fetchServices();
-    } else {
-      dispatch(
-        showToast({
-          status: "success",
-          message: "Complete your profile to access your account",
-        })
-      );
-      router.push("/dashboard/profile/edit");
-    }
+    if (user.email) {
+      if (user.is_verified) {
+        fetchBookings(user.id);
+        fetchServices();
+      } else {
+        dispatch(
+          showToast({
+            status: "success",
+            message: "Complete your profile to access your account",
+          })
+        );
+        router.push("/dashboard/profile/edit");
+      }
+    } else router.push("/login");
   }, [bookingType]);
 
   return (

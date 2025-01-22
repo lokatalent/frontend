@@ -12,11 +12,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   const loggedIn = useSelector((state: any) => state.auth.loggedIn);
+  
   const router = useRouter();
 
   const role = useSelector((state: any) => state.auth.user.service_role);
-
-  // if (role === "regular") return router.push("/dashboard");
 
   if (!loggedIn) return router.push("/login");
 
@@ -28,12 +27,12 @@ export default function RootLayout({
             <div className="sidenav-containe">
               <SideNav talent={role === "service_provider"} />
             </div>
-            <div className="flex-1 xl:m-[200px">
+            <div className="flex-1 xl:ml-[200px]">
               <TopNav />
             </div>
           </div>
-          <div className="main-content xl:p-[200px pt-24 pb-10">
-            <div className="px-[5%] xl:px-[3%] mx-auto">{children}</div>
+          <div className="main-content xl:pl-[200px] pt-24 pb-10 mx-8">
+            {children}
           </div>
         </div>
       )}

@@ -48,7 +48,7 @@ const SideNav = ({ talent }: { talent?: boolean }) => {
   const pathname = usePathname();
   const dispatch = useDispatch();
   const router = useRouter();
-  const logout = () => {
+  const onLogout = () => {
     dispatch(setLoggedin(false));
     sessionStorage.removeItem("lokaToken");
     router.push("/login");
@@ -96,7 +96,7 @@ const SideNav = ({ talent }: { talent?: boolean }) => {
             <IoSettingsOutline /> <p>Settings</p>
           </Link>
           <div className="font-semibold p-3 hover:p-3 focus:p-3 focus:bg-white/30 rounded-lg">
-            <button onClick={logout} className="flex space-x-3 items-center">
+            <button onClick={onLogout} className="flex space-x-3 items-center">
               <HiArrowRightEndOnRectangle />
               <p>Logout</p>
             </button>
@@ -168,7 +168,7 @@ const SideNav = ({ talent }: { talent?: boolean }) => {
                   </Link>
                   <div className="font-semibold p-3 hover:p-3 focus:p-3 hover:text-white hover:bg-white/30 focus:bg-white/30 rounded-lg">
                     <button
-                      onClick={() => router.push("/login")}
+                      onClick={onLogout}
                       className="flex space-x-3 items-center"
                     >
                       <span className="shrink-0">

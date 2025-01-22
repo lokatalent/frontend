@@ -78,11 +78,12 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
   };
 
   const handleAddressForm = () => {
+    console.log("Title", title, user.service_role)
     if (title === "Address") {
-      if (user.service_role === "service_provider") {
-        router.push("/talent/dashboard/settings/profile/address");
-      }
-      router.push("/dashboard/settings/profile/address");
+      // if (user.service_role === "service_provider") {
+      //   router.push("/talent/dashboard/settings/profile/address");
+      // }
+      // router.push("/dashboard/settings/profile/address");
     }
   };
 
