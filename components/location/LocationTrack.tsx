@@ -20,14 +20,18 @@ const LocationTrack = ({
   mapping,
   setMapping,
   dashboard,
+  setLoading,
   changeType,
   onTrack,
 }: any) => {
   const [streetName, setStreetName] = useState("");
   const [locationCoords, setLocationCoords] = useState("");
   const [locationError, setLocationError] = useState(false);
+  let permission = sessionStorage.getItem("lokaPerm");
 
   const handleLocationRequest = () => {
+    setLoading(true);
+    if (permission !== "true") sessionStorage.setItem("lokaPerm", "true");
     setMapping(true);
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(
@@ -40,9 +44,8 @@ const LocationTrack = ({
           fetch(geocodingUrl)
             .then((response) => response.json())
             .then((data) => {
-              // console.log("Data", data);
+              setLoading(false);
               const addressComponents = data.results[0].address_components;
-              // console.log(addressComponents);
               const plusCode = addressComponents.find((component: any) =>
                 component.types.includes("plus_code")
               );
@@ -79,11 +82,17 @@ const LocationTrack = ({
               let temp: any = [];
 
               for (let i = 0; i < addressStr.length; i++) {
-                let str = addressStr[i].trim()
-                if (str === city?.long_name || str === area2?.long_name || str === area1?.long_name || str === state?.long_name) break
-                else temp.push(str)
+                let str = addressStr[i].trim();
+                if (
+                  str === city?.long_name ||
+                  str === area2?.long_name ||
+                  str === area1?.long_name ||
+                  str === state?.long_name
+                )
+                  break;
+                else temp.push(str);
               }
-              let result = temp.join(", ")
+              let result = temp.join(", ");
 
               onTrack(result, region);
               setStreetName(region);
@@ -123,34 +132,47 @@ const LocationTrack = ({
           </p>
         </div>
       ) : (
-        <Dialog>
-          <DialogTrigger className="text-primaryBlue underline underline-offset-4 font-semibold">
-            Track location
-          </DialogTrigger>
-          <DialogContent className=" ">
-            <DialogHeader>
-              <DialogTitle className="text-lg md:text-3xl mt-5 text-center">
-                Grant Permission to Use Location
-              </DialogTitle>
-              <DialogDescription className=" flex flex-col justify-center items-center">
-                <Image
-                  src={enableLoc}
-                  height={132}
-                  width={151}
-                  alt="track location"
-                />
-              </DialogDescription>
-            </DialogHeader>
-            <div className="flex flex-row justify-center space-x-3 w-full">
-              <DialogClose asChild>
-                <button className="btnTwo">Enter Location Manually</button>
-              </DialogClose>
-              <button className="btnOne" onClick={handleLocationRequest}>
-                Accept
-              </button>
+        <div>
+          {permission === "true" ? (
+            <div>
+              <p
+                onClick={handleLocationRequest}
+                className="text-primaryBlue underline underline-offset-4 font-semibold"
+              >
+                Track Location
+              </p>
             </div>
-          </DialogContent>
-        </Dialog>
+          ) : (
+            <Dialog>
+              <DialogTrigger className="text-primaryBlue underline underline-offset-4 font-semibold">
+                Track location
+              </DialogTrigger>
+              <DialogContent className=" ">
+                <DialogHeader>
+                  <DialogTitle className="text-lg md:text-3xl mt-5 text-center">
+                    Grant Permission to Use Location
+                  </DialogTitle>
+                  <DialogDescription className=" flex flex-col justify-center items-center">
+                    <Image
+                      src={enableLoc}
+                      height={132}
+                      width={151}
+                      alt="track location"
+                    />
+                  </DialogDescription>
+                </DialogHeader>
+                <div className="flex flex-row justify-center space-x-3 w-full">
+                  <DialogClose asChild>
+                    <button className="btnTwo">Enter Location Manually</button>
+                  </DialogClose>
+                  <button className="btnOne" onClick={handleLocationRequest}>
+                    Accept
+                  </button>
+                </div>
+              </DialogContent>
+            </Dialog>
+          )}
+        </div>
       )}
     </div>
   );

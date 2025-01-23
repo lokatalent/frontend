@@ -1,28 +1,28 @@
 "use client"
-
 import MakeBookingTime from "@/components/location/MakeBookingTime";
 import { Spacer } from "@/components/Spacer";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { FaCircleCheck } from "react-icons/fa6";
 import { RxCaretRight } from "react-icons/rx";
 import { TbCircleNumber2, TbCircleNumber3Filled } from "react-icons/tb";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-const InstantBooking = () => {
-	const router = useRouter();
-	const service = useSelector((state: any) => state.booking.service);
-	const location = useSelector((state: any) => state.booking.location);
+const page = () => {
+  const router = useRouter();
+  const service = useSelector((state: any) => state.booking.service);
+  const location = useSelector((state: any) => state.booking.location);
 
   useEffect(() => {
     if (!service) return router.push("/dashboard/bookings/select-service");
     if (!location) return router.push("/dashboard/bookings/location");
   }, []);
-
+  
   return (
-    <div className="bg-bgWhite">
-      <div className="flex flex-col justify-center mx-auto ">
+    <div className="bg-bgWhite  min-h-screen">
+      <div className="flex flex-col justify-center contained mx-auto ">
         <div className="my-4">
+          <Spacer size={30} />
           <div className="flex flex-row justify-center space-x-4 items-center">
             <p className="flex flex-row  space-x-3 items-center">
               <span>
@@ -52,8 +52,8 @@ const InstantBooking = () => {
             </p>
           </div>
         </div>
-        <div className="">
-          <h1 className="font-semibold text-3xl mt-5 mb-2 text-center">
+        <div className="my-8">
+          <h1 className="text-4xl font-semibold my-5 text-center">
             Make a Booking Now
           </h1>
           <p className="text-center">Enter details about your booking</p>
@@ -64,4 +64,4 @@ const InstantBooking = () => {
   );
 };
 
-export default InstantBooking;
+export default page;

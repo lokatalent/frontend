@@ -9,12 +9,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { createBooking } from "@/services/bookingService";
 import { showToast } from "@/store/auth/toastSlice";
 import Spinner from "../ui/Spinner";
+import { setBookingData } from "@/store/profile/bookingSlice";
 
 const MakeBookingTime = () => {
   const service = useSelector((state: any) => state.booking.service);
   const services = useSelector((state: any) => state.booking.allServices);
   const location = useSelector((state: any) => state.booking.location);
   const user = useSelector((state: any) => state.auth.user);
+  console.log("User", user)
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -125,37 +127,43 @@ const MakeBookingTime = () => {
       end_date: dateToday.toISOString().split("T")[0],
       total_price: getPrice(),
     };
+    // save to store
+    dispatch(setBookingData(data))
+    router.push(user.id ? "/dashboard/bookings/talents" : "/talents")
+    
+    
     // handle submission logic here
-    setLoading(true);
-    const response = await createBooking(data);
-    if (!response.error) {
-      setLoading(false);
-      dispatch(
-        showToast({
-          status: "success",
-          message: "Booking has been created successfully",
-        })
-      );
-      router.push(`talents?id=${encodeURIComponent(response.data.id)}`);
-    } else {
-      setLoading(false);
-      if (response.status === 401) {
-        dispatch(
-          showToast({
-            status: "error",
-            message: response.data.message,
-          })
-        );
-        return router.push("/login");
-      }
 
-      return dispatch(
-        showToast({
-          status: "error",
-          message: response.data.message,
-        })
-      );
-    }
+    // setLoading(true);
+    // const response = await createBooking(data);
+    // if (!response.error) {
+    //   setLoading(false);
+    //   dispatch(
+    //     showToast({
+    //       status: "success",
+    //       message: "Booking has been created successfully",
+    //     })
+    //   );
+    //   router.push(`talents?id=${encodeURIComponent(response.data.id)}`);
+    // } else {
+    //   setLoading(false);
+    //   if (response.status === 401) {
+    //     dispatch(
+    //       showToast({
+    //         status: "error",
+    //         message: response.data.message,
+    //       })
+    //     );
+    //     return router.push("/login");
+    //   }
+
+    //   return dispatch(
+    //     showToast({
+    //       status: "error",
+    //       message: response.data.message,
+    //     })
+    //   );
+    // }
   };
 
   useEffect(() => {
