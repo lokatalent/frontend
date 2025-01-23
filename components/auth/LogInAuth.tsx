@@ -3,7 +3,7 @@ import DynamicForm from "@/components/ui/form/DynamicForm";
 import { FieldConfig, LogInFormSchema } from "@/lib/utils";
 import Link from "next/link";
 
-const LogInAuth = () => {
+const LogInAuth = ({ providersPage }: { providersPage?: boolean }) => {
   const fields: FieldConfig[] = [
     {
       name: "email",
@@ -44,14 +44,26 @@ const LogInAuth = () => {
   return (
     <div className="">
       <div className="w-full max-w-2xl mx-auto">
-        <div className="text-center space-y-1">
-          <h1 className="font-bold text-2xl md:text-3xl lg:text-4xl text-textColor py-2">
-            Welcome Back
-          </h1>
-          <p className="mx-auto">
-            Log in to access your account and manage your bookings
-          </p>
-        </div>
+        {providersPage ? (
+          <div className="text-center space-y-1">
+            <h1 className="font-bold text-2xl text-textColor py-2">
+              Login to continue
+            </h1>
+            <p className="mx-auto max-w-[400px]">
+              Complete your booking by logging in or creating an account on
+              Lokatalent
+            </p>{" "}
+          </div>
+        ) : (
+          <div className="text-center space-y-1">
+            <h1 className="font-bold text-2xl md:text-3xl lg:text-4xl text-textColor py-2">
+              Welcome Back
+            </h1>
+            <p className="mx-auto">
+              Log in to access your account and manage your bookings
+            </p>
+          </div>
+        )}
 
         <DynamicForm
           fields={fields}
