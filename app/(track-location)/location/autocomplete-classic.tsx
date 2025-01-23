@@ -12,10 +12,11 @@ import {
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import schedule from "@/public/Images/schedule.png";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { setBookingLocation } from "@/store/profile/bookingSlice";
 import LocationTrack from "@/components/location/LocationTrack";
 import { Spacer } from "@/components/Spacer";
+import Spinner from "@/components/ui/Spinner";
 
 interface Props {
   onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
@@ -23,10 +24,12 @@ interface Props {
 
 export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
   const [mapping, setMapping] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [placeAutocomplete, setPlaceAutocomplete] =
     useState<google.maps.places.Autocomplete | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const places = useMapsLibrary("places");
+  const loggedIn = useSelector((state: any) => state.auth.loggedIn)
 
   useEffect(() => {
     if (!places || !inputRef.current) return;
@@ -123,7 +126,11 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
                   : "border-gray-200 bg-navBlue text-white rounded px-3 text-sm border h-10 w-full max-w-[499px] "
               }`}
             >
-              <p className="py-">Continue</p>
+              {loading ? (
+                <Spinner size="md" />
+              ) : (
+                <p className="py-">Continue</p>
+              )}
             </button>
           </div>
         </DialogTrigger>
@@ -149,7 +156,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
               <button
                 className="text-base md:text-lg btnTwo border border-primaryBlue"
                 onClick={() =>
-                  router.push("/dashboard/bookings/schedule-booking")
+                  router.push(loggedIn ? "/bookings/schedule-booking" : "/dashboard/bookings/schedule-booking")
                 }
               >
                 Schedule a Booking
@@ -159,7 +166,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
               <button
                 className="text-base md:text-lg btnOne"
                 onClick={() =>
-                  router.push("/dashboard/bookings/instant-booking")
+                  router.push(loggedIn ? "/bookings/instant-booking" : "/dashboard/bookings/instant-booking")
                 }
               >
                 Instant Booking
@@ -170,6 +177,8 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
       </Dialog>
       <Spacer size={10} />
       <LocationTrack
+      loading={loading}
+        setLoading={setLoading}
         mapping={mapping}
         setMapping={setMapping}
         changeType={changeType}

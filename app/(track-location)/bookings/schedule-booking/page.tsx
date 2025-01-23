@@ -1,10 +1,24 @@
+"use client"
+
 import ScheduleBooking from "@/components/location/ScheduleBooking";
 import { Spacer } from "@/components/Spacer";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { FaCircleCheck } from "react-icons/fa6";
 import { RxCaretRight } from "react-icons/rx";
 import { TbCircleNumber2, TbCircleNumber3Filled } from "react-icons/tb";
+import { useSelector } from "react-redux";
 
 const page = () => {
+	const router = useRouter();
+  const service = useSelector((state: any) => state.booking.service);
+  const location = useSelector((state: any) => state.booking.location);
+
+  useEffect(() => {
+    if (!service) return router.push("/dashboard/bookings/select-service");
+    if (!location) return router.push("/dashboard/bookings/location");
+  }, []);
+  
 	return (
 		<div className="bg-bgWhite  ">
 			<div className="flex flex-col justify-center contained mx-auto ">

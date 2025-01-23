@@ -41,7 +41,7 @@ function DropDownElement() {
           </SelectTrigger>
           <SelectContent className="max-w-[320px] sm:max-w-md">
             <SelectGroup>
-              <SelectItem value="Indoor Cleaning Services">
+              <SelectItem value="cleaning">
                 <div className=" text-primaryBlue my-2 p-2">
                   <p className="font-semibold ">Indoor Cleaning Services</p>
                   <p className="font-light">
@@ -50,12 +50,28 @@ function DropDownElement() {
                   </p>
                 </div>
               </SelectItem>
-              <SelectItem value="Driving">
+              <SelectItem value="driving">
                 <div className=" text-primaryBlue my-2 p-2">
                   <p className="font-semibold ">Driving</p>
                   <p className="font-light">
                     Reliable and safe transportation services for individuals or
                     goods.
+                  </p>
+                </div>
+              </SelectItem>
+              <SelectItem value="plumbing">
+                <div className=" text-primaryBlue my-2 p-2">
+                  <p className="font-semibold ">Plumbing</p>
+                  <p className="font-light">
+                    Skilled plumbers ready to fix leaks, clogs, and more
+                  </p>
+                </div>
+              </SelectItem>
+              <SelectItem value="cooking">
+                <div className=" text-primaryBlue my-2 p-2">
+                  <p className="font-semibold ">Cooking</p>
+                  <p className="font-light">
+                    Skilled chefs that can help you prepare very tasty meals
                   </p>
                 </div>
               </SelectItem>

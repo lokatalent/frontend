@@ -16,6 +16,7 @@ import { useDispatch } from "react-redux";
 import { setBookingLocation } from "@/store/profile/bookingSlice";
 import LocationTrack from "@/components/location/LocationTrack";
 import { Spacer } from "@/components/Spacer";
+import Spinner from "@/components/ui/Spinner";
 
 interface Props {
   onPlaceSelect: (place: google.maps.places.PlaceResult | null) => void;
@@ -23,6 +24,7 @@ interface Props {
 
 export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
   const [mapping, setMapping] = useState(false);
+  const [loading, setLoading] = useState(false);
   const [placeAutocomplete, setPlaceAutocomplete] =
     useState<google.maps.places.Autocomplete | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
@@ -61,7 +63,6 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
     setSelectedAddress(address);
     setSelectedRegion(region);
     setSelectedLocation(address + ", " + region);
-    console.log(address + ", " + region);
     dispatch(setBookingLocation(address + ", " + region));
     setIsDisabled(false);
   };
@@ -72,23 +73,21 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
     placeAutocomplete.addListener("place_changed", () => {
       onPlaceSelect(placeAutocomplete.getPlace());
       const place = placeAutocomplete.getPlace();
-      const location = place.name
-        ? place.name + ", " + place.formatted_address
-        : "";
+      const location =
+        place.name ?? place.name + ", " + place.formatted_address;
       setSelectedLocation(location);
       dispatch(setBookingLocation(location));
-      console.log("Place", place, location);
       setIsDisabled(false);
     });
   }, [onPlaceSelect, placeAutocomplete]);
 
   return (
-    <div className="border rounded-md w-[330px] sm:w-[450px] bg-white p-4 mt-24">
+    <div className="border rounded-md w-full bg-white p-4 mt-24">
       <h1 className="text-center text-lg font-medium mb-3">
         Where do you need help?
       </h1>
       {mapping ? (
-        <div className="w-full">
+        <div className="w-[90%] sm:w-[350px] md:w-[400px]">
           <p className="text-sm mb-1">Address</p>
           <textarea
             value={selectedAddress}
@@ -97,15 +96,19 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
             placeholder="Address"
           ></textarea>
           <p className="text-sm mb-1">Region</p>
-          <p className="border-gray-200 bg-gray-100 rounded mb-3 px-3 text-sm border py-2 w-full min-h-[40px]">
+          <p className="border-gray-200 bg-gray-100 rounded mb-3 px-3 text-sm border py-2 sm:w-[350px] md:w-[400px] min-h-[40px]">
             {selectedRegion}
           </p>
         </div>
       ) : (
         <div className="">
           <input
+            className="hidden border-gray-200 rounded mb-3 px-3 text-sm border h-10 w-full focus:outline-blue-500"
+            placeholder="Apartment No/Name (optional)"
+          />
+          <input
             placeholder="Street address/landmark"
-            className="border-gray-200 rounded mb-3 px-3 text-sm border h-10 w-full focus:outline-blue-500"
+            className="border-gray-200 rounded mb-3 px-3 text-sm border h-10 sm:w-[350px] md:w-[400px] focus:outline-blue-500"
             ref={inputRef}
           />
         </div>
@@ -118,11 +121,15 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
               disabled={isDisabled}
               className={`dialog-trigger ${
                 isDisabled
-                  ? "border-gray-200 bg-navBlue text-white rounded px-3 text-sm border h-10 w-full opacity-25 max-w-[499px"
-                  : "border-gray-200 bg-navBlue text-white rounded px-3 text-sm border h-10 w-full max-w-[499px "
+                  ? "border-gray-200 bg-navBlue text-white rounded px-3 text-sm border h-10 w-full opacity-25 max-w-[499px]"
+                  : "border-gray-200 bg-navBlue text-white rounded px-3 text-sm border h-10 w-full max-w-[499px] "
               }`}
             >
-              <p className="py-">Continue</p>
+              {loading ? (
+                <Spinner size="md" />
+              ) : (
+                <p className="py-">Continue</p>
+              )}
             </button>
           </div>
         </DialogTrigger>
@@ -169,6 +176,8 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
       </Dialog>
       <Spacer size={10} />
       <LocationTrack
+      loading={loading}
+        setLoading={setLoading}
         mapping={mapping}
         setMapping={setMapping}
         changeType={changeType}

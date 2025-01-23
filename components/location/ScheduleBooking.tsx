@@ -30,6 +30,7 @@ import Spinner from "../ui/Spinner";
 import { createBooking } from "@/services/bookingService";
 import { showToast } from "@/store/auth/toastSlice";
 import { useDispatch, useSelector } from "react-redux";
+import { setBookingData } from "@/store/profile/bookingSlice";
 
 type FormValues = {
   startTime: string;
@@ -165,37 +166,42 @@ const ScheduleBooking = () => {
       end_date: new Date(selectedDate).toISOString().split("T")[0],
       total_price: getPrice(),
     };
-    // handle submission logic here
-    setLoading(true);
-    const response = await createBooking(data);
-    if (!response.error) {
-      setLoading(false);
-      dispatch(
-        showToast({
-          status: "success",
-          message: "Booking has been created successfully",
-        })
-      );
-      router.push(`talents?=${encodeURIComponent(response.data.id)}`);
-    } else {
-      setLoading(false);
-      if (response.status === 401) {
-        dispatch(
-          showToast({
-            status: "error",
-            message: response.data.message,
-          })
-        );
-        return router.push("/login");
-      }
+    // save to store
+    console.log(data);
+    dispatch(setBookingData(data));
+    router.push(user.id ? "/dashboard/bookings/talents" : "/talents")
 
-      return dispatch(
-        showToast({
-          status: "error",
-          message: response.data.message,
-        })
-      );
-    }
+    // handle submission logic here
+    // setLoading(true);
+    // const response = await createBooking(data);
+    // if (!response.error) {
+    //   setLoading(false);
+    //   dispatch(
+    //     showToast({
+    //       status: "success",
+    //       message: "Booking has been created successfully",
+    //     })
+    //   );
+    //   router.push(`talents?=${encodeURIComponent(response.data.id)}`);
+    // } else {
+    //   setLoading(false);
+    //   if (response.status === 401) {
+    //     dispatch(
+    //       showToast({
+    //         status: "error",
+    //         message: response.data.message,
+    //       })
+    //     );
+    //     return router.push("/login");
+    //   }
+
+    //   return dispatch(
+    //     showToast({
+    //       status: "error",
+    //       message: response.data.message,
+    //     })
+    //   );
+    // }
   };
 
   useEffect(() => {
