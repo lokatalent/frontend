@@ -6,7 +6,7 @@ const initialState: any = {
   otp: "",
   resetToken: "",
   user: {},
-  loggedIn: true,
+  loggedIn: false,
   logout: false,
 };
 
@@ -75,7 +75,7 @@ const authSlice = createSlice({
       state.otp = "";
       state.resetToken = "";
       state.user = {};
-      state.loggedIn = true;
+      state.loggedIn = false;
       state.logout = false;
     },
   },
