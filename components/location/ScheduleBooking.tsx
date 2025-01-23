@@ -48,6 +48,7 @@ const ScheduleBooking = () => {
   const services = useSelector((state: any) => state.booking.allServices);
   const location = useSelector((state: any) => state.booking.location);
   const user = useSelector((state: any) => state.auth.user);
+  const loggedIn = useSelector((state: any) => state.auth.loggedIn);
   const [count, setCount] = useState(3.5);
 
   const time = [
@@ -167,7 +168,6 @@ const ScheduleBooking = () => {
       total_price: getPrice(),
     };
     // save to store
-    console.log(data);
     dispatch(setBookingData(data));
     router.push(user.id ? "/dashboard/bookings/talents" : "/talents")
 

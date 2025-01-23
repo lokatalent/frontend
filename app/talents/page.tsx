@@ -1,12 +1,16 @@
 "use client";
 
+import { handleUnauthorizedError } from "@/components/utils";
+import { findProviders } from "@/services/bookingService";
+import { showToast } from "@/store/auth/toastSlice";
 import { Router } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaTimes } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 
-const TalentItem = ({setShowModal}: any) => {
+const TalentItem = ({ setShowModal }: any) => {
   return (
     <div className="bg-white rounded-xl w-full px-10 py-8 flex gap-5">
       <div className="shrink-0">
@@ -53,17 +57,46 @@ const TalentItem = ({setShowModal}: any) => {
           </div>
         </div>
       </div>
-      
     </div>
   );
 };
 
 function Talents() {
-  const [showModal, setShowModal] = useState(false)
+  const [showModal, setShowModal] = useState(false);
   const router = useRouter();
   const onShowModal = () => {
-    setShowModal(true)
-  }
+    setShowModal(true);
+  };
+
+  // get booking data
+  const bookingData = useSelector((state: any) => state.booking.bookingData);
+  // get data for the search
+  const data = {
+    requester_addr: bookingData.requester_addr,
+    service_type: bookingData.service_type,
+    start_time: bookingData.start_time,
+    end_time: bookingData.start_time,
+    start_date: bookingData.start_date,
+    end_date: bookingData.end_date,
+  };
+
+  const dispatch = useDispatch()
+
+  // pass data to the seach providers function
+  const getProvidersData = async () => {
+    const response = await findProviders(data);
+    if (!response.error) {
+      console.log("Talents", response);
+    } else {
+      // setLoading(false);
+      handleUnauthorizedError(response, dispatch, router, showToast);
+    }
+  };
+
+  useEffect(() => {
+    getProvidersData()
+  }, [])
+
   return (
     <div className="py-10 bg-bgWhite wrap">
       {/* header */}
@@ -97,9 +130,7 @@ function Talents() {
                 <h1 className="text-xl md:text-2xl xl:text-3xl text-textGray5">
                   You have to sign in to make a booking
                 </h1>
-                <p className="md:text-lg xl:text-xl mb-6 text-textGray5 md:px-4 mt-5">
-
-                </p>
+                <p className="md:text-lg xl:text-xl mb-6 text-textGray5 md:px-4 mt-5"></p>
                 <button
                   onClick={() => router.push("/login")}
                   className="bg-primaryBlue text-white h-12 md:h-14 w-full"

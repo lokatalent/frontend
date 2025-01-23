@@ -16,7 +16,6 @@ const MakeBookingTime = () => {
   const services = useSelector((state: any) => state.booking.allServices);
   const location = useSelector((state: any) => state.booking.location);
   const user = useSelector((state: any) => state.auth.user);
-  console.log("User", user)
 
   const router = useRouter();
   const dispatch = useDispatch();

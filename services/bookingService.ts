@@ -93,9 +93,9 @@ export const getServices = async () => {
   }
 };
 
-export const findProviders = async (id: any) => {
+export const findProviders = async (data: any) => {
   try {
-    let response = await http.get(`/booking/${id}/find-providers?page=1&size=50`);
+    let response = await http.post(`/booking/find-providers?page=1&size=50`, data);
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
     return {
