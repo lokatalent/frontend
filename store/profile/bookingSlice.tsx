@@ -4,6 +4,7 @@ const initialState = {
   service: "",
   location: "",
   bookingData: "",
+  talentData: "",
   allServices: "",
 };
 
@@ -20,6 +21,9 @@ const bookingSlice = createSlice({
     setBookingData: (state, { payload }) => {
       state.bookingData = payload;
     },
+    saveTalentData: (state, { payload }) => {
+      state.talentData = payload;
+    },
     setAllServices: (state, { payload }) => {
       state.allServices = payload;
     },
@@ -35,6 +39,7 @@ export const {
   setBookingLocation,
   setBookingService,
   setBookingData,
+  saveTalentData,
   setAllServices,
   resetBooking,
 } = bookingSlice.actions;

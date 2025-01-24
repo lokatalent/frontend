@@ -266,3 +266,19 @@ export interface FieldConfig {
   validation: RegisterOptions;
   options?: string[];
 }
+
+export const naira = "₦";
+
+export const formatNumber = (num: any) => {
+  num = +num;
+  // if (num > 999999) return `${(num / 1000000).toFixed(1)} Mil`;
+  let str = num.toLocaleString("en-US");
+  return str;
+};
+
+export const formatNairaNumber = (num: any) => {
+  num = +num;
+  // if (num > 999999) return `${(num / 1000000).toFixed(1)} Mil`;
+  let str = num.toLocaleString("en-US");
+  return naira + str;
+};

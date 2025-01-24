@@ -74,6 +74,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
     placeAutocomplete.addListener("place_changed", () => {
       onPlaceSelect(placeAutocomplete.getPlace());
       const place = placeAutocomplete.getPlace();
+
       // remove postal code from address
       let formAddress = place.formatted_address
       let strArr = formAddress?.split(',') || []
@@ -82,7 +83,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
       let cityArr = city.split(' ')
       strArr[id] = " " + cityArr[0]
       formAddress = strArr.join(',')
-
+  
       const location =
         place.name ? place.name + ", " + formAddress : "";
       setSelectedLocation(location);
