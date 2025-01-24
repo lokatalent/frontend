@@ -105,3 +105,42 @@ export const findProviders = async (data: any) => {
     };
   }
 };
+
+export const selectProvider = async (data: any) => {
+  try {
+    let response = await http.put(`/booking/select-provider`, data);
+    return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err?.response?.data,
+      status: err?.response?.status,
+    };
+  }
+};
+
+export const makePayment = async (data: any) => {
+  try {
+    let response = await http.post(`/payment/initialize-transaction`, data);
+    return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err?.response?.data,
+      status: err?.response?.status,
+    };
+  }
+};
+
+export const verifyPayment = async (data: any) => {
+  try {
+    let response = await http.post(`/payment/verify-transaction`, data);
+    return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err?.response?.data,
+      status: err?.response?.status,
+    };
+  }
+};

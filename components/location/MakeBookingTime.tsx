@@ -129,40 +129,6 @@ const MakeBookingTime = () => {
     // save to store
     dispatch(setBookingData(data))
     router.push(user.id ? "/dashboard/bookings/talents" : "/talents")
-    
-    
-    // handle submission logic here
-
-    // setLoading(true);
-    // const response = await createBooking(data);
-    // if (!response.error) {
-    //   setLoading(false);
-    //   dispatch(
-    //     showToast({
-    //       status: "success",
-    //       message: "Booking has been created successfully",
-    //     })
-    //   );
-    //   router.push(`talents?id=${encodeURIComponent(response.data.id)}`);
-    // } else {
-    //   setLoading(false);
-    //   if (response.status === 401) {
-    //     dispatch(
-    //       showToast({
-    //         status: "error",
-    //         message: response.data.message,
-    //       })
-    //     );
-    //     return router.push("/login");
-    //   }
-
-    //   return dispatch(
-    //     showToast({
-    //       status: "error",
-    //       message: response.data.message,
-    //     })
-    //   );
-    // }
   };
 
   useEffect(() => {
