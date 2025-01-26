@@ -1,4 +1,5 @@
 import { clsx, type ClassValue } from "clsx";
+import { format } from "date-fns";
 import { RegisterOptions } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
@@ -281,4 +282,15 @@ export const formatNairaNumber = (num: any) => {
   // if (num > 999999) return `${(num / 1000000).toFixed(1)} Mil`;
   let str = num.toLocaleString("en-US");
   return naira + str;
+};
+
+export const formatDate = (date: any) => {
+  if (!date) return "N/A";
+  return format(new Date(date), "PP");
+};
+
+export const formatDateTime = (date: any) => {
+  if (date == Number(date)) date = Number(date)
+  if (!date) return "N/A";
+  return format(new Date(date), "PPp");
 };
