@@ -17,8 +17,9 @@ import { FaCircleCheck } from "react-icons/fa6";
 import { RxCaretRight } from "react-icons/rx";
 import { TbCircleNumber3 } from "react-icons/tb";
 import { useDispatch, useSelector } from "react-redux";
+import PaystackPop from "@paystack/inline-js";
 
-const PaymentPage = () => {
+const DashboardPaymentPage = () => {
   // get booking data
   const bookingData = useSelector((state: any) => state.booking.bookingData);
 
@@ -77,8 +78,11 @@ const PaymentPage = () => {
     };
     const response = await selectProvider(data);
     if (!response.error) {
-        setLoading(false);
-      console.log("Provider", response.data);
+      setLoading(false);
+      let result = response.data
+      console.log("Provider", result);
+      // redirect to booking details page
+      router.push(`/dashboard/bookings/${id}`)
     } else {
       setLoading(false);
       if (response.status === 401) {
@@ -103,12 +107,24 @@ const PaymentPage = () => {
   const onMakePayment = async (id: any) => {
     let data = {
       booking_id: id,
-      callback_url: "https://google.com",
+      callback_url: "",
     };
+    
     const response = await makePayment(data);
     if (!response.error) {
       console.log("Initialize Payment", response.data);
-      onVerifyPayment(id);
+      const popup = new PaystackPop();
+      const callbacks = {
+        onSuccess: () => onVerifyPayment(id),
+        onCancel: () =>
+          dispatch(
+            showToast({
+              status: "error",
+              message: "Payment was cancelled",
+            })
+          ),
+      };
+      popup.resumeTransaction(response.data, callbacks);
     } else {
       setLoading(false);
       if (response.status === 401) {
@@ -278,4 +294,4 @@ const PaymentPage = () => {
   );
 };
 
-export default PaymentPage;
+export default DashboardPaymentPage;

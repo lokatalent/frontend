@@ -13,6 +13,7 @@
     "@emotion/styled": "^11.13.0",
     "@hookform/resolvers": "^3.9.0",
     "@mui/material": "^6.1.4",
+    "@paystack/inline-js": "^2.22.1",
     "@radix-ui/react-avatar": "^1.1.1",
     "@radix-ui/react-dialog": "^1.1.2",
     "@radix-ui/react-icons": "^1.3.1",
@@ -51,6 +52,7 @@
   },
   "devDependencies": {
     "@types/node": "^20",
+    "@types/paystack__inline-js": "^1.0.1",
     "@types/react": "^18",
     "@types/react-dom": "^18",
     "eslint": "^8",
