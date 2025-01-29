@@ -42,7 +42,8 @@ interface TalentServiceState {
 }
 
 export interface RootStateTalentService {
-  service: TalentServiceState; // Nested state structure
+  service: TalentServiceState;
+  talentProfile: any // Nested state structure
 }
 
 // Initial state
@@ -96,7 +97,7 @@ const talentServiceSlice = createSlice({
      * @param state - Current state.
      * @param action - Payload containing the updated bank details.
      */
-    setService: (state, action: PayloadAction<TalentServiceState>) => {
+    setService: (state, action: PayloadAction<any>) => {
       console.log(action.payload);
       state.service = action.payload;
     },

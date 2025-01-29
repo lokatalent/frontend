@@ -30,7 +30,7 @@ const bookingSlice = createSlice({
     resetBooking: (state) => {
       state.service = "";
       state.location = "";
-      state.allServices = "";
+      state.bookingData = "";
     },
   },
 });

@@ -125,7 +125,7 @@ const Profiles = () => {
   };
 
   const [portfolioData, setPortfolioData] =
-    useState<PortfolioData>(serviceData);
+    useState(serviceData);
 
   const [serviceRate, setServiceRate] = useState<ServiceRateData>({
     bankName: bankDetails?.bank_name || "",

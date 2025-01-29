@@ -221,6 +221,7 @@ const ScheduleBooking = () => {
             value={selectedDate}
             onChange={(e) => setSelectedDate(e.target.value)}
             id="date"
+            min={new Date().toISOString().split("T")[0]}
             className="h-14 w-full rounded-lg border px-5 focus:outline-none"
           />
         </div>
