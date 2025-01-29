@@ -1,5 +1,6 @@
 "use client";
 
+import Spinner from "@/components/ui/Spinner";
 import { handleUnauthorizedError } from "@/lib/utils";
 import { findProviders } from "@/services/bookingService";
 import { showToast } from "@/store/auth/toastSlice";
@@ -34,18 +35,31 @@ const TalentItem = ({ data, saveTalent }: any) => {
                 <span>Available for work</span>
               </div>
             </div>
-            <p className="text-xl mt-2">Indoor Cleaner</p>
+            {/* <p className="text-xl mt-2">Indoor Cleaner</p> */}
           </div>
           <div>
             <p className="text-xl">{data.distance} away</p>
             <p className="text-xl text-right text-gray-600">{data.duration}</p>
           </div>
         </div>
-        <div className="flex justify-between mt-5 gap-8">
+        <div className="flex items-center justify-between mt-5 gap-8">
           <p className="max-w-xl">{data.service_desc}</p>
           <div className="flex items-center justify-end gap-3 w-full max-w-xs shrink-0">
+            <Link href={`/dashboard/bookings/talents/${data.provider_id}`}>
+              <button
+                onClick={() => saveTalent(data)}
+                className="bg-white border border-primaryBlue p-3 text-primaryBlue max-w-[200px]"
+              >
+                View Profile
+              </button>
+            </Link>
             <Link href={"/dashboard/bookings/payments"}>
-              <button onClick={() => saveTalent(data)} className="btnOne max-w-[200px]">Book Now</button>
+              <button
+                onClick={() => saveTalent(data)}
+                className="btnOne max-w-[200px]"
+              >
+                Book Now
+              </button>
             </Link>
           </div>
         </div>
@@ -66,7 +80,7 @@ export default function DashboardTalentsHome() {
     requester_addr: bookingData.requester_addr,
     service_type: bookingData.service_type,
     start_time: bookingData.start_time,
-    end_time: bookingData.start_time,
+    end_time: bookingData.end_time,
     start_date: bookingData.start_date,
     end_date: bookingData.end_date,
   };
@@ -86,33 +100,51 @@ export default function DashboardTalentsHome() {
   };
 
   const saveTalent = (data: any) => {
-    dispatch(saveTalentData(data))
-  }
+    dispatch(saveTalentData(data));
+  };
 
   useEffect(() => {
     getProvidersData();
   }, []);
 
   return (
-    <div className="py-5 bg-bgWhite">
-      {/* header */}
-      <div>
-        <h1 className="text-3xl font-semibold text-center">
-          Available talents for hire
-        </h1>
-        <div className="hidden justify-end mt-5">
-          <button className="bg-primaryBlue text-white h-10 px-5">
-            Filter
-          </button>
+    <div>
+      {loading ? (
+        <div className="h-[400px] w-full flex flex-col items-center justify-center">
+          <h1 className="mb-5 text-lg md:text-xl font-semibold">
+            Finding talents for you
+          </h1>
+          <Spinner />
         </div>
-      </div>
-      <div className="my-6 flex flex-col gap-6">
-        {talentData.map((item, index) => (
-          <div key={index}>
-            <TalentItem data={item} saveTalent={saveTalent} />
+      ) : (
+        <div className="py-5 bg-bgWhite">
+          {/* header */}
+          <div>
+            <h1 className="text-3xl font-semibold text-center">
+              Available talents for {bookingData.service_type} service
+            </h1>
+            <div className="hidden justify-end mt-5">
+              <button className="bg-primaryBlue text-white h-10 px-5">
+                Filter
+              </button>
+            </div>
           </div>
-        ))}
-      </div>
+          {talentData.length > 0 ? (
+            <div className="my-6 flex flex-col gap-6">
+              {talentData.map((item, index) => (
+                <div key={index}>
+                  <TalentItem data={item} saveTalent={saveTalent} />
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div>
+              {/* make a modal */}
+              <p>No talents available</p>
+            </div>
+          )}
+        </div>
+      )}
     </div>
   );
 }

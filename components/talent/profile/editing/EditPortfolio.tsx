@@ -31,7 +31,7 @@ import { setUser } from "@/store/auth/authSlice";
 import { useRouter } from "next/navigation";
 
 interface EditPortfolioProps {
-  portfolioRateEdited: (data: EditPortfolioFormValues) => void;
+  portfolioRateEdited: any;
   skills: { [key: string]: boolean };
   onSkillChange: (skill: string, value: boolean) => void;
 }

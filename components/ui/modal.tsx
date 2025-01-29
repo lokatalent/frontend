@@ -17,17 +17,17 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
       <div className="absolute inset-0 bg-black/50" onClick={onClose} />
 
       {/* Modal Container */}
-      <div className="relative bg-white rounded-lg shadow-xl w-96 p-6">
+      <div className="relative bg-white rounded-lg shadow-xl w-full max-w-[500px] p-5">
         {/* Cancel Button */}
         <button
           onClick={onClose}
-          className="absolute top-4 left-4 text-gray-500 hover:text-gray-700"
+          className="absolute top-4 right-4 text-gray-500 hover:text-gray-700"
         >
           <X size={24} />
         </button>
 
         {/* Modal Content */}
-        <div className="mt-8">{children}</div>
+        <div className="mt-2">{children}</div>
       </div>
     </div>
   );

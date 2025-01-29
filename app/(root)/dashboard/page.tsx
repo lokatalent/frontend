@@ -4,10 +4,12 @@ import { BookingColumns } from "@/components/columns/Columns";
 import BalanceCard from "@/components/overview/BalanceCard";
 import BookingCard from "@/components/overview/BookingCard";
 import DataTable from "@/components/ui/gen/DataTable";
+import Modal from "@/components/ui/modal";
 import PageSpinner from "@/components/ui/PageSpinner";
+import { formatDate } from "@/lib/utils";
 import { getAllBookings, getServices } from "@/services/bookingService";
 import { showToast } from "@/store/auth/toastSlice";
-import { setAllServices } from "@/store/profile/bookingSlice";
+import { resetBooking, setAllServices } from "@/store/profile/bookingSlice";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -95,11 +97,22 @@ export default function Dashboard() {
     setBookingType(val);
   };
 
+  // check for active booking
+  const [showModal, setShowModal] = useState(false)
+  const bookingData = useSelector((state: any) => state.booking.bookingData);
+  const cancelBooking = () => {
+    dispatch(resetBooking())
+    setShowModal(false)
+  }
+
+  //  if booking data has an address, show modal asking to complete or cancel booking and send user to talents page.
+
   useEffect(() => {
     if (user.email) {
       if (user.is_verified) {
         fetchBookings(user.id);
         fetchServices();
+        if(bookingData.requester_addr) setShowModal(true)
       } else {
         dispatch(
           showToast({
@@ -162,6 +175,34 @@ export default function Dashboard() {
           </div>
         </div>
       </div>
+      <Modal isOpen={showModal} onClose={() => {setShowModal(false)}}>
+        <div className="w-full">
+          <h1 className="font-semibold text-xl">Welcome back, {user.first_name}!</h1>
+          <div>
+            <p className="mb-4">Complete your booking</p>
+            <div className="mb-4">
+              <p className="uppercase font-medium text-gray-500 text-xs">Service Type</p>
+              <p className="capitalize">{bookingData.service_type}</p>
+            </div>
+            <div className="mb-4">
+              <p className="uppercase font-medium text-gray-500 text-xs">Address</p>
+              <p className="capitalize">{bookingData.requester_addr}</p>
+            </div>
+            <div className="mb-4">
+              <p className="uppercase font-medium text-gray-500 text-xs">Date</p>
+              <p className="capitalize">{formatDate(bookingData.start_date)}</p>
+            </div>
+            <div className="mb-4">
+              <p className="uppercase font-medium text-gray-500 text-xs">Time</p>
+              <p className="capitalize">{(bookingData.start_time)?.slice(0, 5)} - {(bookingData.end_time)?.slice(0, 5)}</p>
+            </div>
+          </div>
+          <div className="flex justify-end gap-2">
+            <button onClick={cancelBooking} className="text-sm h-10 px-5 bg-red-500 text-white">Cancel</button>
+            <Link href={"/dashboard/bookings/talents"}><button className="text-sm h-10 px-5 bg-primaryBlue text-white">Complete</button></Link>
+          </div>
+        </div>
+      </Modal>
     </div>
   );
 }
