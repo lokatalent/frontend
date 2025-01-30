@@ -19,7 +19,7 @@ const TalentItem = ({ data, setShowModal }: any) => {
       <div className="shrink-0">
         <div className="relative h-24 w-24 rounded-full">
           <Image
-            src={data.provider_details.avatar}
+            src={data.provider_details?.avatar}
             fill
             className="object-cover rounded-full"
             alt="talent-img"
@@ -30,7 +30,7 @@ const TalentItem = ({ data, setShowModal }: any) => {
         <div className="flex justify-between">
           <div>
             <div className="flex items-center gap-5">
-              <h1 className="text-2xl font-semibold">{`${data.provider_details.first_name} ${data.provider_details.last_name}`}</h1>
+              <h1 className="text-2xl font-semibold">{`${data.provider_details?.first_name} ${data.provider_details?.last_name}`}</h1>
               <div className="flex items-center">
                 <div className="h-2 w-2 rounded-full mr-2 bg-green-500"></div>
                 <span>Available for work</span>
@@ -80,7 +80,7 @@ function Talents() {
     requester_addr: bookingData.requester_addr,
     service_type: bookingData.service_type,
     start_time: bookingData.start_time,
-    end_time: bookingData.start_time,
+    end_time: bookingData.end_time,
     start_date: bookingData.start_date,
     end_date: bookingData.end_date,
   };
@@ -92,7 +92,9 @@ function Talents() {
     const response = await findProviders(data);
     if (!response.error) {
       setLoading(false);
-      setTalentData(response.data);
+      // the structure of the response changed. Probably due to the message that is added now. Sync with BE to resolve or change the format of data in TalentItem
+      console.log("Response", response)
+      setTalentData(response.data.data);
     } else {
       setLoading(false);
       handleUnauthorizedError(response, dispatch, router, showToast);
@@ -122,7 +124,7 @@ function Talents() {
           </div>
           {/* main */}
           <div className="my-6 flex flex-col gap-6">
-            {talentData.map((item, index) => (
+            {talentData?.map((item, index) => (
               <div key={index}>
                 <TalentItem data={item} setShowModal={onShowModal} />
               </div>
@@ -136,18 +138,6 @@ function Talents() {
                     <FaTimes onClick={() => setShowModal(false)} />
                   </div>
                     <LogInAuth providersPage={true} />
-                  {/* <div className="text-center max-w-[470px] mx-auto">
-                    <h1 className="text-xl md:text-2xl xl:text-3xl text-textGray5">
-                      You have to sign in to make a booking
-                    </h1>
-                    <p className="md:text-lg xl:text-xl mb-6 text-textGray5 md:px-4 mt-5"></p>
-                    <button
-                      onClick={() => router.push("/login")}
-                      className="bg-primaryBlue text-white h-12 md:h-14 w-full"
-                    >
-                      Sign in
-                    </button>
-                  </div> */}
                 </div>
               </div>
             </div>

@@ -18,7 +18,7 @@ const TalentItem = ({ data, saveTalent }: any) => {
       <div className="shrink-0">
         <div className="relative h-24 w-24 rounded-full">
           <Image
-            src={data.provider_details.avatar}
+            src={data.provider_details?.avatar}
             fill
             className="object-cover rounded-full"
             alt="talent-img"
@@ -29,7 +29,7 @@ const TalentItem = ({ data, saveTalent }: any) => {
         <div className="flex justify-between">
           <div>
             <div className="flex items-center gap-5">
-              <h1 className="text-2xl font-semibold">{`${data.provider_details.first_name} ${data.provider_details.last_name}`}</h1>
+              <h1 className="text-2xl font-semibold">{`${data.provider_details?.first_name} ${data.provider_details?.last_name}`}</h1>
               <div className="flex items-center">
                 <div className="h-2 w-2 rounded-full mr-2 bg-green-500"></div>
                 <span>Available for work</span>
@@ -92,7 +92,8 @@ export default function DashboardTalentsHome() {
     const response = await findProviders(data);
     if (!response.error) {
       setLoading(false);
-      setTalentData(response.data);
+      // the shape of this response got changed. Kindly sync with the backend to resolve
+      setTalentData(response.data.data);
     } else {
       setLoading(false);
       handleUnauthorizedError(response, dispatch, router, showToast);
@@ -138,7 +139,7 @@ export default function DashboardTalentsHome() {
               ))}
             </div>
           ) : (
-            <div>
+            <div className="pt-10 text-center">
               {/* make a modal */}
               <p>No talents available</p>
             </div>

@@ -180,24 +180,24 @@ export default function Dashboard() {
           <h1 className="font-semibold text-xl">Welcome back, {user.first_name}!</h1>
           <div>
             <p className="mb-4">Complete your booking</p>
-            <div className="mb-4">
+            <div className="py-2 border-b">
               <p className="uppercase font-medium text-gray-500 text-xs">Service Type</p>
               <p className="capitalize">{bookingData.service_type}</p>
             </div>
-            <div className="mb-4">
+            <div className="py-2 border-b">
               <p className="uppercase font-medium text-gray-500 text-xs">Address</p>
               <p className="capitalize">{bookingData.requester_addr}</p>
             </div>
-            <div className="mb-4">
+            <div className="py-2 border-b">
               <p className="uppercase font-medium text-gray-500 text-xs">Date</p>
               <p className="capitalize">{formatDate(bookingData.start_date)}</p>
             </div>
-            <div className="mb-4">
+            <div className="py-2 border-b">
               <p className="uppercase font-medium text-gray-500 text-xs">Time</p>
               <p className="capitalize">{(bookingData.start_time)?.slice(0, 5)} - {(bookingData.end_time)?.slice(0, 5)}</p>
             </div>
           </div>
-          <div className="flex justify-end gap-2">
+          <div className="flex justify-end gap-2 mt-4">
             <button onClick={cancelBooking} className="text-sm h-10 px-5 bg-red-500 text-white">Cancel</button>
             <Link href={"/dashboard/bookings/talents"}><button className="text-sm h-10 px-5 bg-primaryBlue text-white">Complete</button></Link>
           </div>

@@ -166,7 +166,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
               <button
                 className="text-base md:text-lg btnTwo border border-primaryBlue"
                 onClick={() =>
-                  router.push(loggedIn ? "/bookings/schedule-booking" : "/dashboard/bookings/schedule-booking")
+                  router.push(loggedIn ? "dashboard/bookings/schedule-booking" : "/bookings/schedule-booking")
                 }
               >
                 Schedule a Booking
@@ -176,7 +176,7 @@ export const PlaceAutocompleteClassic = ({ onPlaceSelect }: Props) => {
               <button
                 className="text-base md:text-lg btnOne"
                 onClick={() =>
-                  router.push(loggedIn ? "/bookings/instant-booking" : "/dashboard/bookings/instant-booking")
+                  router.push(loggedIn ? "dashboard/bookings/instant-booking" : "/bookings/instant-booking")
                 }
               >
                 Instant Booking

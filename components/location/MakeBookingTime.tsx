@@ -10,12 +10,14 @@ import { createBooking } from "@/services/bookingService";
 import { showToast } from "@/store/auth/toastSlice";
 import Spinner from "../ui/Spinner";
 import { setBookingData } from "@/store/profile/bookingSlice";
+import Link from "next/link";
 
 const MakeBookingTime = () => {
   const service = useSelector((state: any) => state.booking.service);
   const services = useSelector((state: any) => state.booking.allServices);
   const location = useSelector((state: any) => state.booking.location);
   const user = useSelector((state: any) => state.auth.user);
+  const loggedIn = useSelector((state: any) => state.auth.loggedIn);
 
   const router = useRouter();
   const dispatch = useDispatch();
@@ -127,8 +129,8 @@ const MakeBookingTime = () => {
       total_price: getPrice(),
     };
     // save to store
-    dispatch(setBookingData(data))
-    router.push(user.id ? "/dashboard/bookings/talents" : "/talents")
+    dispatch(setBookingData(data));
+    router.push(user.id ? "/dashboard/bookings/talents" : "/talents");
   };
 
   useEffect(() => {
@@ -204,6 +206,19 @@ const MakeBookingTime = () => {
             {loading ? <Spinner /> : "Proceed"}
           </button>
         </div>
+        <p className="text-center mt-4 text-sm">
+          Want this service immediately?{" "}
+          <Link
+            href={
+              loggedIn
+                ? "/dashboard/bookings/schedule-booking"
+                : "/bookings/schedule-booking"
+            }
+            className="text-primaryBlue font-semibold"
+          >
+            Schedule Booking
+          </Link>
+        </p>
       </div>
     </div>
   );

@@ -31,6 +31,7 @@ import { createBooking } from "@/services/bookingService";
 import { showToast } from "@/store/auth/toastSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { setBookingData } from "@/store/profile/bookingSlice";
+import Link from "next/link";
 
 type FormValues = {
   startTime: string;
@@ -169,7 +170,7 @@ const ScheduleBooking = () => {
     };
     // save to store
     dispatch(setBookingData(data));
-    router.push(user.id ? "/dashboard/bookings/talents" : "/talents")
+    router.push(user.id ? "/dashboard/bookings/talents" : "/talents");
 
     // handle submission logic here
     // setLoading(true);
@@ -292,6 +293,19 @@ const ScheduleBooking = () => {
             {loading ? <Spinner /> : "Proceed"}
           </button>
         </div>
+        <p className="text-center mt-4 text-sm">
+          Want this service immediately?{" "}
+          <Link
+            href={
+              loggedIn
+                ? "/dashboard/bookings/instant-booking"
+                : "/bookings/instant-booking"
+            }
+            className="text-primaryBlue font-semibold"
+          >
+            Instant Booking
+          </Link>
+        </p>
       </div>
     </div>
   );

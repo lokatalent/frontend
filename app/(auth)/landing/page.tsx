@@ -11,6 +11,7 @@ import { showToast } from "@/store/auth/toastSlice";
 import { setAllServices } from "@/store/profile/bookingSlice";
 import { useDispatch } from "react-redux";
 import { useEffect, useState } from "react";
+import { setLoggedin, setUser } from "@/store/auth/authSlice";
 
 export default function Home() {
   const dispatch = useDispatch()
@@ -33,7 +34,12 @@ export default function Home() {
     }
   };
 
+
   useEffect(() => {
+  // reset user info
+    dispatch(setUser({}))
+    dispatch(setLoggedin(false))
+
     fetchServices()
   }, [])
   

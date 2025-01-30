@@ -1,10 +1,6 @@
 import React from 'react';
 import {ControlPosition, MapControl} from '@vis.gl/react-google-maps';
-
 import {PlaceAutocompleteClassic} from './autocomplete-classic';
-import {AutocompleteCustom} from './autocomplete-custom';
-
-import {AutocompleteCustomHybrid} from './autocomplete-custom-hybrid';
 import type {AutocompleteMode} from './page';
 
 type CustomAutocompleteControlProps = {
@@ -25,14 +21,6 @@ export const CustomMapControl = ({
       <div className="autocomplete-control">
         {id === 'classic' && (
           <PlaceAutocompleteClassic onPlaceSelect={onPlaceSelect} />
-        )}
-
-        {id === 'custom' && (
-          <AutocompleteCustom onPlaceSelect={onPlaceSelect} />
-        )}
-
-        {id === 'custom-hybrid' && (
-          <AutocompleteCustomHybrid onPlaceSelect={onPlaceSelect} />
         )}
       </div>
     </MapControl>
