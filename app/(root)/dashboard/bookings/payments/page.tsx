@@ -105,8 +105,9 @@ const DashboardPaymentPage = () => {
   };
 
 
-  const paystackFunction = (code: any, id: any, ref: any) => {
-     const PaystackPop = import("@paystack/inline-js");
+  const paystackFunction = async (code: any, id: any, ref: any) => {
+     const PaystackPop = (await import("@paystack/inline-js")).default;
+     console.log(typeof PaystackPop, PaystackPop);
      const popup = new PaystackPop();
      const callbacks = {
        onSuccess: () => onVerifyPayment(id, ref),
@@ -131,7 +132,7 @@ const DashboardPaymentPage = () => {
     const response = await makePayment(data);
     if (!response.error) {
       console.log("Initialize Payment", response.data);
-      paystackFunction(response.data.access_code, id, response.data.payment_ref);
+      await paystackFunction(response.data.access_code, id, response.data.payment_ref);
     } else {
       setLoading(false);
       if (response.status === 401) {
