@@ -92,7 +92,7 @@ export default function DashboardTalentsHome() {
     const response = await findProviders(data);
     if (!response.error) {
       setLoading(false);
-      setTalentData(response.data);
+      setTalentData(response.data.data);
     } else {
       setLoading(false);
       handleUnauthorizedError(response, dispatch, router, showToast);
