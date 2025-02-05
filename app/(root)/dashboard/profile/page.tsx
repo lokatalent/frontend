@@ -5,10 +5,9 @@ import PageSpinner from "@/components/ui/PageSpinner";
 import { setToken, handleUnauthorizedError } from "@/lib/utils";
 import { signin, verifyUser } from "@/services/authService";
 import { getOwnProfile, updateProfileImage } from "@/services/profileService";
-import { setUser } from "@/store/auth/authSlice";
+import { setUser, setUserAvatar } from "@/store/auth/authSlice";
 import { showToast } from "@/store/auth/toastSlice";
 import { RootStateProfile, setProfilePics } from "@/store/profile/profileSlice";
-import { setUserAvatar } from "@/store/auth/authSlice";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { ChangeEvent, useEffect, useState, useRef } from "react";
@@ -27,8 +26,8 @@ export default function Profile() {
   const fileInputRef = useRef<HTMLInputElement | null>();
 
  
-
-  const [profilePic, setProfilePic] = useState("");
+  const profilePic = useSelector((state: any) => state.auth.user.avatar);
+  // const [profilePic, setProfilePic] = useState(userAvatar);
 
   // const profilePic = useSelector(
   //   (state: RootStateProfile) => state.profile.profilePics
@@ -73,7 +72,7 @@ export default function Profile() {
       } else {
         handleUnauthorizedError(response, dispatch, router, showToast)
       }
-      setProfilePic(imageURL);
+      // setProfilePic(imageURL);
       // dispatch(setProfilePics(imageURL));
       dispatch(setUserAvatar(imageURL));
     }
@@ -85,8 +84,9 @@ export default function Profile() {
     if (!response.error) {
       setLoading(false);
       dispatch(setUser(response.data));
+      dispatch(setUserAvatar(response.data.avatar));
       const profileData = response.data;
-      setProfilePic(profileData.avatar);
+      // setProfilePic(profileData.avatar);
       setData([
         {
           title: "Name",

@@ -34,7 +34,8 @@ function PersonalInfo({ setActiveStep }: any) {
   const fileInputRef = useRef<HTMLInputElement | null>();
   const user = useSelector((state: any) => state.auth.user);
   const [imageLoading, setImageLoading] = useState(false);
-  const [selectedImage, setSelectedImage] = useState<any>(user.avatar ?? null);
+  // const [selectedImage, setSelectedImage] = useState<any>(user.avatar ?? null);
+  const selectedImage = useSelector((state: any) => state.auth.user.avatar);
 
   const handleImageSelect = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
@@ -57,7 +58,7 @@ function PersonalInfo({ setActiveStep }: any) {
         setImageLoading(false);
         handleUnauthorizedError(response, dispatch, router, showToast);
       }
-      setSelectedImage(imageUrl);
+      // setSelectedImage(imageUrl);
       // Make sure setSelectedImage is defined in your component
       // dispatch(setProfilePics(imageUrl));
       dispatch(setUserAvatar(imageUrl));
@@ -86,6 +87,7 @@ function PersonalInfo({ setActiveStep }: any) {
         })
       );
       dispatch(setUser(response.data));
+      dispatch(setUserAvatar(response.data.avatar));
       setActiveStep(1);
     } else {
       // error

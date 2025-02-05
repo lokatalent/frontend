@@ -22,7 +22,7 @@ import { getAllService, getService, getServiceType } from "@/services/services";
 import { showToast } from "@/store/auth/toastSlice";
 import { capitalize, errorHandler, handleUnauthorizedError } from "@/lib/utils";
 import { RootStateProfile, setProfilePics } from "@/store/profile/profileSlice";
-import { setUserAvatar } from "@/store/auth/authSlice";
+import { setUser, setUserAvatar } from "@/store/auth/authSlice";
 import { setBankDetailsData } from "@/store/talent/profile/TalentProfileSlice";
 import PageSpinner from "@/components/ui/PageSpinner";
 
@@ -96,9 +96,9 @@ const Profiles = () => {
   );
   const userId = useSelector((state: any) => state.auth.user.id);
   const userBio = useSelector((state: any) => state.auth.user.bio);
-  const userAvatar = useSelector((state: any) => state.auth.user.avatar);
+  const avatar = useSelector((state: any) => state.auth.user.avatar);
 
-  const [avatar, setAvatar] = useState(userAvatar);
+  // const [avatar, setAvatar] = useState(userAvatar);
   const fileInputRef = useRef<HTMLInputElement | null>();
 
   const handleButtonClick = (): void => {
@@ -123,7 +123,7 @@ const Profiles = () => {
       } else {
         handleUnauthorizedError(response, dispatch, router, showToast)
       }
-      setAvatar(imageURL);
+      // setAvatar(imageURL);
       // dispatch(setProfilePics(imageURL));
       dispatch(setUserAvatar(imageURL));
     }
@@ -200,6 +200,8 @@ const Profiles = () => {
     const response = await getOwnProfile();
     console.log(response);
     if (!response.error) {
+      dispatch(setUser(response.data));
+      dispatch(setUserAvatar(response.data.avatar));
       setLoading(false);
       const {
         first_name,
