@@ -64,7 +64,6 @@ const authSlice = createSlice({
     },
     setUserAvatar: (state, action) => {
       state.user.avatar = action.payload;
-      console.log(action, action.payload);
     },
     setLoggedin: (state, { payload }) => {
       state.loggedIn = payload;
