@@ -62,6 +62,10 @@ const authSlice = createSlice({
     setUser: (state, { payload }) => {
       state.user = payload;
     },
+    setUserAvatar: (state, action) => {
+      state.user.avatar = action.payload;
+      console.log(action, action.payload);
+    },
     setLoggedin: (state, { payload }) => {
       state.loggedIn = payload;
     },
@@ -87,6 +91,7 @@ export const {
   onForgotPassword,
   saveResetToken,
   setUser,
+  setUserAvatar,
   setLoggedin,
   setLogout,
   resetAuth,

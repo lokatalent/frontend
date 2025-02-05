@@ -2,15 +2,16 @@
 import ProfileCompletion from "@/components/profile/ProfileCompletion";
 import ProfileDetails from "@/components/profile/ProfileDetails";
 import PageSpinner from "@/components/ui/PageSpinner";
-import { setToken } from "@/lib/utils";
+import { setToken, handleUnauthorizedError } from "@/lib/utils";
 import { signin, verifyUser } from "@/services/authService";
-import { getOwnProfile } from "@/services/profileService";
+import { getOwnProfile, updateProfileImage } from "@/services/profileService";
 import { setUser } from "@/store/auth/authSlice";
 import { showToast } from "@/store/auth/toastSlice";
-import { RootStateProfile } from "@/store/profile/profileSlice";
+import { RootStateProfile, setProfilePics } from "@/store/profile/profileSlice";
+import { setUserAvatar } from "@/store/auth/authSlice";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import React, { ChangeEvent, useEffect, useState, useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";
 
 interface DataItem {
@@ -23,12 +24,13 @@ export default function Profile() {
   const dispatch = useDispatch();
   const router = useRouter();
   const user = useSelector((state: any) => state.auth.user);
+  const fileInputRef = useRef<HTMLInputElement | null>();
 
  
 
-  const [profilePics, setProfilePics] = useState("");
+  const [profilePic, setProfilePic] = useState("");
 
-  // const profilePics = useSelector(
+  // const profilePic = useSelector(
   //   (state: RootStateProfile) => state.profile.profilePics
   // );
 
@@ -49,6 +51,34 @@ export default function Profile() {
 
   // const data: DataItem[] = ;
 
+  const handleButtonClick = (): void => {
+    fileInputRef.current?.click();
+  };
+
+  const handleImageSelect = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const imageURL: string = URL.createObjectURL(file);
+      const images = {
+        image: file,
+      };
+      const response = await updateProfileImage(images);
+      if (!response.error) {
+        dispatch(
+          showToast({
+            status: "success",
+            message: "Image updated successfully",
+          })
+        );
+      } else {
+        handleUnauthorizedError(response, dispatch, router, showToast)
+      }
+      setProfilePic(imageURL);
+      // dispatch(setProfilePics(imageURL));
+      dispatch(setUserAvatar(imageURL));
+    }
+  };
+
   const fetchProfile = async () => {
     setLoading(true);
     const response = await getOwnProfile();
@@ -56,7 +86,7 @@ export default function Profile() {
       setLoading(false);
       dispatch(setUser(response.data));
       const profileData = response.data;
-      setProfilePics(profileData.avatar);
+      setProfilePic(profileData.avatar);
       setData([
         {
           title: "Name",
@@ -125,19 +155,30 @@ export default function Profile() {
               <div className="flex items-center space-x-6">
                 <div className="relative flex items-center justify-center bg-[#C4C4C424] shadow-lg p-2 w-[50px] h-[50px] sm:w-[100px] sm:h-[100px] rounded-full">
                   <Image
-                    src={profilePics || "/Images/camera.png"}
+                    src={profilePic || "/Images/camera.png"}
                     alt="Profile"
                     layout="fill"
                     className="object-cover rounded-[100px]"
                   />
-                  <div className="absolute top-2/4 right-[-10px] flex items-center justify-center bg-white shadow-lg p-2 w-[30px] h-[30px] rounded-full">
-                    <Image
-                      src="/Images/camera-col.png"
-                      alt="Notification Bing"
-                      width={20}
-                      height={20}
-                    />
-                  </div>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleImageSelect}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                  <button
+                    onClick={handleButtonClick}
+                  >
+                    <div className="absolute top-2/4 right-[-10px] flex items-center justify-center bg-white shadow-lg p-2 w-[30px] h-[30px] rounded-full">
+                      <Image
+                        src="/Images/camera-col.png"
+                        alt="Notification Bing"
+                        width={20}
+                        height={20}
+                      />
+                    </div>
+                  </button>
                 </div>
                 <p className="text-primaryBlue text-sm md:text-2xl font-bold">
                   {data[0].value}

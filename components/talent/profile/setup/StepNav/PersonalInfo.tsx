@@ -10,7 +10,7 @@ import { errorHandler, handleUnauthorizedError } from "@/lib/utils";
 import Image from "next/image";
 import { ChangeEvent, useRef, useState } from "react";
 import { setProfilePics } from "@/store/profile/profileSlice";
-import { setUser } from "@/store/auth/authSlice";
+import { setUser, setUserAvatar } from "@/store/auth/authSlice";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/ui/Spinner";
 
@@ -59,7 +59,8 @@ function PersonalInfo({ setActiveStep }: any) {
       }
       setSelectedImage(imageUrl);
       // Make sure setSelectedImage is defined in your component
-      dispatch(setProfilePics(imageUrl));
+      // dispatch(setProfilePics(imageUrl));
+      dispatch(setUserAvatar(imageUrl));
     }
   };
 

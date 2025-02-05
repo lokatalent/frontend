@@ -2,7 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState, useRef } from "react";
 import Image from "next/image";
 
 import ServiceRate from "@/components/talent/profile/ServiceRate";
@@ -17,11 +17,12 @@ import {
   setService,
 } from "@/store/talent/service/TalentServiceSlice";
 import { Button } from "@/components/ui/button";
-import { getBankProfile, getOwnProfile } from "@/services/profileService";
+import { getBankProfile, getOwnProfile, updateProfileImage } from "@/services/profileService";
 import { getAllService, getService, getServiceType } from "@/services/services";
 import { showToast } from "@/store/auth/toastSlice";
 import { capitalize, errorHandler, handleUnauthorizedError } from "@/lib/utils";
-import { RootStateProfile } from "@/store/profile/profileSlice";
+import { RootStateProfile, setProfilePics } from "@/store/profile/profileSlice";
+import { setUserAvatar } from "@/store/auth/authSlice";
 import { setBankDetailsData } from "@/store/talent/profile/TalentProfileSlice";
 import PageSpinner from "@/components/ui/PageSpinner";
 
@@ -95,7 +96,38 @@ const Profiles = () => {
   );
   const userId = useSelector((state: any) => state.auth.user.id);
   const userBio = useSelector((state: any) => state.auth.user.bio);
-  const avatar = useSelector((state: any) => state.auth.user.avatar);
+  const userAvatar = useSelector((state: any) => state.auth.user.avatar);
+
+  const [avatar, setAvatar] = useState(userAvatar);
+  const fileInputRef = useRef<HTMLInputElement | null>();
+
+  const handleButtonClick = (): void => {
+    fileInputRef.current?.click();
+  };
+
+  const handleImageSelect = async (event: ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file) {
+      const imageURL: string = URL.createObjectURL(file);
+      const images = {
+        image: file,
+      };
+      const response = await updateProfileImage(images);
+      if (!response.error) {
+        dispatch(
+          showToast({
+            status: "success",
+            message: "Image updated successfully",
+          })
+        );
+      } else {
+        handleUnauthorizedError(response, dispatch, router, showToast)
+      }
+      setAvatar(imageURL);
+      // dispatch(setProfilePics(imageURL));
+      dispatch(setUserAvatar(imageURL));
+    }
+  }
 
   useEffect(() => {
     const serviceTypeHandler = async () => {
@@ -360,14 +392,25 @@ const Profiles = () => {
                       height={20}
                     />
                   )}
-                  <div className="absolute top-2/4 right-[-10px] flex items-center justify-center bg-white shadow-lg p-2 w-[30px] h-[30px] rounded-full">
-                    <Image
-                      src="/Images/camera-col.png"
-                      alt="Edit Profile Picture"
-                      width={20}
-                      height={20}
-                    />
-                  </div>
+                  <input
+                    type="file"
+                    ref={fileInputRef}
+                    onChange={handleImageSelect}
+                    accept="image/*"
+                    className="hidden"
+                  />
+                  <button
+                    onClick={handleButtonClick}
+                  >
+                    <div className="absolute top-2/4 right-[-10px] flex items-center justify-center bg-white shadow-lg p-2 w-[30px] h-[30px] rounded-full">
+                      <Image
+                        src="/Images/camera-col.png"
+                        alt="Edit Profile Picture"
+                        width={20}
+                        height={20}
+                      />
+                    </div>
+                  </button>
                 </div>
                 <p className="text-primaryBlue text-2xl font-bold">
                   {profileData[0].value}
