@@ -26,8 +26,8 @@ export default function Profile() {
   const fileInputRef = useRef<HTMLInputElement | null>();
 
  
-  const profilePic = useSelector((state: any) => state.auth.user.avatar);
-  // const [profilePic, setProfilePic] = useState(userAvatar);
+  const userAvatar = useSelector((state: any) => state.auth.user.avatar);
+  const [profilePic, setProfilePic] = useState(userAvatar);
 
   // const profilePic = useSelector(
   //   (state: RootStateProfile) => state.profile.profilePics
@@ -58,11 +58,16 @@ export default function Profile() {
     const file = event.target.files?.[0];
     if (file) {
       const imageURL: string = URL.createObjectURL(file);
+      setProfilePic(imageURL);
+      dispatch(setUserAvatar(imageURL));
       const images = {
         image: file,
       };
       const response = await updateProfileImage(images);
       if (!response.error) {
+        const remoteImgURL = `${response.data.url as string}?t=${new Date().getTime()}`;
+        setProfilePic(remoteImgURL);
+        dispatch(setUserAvatar(remoteImgURL));
         dispatch(
           showToast({
             status: "success",
@@ -72,9 +77,6 @@ export default function Profile() {
       } else {
         handleUnauthorizedError(response, dispatch, router, showToast)
       }
-      // setProfilePic(imageURL);
-      // dispatch(setProfilePics(imageURL));
-      dispatch(setUserAvatar(imageURL));
     }
   };
 
@@ -83,10 +85,11 @@ export default function Profile() {
     const response = await getOwnProfile();
     if (!response.error) {
       setLoading(false);
-      dispatch(setUser(response.data));
-      dispatch(setUserAvatar(response.data.avatar));
       const profileData = response.data;
-      // setProfilePic(profileData.avatar);
+      profileData.avatar = `${response.data.avatar as string}?t=${new Date().getTime()}`;
+      setProfilePic(profileData.avatar);
+      dispatch(setUser(profileData));
+      dispatch(setUserAvatar(profileData.avatar));
       setData([
         {
           title: "Name",
@@ -111,13 +114,6 @@ export default function Profile() {
         );
         return router.push("/login");
       }
-
-      return dispatch(
-        showToast({
-          status: "error",
-          message: response.data.message,
-        })
-      );
     }
   };
 

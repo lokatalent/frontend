@@ -34,19 +34,24 @@ function PersonalInfo({ setActiveStep }: any) {
   const fileInputRef = useRef<HTMLInputElement | null>();
   const user = useSelector((state: any) => state.auth.user);
   const [imageLoading, setImageLoading] = useState(false);
-  // const [selectedImage, setSelectedImage] = useState<any>(user.avatar ?? null);
-  const selectedImage = useSelector((state: any) => state.auth.user.avatar);
+  const userSelectedImage = useSelector((state: any) => state.auth.user.avatar);
+  const [selectedImage, setSelectedImage] = useState<any>(user.avatar ?? null);
 
   const handleImageSelect = async (event: ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       setImageLoading(true);
-      const imageUrl: string = URL.createObjectURL(file);
+      const imageURL: string = URL.createObjectURL(file);
+      setSelectedImage(imageURL);
+      dispatch(setUserAvatar(imageURL));
       const images = {
         image: file,
       };
       const response = await updateProfileImage(images);
       if (!response.error) {
+        const remoteImgURL = `${response.data.url as string}?t=${new Date().getTime()}`;
+        setSelectedImage(remoteImgURL);
+        dispatch(setUserAvatar(remoteImgURL));
         setImageLoading(false);
         dispatch(
           showToast({
@@ -58,10 +63,6 @@ function PersonalInfo({ setActiveStep }: any) {
         setImageLoading(false);
         handleUnauthorizedError(response, dispatch, router, showToast);
       }
-      // setSelectedImage(imageUrl);
-      // Make sure setSelectedImage is defined in your component
-      // dispatch(setProfilePics(imageUrl));
-      dispatch(setUserAvatar(imageUrl));
     }
   };
 

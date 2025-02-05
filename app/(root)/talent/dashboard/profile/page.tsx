@@ -96,9 +96,9 @@ const Profiles = () => {
   );
   const userId = useSelector((state: any) => state.auth.user.id);
   const userBio = useSelector((state: any) => state.auth.user.bio);
-  const avatar = useSelector((state: any) => state.auth.user.avatar);
+  const userAvatar = useSelector((state: any) => state.auth.user.avatar);
 
-  // const [avatar, setAvatar] = useState(userAvatar);
+  const [avatar, setAvatar] = useState(userAvatar);
   const fileInputRef = useRef<HTMLInputElement | null>();
 
   const handleButtonClick = (): void => {
@@ -109,11 +109,16 @@ const Profiles = () => {
     const file = event.target.files?.[0];
     if (file) {
       const imageURL: string = URL.createObjectURL(file);
+      setAvatar(imageURL);
+      dispatch(setUserAvatar(imageURL));
       const images = {
         image: file,
       };
       const response = await updateProfileImage(images);
       if (!response.error) {
+        const remoteImgURL = `${response.data.url as string}?t=${new Date().getTime()}`;
+        setAvatar(remoteImgURL);
+        dispatch(setUserAvatar(remoteImgURL));
         dispatch(
           showToast({
             status: "success",
@@ -123,9 +128,6 @@ const Profiles = () => {
       } else {
         handleUnauthorizedError(response, dispatch, router, showToast)
       }
-      // setAvatar(imageURL);
-      // dispatch(setProfilePics(imageURL));
-      dispatch(setUserAvatar(imageURL));
     }
   }
 
@@ -200,8 +202,11 @@ const Profiles = () => {
     const response = await getOwnProfile();
     console.log(response);
     if (!response.error) {
-      dispatch(setUser(response.data));
-      dispatch(setUserAvatar(response.data.avatar));
+      const profileData = response.data;
+      profileData.avatar = `${response.data.avatar as string}?t=${new Date().getTime()}`;
+      setAvatar(profileData.avatar);
+      dispatch(setUser(profileData));
+      dispatch(setUserAvatar(profileData.avatar));
       setLoading(false);
       const {
         first_name,
@@ -234,8 +239,6 @@ const Profiles = () => {
       handleUnauthorizedError(response, dispatch, router, showToast);
     }
   };
-
-   
 
   const fetchService = async () => {
     setLoading(true);
