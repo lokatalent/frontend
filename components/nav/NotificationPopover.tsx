@@ -1,6 +1,7 @@
 "use client"
 
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import {
   Popover,
   PopoverContent,
@@ -9,58 +10,55 @@ import {
 import { FaRegBell } from "react-icons/fa";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-
-interface NotificationItem {
-  id: number;
-  type: "system" | "user";
-  title: string;
-  time: string;
-  icon?: JSX.Element;
-  subtitle?: string;
-  hasAction?: boolean;
-  avatar?: string;
-}
-
-// async function getNotifications(): Promise<NotificationItem[]> {
-  const notifications =  [
-    {
-      id: 1,
-      type: "system",
-      title: "Your account set up has now been lorem ipsum",
-      time: "8 min ago",
-      icon: (
-        <div className="flex h-10 w-10 items-center justify-center rounded-full bg-blue-100">
-          <svg
-            className="h-6 w-6 text-blue-500"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              strokeWidth={2}
-              d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-            />
-          </svg>
-        </div>
-      ),
-    },
-    {
-      id: 2,
-      type: "user",
-      title: "Edward Curr",
-      subtitle: "Accepted your Booking",
-      time: "12 min ago",
-      hasAction: true,
-      avatar: "/Images/dp.png",
-    },
-  ];
-// }
+import {
+  NotificationResponse,
+  getNotifications,
+  readNotification,
+  extractNotificationResponse,
+} from "@/services/notificationService";
+import { showToast } from "@/store/auth/toastSlice"
 
 const NotificationPanel = () => {
-  // const notifications = await getNotifications();
+  const [notifications, setNotifications] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const dispatch = useDispatch();
   const router = useRouter()
+
+  const fetchData = async () => {
+    setLoading(true);
+    let data = {
+      seen: "false"
+    }
+    const response = await getNotifications(data);
+    if (!response.error) {
+      setLoading(false);
+      const notificationResps = await extractNotificationResponse(response.data);
+      setNotifications(notificationResps);
+    } else {
+      setLoading(false);
+      if (response.status === 401) {
+        dispatch(
+          showToast({
+            status: "error",
+            message: response.data.message,
+          })
+        );
+        return router.push("/login");
+      }
+      return dispatch(
+        showToast({
+          status: "error",
+          message: response.data.message,
+        })
+      );
+    }
+  };
+
+  const handleViewDetails = async (notificationID, bookingID) => {}
+
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
     <div className="w-full max-w-md rounded-lg bg-white shadow-lg">
@@ -100,7 +98,7 @@ const NotificationPanel = () => {
                       {notification.title}
                     </p>
                     <p className="text-sm text-gray-500">
-                      {notification.subtitle}
+                      {notification.message}
                     </p>
                     <p className="mt-1 text-xs text-gray-400">
                       {notification.time}
@@ -109,7 +107,11 @@ const NotificationPanel = () => {
 
                   {notification.hasAction && (
                     <button
-                      onClick={() => router.push("/dashboard/bookings/1")}
+                      onClick={async () => {
+                          await readNotification(notification.id);
+                          router.push(`/dashboard/bookings/${notification.bookingID}`);
+                        }
+                      }
                       className="rounded-md bg-blue-500 px-4 py-1.5 text-sm font-medium text-white hover:bg-blue-600 mt-3"
                     >
                       View
@@ -121,7 +123,7 @@ const NotificationPanel = () => {
           ))
         ) : (
           <div className="flex items-center justify-center h-28">
-            No Notifications
+            No unread notifications
           </div>
         )}
       </div>

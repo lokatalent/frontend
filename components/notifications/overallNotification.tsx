@@ -1,96 +1,94 @@
 "use client";
 import EmptyNotification from "@/components/notifications/EmptyNotification";
 import NotificationsBar from "@/components/notifications/NotificationsBar";
-import RoleSwitch from "@/components/overview/RoleSwitch";
-import { getNotifications } from "@/services/notificationService";
+import {
+  NotificationResponse,
+  getNotifications,
+  extractNotificationResponse,
+} from "@/services/notificationService";
 import { useEffect, useState } from "react";
+import { Button } from "@/components/ui/button"
 
-type Notification = {
-  id: string;
-  title: string;
-  message: string;
-  icon: string;
-  statusNotification: "read" | "unread"; // Added status property
-  name: string;
-  occupation: string;
-  location: string;
-  status: string;
-  bookingType: string;
-  startDate: string;
-  endDate: string;
-  locationFor: string;
-  serviceType: string;
-  startTime: string;
-  endTime: string;
-  taskDescription: string;
+type notificationFilterValue = "all" | "unread";
+
+function NotificationFilter({filters, initialFilter, onFilterChange, className}) {
+  const [selectedFilter, setSelectedFilter] = useState(initialFilter);
+
+  // Default active and disabled styles
+  const defaultActiveClass =
+    "rounded-md bg-primaryBlue text-white hover:bg-primaryBlue hover:text-white";
+  const defaultDisabledClass =
+    "bg-transparent text-black hover:text-primaryBlue";
+
+  const handleFilterChange = (filter: notificationFilterValue) => {
+    setSelectedFilter(filter);
+    onFilterChange(filter);
+  };
+
+  return (
+    <div
+      className={`flex w-full sm:w-max overflow-x-auto bg-[#E5E7EB4A] px-1 md:px-3 rounded-xl py-1 md:py-2 ${className}`}
+    >
+      <div className="flex space-x-2 sm:space-x-4 md:justify-center">
+        {filters.map((filter) => (
+          <div key={filter.value} className="flex-shrink-0">
+            <Button
+              onClick={() => handleFilterChange(filter.value)}
+              variant="ghost"
+              className={`${
+                selectedFilter === filter.value
+                  ? defaultActiveClass
+                  : defaultDisabledClass
+              } px-3 py-2`}
+            >
+              {filter.label}
+            </Button>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
-type NotificationResponse = {
-  isNotified: boolean;
-  notifications: Notification[];
-};
-type Role = "all" | "unread";
+export default function OverallNotification({isNotified, notifications}) {
+  const [filter, setFilter] = useState<notificationFilterValue>("all");
+  const [filteredNotifications, setFilteredNotifications] = useState<NotificationResponse[]>([]);
 
-export default function OverallNotification({
-  isNotified,
-  notifications,
-}: NotificationResponse) {
-  const [role, setRole] = useState<Role>("all");
-  const [filteredNotifications, setFilteredNotifications] = useState<
-    Notification[]
-  >([]);
-
-  const bookingRoles = [
+  const notificationFilter = [
     { value: "all", label: "All" },
     { value: "unread", label: "Unread" },
   ];
 
-  useEffect(() => {
-    async function getAllNotifications() {
-      const notificationss = await getNotifications();
-
-      console.log(notificationss);
-    }
-    getAllNotifications();
-  }, []);
-  const body = {
-    type: "5f68d6ba-c4e4-436c-8049-150d0ed5085b",
-    booking_id: "5f68d6ba-c4e4-436c-8049-150d0ed5085b",
+  const handleFilterChange = (filter: notificationFilterValue) => {
+    setFilter(filter); // Update the state to reflect the selected filter
   };
 
-  const handleRoleChange = (role: Role) => {
-    setRole(role); // Update the state to reflect the selected role
-  };
-
-  function filterNotifications(data: Notification[], role: string) {
-    if (role === "all") {
-      // Return all notifications if the role is "all"
-      return data;
-    } else if (role === "unread") {
-      // Return only notifications with `statusNotification` equal to "unread"
+  function filterNotifications(data: NotificationResponse[], filter: string) {
+    if (filter === "unread") {
+      // Return only unread notifications
       return data.filter(
-        (notification: Notification) =>
-          notification.statusNotification === "unread"
+        (notification: NotificationResponse) =>
+          (notification.seen === false) || (notification.seen === "false")
       );
     }
-    // If role doesn't match "all" or "unread", return an empty array or handle as needed
-    return [];
+    // Return all notifications if the filter is "all"
+    return data;
   }
 
   useEffect(() => {
-    const OldNor: Notification[] = filterNotifications(notifications, role);
-    setFilteredNotifications(OldNor);
-  }, [role]);
+    const oldNor: NotificationResponse[] = filterNotifications(notifications, filter);
+    setFilteredNotifications(oldNor);
+  }, [filter]);
 
   return (
     <div className="ml-8 h-screen">
       {isNotified ? (
         <div className="space-y-6">
           <div className="">
-            <RoleSwitch
-              roles={bookingRoles}
-              initialRole="all"
-              onRoleChange={handleRoleChange}
+            <NotificationFilter
+              filters={notificationFilter}
+              initialFilter="all"
+              onFilterChange={handleFilterChange}
             />
           </div>
           <NotificationsBar notifications={filteredNotifications} />

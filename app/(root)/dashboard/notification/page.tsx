@@ -4,36 +4,15 @@ import React, { useEffect, useState } from "react";
 import EmptyNotification from "@/components/notifications/EmptyNotification";
 import NotificationsBar from "@/components/notifications/NotificationsBar";
 import OverallNotification from "@/components/notifications/overallNotification";
-import RoleSwitch from "@/components/overview/RoleSwitch";
-import { getNotifications } from "@/services/notificationService";
+// import RoleSwitch from "@/components/overview/RoleSwitch";
+import {
+  NotificationResponse,
+  getNotifications,
+  extractNotificationResponse,
+} from "@/services/notificationService";
 import { showToast } from "@/store/auth/toastSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-
-type Notification = {
-  id: string;
-  title: string;
-  description: string;
-  icon: string;
-  statusNotification: "read" | "unread";
-  name: string;
-  occupation: string;
-  location: string;
-  status: string;
-  bookingType: string;
-  startDate: string;
-  endDate: string;
-  locationFor: string;
-  serviceType: string;
-  startTime: string;
-  endTime: string;
-  taskDescription: string;
-};
-
-type NotificationResponse = {
-  isNotified: boolean;
-  notification: Notification[];
-};
 
 export default function Notification() {
   const [notifications, setNotifications] =
@@ -51,8 +30,8 @@ export default function Notification() {
     const response = await getNotifications(data);
     if (!response.error) {
       setLoading(false);
-      console.log(response);
-      // setNotifications(data);
+      const notificationResps = await extractNotificationResponse(response.data);
+      setNotifications(notificationResps);
     } else {
       setLoading(false);
       if (response.status === 401) {
@@ -64,7 +43,6 @@ export default function Notification() {
         );
         return router.push("/login");
       }
-
       return dispatch(
         showToast({
           status: "error",
@@ -88,8 +66,7 @@ export default function Notification() {
 
   return (
     <OverallNotification
-      isNotified={true}
-      // isNotified={notifications.isNotified}
+      isNotified={notifications.length ? true : false}
       notifications={notifications}
     />
   );
