@@ -18,6 +18,19 @@ export const getOwnProfile = async () => {
   }
 };
 
+export const getProfile = async (id: string) => {
+  try {
+    let response = await http.get(`/users/${id}/profile`);
+    return { error: false, data: response?.data, status: response?.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err?.response?.data,
+      status: err?.response?.status,
+    };
+  }
+};
+
 export const updateProfile = async (values: any) => {
   try {
     // console.log(values)
