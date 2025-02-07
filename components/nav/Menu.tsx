@@ -21,6 +21,8 @@ const Menu: React.FC<{ username: string }> = ({ username }) => {
   const dispatch = useDispatch();
   const router = useRouter();
   const avatar = useSelector((state: any) => state.auth.user.avatar);
+  const userServiceRole = useSelector((state: any) => state.auth.user.service_role);
+  console.log(userServiceRole);
   const logout = () => {
     dispatch(setLoggedin(false));
     sessionStorage.removeItem("lokaToken");
@@ -55,14 +57,14 @@ const Menu: React.FC<{ username: string }> = ({ username }) => {
       <PopoverContent className="bg-white shadow-lg mt-4 rounded-lg">
         <div className="">
           <Link
-            href="/dashboard/profile"
+            href={userServiceRole === "service_provider" ? "/talent/dashboard/profile" : "/dashboard/profile"}
             className="flex p-2 pl-8 py-3 space-x-4 items-center hover:bg-gray-200 rounded-tl-lg rounded-tr-lg"
           >
             <FaRegUser size={20} />
             <p>Profile</p>
           </Link>
           <Link
-            href="/dashboard/settings/profile"
+            href={userServiceRole === "service_provider"? "/talent/dashboard/settings/profile" : "/dashboard/settings/profile"}
             className="flex p-2 pl-8 py-3 space-x-4 items-center hover:bg-gray-200"
           >
             <IoSettingsOutline size={20} />
