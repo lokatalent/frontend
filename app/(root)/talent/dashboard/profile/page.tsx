@@ -116,7 +116,7 @@ const Profiles = () => {
       };
       const response = await updateProfileImage(images);
       if (!response.error) {
-        const remoteImgURL = `${response.data.url as string}?t=${new Date().getTime()}`;
+        const remoteImgURL = response.data.url ? `${response.data.url as string}?t=${new Date().getTime()}` : response.data.url;
         setAvatar(remoteImgURL);
         dispatch(setUserAvatar(remoteImgURL));
         dispatch(
@@ -203,7 +203,7 @@ const Profiles = () => {
     console.log(response);
     if (!response.error) {
       const profileData = response.data;
-      profileData.avatar = `${response.data.avatar as string}?t=${new Date().getTime()}`;
+      profileData.avatar = response.data.avatar ? `${response.data.avatar as string}?t=${new Date().getTime()}` : response.data.avatar;
       setAvatar(profileData.avatar);
       dispatch(setUser(profileData));
       dispatch(setUserAvatar(profileData.avatar));

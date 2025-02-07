@@ -49,7 +49,7 @@ function PersonalInfo({ setActiveStep }: any) {
       };
       const response = await updateProfileImage(images);
       if (!response.error) {
-        const remoteImgURL = `${response.data.url as string}?t=${new Date().getTime()}`;
+        const remoteImgURL = response.data.url ? `${response.data.url as string}?t=${new Date().getTime()}` : response.data.url;
         setSelectedImage(remoteImgURL);
         dispatch(setUserAvatar(remoteImgURL));
         setImageLoading(false);

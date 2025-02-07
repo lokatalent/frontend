@@ -65,7 +65,7 @@ export default function Profile() {
       };
       const response = await updateProfileImage(images);
       if (!response.error) {
-        const remoteImgURL = `${response.data.url as string}?t=${new Date().getTime()}`;
+        const remoteImgURL = response.data.url ? `${response.data.url as string}?t=${new Date().getTime()}` : response.data.url;
         setProfilePic(remoteImgURL);
         dispatch(setUserAvatar(remoteImgURL));
         dispatch(
@@ -86,7 +86,7 @@ export default function Profile() {
     if (!response.error) {
       setLoading(false);
       const profileData = response.data;
-      profileData.avatar = `${response.data.avatar as string}?t=${new Date().getTime()}`;
+      profileData.avatar = response.data.avatar ? `${response.data.avatar as string}?t=${new Date().getTime()}`: response.data.avatar;
       setProfilePic(profileData.avatar);
       dispatch(setUser(profileData));
       dispatch(setUserAvatar(profileData.avatar));
