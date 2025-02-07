@@ -31,8 +31,8 @@ const Dashboard = () => {
   const fetchBookings = async (id: any) => {
     setLoading(true);
     const data = {
-      requester_id: id,
-      provider_id: "",
+      requester_id: "",
+      provider_id: id,
       service_type: "",
       booking_type: bookingType,
       status: "",
@@ -157,7 +157,7 @@ const Dashboard = () => {
               {bookings.length > 0 && (
                 <div className="flex justify-center mt-8">
                   <Link
-                    href="/dashboard/bookings"
+                    href="/talent/dashboard/bookings"
                     className="px-10 py-4 text-white bg-blue-500 rounded-md hover:bg-blue-600"
                   >
                     View all bookings

@@ -23,8 +23,8 @@ export default function TalentBookings() {
   const fetchBookings = async (id: any) => {
     setLoading(true);
     const data = {
-      requester_id: id,
-      provider_id: "",
+      requester_id: "",
+      provider_id: id,
       service_type: "",
       booking_type: bookingType,
       status: "",
