@@ -1,7 +1,7 @@
 "use client"
 
 import React, { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import {
   Popover,
   PopoverContent,
@@ -23,6 +23,7 @@ const NotificationPanel = () => {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
   const router = useRouter()
+  const userServiceRole = useSelector((state: any) => state.auth.user.service_role);
 
   const fetchData = async () => {
     setLoading(true);
@@ -109,7 +110,7 @@ const NotificationPanel = () => {
                     <button
                       onClick={async () => {
                           await readNotification(notification.id);
-                          router.push(`/dashboard/bookings/${notification.bookingID}`);
+                          router.push((userServiceRole === "service_provider") ? `/talent/dashboard/bookings/${notification.bookingID}` : `/dashboard/bookings/${notification.bookingID}`);
                         }
                       }
                       className="rounded-md bg-blue-500 px-4 py-1.5 text-sm font-medium text-white hover:bg-blue-600 mt-3"
