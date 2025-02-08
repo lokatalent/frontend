@@ -235,7 +235,7 @@ function getPaymentStatus(status: any) {
       </div>
     );
   }
-  
+
   return (
     <div className="bg-primaryBlue p-6 text-white rounded-md self-star">
       <div className="flex gap-2 items-center">

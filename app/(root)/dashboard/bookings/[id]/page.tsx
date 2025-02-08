@@ -84,7 +84,15 @@ const NotificationDetail = ({
         setProviderData(reqData);
       } else {
         setLoading(false);
-        handleUnauthorizedError(profileResp, dispatch, router, showToast);
+        if (response.status === 401) {
+          dispatch(
+            showToast({
+              status: "error",
+              message: profileResp.data.message,
+            })
+          );
+          router.push("/login")
+        }
       }
       setLoading(false);
     } else {
@@ -145,7 +153,7 @@ const NotificationDetail = ({
             name={providerData?.name}
             occupation={providerData?.occupation}
             location={providerData?.location}
-            status={providerData?.status}
+            status={providerData?.status || bookingStatusMap.get(bookingResp?.status)}
             avatar={providerData?.avatar}
           />
 
