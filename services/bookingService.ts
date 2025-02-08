@@ -28,9 +28,9 @@ export const updateBookingStatus = async (values: any) => {
   }
 };
 
-export const acceptBooking = async (values: any) => {
+export const acceptBooking = async (id: any) => {
   try {
-    let response = await http.patch(`booking/${values.id}/accept`);
+    let response = await http.patch(`booking/${id}/accept`);
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
     return {
@@ -41,9 +41,9 @@ export const acceptBooking = async (values: any) => {
   }
 };
 
-export const rejectBooking = async (values: any) => {
+export const rejectBooking = async (id: any) => {
   try {
-    let response = await http.patch(`booking/${values.id}/reject`);
+    let response = await http.patch(`booking/${id}/reject`);
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
     return {
