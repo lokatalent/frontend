@@ -146,6 +146,7 @@ const NotificationDetail = ({
             occupation={providerData?.occupation}
             location={providerData?.location}
             status={providerData?.status}
+            avatar={providerData?.avatar}
           />
 
           <ProfileDetails details={bookingData} />
