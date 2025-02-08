@@ -15,32 +15,6 @@ interface ProfileDetailsProps {
 }
 
 function ProfileDetails({ details }: ProfileDetailsProps) {
-  // useEffect(() => {
-  //   const fetchProfile = async () => {
-  //     try {
-  //       if (typeof window === "undefined") return; // Ensure this only runs on the client
-
-  //       const token = sessionStorage.getItem("lokaToken");
-  //       console.log("Token:", token);
-
-  //       const credentials = {
-  //         email: "apalara@gmail.com",
-  //         password: "123456789",
-  //       };
-
-  //       const response = await signin(credentials);
-  //       console.log("Signin response:", response);
-
-  //       const profile = await getOwnProfile();
-  //       console.log("Profile:", profile);
-  //     } catch (error) {
-  //       console.error("Error fetching profile:", error);
-  //     }
-  //   };
-
-    // fetchProfile();
-  // }, []);
-
   return (
     <div className="card md:!px-6 my-5 flex flex-col gap-12">
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-5">

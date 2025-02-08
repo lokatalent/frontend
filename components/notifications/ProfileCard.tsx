@@ -3,6 +3,8 @@ import React from "react";
 import { Avatar } from "../ui/avatar";
 import { IoLocationOutline } from "react-icons/io5";
 import Image from "next/image";
+import { useSelector } from "react-redux";
+import { BookingStatus, UserServiceRole } from "@/lib/constants";
 
 interface ProfileCardProps {
   name: string;
@@ -16,13 +18,15 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
   occupation,
   location,
   status,
+  avatar,
 }) => {
+  const currentUserServiceRole = useSelector((state: any) => state.auth.user.service_role);
   return (
     <div className="flex md:items-center flex-col md:flex-row justify-between pace-x-4 gap-x-20">
       <div className="flex items-center space-x-6">
         <div className="flex-shrink-0">
           <Avatar
-            src="/Images/dp.png"
+            src={avatar || "/Images/camera.png"}
             alt="User Avatar"
             color="bg-blue-500"
             radius="rounded-full"
@@ -40,43 +44,99 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
             <p>{location}</p>
           </div>
         </div>
-      </div>
-      <div className="flex space-x-3  items-center">
-        <div>
-          <div className="p-2 rounded-full bg-white shadow-lg">
-            <Image
-              src="/Images/copy-success.png"
-              alt="Copy success"
-              width={20}
-              height={20}
-            />
-          </div>
-        </div>
-        <div className="flex items-center flex-col justify-center mt-4 sm:mt-4">
-          <div className="self-start">
-            <span
-              className={`w-2 h-2 rounded-full text-left ${
-                status === "Booking Accepted" ? "bg-green-500" : "bg-gray-400"
-              }`}
-            ></span>
-            <p
-              className={`text-2xl font-bold ${
-                status === "Booking Accepted"
-                  ? "text-green-500"
-                  : "text-gray-400"
-              }`}
-            >
-              {status}
-            </p>
-          </div>
-          <p className="text-textGray3 text-sm w-2/3 self-start mt-2">
-            Mark this job as complete once the service is finished to release
-            payment to the talent
-          </p>
-        </div>
+        {getBookingStatus(status, currentUserServiceRole)}
       </div>
     </div>
   );
 };
+
+function getBookingStatus(bookingStatus: string, role: string) {
+  let statusColor1 = "";
+  let statusColor2 = "";
+  let imgSrc = "";
+  let statusText = "";
+  switch (bookingStatus) {
+    case BookingStatus.BOOKING_OPEN:
+      {
+        imgSrc = "/Images/copy-success.png";
+        statusColor1 = "bg-yellow-500";
+        statusColor2 = "text-yellow-500";
+        if (role === UserServiceRole.SERVICE_ROLE_PROVIDER) {
+          statusText = "This booking is currently open to talents.";
+        } else {
+          statusText = "Your booking has been created successfully and awaiting talent to accept.";
+        }
+      }
+      break;
+    case BookingStatus.BOOKING_COMPLETED:
+      {
+        imgSrc = "/Images/complete-icon.png";
+        statusColor1 = "bg-green-500";
+        statusColor2 = "text-green-500";
+        if (role === UserServiceRole.SERVICE_ROLE_PROVIDER) {
+          statusText = "This booking has been marked as completed by the requester.";
+        } else {
+          statusText = "Mark this job as complete once the service is finished to release payment to the talent";
+        }
+      }
+      break;
+    case BookingStatus.BOOKING_CANCELED:
+      {
+        imgSrc = "/Images/cancel-icon.png";
+        statusColor1 = "bg-red-500";
+        statusColor2 = "text-red-500";
+        if (role === UserServiceRole.SERVICE_ROLE_PROVIDER) {
+          statusText = "This booking has been cancelled by the requester.";
+        } else {
+          statusText = "You have cancelled this booking.";
+        }
+      }
+      break;
+    default:
+      {
+        imgSrc = "/Images/pending-icon.png";
+        statusColor1 = "bg-gray-400";
+        statusColor2 = "text-gray-400";
+        if (role === UserServiceRole.SERVICE_ROLE_PROVIDER) {
+          statusText = "This booking is awaiting completion confirmation from the requester.";
+        } else {
+          statusText = "Mark this job as complete once the service is finished to release payment to the talent";
+        }
+      }
+  }
+  return (
+    <div className="flex space-x-3  items-center">
+      <div>
+        <div className="p-2 rounded-full bg-white shadow-lg">
+          <Image
+            src={imgSrc}
+            alt="Booking Status"
+            width={20}
+            height={20}
+          />
+        </div>
+      </div>
+      <div className="flex items-center flex-col justify-center mt-4 sm:mt-4">
+        <div className="self-start">
+          <span
+            className={`w-2 h-2 rounded-full text-left ${
+              statusColor1
+            }`}
+          ></span>
+          <p
+            className={`text-2xl font-bold ${
+              statusColor2
+            }`}
+          >
+            {bookingStatus}
+          </p>
+        </div>
+        <p className="text-textGray3 text-sm w-2/3 self-start mt-2">
+          {statusText}
+        </p>
+      </div>
+    </div>
+  );
+}
 
 export default ProfileCard;
