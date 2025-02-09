@@ -105,14 +105,21 @@ export default function Dashboard() {
     setShowModal(false)
   }
 
-  //  if booking data has an address, show modal asking to complete or cancel booking and send user to talents page.
+  //  if booking data has an address, show modal asking to complete or cancel booking
+  //  and send user to talents page.
 
   useEffect(() => {
     if (user.email) {
       if (user.is_verified) {
         fetchBookings(user.id);
         fetchServices();
-        if(bookingData.requester_addr) setShowModal(true)
+        if(
+            (bookingData.status === "open") &&
+            (bookingData.payment_status !== "verified") &&
+            (bookingData.requester_addr)
+          ){
+          setShowModal(true);
+        }
       } else {
         dispatch(
           showToast({
