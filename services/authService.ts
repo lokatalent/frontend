@@ -39,6 +39,19 @@ export const signin = async (values: any) => {
   }
 };
 
+export const refreshToken = async (values: any) => {
+  try {
+    let response = await http.post("auth/refresh-token", values);
+    return { error: false, data: response.data, status: response.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err?.response?.data,
+      status: err?.response?.status,
+    };
+  }
+};
+
 export const verifyEmail = async (values: any) => {
   try {
     let response = await http.post(
