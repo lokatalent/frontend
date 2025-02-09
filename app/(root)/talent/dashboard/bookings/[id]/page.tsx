@@ -105,7 +105,7 @@ const NotificationDetail = ({
           message: "Booking Accepted"
         })
       );
-      router.back();
+      router.refresh();
     } else {
       handleUnauthorizedError(response, dispatch, router, showToast);
     }
@@ -120,7 +120,7 @@ const NotificationDetail = ({
           message: "Booking Rejected"
         })
       );
-      router.back();
+      router.refresh();
     } else {
       handleUnauthorizedError(response, dispatch, router, showToast);
     }
