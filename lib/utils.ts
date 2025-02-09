@@ -3,28 +3,34 @@ import { format } from "date-fns";
 import { RegisterOptions } from "react-hook-form";
 import { twMerge } from "tailwind-merge";
 import { z } from "zod";
-
-export const baseUrl = "https://api.staging.lokatalent.com/";
+import { refreshToken } from "@/services/authService";
+import { baseUrl } from "./constants"
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
 // utils/errorHandlers.js
-export const handleUnauthorizedError = (
+export const handleUnauthorizedError = async (
   response: any,
   dispatch: any,
   router: any,
   showToast: any
 ) => {
   if (response.status === 401) {
-    dispatch(
-      showToast({
-        status: "error",
-        message: response.data.message,
-      })
-    );
-    return router.push("/login");
+    const refreshTokenResp = await refreshToken(sessionStorage.getItem("lokaRefreshToken"));
+    if (!refreshTokenResp.error) {
+      setToken(refreshTokenResp.data.access_token, refreshTokenResp.refresh_token);
+    } else {
+      dispatch(
+        showToast({
+          status: "error",
+          message: response.data.message,
+        })
+      );
+      return router.push("/login");
+    }
+    return router.refresh();
   }
   dispatch(
     showToast({
