@@ -17,6 +17,7 @@ import { getBooking, updateBookingStatus } from "@/services/bookingService";
 import { getProfile } from "@/services/profileService";
 import { useDispatch } from "react-redux"
 import { showToast } from "@/store/auth/toastSlice"
+import { setBookingData as setCurrentBookingData } from "@/store/profile/bookingSlice"
 import { handleUnauthorizedError } from "@/lib/utils";
 import { bookingStatusMap, serviceNameMap, PaymentStatus } from "@/lib/constants"
 
@@ -84,14 +85,8 @@ const NotificationDetail = ({
         setProviderData(reqData);
       } else {
         setLoading(false);
-        if (response.status === 401) {
-          dispatch(
-            showToast({
-              status: "error",
-              message: profileResp.data.message,
-            })
-          );
-          router.push("/login")
+        if (profileResp.status === 401) {
+          handleUnauthorizedError(profileResp, dispatch, router, showToast);
         }
       }
       setLoading(false);
@@ -110,7 +105,7 @@ const NotificationDetail = ({
           message: `Booking ${newStatus.charAt(0).toUpperCase() + newStatus.substr(1)}`
         })
       );
-      router.back();
+      router.refresh();
     } else {
       handleUnauthorizedError(response, dispatch, router, showToast);
     }
@@ -119,6 +114,98 @@ const NotificationDetail = ({
   useEffect(() => {
     fetchData();
   }, []);
+
+  const getBookingButtons = () => {
+    if (bookingResp?.status === "in_progress") {
+      return (
+        <div className="!mt-12 flex flex-col sm:flex-row gap-4 ">
+          <Button 
+            className="text-[#605DEC] bg-[#F6F5FF] hover:bg-primaryBlue hover:text-white border-[#605DEC] border px-14 py-5 text-sm"
+            onClick={()=> handleBookingStatusUpdate(bookingResp?.id, "canceled")}
+          >
+            Cancel Job
+          </Button>
+          <Button 
+            className="bg-primaryBlue px-14 py-5 text-sm border hover:bg-primaryBlue hover:text-white hover:brightness-90"
+            onClick={() => handleBookingStatusUpdate(bookingResp?.id, "completed")}
+          >
+            Mark Job as Complete
+          </Button>
+        </div>
+      );
+    } else if (bookingResp?.status === "open") {
+      return (
+        <div className="!mt-12 flex flex-col sm:flex-row gap-4 ">
+          <Button 
+            className="text-[#605DEC] bg-[#F6F5FF] hover:bg-primaryBlue hover:text-white border-[#605DEC] border px-14 py-5 text-sm"
+            onClick={()=> handleBookingStatusUpdate(bookingResp?.id, "canceled")}
+          >
+            Cancel Job
+          </Button>
+          <Button 
+            className="bg-primaryBlue px-14 py-5 text-sm border hover:bg-primaryBlue hover:text-white hover:brightness-90"
+            onClick={() => {
+              setCurrentBookingData(bookingResp);
+              router.push("/dashboard/bookings/talents");
+            }}
+          >
+            Find Talents
+          </Button>
+        </div>
+      );
+    }
+  };
+
+  const getPaymentStatus = (status: any) => {
+    if (status === PaymentStatus.PAYMENT_STATUS_VERIFIED) {
+      return (
+        <div className="bg-primaryBlue p-6 text-white rounded-md self-star">
+          <div className="flex gap-2 items-center">
+            <h4 className="text-[12px] text-[hsla(0,0%,100%,0.62)]">
+              Payment Status
+            </h4>
+            <IoCheckmarkCircle size={30} />
+          </div>
+          <p className="mt-3 text-[16px] ">In Escrow</p>
+          <p className="flex items-center text-[12px] flex-wrap max-w-[20rem]">
+            In Escrow Your payment has been securely held in escrow. We’ll
+            release it once the service is successfully completed.
+          </p>
+        </div>
+      );
+    }
+    if (status === PaymentStatus.PAYMENT_STATUS_CANCELED) {
+      return (
+        <div className="bg-primaryBlue p-6 text-white rounded-md self-star">
+          <div className="flex gap-2 items-center">
+            <h4 className="text-[12px] text-[hsla(0,0%,100%,0.62)]">
+              Payment Status
+            </h4>
+            <IoCloseCircle size={30} />
+          </div>
+          <p className="mt-3 text-[16px] ">Canceled</p>
+          <p className="flex items-center text-[12px] flex-wrap max-w-[20rem]">
+            Payment canceled.
+          </p>
+        </div>
+      );
+    }
+    
+    return (
+      <div className="bg-primaryBlue p-6 text-white rounded-md self-star">
+        <div className="flex gap-2 items-center">
+          <h4 className="text-[12px] text-[hsla(0,0%,100%,0.62)]">
+            Payment Status
+          </h4>
+          <IoSyncCircleSharp size={30} />
+        </div>
+        <p className="mt-3 text-[16px] ">Pending</p>
+        <p className="flex items-center text-[12px] flex-wrap max-w-[20rem]">
+          Payment is pending...
+        </p>
+      </div>
+    );
+  };
 
   return (
     loading ? (
@@ -169,76 +256,10 @@ const NotificationDetail = ({
             </div>
             {getPaymentStatus(bookingResp?.payment_status)}
           </div>
-          {(bookingResp?.status === "in_progress") && (
-            <div className="!mt-12 flex flex-col sm:flex-row gap-4 ">
-              <Button 
-                className="text-[#605DEC] bg-[#F6F5FF] hover:bg-primaryBlue hover:text-white border-[#605DEC] border px-14 py-5 text-sm"
-                onClick={()=> handleBookingStatusUpdate(bookingResp?.id, "canceled")}
-              >
-                Cancel Job
-              </Button>
-              <Button 
-                className="bg-primaryBlue px-14 py-5 text-sm border hover:bg-primaryBlue hover:text-white hover:brightness-90"
-                onClick={() => handleBookingStatusUpdate(bookingResp?.id, "completed")}
-              >
-                Mark Job as Complete
-              </Button>
-            </div>
-          )}
+          {getBookingButtons()}
         </div>
       </div>
     )
-  );
-};
-
-function getPaymentStatus(status: any) {
-  if (status === PaymentStatus.PAYMENT_STATUS_VERIFIED) {
-    return (
-      <div className="bg-primaryBlue p-6 text-white rounded-md self-star">
-        <div className="flex gap-2 items-center">
-          <h4 className="text-[12px] text-[hsla(0,0%,100%,0.62)]">
-            Payment Status
-          </h4>
-          <IoCheckmarkCircle size={30} />
-        </div>
-        <p className="mt-3 text-[16px] ">In Escrow</p>
-        <p className="flex items-center text-[12px] flex-wrap max-w-[20rem]">
-          In Escrow Your payment has been securely held in escrow. We’ll
-          release it once the service is successfully completed.
-        </p>
-      </div>
-    );
-  }
-  if (status === PaymentStatus.PAYMENT_STATUS_CANCELED) {
-    return (
-      <div className="bg-primaryBlue p-6 text-white rounded-md self-star">
-        <div className="flex gap-2 items-center">
-          <h4 className="text-[12px] text-[hsla(0,0%,100%,0.62)]">
-            Payment Status
-          </h4>
-          <IoCloseCircle size={30} />
-        </div>
-        <p className="mt-3 text-[16px] ">Canceled</p>
-        <p className="flex items-center text-[12px] flex-wrap max-w-[20rem]">
-          Payment canceled.
-        </p>
-      </div>
-    );
-  }
-  
-  return (
-    <div className="bg-primaryBlue p-6 text-white rounded-md self-star">
-      <div className="flex gap-2 items-center">
-        <h4 className="text-[12px] text-[hsla(0,0%,100%,0.62)]">
-          Payment Status
-        </h4>
-        <IoSyncCircleSharp size={30} />
-      </div>
-      <p className="mt-3 text-[16px] ">Pending</p>
-      <p className="flex items-center text-[12px] flex-wrap max-w-[20rem]">
-        Payment is pending...
-      </p>
-    </div>
   );
 };
 
