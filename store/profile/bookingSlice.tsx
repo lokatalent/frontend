@@ -3,7 +3,7 @@ import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
   service: "",
   location: "",
-  bookingData: "",
+  bookingData: {},
   talentData: "",
   allServices: "",
 };
