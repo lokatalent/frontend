@@ -1,6 +1,6 @@
 
-// export const baseUrl = "https://api.staging.lokatalent.com/";
-export const baseUrl = "http://localhost:4000/"
+export const baseUrl = "https://api.staging.lokatalent.com/";
+// export const baseUrl = "http://localhost:4000/";
 
 export enum BookingStatus {
 	BOOKING_OPEN        = "Open",
