@@ -93,6 +93,7 @@ export default function DashboardTalentsHome() {
     if (!response.error) {
       setLoading(false);
       setTalentData(response.data);
+      console.log(talentData);
     } else {
       setLoading(false);
       handleUnauthorizedError(response, dispatch, router, showToast);
@@ -131,7 +132,7 @@ export default function DashboardTalentsHome() {
           </div>
           {(talentData.data.length > 0) && (talentData.message === "Available providers.") ? (
             <div className="my-6 flex flex-col gap-6">
-              {talentData.map((item, index) => (
+              {talentData.data.map((item, index) => (
                 <div key={index}>
                   <TalentItem data={item} saveTalent={saveTalent} />
                 </div>
