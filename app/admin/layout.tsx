@@ -9,7 +9,7 @@ export default function RootLayout({
 }: Readonly<{
 	children: React.ReactNode;
 }>) {
-  const currentUserRole = useSelector((state: any) => state.auth.user.role);
+  const currentUserRole: string = useSelector((state: any) => state.auth.user.role);
 	// const loggedIn = true;
 
 	// if (!loggedIn) redirect("/login");
