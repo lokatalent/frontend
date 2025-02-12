@@ -28,13 +28,20 @@ const BookingCard = ({ bookingPage }: { bookingPage?: boolean }) => {
           </p>
         </div>
         <div className="flex pt-5 gap-2">
-          <Button
-            onClick={() => router.push("/dashboard/bookings/select-service")}
-            size={"lg"}
-            className={`bg-white text-primaryBlue w-full h-14 max-w-xs hover:bg-gray-50`}
-          >
-            Book {!bookingPage && <FaArrowRight className="ml-2" />}
-          </Button>
+          <div className="relative inline-block w-full max-w-xs">
+            <span
+              className="absolute -top-2 right-2 bg-red-500 text-white text-[10px] font-semibold px-2 py-0.5 rounded-md"
+            >
+              Coming soon!
+            </span>
+            <Button
+              // onClick={() => router.push("/dashboard/bookings/select-service")}
+              size={"lg"}
+              className={`bg-white text-primaryBlue w-full h-14 max-w-xs hover:bg-gray-50`}
+            >
+              Book {!bookingPage && <FaArrowRight className="ml-2" />}
+            </Button>
+          </div>
         </div>
       </div>
     </div>
