@@ -14,7 +14,7 @@ export default function RootLayout({
 
 	// if (!loggedIn) redirect("/login");
 	return (
-    currentUserRole.startsWith("admin") ?
+    currentUserRole?.startsWith("admin") ?
       (
         <div className=" main-contain ">
 			    <div className="flex flex-row">
