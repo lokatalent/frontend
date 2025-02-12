@@ -92,7 +92,7 @@ export default function DashboardTalentsHome() {
     const response = await findProviders(data);
     if (!response.error) {
       setLoading(false);
-      setTalentData(response.data.data);
+      setTalentData(response.data);
     } else {
       setLoading(false);
       handleUnauthorizedError(response, dispatch, router, showToast);
@@ -129,7 +129,7 @@ export default function DashboardTalentsHome() {
               </button>
             </div>
           </div>
-          {talentData.length > 0 ? (
+          {(talentData.data.length > 0) && (talentData.message === "Available providers.") ? (
             <div className="my-6 flex flex-col gap-6">
               {talentData.map((item, index) => (
                 <div key={index}>
@@ -140,7 +140,7 @@ export default function DashboardTalentsHome() {
           ) : (
             <div>
               {/* make a modal */}
-              <p>No talents available</p>
+              <p>{talentData.message}</p>
             </div>
           )}
         </div>
