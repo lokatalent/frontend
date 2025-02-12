@@ -135,12 +135,14 @@ const Verify = () => {
           </div>
         )}
         <div className="flex flex-col sm:flex-row gap-4 mt-10 mb-5">
-          <Button
-            onClick={() => setIsEmail(!isEmail)}
-            className="verifyButton font-nunito text-[14px] !text-[#605dec] bg-[#f6f5ff] border-[#605dec] border  "
-          >
-            {isEmail ? "Verify Phone Number Instead" : "Verify Email Instead"}
-          </Button>
+          {false && (
+            <Button
+              onClick={() => setIsEmail(!isEmail)}
+              className="verifyButton font-nunito text-[14px] !text-[#605dec] bg-[#f6f5ff] border-[#605dec] border  "
+            >
+              {isEmail ? "Verify Phone Number Instead" : "Verify Email Instead"}
+            </Button>
+          )}
           <Button
             onClick={handleVerify}
             className="verifyButton font-nunito text-[14px] !text-[#fff] bg-[#3377FF]"
