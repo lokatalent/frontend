@@ -15,9 +15,7 @@ import { useDispatch, useSelector } from "react-redux";
 function Security() {
   const dispatch = useDispatch();
   const [isTwoFactorEnabled, setIsTwoFactorEnabled] = useState(true);
-  const ProfileInfo = useSelector(
-    (state: RootStateProfile) => state.profile.information.phoneNumber
-  );
+  const userPhoneNum = useSelector((state: any) => state.auth.user.phone_num);
   const activeTwoStepVerification = useSelector(
     (state: RootState) => state.settings.activeTwoStepVerification
   );
@@ -94,7 +92,7 @@ function Security() {
               <input
                 type="tel"
                 id="phone-number"
-                value={ProfileInfo}
+                value={userPhoneNum}
                 // onChange={handlePhoneNumberChange}
                 readOnly
                 className="flex-end w-full focus:outline-none text-right"

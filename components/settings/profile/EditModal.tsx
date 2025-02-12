@@ -52,12 +52,6 @@ const formatPhoneNumber = (phoneNumber: string) => {
   return `+234${trimmedNumber}`;
 };
 
-// Usage Examples
-console.log(formatPhoneNumber("08123456789")); // Output: +2348123456789
-console.log(formatPhoneNumber("+2348123456789")); // Output: +2348123456789
-console.log(formatPhoneNumber("  8123456789  ")); // Output: +2348123456789
-
-
 const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedForm, setSelectedForm] = useState<any>(null);
