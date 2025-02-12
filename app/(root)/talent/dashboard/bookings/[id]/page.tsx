@@ -201,8 +201,24 @@ const NotificationDetail = ({
   );
 };
 
-function getPaymentStatus(status: any) {
+function getPaymentStatus(paymentStatus: any, bookingStatus: any) {
   if (status === PaymentStatus.PAYMENT_STATUS_VERIFIED) {
+    if (bookingStatus === "completed") {
+      return (
+        <div className="bg-primaryBlue p-6 text-white rounded-md self-star">
+          <div className="flex gap-2 items-center">
+            <h4 className="text-[12px] text-[hsla(0,0%,100%,0.62)]">
+              Payment Status
+            </h4>
+            <IoCheckmarkCircle size={30} />
+          </div>
+          <p className="mt-3 text-[16px] ">In Escrow</p>
+          <p className="flex items-center text-[12px] flex-wrap max-w-[20rem]">
+            This booking has been completed successfully. The service provider has been paid.
+          </p>
+        </div>
+      );
+    }
     return (
       <div className="bg-primaryBlue p-6 text-white rounded-md self-star">
         <div className="flex gap-2 items-center">
@@ -213,7 +229,7 @@ function getPaymentStatus(status: any) {
         </div>
         <p className="mt-3 text-[16px] ">In Escrow</p>
         <p className="flex items-center text-[12px] flex-wrap max-w-[20rem]">
-          In Escrow Your payment has been securely held in escrow. We’ll
+          In Escrow, payment has been securely held in escrow. We’ll
           release it once the service is successfully completed.
         </p>
       </div>

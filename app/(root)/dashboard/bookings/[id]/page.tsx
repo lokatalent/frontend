@@ -156,8 +156,24 @@ const NotificationDetail = ({
     }
   };
 
-  const getPaymentStatus = (status: any) => {
-    if (status === PaymentStatus.PAYMENT_STATUS_VERIFIED) {
+  const getPaymentStatus = (paymentStatus: any, bookingStatus: any) => {
+    if (paymentStatus === PaymentStatus.PAYMENT_STATUS_VERIFIED) {
+      if (bookingStatus === "completed") {
+        return (
+          <div className="bg-primaryBlue p-6 text-white rounded-md self-star">
+            <div className="flex gap-2 items-center">
+              <h4 className="text-[12px] text-[hsla(0,0%,100%,0.62)]">
+                Payment Status
+              </h4>
+              <IoCheckmarkCircle size={30} />
+            </div>
+            <p className="mt-3 text-[16px] ">In Escrow</p>
+            <p className="flex items-center text-[12px] flex-wrap max-w-[20rem]">
+              Your booking has been completed successfully. You have successfully paid the service provider.
+            </p>
+          </div>
+        );
+      }
       return (
         <div className="bg-primaryBlue p-6 text-white rounded-md self-star">
           <div className="flex gap-2 items-center">
@@ -168,13 +184,13 @@ const NotificationDetail = ({
           </div>
           <p className="mt-3 text-[16px] ">In Escrow</p>
           <p className="flex items-center text-[12px] flex-wrap max-w-[20rem]">
-            In Escrow Your payment has been securely held in escrow. We’ll
+            In Escrow, payment has been securely held in escrow. We’ll
             release it once the service is successfully completed.
           </p>
         </div>
       );
     }
-    if (status === PaymentStatus.PAYMENT_STATUS_CANCELED) {
+    if (paymentStatus === PaymentStatus.PAYMENT_STATUS_CANCELED) {
       return (
         <div className="bg-primaryBlue p-6 text-white rounded-md self-star">
           <div className="flex gap-2 items-center">
@@ -254,7 +270,7 @@ const NotificationDetail = ({
                 {bookingResp?.total_price}
               </p>
             </div>
-            {getPaymentStatus(bookingResp?.payment_status)}
+            {getPaymentStatus(bookingResp?.payment_status, bookingResp?.status)}
           </div>
           {getBookingButtons()}
         </div>
