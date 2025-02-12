@@ -18,7 +18,9 @@ export const handleUnauthorizedError = async (
   showToast: any
 ) => {
   if (response.status === 401) {
-    const refreshTokenResp = await refreshToken(sessionStorage.getItem("lokaRefreshToken"));
+    const refreshTokenResp = await refreshToken({
+      refresh_token: sessionStorage.getItem("lokaRefreshToken"),
+    });
     if (!refreshTokenResp.error) {
       setToken(refreshTokenResp.data.access_token, refreshTokenResp.refresh_token);
     } else {
