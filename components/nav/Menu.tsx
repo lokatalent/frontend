@@ -22,7 +22,6 @@ const Menu: React.FC<{ username: string }> = ({ username }) => {
   const router = useRouter();
   const avatar = useSelector((state: any) => state.auth.user.avatar);
   const userServiceRole = useSelector((state: any) => state.auth.user.service_role);
-  console.log(userServiceRole);
   const logout = () => {
     dispatch(setLoggedin(false));
     sessionStorage.removeItem("lokaToken");
