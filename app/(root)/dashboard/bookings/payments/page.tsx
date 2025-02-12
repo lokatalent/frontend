@@ -2,7 +2,7 @@
 
 import { Spacer } from "@/components/Spacer";
 import Spinner from "@/components/ui/Spinner";
-import { formatNairaNumber } from "@/lib/utils";
+import { formatNairaNumber, handleUnauthorizedError } from "@/lib/utils";
 import {
   createBooking,
   makePayment,
@@ -29,6 +29,7 @@ const DashboardPaymentPage = () => {
 
   const [hoursCount, setHoursCount] = useState<any>("");
   const [finalAmount, setFinalAmount] = useState<any>("");
+  const [intervalID, setIntervalID] = useState<any>(0);
 
   const getPaymentData = () => {
     let start = bookingData.start_time.split(":");
@@ -52,22 +53,7 @@ const DashboardPaymentPage = () => {
       onMakePayment(response.data.id);
     } else {
       setLoading(false);
-      if (response.status === 401) {
-        dispatch(
-          showToast({
-            status: "error",
-            message: response.data.message,
-          })
-        );
-        return router.push("/login");
-      }
-
-      return dispatch(
-        showToast({
-          status: "error",
-          message: response.data.message,
-        })
-      );
+      return handleUnauthorizedError(response, dispatch, router, showToast);
     }
   };
 
@@ -79,28 +65,10 @@ const DashboardPaymentPage = () => {
     const response = await selectProvider(data);
     if (!response.error) {
       setLoading(false);
-      let result = response.data;
-      console.log("Provider", result);
-      // redirect to booking details page
       router.push(`/dashboard/bookings/${id}`);
     } else {
       setLoading(false);
-      if (response.status === 401) {
-        dispatch(
-          showToast({
-            status: "error",
-            message: response.data.message,
-          })
-        );
-        return router.push("/login");
-      }
-
-      return dispatch(
-        showToast({
-          status: "error",
-          message: response.data.message,
-        })
-      );
+      return handleUnauthorizedError(response, dispatch, router, showToast);
     }
   };
 
@@ -110,14 +78,16 @@ const DashboardPaymentPage = () => {
      console.log(typeof PaystackPop, PaystackPop);
      const popup = new PaystackPop();
      const callbacks = {
-       onSuccess: () => onVerifyPayment(id, ref),
-       onCancel: () =>
-         dispatch(
-           showToast({
-             status: "error",
-             message: "Payment was cancelled",
-           })
-         ),
+        onSuccess: () => {
+          if (!intervalID) setIntervalID(setInterval(onVerifyPayment, 500, id, ref));
+        },
+        onCancel: () =>
+          dispatch(
+            showToast({
+              status: "error",
+              message: "Payment was cancelled",
+            })
+          ),
      };
      popup.resumeTransaction(code, callbacks);
   };
@@ -135,22 +105,7 @@ const DashboardPaymentPage = () => {
       await paystackFunction(response.data.access_code, id, response.data.payment_ref);
     } else {
       setLoading(false);
-      if (response.status === 401) {
-        dispatch(
-          showToast({
-            status: "error",
-            message: response.data.message,
-          })
-        );
-        return router.push("/login");
-      }
-
-      return dispatch(
-        showToast({
-          status: "error",
-          message: response.data.message,
-        })
-      );
+      return handleUnauthorizedError(response, dispatch, router, showToast);
     }
   };
 
@@ -161,26 +116,14 @@ const DashboardPaymentPage = () => {
     };
     const response = await verifyPayment(data);
     if (!response.error) {
-      console.log("Verify Payment", response.data);
-      onAddProvider(id);
+      if (response.data?.status == "verified") {
+        clearInterval(intervalID);
+        setIntervalID(0);
+        onAddProvider(id);
+      }
     } else {
       setLoading(false);
-      if (response.status === 401) {
-        dispatch(
-          showToast({
-            status: "error",
-            message: response.data.message,
-          })
-        );
-        return router.push("/login");
-      }
-
-      return dispatch(
-        showToast({
-          status: "error",
-          message: response.data.message,
-        })
-      );
+      return handleUnauthorizedError(response, dispatch, router, showToast);
     }
   };
 
