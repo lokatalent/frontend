@@ -302,3 +302,7 @@ export const formatDateTime = (date: any) => {
   if (!date) return "N/A";
   return format(new Date(date), "PPp");
 };
+
+export const transformSnakeCase = (text: string) => {
+  return text.split('_').map(capitalize).join(" ");
+}
