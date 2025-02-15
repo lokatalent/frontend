@@ -34,8 +34,8 @@ async function getData(): Promise<TransactionType[]> {
 
 const options = ["Transactions", "Transactions", "Transactions", "Transactions"];
 
-export default async function TransactionTable() {
-	const data = await getData();
+export default function TransactionTable() {
+	const data = getData();
 
 	return (
 		<div className="card my-5">

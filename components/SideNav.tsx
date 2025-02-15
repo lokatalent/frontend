@@ -58,7 +58,11 @@ const SideNav = ({ talent }: { talent?: boolean }) => {
     <div>
       <div className="bg-primaryBlue w-[200px] h-screen fixed z-[20] text-white py-8 px-5 flex-col justify-between hidden xl:flex">
         <div>
-          <Link href="/landing">
+          <Link href={
+            talent
+            ? "/talent/dashboard"
+            : "/dashboard"
+          }>
             <span className="text-lg font-bold text-white">LokaTalent</span>
           </Link>
 
@@ -107,18 +111,7 @@ const SideNav = ({ talent }: { talent?: boolean }) => {
       <div className="xl:hidden bg-white fixed top-0 left-0 z-[20] px-2 flex items-center justify-center min-h-[70px]">
         <Sheet>
           <div className="flex justify-between mx-4">
-            {/* <Link href="/">
-              <span className="text-lg font-bold text-white">LokaTalent</span>
-            </Link> */}
-
             <SheetTrigger>
-              {/* <Image
-                src="/Images/hamburger.svg"
-                width={30}
-                height={30}
-                alt="menu"
-                className="cursor-pointer"
-              /> */}
               <CiMenuBurger color="#3377ff" size={25} />
             </SheetTrigger>
           </div>
@@ -129,7 +122,11 @@ const SideNav = ({ talent }: { talent?: boolean }) => {
           >
             <div className="flex flex-col justify-between h-full ">
               <div>
-                <Link href="/landing">
+                <Link href={
+                  talent
+                  ? "/talent/dashboard"
+                  : "/dashboard"
+                }>
                   <span className="text-lg font-bold text-white">
                     LokaTalent
                   </span>

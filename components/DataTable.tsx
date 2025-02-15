@@ -65,12 +65,8 @@ export function DataTable<TData, TValue>({
   path,
   filterType
 }: DataTableProps<TData, TValue>) {
-  console.log(selectOptions);
   const router = useRouter();
   const [globalFilter, setGlobalFilter] = useState<string>("");
-  console.log(title);
- 
-
   const table = useReactTable({
     data,
     columns,
@@ -87,9 +83,6 @@ export function DataTable<TData, TValue>({
   });
 
   const handleNavigate = (id: number) => {
-    console.log(id)
-    //    router.push(`/about?${queryString}`);
-    // router.push(`/bookings/34?data=${encodedData}`);
     router.push(`${path}/${id}`);
   };
 
