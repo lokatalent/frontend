@@ -1,136 +1,54 @@
+"use client";
+
 import { UserType, UserColumns } from "@/components/Columns";
 import { DataTable } from "@/components/DataTable";
 import { UserFilter } from "../FilterData";
 import { UserOptions } from "../SortData";
+import PageSpinner from "@/components/ui/PageSpinner";
+import { useDispatch } from "react-redux"
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { showToast } from "@/store/auth/toastSlice"
+import { getAllUsers } from "@/services/adminService";
+import { handleUnauthorizedError } from "@/lib/utils";
 
+export default function UserTable() {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [users, setUsers] = useState([]);
 
-async function getData(): Promise<UserType[]> {
-  return [
-    {
-      id: "1",
-      name: "Justin Cooper",
-      image: "@/assets/images/verify.png",
-      email: "Jaydencooper@gmail.com",
-      type: "Talent",
-      phone: "070123456789",
-      status: "Active",
-    },
-    {
-      id: "2",
-      name: "Martin Cooper",
-      image: "@/assets/images/verify.png",
-      email: "Jaydencooper@gmail.com",
-      type: "Customer",
-      phone: "070123456789",
-      status: "Deleted",
-    },
-    {
-      id: "3",
-      name: "Jayden Cooper",
-      image: "@/assets/images/verify.png",
-      email: "Jaydencooper@gmail.com",
-      type: "Talent",
-      phone: "070123456789",
-      status: "Suspended",
-    },
-    {
-      id: "4",
-      name: "Justin Cooper",
-      image: "@/assets/images/verify.png",
-      email: "Jaydencooper@gmail.com",
-      type: "Talent",
-      phone: "070123456789",
-      status: "Active",
-    },
-    {
-      id: "5",
-      name: "Martin Cooper",
-      image: "@/assets/images/verify.png",
-      email: "Jaydencooper@gmail.com",
-      type: "Customer",
-      phone: "070123456789",
-      status: "Deleted",
-    },
-    {
-      id: "6",
-      name: "Jayden Cooper",
-      image: "@/assets/images/verify.png",
-      email: "Jaydencooper@gmail.com",
-      type: "Talent",
-      phone: "070123456789",
-      status: "Suspended",
-    },
-    {
-      id: "7",
-      name: "Justin Cooper",
-      image: "@/assets/images/verify.png",
-      email: "Jaydencooper@gmail.com",
-      type: "Talent",
-      phone: "070123456789",
-      status: "Active",
-    },
-    {
-      id: "8",
-      name: "Martin Cooper",
-      image: "@/assets/images/verify.png",
-      email: "Jaydencooper@gmail.com",
-      type: "Customer",
-      phone: "070123456789",
-      status: "Deleted",
-    },
-    {
-      id: "9",
-      name: "Jayden Cooper",
-      image: "@/assets/images/verify.png",
-      email: "Jaydencooper@gmail.com",
-      type: "Talent",
-      phone: "070123456789",
-      status: "Suspended",
-    },
-    {
-      id: "10",
-      name: "Justin Cooper",
-      image: "@/assets/images/verify.png",
-      email: "Jaydencooper@gmail.com",
-      type: "Talent",
-      phone: "070123456789",
-      status: "Active",
-    },
-    {
-      id: "11",
-      name: "Martin Cooper",
-      image: "@/assets/images/verify.png",
-      email: "Jaydencooper@gmail.com",
-      type: "Customer",
-      phone: "070123456789",
-      status: "Deleted",
-    },
-    {
-      id: "12",
-      name: "Jayden Cooper",
-      image: "@/assets/images/verify.png",
-      email: "Jaydencooper@gmail.com",
-      type: "Talent",
-      phone: "070123456789",
-      status: "Suspended",
-    },
-  ];
-}
+  const fetchData = async()=>{
+    setLoading(true);
+    const response: any = await getAllUsers();
+    console.log(response);
+    if (!response.error) {
+      setLoading(false);
+      setUsers(response.data);
+    } else {
+      setLoading(false);
+      handleUnauthorizedError(response, dispatch, router, showToast);
+    }
+  };
 
-
-export default async function UserTable() {
-  const data = await getData();
+  useEffect(() => {
+    fetchData();
+  }, []);
 
   return (
-    <div className="card my-5">
-      <DataTable
-        columns={UserColumns}
-        data={data}
-        title="User List"
-        selectOptions={UserOptions}
-			  path="/users"
-			  filterType={UserFilter}
-      />
-    </div>
+    loading ? (
+      <PageSpinner />
+    ) : (
+      <div className="card my-5">
+        <DataTable
+          columns={UserColumns}
+          data={users}
+          title="User List"
+          selectOptions={UserOptions}
+          path="/admin/users"
+          filterType={UserFilter}
+        />
+      </div>
+    )
   );
-}
+};
