@@ -9,6 +9,10 @@ interface AvatarProps
   color?: string;
   radius?: string;
   fallback?: React.ReactNode;
+  src?: string;
+  alt?: string;
+  height?: number;
+  width?: number;
 }
 
 const Avatar = React.forwardRef<HTMLDivElement, AvatarProps>(
