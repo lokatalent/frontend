@@ -23,7 +23,7 @@ function ProfileDetails({ details }: ProfileDetailsProps) {
             {" "}
             {/* Ensure title is unique */}
             <h4 className="text-[12px] text-[#212121B2]">{profile.title}</h4>
-            <p className="mt-2 flex items-center text-sm">{profile.value}</p>
+            <p className="mt-2 flex items-center capitalize text-sm">{profile.value}</p>
           </div>
         ))}
       </div>
