@@ -24,14 +24,14 @@ export default function RootLayout({
       {loggedIn && (
         <div className="bg-bgWhite main-contain min-h-screen">
           <div className="flex flex-row">
-            <div className="sidenav-containe">
+            <div>
               <SideNav talent={role === "service_provider"} />
             </div>
             <div className="flex-1 xl:ml-[200px]">
               <TopNav />
             </div>
           </div>
-          <div className="main-content xl:pl-[200px] pt-24 pb-10 mx-8">
+          <div className="main-content md:mx-8 xl:pl-[200px] pt-24 pb-10">
             {children}
           </div>
         </div>
