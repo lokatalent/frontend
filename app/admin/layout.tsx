@@ -16,16 +16,16 @@ export default function RootLayout({
 	return (
     currentUserRole?.startsWith("admin") ?
       (
-        <div className=" main-contain ">
+        <div className=" main-contain bg-bgWhite min-h-screen">
 			    <div className="flex flex-row">
-            <div className="sidenav-container">
+            <div>
               <SideNav />
             </div>
             <div className="flex-1 md:ml-[200px]">
               <TopNav />
             </div>
           </div>
-          <div className="main-content xl:pl-[200px] mx-8">{children}</div>
+          <div className="main-content md:mx-8 xl:pl-[200px] pt-24 pb-10 mx-0">{children}</div>
 		    </div>
     ) : (
       <div className=" main-contain ">
