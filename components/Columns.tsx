@@ -2,14 +2,16 @@
 import { ColumnDef } from "@tanstack/react-table";
 import { Image } from "next/image";
 import Link from "next/link";
+
 export type BookingType = {
 	id: string;
-	customer: string;
-	talent: string;
+	requester_id: string;
+	provider_id: string;
 	date: string;
 	time: string;
 	status: "Pending" | "Accepted" | "Declined";
 };
+
 export type TransactionType = {
 	id: string;
 	name: string;
@@ -18,6 +20,7 @@ export type TransactionType = {
 	time: string;
 	status: "Pending" | "Accepted" | "Declined";
 };
+
 export type UserType = {
 	id: string;
 	name: any;
@@ -27,26 +30,27 @@ export type UserType = {
 	phone: string;
 	status: "Active" | "Deleted" | "Suspended";
 };
+
 export const BookingColumns: ColumnDef<BookingType>[] = [
 	{
 		accessorKey: "id",
 		header: "Booking ID",
 	},
 	{
-		accessorKey: "customer",
-		header: "Customer",
+		accessorKey: "requester_id",
+		header: "Service Requester ID",
 	},
 	{
-		accessorKey: "talent",
-		header: "Talent",
+		accessorKey: "provider_id",
+		header: "Service Provider ID",
 	},
 
 	{
-		accessorKey: "date",
+		accessorKey: "start_date",
 		header: "Date",
 	},
 	{
-		accessorKey: "time",
+		accessorKey: "start_time",
 		header: "Time",
 	},
 	{
@@ -73,6 +77,7 @@ export const BookingColumns: ColumnDef<BookingType>[] = [
 		},
 	},
 ];
+
 export const TransationColumns: ColumnDef<TransactionType>[] = [
 	{
 		accessorKey: "id",
@@ -119,6 +124,7 @@ export const TransationColumns: ColumnDef<TransactionType>[] = [
 		},
 	},
 ];
+
 export const UserColumns: ColumnDef<UserType>[] = [
 	{
 		accessorKey: "name",
@@ -128,7 +134,7 @@ export const UserColumns: ColumnDef<UserType>[] = [
 			return (
 				<div className="flex items-center space-x-2">
 					<Link href={`/users/${nameData.id}`}>
-						<p className="text-blue-500">{nameData.name}</p>
+						<p className="text-blue-500">{`${nameData.first_name} ${nameData.last_name}`}</p>
 					</Link>
 				</div>
 			);
@@ -140,31 +146,31 @@ export const UserColumns: ColumnDef<UserType>[] = [
 	},
 
 	{
-		accessorKey: "type",
+		accessorKey: "service_role",
 		header: "Type",
 	},
 	{
-		accessorKey: "phone",
+		accessorKey: "phone_num",
 		header: "Phone Number",
 	},
 	{
-		accessorKey: "status",
+		accessorKey: "is_verified",
 		header: "Status",
 		cell: ({ row }) => {
-			const status = row.getValue("status");
+			const status = row.getValue("is_verified");
 
 			return (
 				<div className="flex items-center">
 					<p
 						className={`px-2 py-2 flex items-center justify-center w-[122px] rounded-md text-sm font-medium ${
-							status === "Active"
+							status === "true" || status === true
 								? "bg-accept "
-								: status === "Suspended"
-								? "bg-yellow "
-								: "bg-red-100 "
+								: "bg-red-100" // status === "Suspended"
+								// ? "bg-yellow "
+								// : "bg-red-100 "
 						}`}
 					>
-						{status}
+						{(status === "true") || (status === true) ? "verified" : "not verified"}
 					</p>
 				</div>
 			);
