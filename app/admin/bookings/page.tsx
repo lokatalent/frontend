@@ -1,79 +1,71 @@
+"use client";
+
 import InfoCard from "@/components/InfoCard";
 import { FaRegUser } from "react-icons/fa";
 import { IoMdTrendingUp, IoMdTrendingDown } from "react-icons/io";
 import BookingTable from "@/components/dash/BookingTable";
+import PageSpinner from "@/components/ui/PageSpinner";
+import { useDispatch } from "react-redux"
+import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
+import { showToast } from "@/store/auth/toastSlice"
+import { getAdminBookingDashboard } from "@/services/adminService";
+import { getAllBookings } from "@/services/bookingService";
+import { handleUnauthorizedError } from "@/lib/utils";
 
- type BookingType = {
-  id: string;
-  customer: string;
-  talent: string;
-  date: string;
-  time: string;
-  status: "Pending" | "Accepted" | "Declined";
-};
 
-async function getData(): Promise<BookingType[]> {
-  return [
-    {
-      id: "12456256565",
-      customer: "Justin Cooper",
-      talent: "Gabriel Daramola",
-      date: "24/4/2024",
-      time: "11:45 AM",
-      status: "Pending",
-    },
-    {
-      id: "2565767900",
-      customer: "Martin Cooper",
-      talent: "Gabriel Daramola",
-      date: "24/4/2024",
-      time: "11:45 AM",
-      status: "Accepted",
-    },
-    {
-      id: "8698767900",
-      customer: "Jayden Cooper",
-      talent: "Gabriel Daramola",
-      date: "24/4/2024",
-      time: "11:45 AM",
-      status: "Declined",
-    },
-    {
-      id: "12456256565",
-      customer: "Justin Cooper",
-      talent: "Gabriel Daramola",
-      date: "24/4/2024",
-      time: "11:45 AM",
-      status: "Pending",
-    },
-    {
-      id: "2565767900",
-      customer: "Martin Cooper",
-      talent: "Gabriel Daramola",
-      date: "24/4/2024",
-      time: "11:45 AM",
-      status: "Accepted",
-    },
-    {
-      id: "8698767900",
-      customer: "Jayden Cooper",
-      talent: "Gabriel Daramola",
-      date: "24/4/2024",
-      time: "11:45 AM",
-      status: "Declined",
-    },
-    // ...
-  ];
-}
+export default function Bookings() {
+  const dispatch = useDispatch();
+  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [dashboardData, setDashboardData] = useState({});
+  const [bookings, setBookings] = useState([]);
 
-export default async function Bookings() {
-  const data = await getData();
+  const getDashboardData = async()=>{
+    const response = await getAdminBookingDashboard();
+    if (!response.error) {
+      setLoading(false);
+      setDashboardData(response.data);
+    } else {
+      setLoading(false);
+      handleUnauthorizedError(response, dispatch, router, showToast);
+    }
+  };
+
+	const fetchBookings = async () => {
+    setLoading(true);
+    const data = {
+      requester_id: "",
+      provider_id: "",
+      service_type: "",
+      booking_type: "",
+      status: "",
+      start_time: "",
+      end_time: "",
+      start_date: "",
+      end_date: "",
+    };
+    const response: any = await getAllBookings({ data });
+    if (!response.error) {
+      setLoading(false);
+      setBookings(response.data);
+    } else {
+      setLoading(false);
+      handleUnauthorizedError(response, dispatch, router, showToast);
+    }
+  };
+
+  useEffect(() => {
+    getDashboardData();
+    fetchBookings();
+  }, []);
+
   return (
     <div className="w-full  ">
       <div className="flex flex-col md:flex-row space-y-3 md:space-y-0 justify-between w-full py-10  ">
         <InfoCard
           text="Total Bookings"
-          number={250}
+          number={dashboardData?.total_bookings}
           icon={<FaRegUser color="#8E11F0" />}
           iconColor="#8280FF87"
           arrow={<IoMdTrendingUp color="#00B69B" />}
@@ -83,7 +75,7 @@ export default async function Bookings() {
         />
         <InfoCard
           text="Scheduled Bookings"
-          number={100}
+          number={dashboardData?.scheduled_bookings}
           icon={<FaRegUser color="#3377FF" />}
           iconColor="#3377FF87"
           arrow={<IoMdTrendingUp color="#00B69B" />}
@@ -93,7 +85,7 @@ export default async function Bookings() {
         />
         <InfoCard
           text="Instant Bookings"
-          number={150}
+          number={dashboardData?.instant_bookings}
           icon={<FaRegUser color="#D38005" />}
           iconColor="#FFAC3399"
           arrow={<IoMdTrendingDown color="#F93C65" />}
@@ -104,7 +96,7 @@ export default async function Bookings() {
       </div>
 
       <div>
-        <BookingTable isHome={false} data={data} />
+        <BookingTable isHome={false} data={bookings} />
       </div>
     </div>
   );
