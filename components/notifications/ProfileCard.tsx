@@ -11,6 +11,7 @@ interface ProfileCardProps {
   occupation: string;
   location: string;
   status: string;
+  avatar: string;
 }
 
 const ProfileCard: React.FC<ProfileCardProps> = ({
@@ -22,26 +23,28 @@ const ProfileCard: React.FC<ProfileCardProps> = ({
 }) => {
   const currentUserServiceRole = useSelector((state: any) => state.auth.user.service_role);
   return (
-    <div className="flex md:items-center flex-col md:flex-row justify-between pace-x-4 gap-x-20">
-      <div className="flex items-center space-x-6">
-        <div className="flex-shrink-0">
-          <Avatar
-            src={avatar || "/Images/camera.png"}
-            alt="User Avatar"
-            color="bg-blue-500"
-            radius="rounded-full"
-            fallback="JC"
-            height={40}
-            width={90}
-            className="w-16 h-16"
-          />
-        </div>
-        <div className="space-y-1">
-          <h3 className="text-lg font-medium">{name}</h3>
-          <p className="text-gray-500">{occupation}</p>
-          <div className="text-black text-sm flex items-center space-x-1 ">
-            <IoLocationOutline />
-            <p>{location}</p>
+    <div className="flex md:items-center flex-col md:flex-row justify-between space-x-4 gap-x-20">
+      <div className="grid grid-cols-4 md:grid-cols-12  md:items-center items-start space-x-2 md:space-x-6">
+        <div className="col-span-2 md:col-span-5 lg:col-span-3 flex flex-col md:flex-row md:items-center space-x-2 space-y-2">
+          <div className="flex-shrink-0">
+            <Avatar
+              src={avatar || "/Images/camera.png"}
+              alt="User Avatar"
+              color="bg-blue-500"
+              radius="rounded-full"
+              fallback="JC"
+              height={40}
+              width={90}
+              className="w-16 h-16"
+            />
+          </div>
+          <div className="space-y-1">
+            <h3 className="text-lg font-medium">{name}</h3>
+            <p className="text-gray-500">{occupation}</p>
+            <div className="text-black text-sm flex items-center space-x-1 ">
+              <IoLocationOutline />
+              <p>{location}</p>
+            </div>
           </div>
         </div>
         {getBookingStatus(status, currentUserServiceRole)}
@@ -105,18 +108,18 @@ function getBookingStatus(bookingStatus: string, role: string) {
       }
   }
   return (
-    <div className="flex space-x-3  items-center">
+    <div className=" col-span-2 md:col-span-6 flex space-x-3  items-center m-0">
       <div>
         <div className="p-2 rounded-full bg-white shadow-lg">
           <Image
             src={imgSrc}
             alt="Booking Status"
-            width={20}
-            height={20}
+            width={50}
+            height={50}
           />
         </div>
       </div>
-      <div className="flex items-center flex-col justify-center mt-4 sm:mt-4">
+      <div className="flex items-center flex-col justify-center md:mt-4 sm:mt-4">
         <div className="self-start">
           <span
             className={`w-2 h-2 rounded-full text-left ${
@@ -124,14 +127,14 @@ function getBookingStatus(bookingStatus: string, role: string) {
             }`}
           ></span>
           <p
-            className={`text-2xl font-bold ${
+            className={`md:text-xl font-bold ${
               statusColor2
             }`}
           >
             {bookingStatus}
           </p>
         </div>
-        <p className="text-textGray3 text-sm w-2/3 self-start mt-2">
+        <p className="text-textGray3 text-sm w-full md:w-2/3 self-start mt-2">
           {statusText}
         </p>
       </div>
