@@ -4,7 +4,7 @@ import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useRouter } from "next/navigation";
 
 import { FormFieldError } from "@/components/ui/form/FormFieldError";
@@ -35,6 +35,11 @@ function ServiceCharge({ setActiveStep }: any) {
   const dispatch = useDispatch();
   const [isEditing, setIsEditing] = useState(false);
   let [bankData, setBankData] = useState([]);
+  const userBankDetails = useSelector((state: any) => state?.talentProfile?.bankDetails);
+  const defaultFormValues = {
+    bankName: userBankDetails?.bank_name || "",
+    accountNo: userBankDetails?.account_num || "",
+  };
 
   const router = useRouter();
   useEffect(() => {
@@ -61,34 +66,33 @@ function ServiceCharge({ setActiveStep }: any) {
     formState: { errors },
   } = useForm<ServiceChargeFormValues>({
     resolver: zodResolver(ServiceChargeSchema),
-    defaultValues: {
-      bankName: "",
-      accountNo: "",
-      // rps: "",
-      // rph: "",
-    },
+    values: defaultFormValues,
   });
 
   const options = ["GTBank", "Sterling Bank", "EcoBank"];
 
   const onSubmit = async (data: ServiceChargeFormValues) => {
-    console.log("Submitted Data:", data);
     let temp = {
       bank_name: data.bankName,
       account_num: data.accountNo,
       bank_code: "",
     };
+
+    if (
+      (temp.bank_name === defaultFormValues.bankName) &&
+      (temp.account_num === defaultFormValues.accountNo)
+    ) {
+      setActiveStep(3);
+      return;
+    }
     const matchedBank: any = bankData.find(
       (bank: any) => bank.name === temp.bank_name
     );
     if (matchedBank) {
       temp.bank_code = matchedBank.code; // Update bank_code with the matching bank's code
     }
-    console.log(temp);
-    // serviceRateEdited(data);
 
     const response = await updateBankProfile(temp);
-    console.log(response);
     if (!response.error) {
       // success
       dispatch(
@@ -123,96 +127,19 @@ function ServiceCharge({ setActiveStep }: any) {
     setActiveStep(3);
   };
 
-  // Success Dialog
-  // if (isFinished) {
-  //   return (
-  //     <Dialog open={isFinished} onOpenChange={resetDialog}>
-  //       <DialogContent
-  //         className="w-full p-[3rem] sm:max- lg:max-w-[25rem]"
-  //         aria-describedby={undefined}
-  //       >
-  //         <DialogHeader>
-  //           <DialogTitle className="text-center">Changes Saved</DialogTitle>
-  //         </DialogHeader>
-  //         <div className="w-full space-y-3">
-  //           <div className="w-full text-center mt-2 flex-center">
-  //             <IoIosSend color="#3377FF" size={50} />
-  //           </div>
-  //           <p className="w-full text-center flex-center">
-  //             Your profile is complete! You can now proceed to verify your
-  //             address and ID in the settings to start accepting bookings
-  //           </p>
-  //           <div className="w-full text-center flex-center"></div>
-  //         </div>
-  //         <div className="text-center mt-4">
-  //           <DialogClose>
-  //             <Button
-  //               type="button"
-  //               className="px-24 py-6 flex-center"
-  //               onClick={finishedStepHandler}
-  //             >
-  //               Done
-  //             </Button>
-  //           </DialogClose>
-  //         </div>
-  //       </DialogContent>
-  //     </Dialog>
-  //   );
-  // }
-
   // Edit Form Content
   const formContent = (
-    <div className="w-full flex-center">
+    <div className="w-full flex justify-center px-4 sm:px-6 lg:px-8">
       <form
         onSubmit={handleSubmit(onSubmit)}
-        className="gap-3 flex flex-center gap-[3rem] flex-wrap"
+        className="w-full max-w-3xl grid grid-cols-1 sm:grid-cols-2 gap-6"
       >
-        {/* <div className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]">
-          <label htmlFor="rps" className="block text-sm font-medium mb-2">
-            Rate per Service*
-          </label>
-          <Controller
-            name="rps"
-            control={control}
-            render={({ field }) => (
-              <input
-                id="rps"
-                type="text"
-                {...field}
-                className="flex w-full rounded-md bg-white  h-[3.5rem] px-3 py-1 text-sm shadow-s transition-colors"
-              />
-            )}
-          />
-          {errors.rps && (
-            <FormFieldError error={{ message: errors.rps.message }} />
-          )}
-        </div> */}
-        {/* <div className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]">
-          <label htmlFor="rph" className="block text-sm font-medium mb-2">
-            Rate per Hour*
-          </label>
-          <Controller
-            name="rph"
-            control={control}
-            render={({ field }) => (
-              <input
-                id="rph"
-                type="text"
-                {...field}
-                className="flex w-full rounded-md bg-white  h-[3.5rem] px-3 py-1 text-sm shadow-s transition-colors"
-              />
-            )}
-          />
-          {errors.rph && (
-            <FormFieldError error={{ message: errors.rph.message }} />
-          )}
-        </div> */}
-        <div className="">
+        <div>
           <Controller
             name="bankName"
             control={control}
             render={({ field }) => (
-              <div className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]">
+              <div className="w-full">
                 <label
                   htmlFor="bankName"
                   className="block text-sm font-medium mb-2"
@@ -222,7 +149,7 @@ function ServiceCharge({ setActiveStep }: any) {
                 <select
                   id="bankName"
                   {...field}
-                  className="flex w-full rounded-md bg-white  h-[3.5rem] px-3 py-1 text-sm shadow-sm transition-colors"
+                  className="w-full rounded-md bg-white h-[3.5rem] px-3 py-1 text-sm shadow-sm transition-colors border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300"
                 >
                   <option value="">Select a bank</option>
                   {bankData.map((option: any) => (
@@ -238,7 +165,7 @@ function ServiceCharge({ setActiveStep }: any) {
             <FormFieldError error={{ message: errors.bankName.message }} />
           )}
         </div>
-        <div className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]">
+        <div>
           <label
             htmlFor="accountNumber"
             className="block text-sm font-medium mb-2"
@@ -253,7 +180,7 @@ function ServiceCharge({ setActiveStep }: any) {
                 id="accountNumber"
                 type="text"
                 {...field}
-                className="flex w-full rounded-md bg-white  h-[3.5rem] px-3 py-1 text-sm shadow-s transition-colors"
+                className="w-full rounded-md bg-white h-[3.5rem] px-3 py-1 text-sm shadow-sm border border-gray-300 focus:border-blue-500 focus:ring focus:ring-blue-300"
               />
             )}
           />
@@ -261,9 +188,10 @@ function ServiceCharge({ setActiveStep }: any) {
             <FormFieldError error={{ message: errors.accountNo.message }} />
           )}
         </div>
-
-        <div className="w-full text-center flex-center">
-          <Button type="submit" className="px-[15rem] py-8 flex-center">
+        <div className="w-full flex justify-center col-span-1 sm:col-span-2">
+          <Button
+            type="submit"
+            className="w-full max-w-xs sm:max-w-sm lg:max-w-md h-14 text-white bg-[#3377FF] font-normal leading-6 rounded transition hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377FF]">
             Next
           </Button>
         </div>

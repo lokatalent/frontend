@@ -8,8 +8,8 @@ const SupportSettings = () => {
             <div className="mb-10">
                 <p className="text-xl">Welcome to our Help Center! Whether you're looking for help on how to use the app or need assistance, we're here to help. Explore our guides or contact support through various channels for personalized assistance.</p>
             </div>
-            <div className="grid grid-cols-3 gap-14">
-                <div className="bg-white px-8 py-10 rounded-lg">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-14">
+                <div className="bg-white px-8 py-10 rounded-lg shadow-md">
                     {/* image */}
                     <div className="relative h-16 w-16 mb-8">
                         <Image
@@ -23,7 +23,7 @@ const SupportSettings = () => {
                     <p>Need assistance or have questions?
                         Text us on Twitter</p>
                 </div>
-                <div className="bg-white px-8 py-10 rounded-lg">
+                <div className="bg-white px-8 py-10 rounded-lg shadow-md">
                     {/* image */}
                     <div className="relative h-16 w-16 mb-8">
                         <Image

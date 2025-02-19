@@ -22,49 +22,32 @@ const SkillsProfile: React.FC<SkillsProfileProps> = ({ skillsSet }) => {
           // }
 
   return (
-    <div className="card space-y-7">
-      <div className="flex sm:items-center items-start flex-col sm:flex-row justify-between">
-        <div className="bg-[#DF86000F] text-[#DF8600] text-sm w-full sm:w-[18rem] p-3 py-5">
+    <div className="card space-y-7 p-5 border rounded-lg shadow-lg">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-5">
+        <div className="bg-[#DF86000F] text-[#DF8600] text-sm w-full sm:w-[18rem] p-3 py-5 rounded-lg">
           Bio: {userBio}
         </div>
-        <div className="flex items-center gap-4 sm:block">
-          <p>Rate per hour</p>
-          <div className="relative block sm:hidden w-[30px] h-[20px]">
-            <div className="absolute w-[30px] h-[2px] bg-orange-500 top-1/2 transform -translate-y-1/2"></div>
-            <div className="absolute w-[5px] h-[5px] bg-orange-500 rounded-full right-0 top-1/2 transform -translate-y-1/2"></div>
-          </div>
-          {/* <p className="text-[#DF8600]">₦{skillsSet.rate_per_hour}/hr</p> */}
-          <div className="flex items-end">
-            <div className="text-orange-500 font-bold text-xl">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 w-full sm:w-auto text-left sm:text-center">
+          <div className="flex flex-col items-start sm:items-center gap-2">
+            <p className="text-gray-600 font-medium">Rate per hour</p>
+            <div className="flex items-end text-xl font-bold text-orange-500">
               ₦{service.rate_per_hour}
+              <span className="text-gray-500 text-sm font-medium">/hr</span>
             </div>
-            <div className="text-gray-500 font-medium">/hr</div>
           </div>
-        </div>
-        <div className="flex items-center gap-4 sm:block">
-          <p>Years of Experience</p>
-          <div className="relative block sm:hidden w-[30px] h-[20px]">
-            <div className="absolute w-[30px] h-[2px] bg-orange-500 top-1/2 transform -translate-y-1/2"></div>
-            <div className="absolute w-[5px] h-[5px] bg-orange-500 rounded-full right-0 top-1/2 transform -translate-y-1/2"></div>
+          <div className="flex flex-col items-start sm:items-center gap-2">
+            <p className="text-gray-600 font-medium">Years of Experience</p>
+            <p className="text-lg font-bold">{service.experience_years || 0}</p>
           </div>
-          <p>{service.experience_years|| 0}  Years</p>
-        </div>
-        <div className="flex items-center gap-4 sm:block">
-          <p>Available to Work</p>
-          <div className="relative block sm:hidden w-[30px] h-[20px]">
-            <div className="absolute w-[30px] h-[2px] bg-orange-500 top-1/2 transform -translate-y-1/2"></div>
-            <div className="absolute w-[5px] h-[5px] bg-orange-500 rounded-full right-0 top-1/2 transform -translate-y-1/2"></div>
+          <div className="flex flex-col items-start sm:items-center gap-2">
+            <p className="text-gray-600 font-medium">Available to Work</p>
+            <p className="test-lg font-bold text-green-600">Yes</p>
           </div>
-          <p>Yes</p>
         </div>
       </div>
-      <div className="flex items-cente gap-4 sm:block">
-        <p>Skill Set</p>
-        <div className="relative block sm:hidden w-[30px] h-[20px]">
-          <div className="absolute w-[30px] h-[2px] bg-orange-500 top-1/2 transform -translate-y-1/2"></div>
-          <div className="absolute w-[5px] h-[5px] bg-orange-500 rounded-full right-0 top-1/2 transform -translate-y-1/2"></div>
-        </div>
-        <div className="flex flex-wrap space-x-5">
+      <div className="flex flex-col sm:items-center gap-4">
+        <p className="text-gray-600 font-medium">Skill Set</p>
+        <div className="flex flex-wrap gap-3">
           {Object.entries(skillsSet.skillsSet).map(([skill, isChecked]) => (
             <label key={skill} className="flex items-center space-x-2 text-sm">
               <input

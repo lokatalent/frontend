@@ -6,7 +6,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { updateProfile, updateProfileImage } from "@/services/profileService";
 import { useDispatch, useSelector } from "react-redux";
 import { showToast } from "@/store/auth/toastSlice";
-import { errorHandler, handleUnauthorizedError } from "@/lib/utils";
+import { errorHandler, handleUnauthorizedError, formatDateTime } from "@/lib/utils";
 import Image from "next/image";
 import { ChangeEvent, useRef, useState } from "react";
 import { setProfilePics } from "@/store/profile/profileSlice";
@@ -21,18 +21,27 @@ const schema = z.object({
   city: z.string().nonempty("Pls enter your city name"),
   state: z.string().nonempty("Pls enter your city state"),
   country: z.string().nonempty("Please select a country name"),
-  dateofbirth: z.string().nonempty("Start date is required"),
+  dateofbirth: z.string().nonempty("Date of birth is required"),
 });
 
 function PersonalInfo({ setActiveStep }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
+  const user = useSelector((state: any) => state.auth.user);
+  const defaultFormValues = {
+    gender: user?.gender || "",
+    city: user?.address?.split(",")?.at(-3) || "",
+    country: "Nigeria",
+    state: user?.address?.split(",")?.at(-2) || "",
+    address: user?.address.split(",")?.slice(0, -3)?.join(", ") || "",
+    dateofbirth: user?.date_of_birth?.split("T")?.at(0) || "",
+  }
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(schema),
+    values: defaultFormValues,
   });
 
   const fileInputRef = useRef<HTMLInputElement | null>();
-  const user = useSelector((state: any) => state.auth.user);
   const [imageLoading, setImageLoading] = useState(false);
   const userSelectedImage = useSelector((state: any) => state.auth.user.avatar);
   const [selectedImage, setSelectedImage] = useState<any>(user.avatar ?? null);
@@ -71,12 +80,19 @@ function PersonalInfo({ setActiveStep }: any) {
   };
 
   const onSubmit = async (data: any) => {
-    // console.log(data);
     let temp = {
       address: `${data.address}, ${data.city}, ${data.state}, ${data.country}`,
       gender: data.gender,
       date_of_birth: data.dateofbirth,
     };
+    if (
+      (temp.address === `${defaultFormValues.address}, ${defaultFormValues.city}, ${defaultFormValues.state}, ${defaultFormValues.country}`) &&
+      (temp.gender === user?.gender) &&
+      (temp.date_of_birth === user?.date_of_birth?.split("T")?.at(0))
+    ){
+      setActiveStep(1);
+      return;
+    }
     const response = await updateProfile(temp);
 
     if (!response.error) {
@@ -99,117 +115,113 @@ function PersonalInfo({ setActiveStep }: any) {
   };
 
   return (
-    <div className="">
-      <div className="flex gap-4 items-center flex-col justify-center">
-        <div className="flex items-center justify-between space-x-6">
-          <div className="relative w-32 h-32 rounded-full">
-            <div className="flex items-center justify-center bg-[#C4C4C424] shadow-lg p-2 w-full h-full rounded-full">
-              {selectedImage ? (
-                <Image
-                  src={selectedImage}
-                  alt="Profile"
-                  layout="fill"
-                  className="object-cover rounded-[100px]"
-                />
-              ) : (
-                <Image
-                  src="/Images/camera.png"
-                  alt="Notification Bing"
-                  width={20}
-                  height={20}
-                />
-              )}
-            </div>
+    <div className="w-full flex flex-col items-center px-4 sm:px-6 lg:px-8">
+      <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-6">
+        <div className="relative w-24 h-24 sm:w-32 sm:h-32 rounded-full">
+          <div className="flex items-center justify-center bg-[#C4C4C424] shadow-lg p-2 w-full h-full rounded-full">
+            {selectedImage ? (
+              <Image
+                src={selectedImage}
+                alt="Profile"
+                layout="fill"
+                className="object-cover rounded-full"
+              />
+            ) : (
+              <Image
+                src="/Images/camera.png"
+                alt="Notification Bing"
+                width={20}
+                height={20}
+              />
+            )}
           </div>
-          <input
-            type="file"
-            ref={fileInputRef}
-            onChange={handleImageSelect}
-            accept="image/*"
-            className="hidden"
-          />
-          <div>
+        </div>
+        <input
+          type="file"
+          ref={fileInputRef}
+          onChange={handleImageSelect}
+          accept="image/*"
+          className="hidden"
+        />
+        <button
+          className="text-sm text-white bg-primaryBlue px-4 sm:px-6 py-2 rounded"
+          onClick={handleButtonClick}
+          disabled={imageLoading}
+        >
+          {imageLoading ? <Spinner /> : "Update Profile Image"}
+        </button>
+      </div>
+      <div className="w-full max-w-4xl mt-6">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="space-y-6"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-1 gap-6">
+            <TalentDynamicForm
+              type="select"
+              name="gender"
+              label="Gender"
+              control={control}
+              options={[
+                { value: "Male", label: "Male" },
+                { value: "Female", label: "Female" },
+              ]}
+              required
+              className="w-full"
+            />
+            <TalentDynamicForm
+              type="date"
+              name="dateofbirth"
+              label="Date of Birth"
+              control={control}
+              className="w-full"
+              required
+            />
+            <TalentDynamicForm
+              type="select"
+              name="country"
+              label="Country"
+              control={control}
+              defaultOption="Nigeria"
+              options={[{ value: "Nigeria", label: "Nigeria" }]}
+              className="w-full"
+              required
+            />
+            <TalentDynamicForm
+              type="text"
+              name="city"
+              label="City"
+              control={control}
+              required
+              className="w-full"
+            />
+            <TalentDynamicForm
+              type="text"
+              name="state"
+              label="State"
+              control={control}
+              required
+              className="w-full"
+            />
+            <TalentDynamicForm
+              type="text"
+              name="address"
+              label="Street Address"
+              control={control}
+              required
+              className="w-full"
+            />
+          </div>
+
+          <div className="flex justify-center">
             <button
-              className="text-sm text-white bg-primaryBlue px-6 py-2 rounded"
-              onClick={handleButtonClick}
-              disabled={imageLoading}
+              type="submit"
+              className="text-sm text-white bg-[#3377FF] font-normal leading-6 w-full max-w-xs sm:max-w-sm lg:max-w-md rounded h-14 transition hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377FF]"
             >
-              {imageLoading ? <Spinner /> : "Update Profile Image"}
+              Next
             </button>
           </div>
-        </div>
-        <div className="w-full wmax mx-auto p-6">
-          <form
-            onSubmit={handleSubmit(onSubmit)}
-            className="flex flex-col justify-center items-center gap-12"
-          >
-            <div className="w-full flex flex-co flex-row flex-wrap justify-center justify-centr items-center gap-12 spce-y-4">
-              <TalentDynamicForm
-                type="select"
-                name="gender"
-                label="Gender"
-                control={control}
-                options={[
-                  { value: "Male", label: "Male" },
-                  { value: "Female", label: "Female" },
-                ]}
-                required
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-              />
-              <TalentDynamicForm
-                type="date"
-                name="dateofbirth"
-                label="Date of Birth"
-                control={control}
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-                required
-              />
-              <TalentDynamicForm
-                type="select"
-                name="country"
-                label="Country"
-                control={control}
-                defaultOption="Nigeria"
-                options={[{ value: "Nigeria", label: "Nigeria" }]}
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-                required
-              />
-              <TalentDynamicForm
-                type="text"
-                name="city"
-                label="City"
-                control={control}
-                required
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-              />
-              <TalentDynamicForm
-                type="text"
-                name="state"
-                label="State"
-                control={control}
-                required
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-              />
-              <TalentDynamicForm
-                type="text"
-                name="address"
-                label="Address"
-                control={control}
-                required
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-              />
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                className="text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[10rem] md:w-[15rem] lg:w-[30rem] rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff]"
-              >
-                Next
-              </button>
-            </div>
-          </form>
-        </div>
+        </form>
       </div>
     </div>
   );

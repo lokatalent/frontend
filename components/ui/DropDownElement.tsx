@@ -11,11 +11,12 @@ import { setBookingService } from "@/store/profile/bookingSlice";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { CiSearch } from "react-icons/ci";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 
 function DropDownElement() {
   const router = useRouter();
   const dispatch = useDispatch();
+  const allAvailableServices = useSelector((state: any) => state.booking?.allServices);
   const [selectedService, setSelectedService] = useState("");
 
   const handleServiceChange = (value: string) => {
@@ -41,40 +42,14 @@ function DropDownElement() {
           </SelectTrigger>
           <SelectContent className="max-w-[320px] sm:max-w-md">
             <SelectGroup>
-              <SelectItem value="cleaning">
-                <div className=" text-primaryBlue my-2 p-2">
-                  <p className="font-semibold ">Indoor Cleaning Services</p>
-                  <p className="font-light">
-                    Professional cleaning of homes or offices, ensuring spotless
-                    and organized interiors.
-                  </p>
-                </div>
-              </SelectItem>
-              <SelectItem value="driving">
-                <div className=" text-primaryBlue my-2 p-2">
-                  <p className="font-semibold ">Driving</p>
-                  <p className="font-light">
-                    Reliable and safe transportation services for individuals or
-                    goods.
-                  </p>
-                </div>
-              </SelectItem>
-              <SelectItem value="plumbing">
-                <div className=" text-primaryBlue my-2 p-2">
-                  <p className="font-semibold ">Plumbing</p>
-                  <p className="font-light">
-                    Skilled plumbers ready to fix leaks, clogs, and more
-                  </p>
-                </div>
-              </SelectItem>
-              <SelectItem value="cooking">
-                <div className=" text-primaryBlue my-2 p-2">
-                  <p className="font-semibold ">Cooking</p>
-                  <p className="font-light">
-                    Skilled chefs that can help you prepare very tasty meals
-                  </p>
-                </div>
-              </SelectItem>
+              {allAvailableServices.map((service: object) => (
+                <SelectItem value={service?.service_type} key={service?.id}>
+                  <div className=" text-primaryBlue my-2 p-2">
+                    <p className="font-semibold capitalize">{service?.service_type}</p>
+                    <p className="font-light">{service?.service_desc}</p>
+                  </div>
+                </SelectItem>
+              ))}
             </SelectGroup>
           </SelectContent>
         </Select>

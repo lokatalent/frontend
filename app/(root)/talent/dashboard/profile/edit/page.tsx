@@ -12,10 +12,10 @@ function Edit() {
   const router = useRouter();
 
   return (
-    <div className="">
-      <section className="bg-primaryBg bg-red relative">
-        <div className="self-start cursor-pointer absolute top-[10%] sm:top-[1%] md:top-[1%] lg:top-[10%] left-[3%] h-12 w-12">
-          <div onClick={() => router.back()}>
+    <div className="min-h-screen flex flex-col items-center justify-center px-4">
+      <section className="w-full max-w-[500px] mx-auto mt-6 flex items-center">
+        <div className="cursor-pointer flex items-center">
+          <div onClick={() => router.back()} className="p-2">
             <svg
               width="35"
               height="35"
@@ -33,15 +33,15 @@ function Edit() {
             </svg>
           </div>
         </div>
-      </section>
-      <div className="space-y-8">
-        <div className="space-y-3 text-center">
+        <div className="flex-1 text-center">
           <p className="text-black text-2xl font-bold">Set Up Your Profile</p>
-          <p className="text-gray-500  text-center">
-            Please enter your details to proceed
-          </p>
         </div>
-        <div className="flex w-full gap-4 items-center flex-col justify-center">
+      </section>
+      <div className="w-full max-w-[500px] mx-auto space-y-6 mt-6 sm:mt-8">
+        <p className="text-gray-500 text-sm sm:text-base text-center">
+          Please enter your details to proceed
+        </p>
+        <div className="flex flex-col items-center w-full">
           <ProfileStep />
         </div>
       </div>

@@ -72,8 +72,9 @@ const TalentDynamicForm: React.FC<FormFieldProps> = ({
               aria-invalid={!!error}
               aria-required={required}
               aria-describedby={`${name}-error`}
+              {...props}
             >
-              <option value="">{placeholder || "Select an option"}</option>
+              <option value={placeholder || ""}>{placeholder || "Select an option"}</option>
               {options.length > 0 ? (
                 options.map(({ value, label }) => (
                   <option key={value} value={value}>
@@ -120,6 +121,7 @@ const TalentDynamicForm: React.FC<FormFieldProps> = ({
               aria-invalid={!!error}
               aria-required={required}
               min={1}
+              {...props}
             />
             {error && <FormFieldError error={{ message: error.message }} />}
           </div>
@@ -128,7 +130,7 @@ const TalentDynamicForm: React.FC<FormFieldProps> = ({
   };
 
   return (
-    <div className={cn("w-full", className)}>
+    <div className="w-full">
       <label
         htmlFor={name}
         className="block text-sm font-medium mb-2 text-gray-700"

@@ -377,7 +377,7 @@ const Profiles = () => {
       {!loading ? (
         <PageSpinner />
       ) : (
-        <div className="ml-8 h-screen sm:ml-0">
+        <div className="md:ml-8 h-screen sm:ml-0">
           <div className="h-[10rem] mb-24 w-full bg-gradient-to-r to-[#CCD6B0] from-[#6B705C]">
             <div className="bg-white translate-y-1/2 w-[80%] mx-auto rounded-md p-6 flex justify-between items-center">
               <div className="flex items-center space-x-6">

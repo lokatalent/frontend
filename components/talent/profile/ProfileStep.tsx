@@ -134,10 +134,10 @@ export default function ProfileStep() {
         display: "flex",
         flexDirection: "column",
         justifyContent: "center",
-        alignItems: "center",
+        alignItems: "1rem",
       }}
     >
-      <Stepper activeStep={activeStep} className="w-[44rem]">
+      <Stepper activeStep={activeStep} className="w-full max-w-[90%] sm:max-w-[40rem]">
         {steps.map((label, index) => {
           const stepProps: { completed?: boolean } = {};
           const labelProps: { optional?: React.ReactNode; className?: string } =
@@ -149,7 +149,7 @@ export default function ProfileStep() {
               : "text-green-500";
 
           return (
-            <Step key={label} {...stepProps} className="my-10">
+            <Step key={label} {...stepProps} className="my-6">
               <StepLabel {...labelProps}></StepLabel>
             </Step>
           );
@@ -157,13 +157,13 @@ export default function ProfileStep() {
       </Stepper>
       {activeStep === steps.length ? (
         <React.Fragment>
-          <Typography sx={{ mt: 2, mb: 1 }}>
+          <Typography sx={{ mt: 2, mb: 1, textAlign: "center" }}>
             All steps completed - you&apos;re finished
           </Typography>
         </React.Fragment>
       ) : (
         <React.Fragment>
-          <Box>
+          <Box className="w-full max-w-[90%] sm:max-w-[35rem]">
             {activeStep === -1 && (
               <div className="space-y-4">
                 {steps1.map((step) => {
@@ -172,8 +172,8 @@ export default function ProfileStep() {
                       key={step.id}
                       onClick={handleNext}
                       className={cn(
-                        "w-full p-4 flex items-center justify-between ",
-                        "rounded-lg transition-colors duration-200 bg-gray-100 hover:bg-gray-200 text-gray-700 w-[30rem]"
+                        "w-full p-4 flex items-center justify-between rounded-lg transition-colors duration-200",
+                        "bg-gray-100 hover:bg-gray-200 text-gray-700"
                       )}
                     >
                       <span className="text-sm font-medium">{step.title}</span>
@@ -197,7 +197,7 @@ export default function ProfileStep() {
 
                 <Dialog open={isFinished} onOpenChange={resetDialog}>
                   <DialogContent
-                    className="w-full p-[3rem] sm:max-w-lg lg:max-w-[25rem]"
+                    className="w-full p-6 sm:max-w-md lg:max-w-[25rem]"
                     aria-describedby={undefined}
                   >
                     <DialogHeader>
@@ -206,10 +206,10 @@ export default function ProfileStep() {
                       </DialogTitle>
                     </DialogHeader>
                     <div className="w-full space-y-3">
-                      <div className="w-full text-center mt-2 flex-center">
+                      <div className="w-full text-center mt-2 flex justify-center">
                         <IoIosSend color="#3377FF" size={50} />
                       </div>
-                      <p className="w-full text-center flex-center">
+                      <p className="w-full text-center">
                       Your profile setup is complete! You can now start accepting bookings
                       </p>
                     </div>
@@ -217,7 +217,7 @@ export default function ProfileStep() {
                       <DialogClose>
                         <Button
                           type="button"
-                          className="px-24 py-6 flex-center"
+                          className="px-12 py-3"
                           onClick={finishedStepHandler}
                         >
                           Done

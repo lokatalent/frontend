@@ -129,13 +129,13 @@ const EditAvailability: React.FC<EditAvailabilityProps> = ({
   }) => (
     <div className="flex flex-col w-full">
       <div
-        className={`flex items-center justify-evenly w-full rounded-md border 
+        className={`flex items-center justify-between w-full rounded-md border px-1 py-2
         ${
           errors[`${day}-${field}`] || errors[`${day}-range`]
             ? "border-red-500"
             : "border-gray-300"
         } 
-        ${disabled ? "bg-gray-100" : ""}`}
+        ${disabled ? "bg-gray-100 cursor-not-allowed" : "bg-white"}`}
       >
         <span className="text-sm text-gray-500">
           {field === "from" ? "From" : "To"}
@@ -145,7 +145,7 @@ const EditAvailability: React.FC<EditAvailabilityProps> = ({
           value={value === DEFAULT_TIME ? "" : value}
           onChange={(e) => handleTimeChange(day, field, e.target.value)}
           disabled={disabled}
-          className="w-full px-3 py-2 outline-none bg-transparent"
+          className="w-full min-w-[90px] sm:min-w-[120px] px-2 py-2 outline-none bg-transparent text-gray-800"
           required={!disabled}
         />
       </div>
@@ -162,19 +162,19 @@ const EditAvailability: React.FC<EditAvailabilityProps> = ({
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger onClick={() => setIsOpen(true)}>
         {trigger ? (
-          <p className="underline">Set Availability*</p>
+          <p className="text-lg font-bold text-blue-600 underline">Set Availability*</p>
         ) : (
           <FaPen color="#3377FF" size={10} />
         )}
       </DialogTrigger>
 
-      <DialogContent className="w-full p-[3rem] max-w-[22rem] sm:max-w-[33rem] lg:max-w-[43rem] max-h-[90vh] overflow-y-auto">
+      <DialogContent className="w-full p-6 sm:p-10 max-w-lg sm:max-w-xl lg:max-w-2xl h-auto max-h-[80vh] sm:max-h-[85vh] overflow-y-auto rounded-md shadow-lg">
         <DialogHeader>
-          <DialogTitle className="text-center">Edit Availability</DialogTitle>
-          <p className="text-[14px] text-center text-[#6C727F]">
+          <DialogTitle className="text-center text-lg font-semibold">Edit Availability</DialogTitle>
+          <p className="text-sm text-center text-gray-600">
             You will still be able to edit your availability in your profile
           </p>
-          <p className="text-[14px] text-center text-[#6C727F]">
+          <p className="text-sm text-center text-gray-600">
             Jobs will be strictly allocated to you based on your available time
           </p>
         </DialogHeader>
@@ -183,62 +183,60 @@ const EditAvailability: React.FC<EditAvailabilityProps> = ({
           {Object.entries(availability).map(([day, dayData]) => (
             <div
               key={day}
-              className="flex flex-col sm:flex-col sm:items-center justify-between space-y-2 sm:space-y-0 sm:space-x-4 py-2 px-4"
+              className="flex flex-col sm:flex-row sm:items-center justify-between space-y-3 sm:space-y-0 sm:space-x-4 py-3 px-4"
             >
-              <div className="flex flex-row sm:items-cente  ustify-between w-full">
-                <div className="flex items-center space-x-4 mr-4">
-                  <div className="relative inline-block w-12 h-6">
+              <div className="flex items-center space-x-4">
+                <div className="relative inline-block w-12 h-6">
+                  <div
+                    className={`w-12 h-6 flex items-center rounded-full cursor-pointer transition-colors duration-200 
+                    ${dayData.isActive ? "bg-blue-500" : "bg-gray-300"}`}
+                    onClick={() => handleToggleDay(day)}
+                  >
                     <div
-                      className={`w-12 h-6 flex items-center rounded-full cursor-pointer transition-colors duration-200 
-                      ${dayData.isActive ? "bg-blue-500" : "bg-gray-300"}`}
-                      onClick={() => handleToggleDay(day)}
-                    >
-                      <div
-                        className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-200 
-                        ${
-                          dayData.isActive ? "translate-x-6" : "translate-x-0"
-                        }`}
-                      />
-                    </div>
+                      className={`bg-white w-4 h-4 rounded-full shadow-md transform transition-transform duration-200 
+                      ${
+                        dayData.isActive ? "translate-x-6" : "translate-x-0"
+                      }`}
+                    />
                   </div>
-                  <span className="text-gray-700 font-medium w-20">{day}</span>
                 </div>
-
-                {dayData.isActive ? (
-                  <div className="flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4 flex-1">
-                    <TimeInput
-                      day={day}
-                      field="from"
-                      value={dayData.from}
-                      disabled={!dayData.isActive}
-                    />
-                    <TimeInput
-                      day={day}
-                      field="to"
-                      value={dayData.to}
-                      disabled={!dayData.isActive}
-                    />
-                  </div>
-                ) : (
-                  <div className="flex-1 py-2 px-4 bg-gray-100 text-gray-500 rounded-md">
-                    Closed
-                  </div>
-                )}
+                <span className="text-gray-700 font-medium w-20">{day}</span>
               </div>
+
+              {dayData.isActive ? (
+                <div className="flex flex-row justify-between space-x-4 w-full">
+                  <TimeInput
+                    day={day}
+                    field="from"
+                    value={dayData.from}
+                    disabled={!dayData.isActive}
+                  />
+                  <TimeInput
+                    day={day}
+                    field="to"
+                    value={dayData.to}
+                    disabled={!dayData.isActive}
+                  />
+                </div>
+              ) : (
+                <div className="py-2 px-4 bg-gray-100 text-gray-500 rounded-md text-center sm:text-left w-full sm:auto">
+                  Closed
+                </div>
+              )}
 
               {errors[`${day}-range`] && (
                 // <div className="text-xs text-blue-500 mt-1 block">
                 //   {errors[`${day}-range`]}
                 // </div>
-                <div className=''>
+                <div className="text-sm text-blue-500">
                   <FormFieldError error={{ message: errors[`${day}-range`] }} />
                 </div>
               )}
             </div>
           ))}
 
-          <div className="flex items-center gap-3 my-4">
-            <p>Available to work now</p>
+          <div className="flex flex-col sm:flex-row items-start sm:items-center gap-3 my-4">
+            <p className="font-medium text-gray-700">Available to work now</p>
             <div className="flex items-center space-x-4">
               {["Yes", "No"].map((option) => (
                 <div key={option} className="flex items-center">
@@ -264,12 +262,12 @@ const EditAvailability: React.FC<EditAvailabilityProps> = ({
             <label className="block text-sm font-medium mb-2">
               Repeat (Optional)
             </label>
-            <select className="flex w-full rounded-md bg-white border border-gray-300 h-[3rem] px-3 py-1 text-sm shadow-sm transition-colors">
+            <select className="w-full rounded-md bg-white border border-gray-300 h-12 px-3 text-sm shadow-sm focus:ring-blue-500 focus:border-blue-500">
               {REPEAT_OPTIONS.map((option) => (
                 <option
                   key={option}
                   value={option}
-                  className="bold leading-none hover:font-bold hover:text-[#3377FF] hover:bg-[#3377FF3D] rounded-[7px]"
+                  className="hover:font-bold hover:text-blue-500 hover:bg-blue-100 rounded-md"
                 >
                   {option}
                 </option>
@@ -279,7 +277,7 @@ const EditAvailability: React.FC<EditAvailabilityProps> = ({
 
           <div className="flex justify-center mt-6">
             <button
-              className="bg-blue-500 w-[50%] mx-auto hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md"
+              className="bg-blue-500 w-[50%] sm:w-[40%] hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-md transition"
               onClick={handleDone}
             >
               Done

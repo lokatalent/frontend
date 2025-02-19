@@ -43,8 +43,17 @@ const schema = z.object({
 });
 
 function Qualification({ setActiveStep, handleSkip }: any) {
+  const userEducationDetails = useSelector((state: any) => state?.talentProfile?.educationProfile);
+  const defaultFormValues = {
+    university: userEducationDetails?.institute || "",
+    degree: userEducationDetails?.degree || "",
+    field: userEducationDetails?.discipline || "",
+    startdate: userEducationDetails?.start?.split("T")[0] || "",
+    enddate: userEducationDetails?.enddate?.split("T")[0] || "",
+  };
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(schema),
+    values: defaultFormValues,
   });
   const dispatch = useDispatch();
   const router = useRouter();
@@ -88,6 +97,17 @@ function Qualification({ setActiveStep, handleSkip }: any) {
       start: data.startdate,
       finish: data.enddate,
     };
+
+    if (
+      (temp.institute === defaultFormValues.university) &&
+      (temp.degree === defaultFormValues.degree) &&
+      (temp.discipline === defaultFormValues.field) &&
+      (temp.start === defaultFormValues.startdate) &&
+      (temp.finish === defaultFormValues.enddate)
+    ){
+      setIsFinished(true);
+      return;
+    }
     const response = await updateEducationProfile(temp);
     if (!response.error) {
       // success
@@ -123,109 +143,101 @@ function Qualification({ setActiveStep, handleSkip }: any) {
   };
 
   return (
-    <div className="">
-      <div className="flex gap-4 items-center flex-col justify-center">
-        <div className="w-full wmax mx-auto p-6">
-          <form
-            onSubmit={handleSubmit(onSubmit, onError)}
-            className="w-full flex flex-col justify-center items-center gap-12"
-          >
-            <div className="w-full flex flex-co flex-row flex-wrap justify-center justify-centr items-center gap-12 spce-y-4">
-              <TalentDynamicForm
-                type="select"
-                name="university"
-                label="Select University "
-                control={control}
-                options={[
-                  { value: "OAU", label: "OAU" },
-                  { value: "UI", label: "UI" },
-                  { value: "Ibadan", label: "Ibadan" },
-                ]}
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-              />
-              <TalentDynamicForm
-                type="select"
-                name="degree"
-                label="Highest Degree Qualification"
-                control={control}
-                options={[
-                  { value: "MSE", label: "MSE" },
-                  { value: "B.Sc", label: "B.Sc" },
-                ]}
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-              />
-              <TalentDynamicForm
-                type="select"
-                name="field"
-                label="Field of Study"
-                control={control}
-                options={[
-                  { value: "Medicine", label: "Medicine" },
-                  { value: "Nursing", label: "PostGraduate" },
-                  { value: "Accounting", label: "Accounting" },
-                ]}
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-              />
-              <TalentDynamicForm
-                type="date"
-                name="startdate"
-                label="Start Date"
-                control={control}
-                className="w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[25rem]"
-              />
-              <TalentDynamicForm
-                type="date"
-                name="enddate"
-                label="End Date or Expected End Date "
-                control={control}
-                className="w-[53rem]"
-              />
-              <TalentDynamicForm
-                type="file"
-                name="certificate"
-                label="Upload Your Certifications"
-                control={control}
-                className="w-[53rem]"
-              />
-            </div>
+    <div className="w-full flex justify-center px-4 sm:px-6 lg:px-8">
+      <div className="w-full max-w-4xl p-6">
+        <form
+          onSubmit={handleSubmit(onSubmit, onError)}
+          className="w-full flex flex-col justify-center items-center gap-8"
+        >
+          <div className="w-full grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <TalentDynamicForm
+              type="select"
+              name="university"
+              label="Select University "
+              control={control}
+              options={[
+                { value: "OAU", label: "OAU" },
+                { value: "UI", label: "UI" },
+                { value: "Ibadan", label: "Ibadan" },
+              ]}
+              className="w-full"
+            />
+            <TalentDynamicForm
+              type="select"
+              name="degree"
+              label="Highest Degree Qualification"
+              control={control}
+              options={[
+                { value: "MSE", label: "MSE" },
+                { value: "B.Sc", label: "B.Sc" },
+              ]}
+              className="w-full"
+            />
+            <TalentDynamicForm
+              type="select"
+              name="field"
+              label="Field of Study"
+              control={control}
+              options={[
+                { value: "Medicine", label: "Medicine" },
+                { value: "Nursing", label: "PostGraduate" },
+                { value: "Accounting", label: "Accounting" },
+              ]}
+              className="w-full"
+            />
+            <TalentDynamicForm
+              type="date"
+              name="startdate"
+              label="Start Date"
+              control={control}
+              className="w-full"
+            />
+            <TalentDynamicForm
+              type="date"
+              name="enddate"
+              label="End Date or Expected End Date "
+              control={control}
+              className="w-full"
+            />
+            <TalentDynamicForm
+              type="file"
+              name="certificate"
+              label="Upload Your Certifications"
+              control={control}
+              className="w-full"
+            />
+          </div>
 
-            <div className="flex flex-col sm:flex-row sm:gap-6">
-              <Button variant="outline" onClick={skipStep} className="h-14">
-                Skip this step
-              </Button>
-              <button
-                type="submit"
-                className="text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[10rem] md:w-[15rem] lg:w-[30rem] rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff]"
-              >
-                Submit
-              </button>
-            </div>
-          </form>
-        </div>
+          <div className="flex flex-col sm:flex-row gap-4 w-full justify-center">
+            <Button variant="outline" onClick={skipStep} className="h-14 w-full sm:w-auto">
+              Skip this step
+            </Button>
+            <button
+              type="submit"
+              className="text-sm text-white bg-[#3377FF] font-normal leading-6 w-full sm:w-[15rem] lg:w-[20rem] rounded h-14 transition hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff]"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
       </div>
-
       <Dialog open={isFinished} onOpenChange={resetDialog}>
         <DialogContent
-          className="w-full p-[3rem] sm:max-w-lg lg:max-w-[25rem]"
+          className="w-full p-6 sm:max-w-lg lg:max-w-md"
           aria-describedby={undefined}
         >
           <DialogHeader>
             <DialogTitle className="text-center">Changes Saved</DialogTitle>
           </DialogHeader>
-          <div className="w-full space-y-3">
-            <div className="w-full text-center mt-2 flex-center">
-              <IoIosSend color="#3377FF" size={50} />
-            </div>
-            <p className="w-full text-center flex-center">
-              Your profile setup is complete! You can now start accepting
-              bookings
-            </p>
+          <div className="w-full space-y-4 text-center">
+            <IoIosSend color="#3377FF" size={50} />
+            <p>Your profile setup is complete! You can now start accepting bookings.</p>
           </div>
           <div className="text-center mt-4">
             <DialogClose>
               <Button
                 type="button"
-                className="px-24 py-6 flex-center"
+                className="w-full sm:w-auto px-10 py-4"
                 onClick={finishedStepHandler}
               >
                 Done

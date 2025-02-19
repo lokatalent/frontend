@@ -3,9 +3,11 @@ import React from "react";
 import { Button } from "@/components/ui/button";
 import { FaArrowRight } from "react-icons/fa6";
 import { useRouter } from "next/navigation";
+import { useSelector } from "react-redux";
 
 const BookingCard = ({ bookingPage }: { bookingPage?: boolean }) => {
   const router = useRouter();
+  const user = useSelector((state: any) => state.auth.user);
   return (
     <div
       className={`w-full ${
@@ -35,7 +37,11 @@ const BookingCard = ({ bookingPage }: { bookingPage?: boolean }) => {
               Coming soon!
             </span>
             <Button
-              // onClick={() => router.push("/dashboard/bookings/select-service")}
+              onClick={
+                user?.role?.startsWith("admin") 
+                ? () => router.push("/dashboard/bookings/select-service")
+                : () => dispatch(showToast({status: "success", message: "Coming soon!"}))
+              }
               size={"lg"}
               className={`bg-white text-primaryBlue w-full h-14 max-w-xs hover:bg-gray-50`}
             >

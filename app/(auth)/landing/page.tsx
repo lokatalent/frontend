@@ -20,35 +20,22 @@ export default function Home() {
     const response = await getServices();
     if (!response.error) {
       setLoading(false);
-      // ask Paul to modify this object to add the name and value
       dispatch(setAllServices(response.data));
     } else {
       setLoading(false);
-      // return dispatch(
-      //   showToast({
-      //     status: "error",
-      //     message: response.data.message,
-      //   })
-      // );
     }
   };
 
   useEffect(() => {
     fetchServices()
   }, [])
-  
   return (
     <div>
-     
-      <div>
-        <Hero />
-        <Preview />
-        <HowItWorks />
-        <ApplyHere />
-       
-        <Footer />
-      </div>
-      
+      <Hero />
+      <Preview />
+      <HowItWorks />
+      <ApplyHere />
+      <Footer />
     </div>
   );
 }

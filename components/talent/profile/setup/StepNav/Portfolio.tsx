@@ -5,7 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 
 import { createService, getServiceType } from "@/services/services";
-import { capitalize, errorHandler, handleUnauthorizedError } from "@/lib/utils";
+import { capitalize, errorHandler, handleUnauthorizedError, compareAvailability } from "@/lib/utils";
 import { showToast } from "@/store/auth/toastSlice";
 import { setService } from "@/store/talent/service/TalentServiceSlice";
 import EditAvailability from "../../editing/EditAvailablity";
@@ -60,28 +60,60 @@ function extractCityStateAndCountry(address: string) {
   }
 }
 
-// Example usage:
-const address = "6, Broad street, Lagos,Lagos, Nigeria,";
-const result = extractCityStateAndCountry(address);
-console.log(result); // Outputs: Lagos, Nigeria
-
 function Portfolio({ setActiveStep }: any) {
   const userAddress = useSelector(
     (state: RootStateAuth) => state.auth.user.address
   );
+  const userLatestService = useSelector((state: any) => state.service.service);
   const router = useRouter();
   const [error, setError] = useState<string[] | null | string>("");
-  
-
   const initialAvailability = {
-    Monday: { isActive: true, from: "09:00", to: "17:00" },
-    Tuesday: { isActive: true, from: "09:00", to: "17:00" },
-    Wednesday: { isActive: false, from: "", to: "" },
-    Thursday: { isActive: true, from: "10:00", to: "16:00" },
-    Friday: { isActive: true, from: "09:00", to: "15:00" },
-    Saturday: { isActive: false, from: "", to: "" },
-    Sunday: { isActive: false, from: "", to: "" },
+    Monday: {
+      isActive: userLatestService?.availability?.monday?.start && userLatestService?.availability?.monday.end ? true : false,
+      from: userLatestService?.availability?.monday.start || "09:00",
+      to: userLatestService?.availability?.monday.end || "17:00",
+    },
+    Tuesday: {
+      isActive: userLatestService?.availability?.tuesday.start && userLatestService?.availability?.tuesday.end ? true : false,
+      from: userLatestService?.availability?.tuesday.start || "09:00",
+      to: userLatestService?.availability?.tuesday.end || "17:00",
+    },
+    Wednesday: {
+      isActive: userLatestService?.availability?.wednesday.start && userLatestService?.availability?.wednesday.end ? true : false,
+      from: userLatestService?.availability?.wednesday.start || "09:00",
+      to: userLatestService?.availability?.wednesday.end || "17:00",
+    },
+    Thursday: {
+      isActive: userLatestService?.availability?.thursday.start && userLatestService?.availability?.thursday.end ? true : false,
+      from: userLatestService?.availability?.thursday.start || "09:00",
+      to: userLatestService?.availability?.thursday.end || "17:00",
+    },
+    Friday: {
+      isActive: userLatestService?.availability?.friday.start && userLatestService?.availability?.friday.end ? true : false,
+      from: userLatestService?.availability?.friday.start || "09:00",
+      to: userLatestService?.availability?.friday.end || "17:00",
+    },
+    Saturday: {
+      isActive: userLatestService?.availability?.saturday.start && userLatestService?.availability?.saturday.end ? true : false,
+      from: userLatestService?.availability?.saturday.start || "09:00",
+      to: userLatestService?.availability?.saturday.end || "17:00",
+    },
+    Sunday: {
+      isActive: userLatestService?.availability?.sunday.start && userLatestService?.availability?.sunday.end ? true : false,
+      from: userLatestService?.availability?.sunday.start || "09:00",
+      to: userLatestService?.availability?.sunday.end || "17:00",
+    },
   };
+  const defaultFormValues = {
+    service: userLatestService?.service_type || "",
+    experience: `${userLatestService?.experience_years}` || "",
+    service_rate: `${userLatestService?.rate_per_hour}` || "",
+    service_desc: userLatestService?.service_desc || "",
+    address: userLatestService?.address.split(",")?.slice(0, -3)?.join(", ") || "",
+    city: userLatestService?.address?.split(",")?.at(-3) || "",
+    state: userLatestService?.address?.split(",")?.at(-2),
+    country: "Nigeria",
+  }
 
   // State to manage availability
   const [availability, setAvailability] = useState(initialAvailability);
@@ -101,7 +133,7 @@ function Portfolio({ setActiveStep }: any) {
 
         const newResponse = response.data.map((type: any) => ({
           value: type.service_type,
-          label: capitalize(type.service_type),
+           label: capitalize(type.service_type),
         }));
    
         setServiceType(newResponse);
@@ -115,11 +147,10 @@ function Portfolio({ setActiveStep }: any) {
   const dispatch = useDispatch();
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(schema),
+    values: defaultFormValues,
   });
 
   const onSubmit = async (data: any) => {
-
- ;
     let temp = {
       // id: id,
       // user_id: id,
@@ -158,8 +189,20 @@ function Portfolio({ setActiveStep }: any) {
         },
       },
       // address: data.address,
-      address: `${data.address}, ${data.city},${data.state}, ${data.country}`,
+      address: `${data.address}, ${data.city}, ${data.state}, ${data.country}`,
     };
+
+    if (
+      (`${temp.experience_years}` === defaultFormValues.experience) &&
+      (temp.service_type === defaultFormValues.service) &&
+      (temp.service_desc === defaultFormValues.service_desc) &&
+      (`${temp.rate_per_hour}` === defaultFormValues.service_rate) &&
+      (temp.address === `${defaultFormValues.address}, ${defaultFormValues.city}, ${defaultFormValues.state}, ${defaultFormValues.country}`) &&
+      compareAvailability(availability, initialAvailability)
+    ) {
+      setActiveStep(2);
+      return;
+    }
     const response = await createService(temp);
     if (!response.error) {
       // success
@@ -186,117 +229,97 @@ function Portfolio({ setActiveStep }: any) {
   };
 
   return (
-    <div className="">
-      <div className="flex gap-4 items-center flex-col justify-center">
-        <div className="w-full mx-auto p-6">
-          <form
-            onSubmit={handleSubmit(onSubmit, onError)}
-            className="w-full flex flex-col justify-center items-center gap-12"
-          >
-            <div className="max-w-3xl mx-auto grid grid-cols-2 gap-5">
-              <TalentDynamicForm
-                type="select"
-                name="service"
-                label="Service Category"
-                control={control}
-                options={serviceType}
-            
-                required
-                className=""
-              />
-
-              <TalentDynamicForm
-                type="number"
-                name="experience"
-                label="Years of Experience"
-                control={control}
-                required
-                className=""
-              />
-              <TalentDynamicForm
-                type="text"
-                name="service_rate"
-                label="Service rate per hour"
-                control={control}
-                required
-                className=""
-              />
-
-              <TalentDynamicForm
-                type="text"
-                name="service_desc"
-                label="Service Description"
-                control={control}
-                required
-                className=""
-              />
-              <TalentDynamicForm
-                type="select"
-                name="country"
-                label="Country"
-                control={control}
-                defaultOption="Nigeria"
-                options={[{ value: "Nigeria", label: "Nigeria" }]}
-                className=""
-                required
-              />
-              <TalentDynamicForm
-                type="text"
-                name="city"
-                label="City"
-                control={control}
-                required
-                className=""
-              />
-              <TalentDynamicForm
-                type="text"
-                name="state"
-                label="State"
-                control={control}
-                required
-                className=""
-              />
-              <TalentDynamicForm
-                type="text"
-                name="address"
-                label="Address"
-                control={control}
-                required
-                className=""
-              />
-
-              {/* <TalentDynamicForm
-                    type="file"
-                    name="images"
-                    label="Upload Your Images"
-                    control={control}
-                    required
-                    className="w-[53rem]"
-                    
-                  /> */}
-
-              {/* <div className="flex-start w-[53rem]">
-                <p className="underline">Set Service Radius</p>
-              </div> */}
-              <div className="flex-start w-[53rem]">
-                <EditAvailability
-                  trigger={true}
-                  initialAvailability={availability}
-                  onSave={handleSaveAvailability}
-                />
-              </div>
-            </div>
-
-            <div>
-              <button
-                type="submit"
-                className="text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[10rem] md:w-[15rem] lg:w-[30rem] rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff]"
-              >
-                Next
-              </button>
-            </div>
-          </form>
-        </div>
+    <div className="w-full flex flex-col items-center px-4 sm:px-6 lg:px-8">
+      <div className="w-full mx-w-4xl p-6">
+        <form
+          onSubmit={handleSubmit(onSubmit, onError)}
+          className="space-y-6"
+        >
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+            <TalentDynamicForm
+              type="select"
+              name="service"
+              label="Service Category"
+              control={control}
+              options={serviceType}
+              required
+              className="w-full overflow-y-auto"
+            />
+            <TalentDynamicForm
+              type="number"
+              name="experience"
+              label="Years of Experience"
+              control={control}
+              required
+              className="w-full"
+            />
+            <TalentDynamicForm
+              type="text"
+              name="service_rate"
+              label="Service rate per hour"
+              control={control}
+              required
+              className="w-full"
+            />
+            <TalentDynamicForm
+              type="text"
+              name="service_desc"
+              label="Service Description"
+              control={control}
+              required
+              className="w-full"
+            />
+            <TalentDynamicForm
+              type="select"
+              name="country"
+              label="Country"
+              control={control}
+              defaultOption="Nigeria"
+              options={[{ value: "Nigeria", label: "Nigeria" }]}
+              className="w-full"
+              required
+            />
+            <TalentDynamicForm
+              type="text"
+              name="city"
+              label="City"
+              control={control}
+              required
+              className="w-full"
+            />
+            <TalentDynamicForm
+              type="text"
+              name="state"
+              label="State"
+              control={control}
+              required
+              className="w-full"
+            />
+            <TalentDynamicForm
+              type="text"
+              name="address"
+              label="Street Address"
+              control={control}
+              required
+              className="w-full"
+            />
+          </div>
+          <div className="flex-justify-center w-full">
+            <EditAvailability
+              trigger={true}
+              initialAvailability={availability}
+              onSave={handleSaveAvailability}
+            />
+          </div>
+          <div className="flex flex-justify-center">
+            <button
+              type="submit"
+              className="text-sm text-[#fff] bg-[#3377FF] font-normal leading-6 w-[10rem] md:w-[15rem] lg:w-[30rem] rounded h-14  transition-normal hover:text-[#3377FF] hover:bg-white hover:border-2 hover:border-[#3377ff]"
+            >
+              Next
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );
