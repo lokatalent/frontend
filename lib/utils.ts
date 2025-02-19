@@ -306,3 +306,67 @@ export const formatDateTime = (date: any) => {
 export const transformSnakeCase = (text: string) => {
   return text.split('_').map(capitalize).join(" ");
 }
+
+export const compareAvailability = (obj1: object, obj2: object): boolean => {
+  if (obj1 === obj2) return true;
+
+  if (obj1 === null || obj2 == null) return false;
+
+  if (
+    (obj1?.Monday?.isActive !== obj2?.Monday?.isActive) &&
+    (obj1?.Monday?.from !== obj2?.Monday?.from) &&
+    (obj1?.Monday?.to !== obj2?.Monday?.to)
+  ){
+    return false;
+  }
+
+  if (
+    (obj1?.Tuesday?.isActive !== obj2?.Tuesday?.isActive) &&
+    (obj1?.Tuesday?.from !== obj2?.Tuesday?.from) &&
+    (obj1?.Tuesday?.to !== obj2?.Tuesday?.to)
+  ){
+    return false;
+  }
+
+  if (
+    (obj1?.Wednesday?.isActive !== obj2?.Wednesday?.isActive) &&
+    (obj1?.Wednesday?.from !== obj2?.Wednesday?.from) &&
+    (obj1?.Wednesday?.to !== obj2?.Wednesday?.to)
+  ){
+    return false;
+  }
+
+  if (
+    (obj1?.Thursday?.isActive !== obj2?.Thursday?.isActive) &&
+    (obj1?.Thursday?.from !== obj2?.Thursday?.from) &&
+    (obj1?.Thursday?.to !== obj2?.Thursday?.to)
+  ){
+    return false;
+  }
+
+  if (
+    (obj1?.Friday?.isActive !== obj2?.Friday?.isActive) &&
+    (obj1?.Friday?.from !== obj2?.Friday?.from) &&
+    (obj1?.Friday?.to !== obj2?.Friday?.to)
+  ){
+    return false;
+  }
+
+  if (
+    (obj1?.Saturday?.isActive !== obj2?.Saturday?.isActive) &&
+    (obj1?.Saturday?.from !== obj2?.Saturday?.from) &&
+    (obj1?.Saturday?.to !== obj2?.Saturday?.to)
+  ){
+    return false;
+  }
+
+  if (
+    (obj1?.Sunday?.isActive !== obj2?.Sunday?.isActive) &&
+    (obj1?.Sunday?.from !== obj2?.Sunday?.from) &&
+    (obj1?.Sunday?.to !== obj2?.Sunday?.to)
+  ){
+    return false;
+  }
+
+  return true;
+}
