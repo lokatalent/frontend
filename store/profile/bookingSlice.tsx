@@ -5,7 +5,7 @@ const initialState = {
   location: "",
   bookingData: {},
   talentData: "",
-  allServices: "",
+  allServices: [],
 };
 
 const bookingSlice = createSlice({
