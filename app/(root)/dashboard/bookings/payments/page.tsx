@@ -22,11 +22,8 @@ import { TbCircleNumber3 } from "react-icons/tb";
 const DashboardPaymentPage = () => {
   // get booking data
   const bookingData = useSelector((state: any) => state.booking.bookingData);
-
   const talentData = useSelector((state: any) => state.booking.talentData);
-
-  const tax = 500;
-
+  const serviceData = useSelector((state: any) => state.booking.allServices.filter((job) => job?.service_type === bookingData?.service_type));
   const [hoursCount, setHoursCount] = useState<any>("");
   const [finalAmount, setFinalAmount] = useState<any>("");
   const [intervalID, setIntervalID] = useState<any>(0);
@@ -37,7 +34,7 @@ const DashboardPaymentPage = () => {
     let result = end[0] - start[0];
     setHoursCount(result);
 
-    let finalAmount = bookingData.total_price + tax;
+    let finalAmount = bookingData.total_price;
     setFinalAmount(finalAmount);
   };
 
@@ -49,7 +46,6 @@ const DashboardPaymentPage = () => {
     setLoading(true);
     const response = await createBooking(bookingData);
     if (!response.error) {
-      console.log("Booking", response.data);
       onMakePayment(response.data.id);
     } else {
       setLoading(false);
@@ -75,7 +71,6 @@ const DashboardPaymentPage = () => {
 
   const paystackFunction = async (code: any, id: any, ref: any) => {
      const PaystackPop = (await import("@paystack/inline-js")).default;
-     console.log(typeof PaystackPop, PaystackPop);
      const popup = new PaystackPop();
      const callbacks = {
         onSuccess: () => {
@@ -101,7 +96,6 @@ const DashboardPaymentPage = () => {
 
     const response = await makePayment(data);
     if (!response.error) {
-      console.log("Initialize Payment", response.data);
       await paystackFunction(response.data.access_code, id, response.data.payment_ref);
     } else {
       setLoading(false);
@@ -136,114 +130,118 @@ const DashboardPaymentPage = () => {
   }, []);
 
   return (
-    // <div>Payments</div>
-    <div className="bg-bgWhite">
-      <div className="flex flex-col justify-center mx-auto">
-        <div className="my-4">
-          <div className="flex flex-row justify-center space-x-4 items-center">
-            <p className="flex flex-row space-x-3 items-center">
-              <span>
-                <FaCircleCheck size={28} style={{ fill: "#3377FF" }} />
-              </span>
-              <span>Location</span>
-            </p>
-            <RxCaretRight size={20} />
-            <p className="flex flex-row space-x-3 items-center">
-              <span>
-                <FaCircleCheck size={28} style={{ fill: "#3377FF" }} />
-              </span>
-              <span>Details</span>
-            </p>
-            <RxCaretRight size={20} />
-            <p className="flex flex-row space-x-3 items-center">
-              <span>
-                <TbCircleNumber3
-                  size={28}
-                  style={{ color: "#3377FF", borderColor: "#3377FF" }}
-                />
-              </span>
-              <span className="text-textGray3">Payment</span>
-            </p>
+  <div className="bg-bgWhite px-4 sm:px-6 py-6 sm:py-8">
+  <div className="flex flex-col justify-center mx-auto max-w-6xl">
+    {/* Progress Steps */}
+    <div className="my-3 sm:my-4 overflow-x-auto">
+      <div className="flex flex-row justify-center space-x-2 sm:space-x-4 items-center min-w-max mx-auto">
+        <p className="flex flex-row space-x-1 sm:space-x-3 items-center">
+          <span>
+            <FaCircleCheck size={20} style={{ fill: "#3377FF" }} />
+          </span>
+          <span className="text-sm sm:text-base">Location</span>
+        </p>
+        <RxCaretRight size={16} className="hidden sm:block" />
+        <span className="text-gray-400 sm:hidden">→</span>
+        <p className="flex flex-row space-x-1 sm:space-x-3 items-center">
+          <span>
+            <FaCircleCheck size={20} style={{ fill: "#3377FF" }} />
+          </span>
+          <span className="text-sm sm:text-base">Details</span>
+        </p>
+        <RxCaretRight size={16} className="hidden sm:block" />
+        <span className="text-gray-400 sm:hidden">→</span>
+        <p className="flex flex-row space-x-1 sm:space-x-3 items-center">
+          <span>
+            <TbCircleNumber3
+              size={20}
+              style={{ color: "#3377FF", borderColor: "#3377FF" }}
+            />
+          </span>
+          <span className="text-textGray3 text-sm sm:text-base">Payment</span>
+        </p>
+      </div>
+    </div>
+
+    <Spacer size={6} />
+    
+    {/* Page Title */}
+    <div className="">
+      <h1 className="font-semibold text-xl sm:text-3xl my-3 sm:my-5 text-center">
+        Payment Checkout
+      </h1>
+      <p className="text-base sm:text-lg text-center">
+        Choose how you would like to make payment
+      </p>
+      <Spacer size={6} />
+    </div>
+    
+    {/* Main Content - Payment sections */}
+    <div className="w-full flex flex-col lg:flex-row justify-between gap-6 sm:gap-8 lg:gap-14 mx-auto mt-3 sm:mt-5">
+      {/* Payment Method Section */}
+      <div className="w-full lg:max-w-[400px] lg:shrink-0 order-2 lg:order-1">
+        <h1 className="font-semibold text-base sm:text-lg mb-3 sm:mb-5">Pay with:</h1>
+        <div className="flex items-center gap-4 sm:gap-10 mb-3 sm:mb-5">
+          <div className="flex items-center gap-2">
+            <input type="radio" name="channel" id="channel" checked /> 
+            <span className="text-sm sm:text-base">Paystack</span>
+          </div>
+          <div className="hidden">
+            <input type="radio" name="channel" id="channel" /> 
+            <span className="text-sm sm:text-base">USSD</span>
           </div>
         </div>
-        <Spacer size={10} />
-        <div className="">
-          <h1 className="font-semibold text-3xl my-5 text-center">
-            Payment Checkout
-          </h1>
-          <p className="text-lg text-center">
-            Choose how you would like to make payment
+        <button onClick={onSubmit} className="btnOne w-full sm:max-w-[250px]">
+          {loading ? <Spinner /> : "Continue"}
+        </button>
+        <div className="mt-6 sm:mt-12 bg-orangeLight text-[#212121CC] p-3 sm:p-5 text-sm sm:text-base">
+          <p>
+            Please review your details and payment information carefully
+            before confirming your booking. Cancellations within the
+            stipulated time frame are eligible for a refund
           </p>
-          <Spacer size={10} />
         </div>
-        <div className="w-full flex justify-between gap-14 max-w-6xl mx-auto mt-5">
-          <div className="max-w-[400px] shrink-0">
-            <h1 className="font-semibold text-lg mb-5">Pay with:</h1>
-            <div className="flex items-center gap-10 mb-5">
-              <div>
-                <input type="radio" name="channel" id="channel" checked />{" "}
-                Paystack
-              </div>
-              <div className="hidden">
-                <input type="radio" name="channel" id="channel" /> USSD
-              </div>
-            </div>
-            <button onClick={onSubmit} className="btnOne max-w-[250px]">
-              {loading ? <Spinner /> : "Continue"}
-            </button>
-            <div className="mt-12 bg-orangeLight text-[#212121CC] p-5">
-              <p>
-                Please review your details and payment information carefully
-                before confirming your booking. Cancellations within the
-                stipulated time frame are eligible for a refund
-              </p>
-            </div>
+      </div>
+      
+      {/* Payment Summary Section */}
+      <div className="bg-white w-full py-4 sm:py-6 px-4 sm:px-8 rounded-md order-1 lg:order-2">
+        <h1 className="font-semibold text-xl sm:text-2xl mt-3 sm:mt-6 mb-3 sm:mb-5 capitalize">
+          {`Payment Summary for ${bookingData?.service_type} Service`}
+        </h1>
+        <div className="flex flex-row items-center gap-4 sm:gap-6 mb-4 sm:mb-5">
+          <div className="relative h-24 w-24 sm:h-40 sm:w-40 shrink-0">
+            <Image
+              src={talentData.provider_details.avatar}
+              fill
+              className="object-cover"
+              alt="talent-img"
+            />
           </div>
-          <div className="bg-white w-full py-6 px-8 rounded-md">
-            <h1 className="font-semibold text-2xl mt-6 mb-5">
-              Payment Summary
-            </h1>
-            <div className="relative h-40 w-40 mb-5">
-              <Image
-                src={talentData.provider_details.avatar}
-                fill
-                className="object-cover"
-                alt="talent-img"
-              />
-            </div>
-            <div>
-              <h1 className="text-primaryBlue text-xl py-4">
-                Indoor cleaning service
-              </h1>
-            </div>
-            <div className="py-5 border-t">
-              <div className="items-center justify-between mb-5 hidden">
-                <p className="">Rate per hour</p>
-                <p>2,500</p>
-              </div>
-              <div className="flex items-center justify-between">
-                <p>No of hours</p>
-                <p>{`${hoursCount}hrs`}</p>
-              </div>
-            </div>
-            <div className="border-t py-5">
-              <div className="flex items-center justify-between">
-                <p>Tax</p>
-                <p>500</p>
-              </div>
-            </div>
-            <div className="border-t py-5">
-              <div className="flex items-center justify-between">
-                <p>Total</p>
-                <p className="font-semibold text-3xl">
-                  {formatNairaNumber(finalAmount)}
-                </p>
-              </div>
-            </div>
+        </div>
+        
+        <div className="py-3 sm:py-5 border-t">
+          <div className="flex items-center justify-between mb-3 sm:mb-5">
+            <p className="text-sm sm:text-base">Rate per hour</p>
+            <p className="font-semibold text-xl sm:text-3xl">{formatNairaNumber(serviceData[0]?.rate_per_hour)}</p>
+          </div>
+          <div className="flex items-center justify-between">
+            <p className="text-sm sm:text-base">No of hours</p>
+            <p className="font-semibold text-base sm:text-xl">{`${hoursCount}hrs`}</p>
+          </div>
+        </div>
+        
+        <div className="border-t py-3 sm:py-5">
+          <div className="flex items-center justify-between">
+            <p className="text-sm sm:text-base">Total</p>
+            <p className="font-semibold text-xl sm:text-3xl">
+              {formatNairaNumber(finalAmount)}
+            </p>
           </div>
         </div>
       </div>
     </div>
+  </div>
+  </div>
   );
 };
 

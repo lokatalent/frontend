@@ -14,53 +14,57 @@ import { useDispatch, useSelector } from "react-redux";
 
 const TalentItem = ({ data, saveTalent }: any) => {
   return (
-    <div className="bg-white rounded-xl w-full px-10 py-8 flex gap-5">
-      <div className="shrink-0">
-        <div className="relative h-24 w-24 rounded-full">
+    <div className="bg-white rounded-xl shadow-md w-full p4 sm:p-6">
+      {/* Main content with responsive layout */}
+      <div className="flex flex-row sm:flex-row gap-4 sm:gap-6 w-full">
+        {/* Profile picture - always on left */}
+        <div className="relative h-16 w-16 sm:h-24 sm:w-24 rounded-full flex-shrink-0">
           <Image
-            src={data.provider_details.avatar}
+            src={data.provider_details.avatar || "/Images/camera.png"}
             fill
             className="object-cover rounded-full"
             alt="talent-img"
           />
         </div>
-      </div>
-      <div className="w-full">
-        <div className="flex justify-between">
-          <div>
-            <div className="flex items-center gap-5">
-              <h1 className="text-2xl font-semibold">{`${data.provider_details.first_name} ${data.provider_details.last_name}`}</h1>
-              <div className="flex items-center">
-                <div className="h-2 w-2 rounded-full mr-2 bg-green-500"></div>
-                <span>Available for work</span>
+        {/* Content container - takes remaining width */}
+        <div className="flex-1 flex flex-col gap-3 w-full">
+          {/* Name, Status, Distance container */}
+          <div className="w-full">
+            <h1 className="text-lg sm:text-2xl font-semibold">
+              {`${data.provider_details.first_name} ${data.provider_details.last_name}`}
+            </h1>
+            <div className="flex flex-row sm:flex-row sm:items-center sm:justify-between mt-1">
+              <div className="flex flex-row sm:flex-row sm:items-center gap-2 sm:gap-4">
+                {/* Status */}
+                <div className="flex items-center">
+                  <div className="h-2 w-2 rounded-full mr-2 bg-green-500"></div>
+                  <span className="text-sm sm:text-base">Available for work</span>
+                </div>
+                <p className="text-sm sm:text-base text-gray-600 mt-1 sm:mt-0 mr-1">{data.distance} away</p>
               </div>
+              <p className="text-sm sm:text-base text-gray-600 mt-1 sm:mt-0">{data.duration}</p>
             </div>
-            {/* <p className="text-xl mt-2">Indoor Cleaner</p> */}
           </div>
-          <div>
-            <p className="text-xl">{data.distance} away</p>
-            <p className="text-xl text-right text-gray-600">{data.duration}</p>
-          </div>
-        </div>
-        <div className="flex items-center justify-between mt-5 gap-8">
-          <p className="max-w-xl">{data.service_desc}</p>
-          <div className="flex items-center justify-end gap-3 w-full max-w-xs shrink-0">
-            <Link href={`/dashboard/bookings/talents/${data.provider_id}`}>
-              <button
-                onClick={() => saveTalent(data)}
-                className="bg-white border border-primaryBlue p-3 text-primaryBlue max-w-[200px]"
-              >
-                View Profile
-              </button>
-            </Link>
-            <Link href={"/dashboard/bookings/payments"}>
-              <button
-                onClick={() => saveTalent(data)}
-                className="btnOne max-w-[200px]"
-              >
-                Book Now
-              </button>
-            </Link>
+          <div className="w-full flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3">
+            <p className="text-sm sm:text-base text-gray-700">{data.service_desc}</p>
+            <div className="flex flex-wrap gap-3">
+              <Link href={`/dashboard/bookings/talents/${data.provider_id}?service_type=${data?.service_type}`}>
+                <button
+                  onClick={() => saveTalent(data)}
+                  className="bg-white border border-primaryBlue px-4 py-2 text-primaryBlue text-sm sm:text-base whitespace-nowrap"
+                >
+                  View Profile
+                </button>
+              </Link>
+              <Link href={"/dashboard/bookings/payments"}>
+                <button
+                  onClick={() => saveTalent(data)}
+                  className="bg-blue-500 border border-primaryBlue text-white px-4 py-2 text-sm sm:text-base whitespace-nowrap"
+                >
+                  Book Now
+                </button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
@@ -93,7 +97,6 @@ export default function DashboardTalentsHome() {
     if (!response.error) {
       setLoading(false);
       setTalentData(response.data);
-      console.log(talentData);
     } else {
       setLoading(false);
       handleUnauthorizedError(response, dispatch, router, showToast);
@@ -111,17 +114,17 @@ export default function DashboardTalentsHome() {
   return (
     <div>
       {loading ? (
-        <div className="h-[400px] w-full flex flex-col items-center justify-center">
-          <h1 className="mb-5 text-lg md:text-xl font-semibold">
+        <div className="h-[400px] w-full flex flex-col items-center justify-center text-center">
+          <h1 className="mb-5 text-base sm:text-lg md:text-xl font-semibold">
             Finding talents for you
           </h1>
           <Spinner />
         </div>
       ) : (
-        <div className="py-5 bg-bgWhite">
+        <div className="py-5 px-4 sm:px-8 bg-bgWhite">
           {/* header */}
-          <div>
-            <h1 className="text-3xl font-semibold text-center">
+          <div className="text-center">
+            <h1 className="text-xl sm:text-3xl font-semibold">
               Available talents for {bookingData.service_type} service
             </h1>
             <div className="hidden justify-end mt-5">
@@ -131,7 +134,7 @@ export default function DashboardTalentsHome() {
             </div>
           </div>
           {(talentData.data.length > 0) && (talentData.message === "Available providers.") ? (
-            <div className="my-6 flex flex-col gap-6">
+            <div className="my-6 flex flex-col gap-4 sm:gap-6">
               {talentData.data.map((item, index) => (
                 <div key={index}>
                   <TalentItem data={item} saveTalent={saveTalent} />
@@ -139,9 +142,9 @@ export default function DashboardTalentsHome() {
               ))}
             </div>
           ) : (
-            <div>
+            <div className="text-center mt-6">
               {/* make a modal */}
-              <p>{talentData.message}</p>
+              <p className="text-gray-600 text-sm sm:text-base">{talentData.message}</p>
             </div>
           )}
         </div>
