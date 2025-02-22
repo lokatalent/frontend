@@ -18,7 +18,11 @@ import { getProfile } from "@/services/profileService";
 import { useDispatch } from "react-redux"
 import { showToast } from "@/store/auth/toastSlice"
 import { setBookingData as setCurrentBookingData } from "@/store/profile/bookingSlice"
-import { handleUnauthorizedError } from "@/lib/utils";
+import {
+  handleUnauthorizedError,
+  handlePageReload,
+  convertTo24HourFormat
+} from "@/lib/utils";
 import { bookingStatusMap, serviceNameMap, PaymentStatus } from "@/lib/constants"
 
 const NotificationDetail = ({
@@ -29,6 +33,7 @@ const NotificationDetail = ({
   const dispatch = useDispatch();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [currentBookingStatus, setCurrentBookingStatus] = useState("");
   const [bookingData, setBookingData] = useState([]);
   const [bookingResp, setBookingResp] = useState({});
   const [providerData, setProviderData] = useState({});
@@ -73,6 +78,7 @@ const NotificationDetail = ({
         }
       ];
       setBookingData(data);
+      setCurrentBookingStatus(response.data.status);
       const profileResp = await getProfile(response.data.provider_id)
       if (!profileResp.error) {
         const reqData = {
@@ -105,7 +111,10 @@ const NotificationDetail = ({
           message: `Booking ${newStatus.charAt(0).toUpperCase() + newStatus.substr(1)}`
         })
       );
-      router.refresh();
+      setCurrentBookingStatus(newStatus);
+      // handlePageReload();
+      // router.refresh();
+      // router.reload();
     } else {
       handleUnauthorizedError(response, dispatch, router, showToast);
     }
@@ -113,7 +122,7 @@ const NotificationDetail = ({
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [currentBookingStatus]);
 
   const getBookingButtons = () => {
     if (bookingResp?.status === "in_progress") {
@@ -145,7 +154,10 @@ const NotificationDetail = ({
           <Button 
             className="bg-primaryBlue px-14 py-5 text-sm border hover:bg-primaryBlue hover:text-white hover:brightness-90"
             onClick={() => {
-              setCurrentBookingData(bookingResp);
+              let bookingRespCopy = bookingResp;
+              bookingRespCopy.start_time = convertTo24HourFormat(bookingRespCopy.start_time);
+              bookingRespCopy.end_time = convertTo24HourFormat(bookingRespCopy.end_time);
+              dispatch(setCurrentBookingData(bookingRespCopy));
               router.push("/dashboard/bookings/talents");
             }}
           >
