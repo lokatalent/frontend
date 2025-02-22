@@ -346,7 +346,7 @@ const Profiles = () => {
   const renderTabContent = () => {
     switch (activeTab) {
       case "personal":
-        return <ProfileDetails details={profileData} />;
+        return <div><ProfileDetails details={profileData} /></div>;
       case "portfolio":
         return <PortfolioView isData={true} data={portfolioData} />;
       case "Bank Details":
@@ -468,7 +468,6 @@ const Profiles = () => {
                 />
               )}
             </div>
-
             {renderTabContent()}
           </div>
         </div>
