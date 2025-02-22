@@ -6,8 +6,9 @@ import BookingCard from "@/components/overview/BookingCard";
 import DataTable from "@/components/ui/gen/DataTable";
 import Modal from "@/components/ui/modal";
 import PageSpinner from "@/components/ui/PageSpinner";
-import { formatDate } from "@/lib/utils";
+import { formatDate, handleUnauthorizedError } from "@/lib/utils";
 import { getAllBookings, getServices } from "@/services/bookingService";
+import { getUserWallet } from "@/services/profileService";
 import { showToast } from "@/store/auth/toastSlice";
 import { resetBooking, setAllServices } from "@/store/profile/bookingSlice";
 import Link from "next/link";
@@ -22,6 +23,7 @@ export default function Dashboard() {
   const dispatch = useDispatch();
   const router = useRouter();
   const [bookingType, setBookingType] = useState("");
+  const [userWallet, setUserWallet] = useState({});
 
   // fetch bookings
   const fetchBookings = async (id: any) => {
@@ -43,22 +45,7 @@ export default function Dashboard() {
       setBookings(response.data);
     } else {
       setLoading(false);
-      if (response.status === 401) {
-        dispatch(
-          showToast({
-            status: "error",
-            message: response.data.message,
-          })
-        );
-        return router.push("/login");
-      }
-
-      return dispatch(
-        showToast({
-          status: "error",
-          message: response.data.message,
-        })
-      );
+      handleUnauthorizedError(response, dispatch, router, showToast);
     }
   };
 
@@ -68,26 +55,23 @@ export default function Dashboard() {
     const response = await getServices();
     if (!response.error) {
       setLoading(false);
-      // ask Paul to modify this object to add the name and value
       dispatch(setAllServices(response.data));
     } else {
       setLoading(false);
-      if (response.status === 401) {
-        dispatch(
-          showToast({
-            status: "error",
-            message: response.data.message,
-          })
-        );
-        return router.push("/login");
-      }
+      handleUnauthorizedError(response, dispatch, router, showToast);
+    }
+  };
 
-      return dispatch(
-        showToast({
-          status: "error",
-          message: response.data.message,
-        })
-      );
+  // fetch wallet
+  const fetchWallet = async () => {
+    setLoading(true);
+    const response = await getUserWallet();
+    if (!response.error) {
+      setLoading(false);
+      setUserWallet(response.data);
+    } else {
+      setLoading(false);
+      handleUnauthorizedError(response, dispatch, router, showToast);
     }
   };
 
@@ -111,6 +95,7 @@ export default function Dashboard() {
   useEffect(() => {
     if (user.email) {
       if (user.is_verified) {
+        fetchWallet();
         fetchBookings(user.id);
         fetchServices();
         if(
@@ -146,7 +131,7 @@ export default function Dashboard() {
           </div>
         </div>
         <div className="w-full flex flex-col md:flex-row gap-4">
-          <BalanceCard text="Balance" number={0} />
+          <BalanceCard text="Balance" number={userWallet?.balance} />
           <BookingCard />
         </div>
 

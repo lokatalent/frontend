@@ -5,9 +5,14 @@ import InfoCard from "@/components/InfoCard";
 import DataTable from "@/components/ui/gen/DataTable";
 import PageSpinner from "@/components/ui/PageSpinner";
 import { setToken } from "@/components/utils";
-import { handleUnauthorizedError, errorHandler } from "@/lib/utils";
+import {
+  handleUnauthorizedError,
+  errorHandler,
+  formatNairaNumber
+} from "@/lib/utils";
 import { verifyUser } from "@/services/authService";
 import { getAllBookings } from "@/services/bookingService";
+import { getUserWallet } from "@/services/profileService";
 import { setUser } from "@/store/auth/authSlice";
 import { showToast } from "@/store/auth/toastSlice";
 import Link from "next/link";
@@ -25,6 +30,7 @@ const Dashboard = () => {
   const dispatch = useDispatch();
   const router = useRouter();
   const [bookingType, setBookingType] = useState("");
+  const [userWallet, setUserWallet] = useState({});
   const BookingData: any = [];
 
   // fetch bookings
@@ -73,9 +79,23 @@ const Dashboard = () => {
     }
   };
 
+  // fetch wallet
+  const fetchWallet = async () => {
+    setLoading(true);
+    const response = await getUserWallet();
+    if (!response.error) {
+      setLoading(false);
+      setUserWallet(response.data);
+    } else {
+      setLoading(false);
+      handleUnauthorizedError(response, dispatch, router, showToast);
+    }
+  };
+
   useEffect(() => {
     if (user.is_verified) {
       fetchBookings(user.id);
+      fetchWallet();
     } else {
       onVerifyUser();
     }
@@ -128,7 +148,7 @@ const Dashboard = () => {
         />
         <InfoCard
           text="Income Earned"
-          number={0}
+          number={formatNairaNumber(userWallet?.balance + userWallet?.debits)}
           icon={<IoWalletOutline color="#3377FF" />}
           iconColor="#3377FF87"
           comment="No income earned Yet"
