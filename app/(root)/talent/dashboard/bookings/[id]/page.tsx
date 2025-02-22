@@ -32,6 +32,7 @@ const NotificationDetail = ({
   const dispatch = useDispatch();
   const router = useRouter();
   const [loading, setLoading] = useState(true);
+  const [currentBookingStatus, setCurrentBookingStatus] = useState("");
   const [bookingData, setBookingData] = useState([]);
   const [bookingResp, setBookingResp] = useState({});
   const [requesterData, setRequesterData] = useState({});
@@ -76,6 +77,7 @@ const NotificationDetail = ({
         }
       ];
       setBookingData(data);
+      setCurrentBookingStatus(response.data.status);
       const profileResp = await getProfile(response.data.requester_id)
       if (!profileResp.error) {
         const reqData = {
@@ -105,7 +107,9 @@ const NotificationDetail = ({
           message: "Booking Accepted"
         })
       );
-      router.refresh();
+      // router.refresh();
+      // router.reload();
+      setCurrentBookingStatus("in_progress");
     } else {
       handleUnauthorizedError(response, dispatch, router, showToast);
     }
@@ -120,7 +124,9 @@ const NotificationDetail = ({
           message: "Booking Rejected"
         })
       );
-      router.refresh();
+      // router.refresh();
+      // router.reload();
+      setCurrentBookingStatus("reject");
     } else {
       handleUnauthorizedError(response, dispatch, router, showToast);
     }
@@ -128,7 +134,7 @@ const NotificationDetail = ({
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [currentBookingStatus]);
 
   return (
     loading ? (
