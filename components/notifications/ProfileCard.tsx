@@ -79,7 +79,7 @@ function getBookingStatus(bookingStatus: string, role: string) {
         if (role === UserServiceRole.SERVICE_ROLE_PROVIDER) {
           statusText = "This booking has been marked as completed by the requester.";
         } else {
-          statusText = "Mark this job as complete once the service is finished to release payment to the talent";
+          statusText = "This job has been marked as completed.";
         }
       }
       break;
@@ -92,6 +92,18 @@ function getBookingStatus(bookingStatus: string, role: string) {
           statusText = "This booking has been cancelled by the requester.";
         } else {
           statusText = "You have cancelled this booking.";
+        }
+      }
+      break;
+    case BookingStatus.BOOKING_REJECTED:
+      {
+        imgSrc = "/Images/cancel-icon.png";
+        statusColor1 = "bg-red-500";
+        statusColor2 = "text-red-500";
+        if (role === UserServiceRole.SERVICE_ROLE_PROVIDER) {
+          statusText = "You have rejected this booking.";
+        } else {
+          statusText =  "This booking has been rejected by service provider.";
         }
       }
       break;
