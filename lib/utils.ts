@@ -10,6 +10,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export const handlePageReload = async () => {
+  window.location.reload();
+};
+
 // utils/errorHandlers.js
 export const handleUnauthorizedError = async (
   response: any,
@@ -18,6 +22,12 @@ export const handleUnauthorizedError = async (
   showToast: any
 ) => {
   if (response.status === 401) {
+    dispatch(
+      showToast({
+        status: "success",
+        message: "Refreshing Session",
+      })
+    );
     const refreshTokenResp = await refreshToken({
       refresh_token: sessionStorage.getItem("lokaRefreshToken"),
     });
@@ -27,22 +37,23 @@ export const handleUnauthorizedError = async (
       dispatch(
         showToast({
           status: "error",
-          message: response.data.message,
+          message: "Session expired.",
         })
       );
       return router.push("/login");
     }
-    return router.refresh();
+    handlePageReload();
+    // return router.refresh();
+    // return router.reload();
+  } else {
+    dispatch(
+      showToast({
+        status: "error",
+        message: errorHandler(response.data),
+      })
+    );
   }
-  dispatch(
-    showToast({
-      status: "error",
-      message: errorHandler(response.data),
-    })
-  );
 };
-
-
 
 
 export const setToken = (accessToken: string, refreshToken: string) => {
@@ -305,7 +316,7 @@ export const formatDateTime = (date: any) => {
 
 export const transformSnakeCase = (text: string) => {
   return text.split('_').map(capitalize).join(" ");
-}
+};
 
 export const compareAvailability = (obj1: object, obj2: object): boolean => {
   if (obj1 === obj2) return true;
@@ -369,4 +380,15 @@ export const compareAvailability = (obj1: object, obj2: object): boolean => {
   }
 
   return true;
-}
+};
+
+export const convertTo24HourFormat = (time: string): string => {
+  const date = new Date(`1970-01-01 ${time}`);
+
+  // extract hour, minutes, and seconds
+  const hours = String(date.getHours()).padStart(2, "0");
+  const minutes = String(date.getMinutes()).padStart(2, "0");
+  const seconds = String(date.getSeconds()).padStart(2, "0");
+
+  return `${hours}:${minutes}:${seconds}+01:00`;
+};
