@@ -17,6 +17,7 @@ import {
   extractNotificationResponse,
 } from "@/services/notificationService";
 import { showToast } from "@/store/auth/toastSlice"
+import { handleUnauthorizedError } from "@/lib/utils";
 
 const NotificationPanel = () => {
   const [notifications, setNotifications] = useState([]);
@@ -37,21 +38,7 @@ const NotificationPanel = () => {
       setNotifications(notificationResps);
     } else {
       setLoading(false);
-      if (response.status === 401) {
-        dispatch(
-          showToast({
-            status: "error",
-            message: response.data.message,
-          })
-        );
-        return router.push("/login");
-      }
-      return dispatch(
-        showToast({
-          status: "error",
-          message: response.data.message,
-        })
-      );
+      handleUnauthorizedError(response, dispatch, router, showToast);
     }
   };
 
