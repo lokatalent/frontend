@@ -7,8 +7,8 @@ export enum BookingStatus {
 	BOOKING_COMPLETED   = "Booking Completed",
 	BOOKING_IN_PROGRESS = "Booking In Progress",
 	BOOKING_CANCELED    = "Booking Canceled",
-	BOOKING_ACCEPT      = "Booking Accept",
-	BOOKING_REJECT      = "Booking Reject",
+	BOOKING_ACCEPTED    = "Booking Accepted",
+	BOOKING_REJECTED    = "Booking Rejected",
 };
 
 export enum PaymentStatus {
@@ -35,6 +35,6 @@ export const bookingStatusMap = new Map([
   ["completed", BookingStatus.BOOKING_COMPLETED],
   ["in_progress", BookingStatus.BOOKING_IN_PROGRESS],
   ["canceled", BookingStatus.BOOKING_CANCELED],
-  ["accept", BookingStatus.BOOKING_ACCEPT],
-  ["reject", BookingStatus.BOOKING_REJECT],
+  ["accept", BookingStatus.BOOKING_ACCEPTED],
+  ["reject", BookingStatus.BOOKING_REJECTED],
 ]);
