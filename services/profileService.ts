@@ -88,9 +88,6 @@ export const updateProfileImage = async (values: any) => {
   }
 };
 
-
-
-
 export const updateEducationProfile = async (values: any) => {
   try {
     // console.log(values);
@@ -132,3 +129,31 @@ export const deleteUserAccount = async () => {
 //     };
 //   }
 // };
+
+export const getUserWallet = async () => {
+  try {
+    // console.log(values);
+    let response = await http.get("/users/wallet");
+    return { error: false, data: response?.data, status: response?.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err?.response.data,
+      status: err?.response.status,
+    };
+  }
+};
+
+export const getUserDebits = async (id: string) => {
+  try {
+    // console.log(values);
+    let response = await http.get(`/users/${id}/wallet/debits`);
+    return { error: false, data: response?.data, status: response?.status };
+  } catch (err: any) {
+    return {
+      error: true,
+      data: err?.response.data,
+      status: err?.response.status,
+    };
+  }
+};
