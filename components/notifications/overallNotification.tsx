@@ -81,7 +81,7 @@ export default function OverallNotification({isNotified, notifications}) {
   }, [filter]);
 
   return (
-    <div className="ml-8 h-screen">
+    <div className="ml-2 h-screen">
       {isNotified ? (
         <div className="space-y-6">
           <div className="">

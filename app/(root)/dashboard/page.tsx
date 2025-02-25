@@ -119,7 +119,7 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div className="w-full space-y-6">
+      <div className="w-full space-y-6 sm:space-y-3">
         <div className="w-full flex justify-between items-center">
           <div className="flex flex-col space-y-3">
             <p className="text-3xl text-black font-bold">

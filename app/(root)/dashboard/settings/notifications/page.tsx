@@ -50,7 +50,7 @@ const Notifications = () => {
           {notificationSettings.map((setting, index) => (
             <div
               key={index}
-              className="space-x-3 flex items-center ustify-between"
+              className="space-x-3 flex items-center"
             >
               <div className="relative inline-block  align-middle select-none">
                 <input

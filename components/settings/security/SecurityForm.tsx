@@ -89,7 +89,7 @@ const SecurityForm = () => {
   };
 
   const PasswordInput = ({ id, show, toggle, register, error, label }) => (
-    <div className="relative mb-4 w-[20rem] sm:w-[23rem] md:w-[25rem] lg:w-[28rem]">
+    <div className="relative mb-4 w-[16rem] sm:w-[18rem] md:w-[20rem] lg:w-[24rem]">
       <label htmlFor={id} className="block text-sm font-medium mb-2">
         {label}
       </label>
@@ -115,7 +115,7 @@ const SecurityForm = () => {
   );
 
   return (
-    <div className="p-6">
+    <div className="p-2">
       <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
         <PasswordInput
           id="currentPassword"

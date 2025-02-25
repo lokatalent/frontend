@@ -95,7 +95,7 @@ function Security() {
   };
 
   return (
-    <div className="p-6">
+    <div className="p-4">
       <SecurityForm />
       <TwoStepVerification />
 

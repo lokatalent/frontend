@@ -116,7 +116,7 @@ const Dashboard = () => {
   }, [bookingType]);
 
   return (
-    <div className="">
+    <div>
       <div className="w-full flex justify-between items-center">
         <div className="flex flex-col space-y-3">
           <p className="text-3xl text-black font-bold">

@@ -14,5 +14,5 @@ export default function RootLayout({
 
   if (role === "service_provider") return router.push("/talent/dashboard");
 
-  return <div>{children}</div>;
+  return <div className="px-4 sm:px-6">{children}</div>;
 }
