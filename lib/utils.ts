@@ -32,7 +32,7 @@ export const handleUnauthorizedError = async (
       refresh_token: sessionStorage.getItem("lokaRefreshToken"),
     });
     if (!refreshTokenResp.error) {
-      setToken(refreshTokenResp.data.access_token, refreshTokenResp.refresh_token);
+      setToken(refreshTokenResp.data.access_token, refreshTokenResp.data.refresh_token);
     } else {
       dispatch(
         showToast({
