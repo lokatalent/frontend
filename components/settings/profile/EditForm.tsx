@@ -128,10 +128,6 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
         dispatch(setUser(responseBio.data));
       } else {
         handleUnauthorizedError(responseBio, dispatch, showToast, router)
-        dispatch(showToast({
-          status: "error",
-          message: responseBio.data.message,
-        }))
       }
     }
 
@@ -142,7 +138,12 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
       if (emailValid) {
         console.log("Email is valid!");
         setNameError("");
-        // Proceed with form submission or other logic
+        const responseBio = await updateProfile({email: email});
+        if (!responseBio.error) {
+          dispatch(setUser(responseBio.data));
+        } else {
+          handleUnauthorizedError(responseBio, dispatch, showToast, router)
+        }
       } else {
         console.log("Invalid email");
         setNameError("Please enter a valid email address");
