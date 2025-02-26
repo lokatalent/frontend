@@ -26,7 +26,10 @@ function ProfileDetails({ details }: ProfileDetailsProps) {
             <p 
               className={`mt-2 flex items-center ${profile?.title?.toLowerCase().startsWith("email") ?'' : 'capitalize'} text-sm`}
             >
-              {profile.value}
+              {
+                profile?.title?.toLowerCase().startsWith("email")
+                  ? (<span className="truncate">{profile.value}</span>)
+                  : profile.value}
             </p>
           </div>
         ))}
