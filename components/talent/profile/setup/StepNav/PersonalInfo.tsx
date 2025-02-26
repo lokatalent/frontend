@@ -6,7 +6,12 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { updateProfile, updateProfileImage } from "@/services/profileService";
 import { useDispatch, useSelector } from "react-redux";
 import { showToast } from "@/store/auth/toastSlice";
-import { errorHandler, handleUnauthorizedError, formatDateTime } from "@/lib/utils";
+import {
+  errorHandler,
+  handleUnauthorizedError,
+  formatDateTime,
+  getMaxDateOfBirth
+} from "@/lib/utils";
 import Image from "next/image";
 import { ChangeEvent, useRef, useState } from "react";
 import { setProfilePics } from "@/store/profile/profileSlice";
@@ -34,7 +39,7 @@ function PersonalInfo({ setActiveStep }: any) {
     country: "Nigeria",
     state: user?.address?.split(",")?.at(-2) || "",
     address: user?.address.split(",")?.slice(0, -3)?.join(", ") || "",
-    dateofbirth: user?.date_of_birth?.split("T")?.at(0) || "",
+    dateofbirth: user?.date_of_birth?.split("T")?.at(0) || getMaxDateOfBirth(),
   }
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(schema),
@@ -175,6 +180,8 @@ function PersonalInfo({ setActiveStep }: any) {
               label="Date of Birth"
               control={control}
               className="w-full"
+              min={"1901-01-01"}
+              max={getMaxDateOfBirth()}
               required
             />
             <TalentDynamicForm
