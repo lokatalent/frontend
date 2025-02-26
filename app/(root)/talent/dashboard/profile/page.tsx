@@ -200,7 +200,6 @@ const Profiles = () => {
   const fetchProfile = async () => {
     setLoading(true);
     const response = await getOwnProfile();
-    console.log(response);
     if (!response.error) {
       const profileData = response.data;
       profileData.avatar = response.data.avatar ? `${response.data.avatar as string}?t=${new Date().getTime()}` : response.data.avatar;
@@ -243,8 +242,6 @@ const Profiles = () => {
   const fetchService = async () => {
     setLoading(true);
     const allServicesResponse = await getAllService(userId);
-    console.log(allServicesResponse);
-    console.log("allServicesResponse");
     if (!allServicesResponse?.data?.length) {
       handleUnauthorizedError(allServicesResponse, dispatch, router, showToast);
       dispatch(
@@ -297,7 +294,6 @@ const Profiles = () => {
       id: userId,
       service_type: allServicesResponse.data[0]?.service_type,
     });
-    console.log(serviceResponse);
     dispatch(setService(serviceResponse.data));
     const newService = serviceResponse.data;
 
