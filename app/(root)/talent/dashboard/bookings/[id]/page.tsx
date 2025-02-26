@@ -16,7 +16,8 @@ import { useRouter } from "next/navigation";
 import {
   getBooking,
   acceptBooking,
-  rejectBooking
+  rejectBooking,
+  verifyPayment
 } from "@/services/bookingService";
 import { getProfile } from "@/services/profileService";
 import { useDispatch } from "react-redux"
@@ -41,6 +42,14 @@ const NotificationDetail = ({
     setLoading(true);
     const response = await getBooking(params.id);
     if (!response.error) {
+      if (response.data?.payment_status === PaymentStatus.PAYMENT_STATUS_PENDING) {
+        const paymentResp = await verifyPayment({booking_id: params.id})
+        if (!paymentResp.error) {
+          response.data.payment_status = paymentResp.data?.status
+        } else {
+          handleUnauthorizedError(paymentResp, dispatch, router, showToast);
+        }
+      }
       setBookingResp(response.data);
       const data = [
         {
@@ -218,9 +227,25 @@ function getPaymentStatus(paymentStatus: any, bookingStatus: any) {
             </h4>
             <IoCheckmarkCircle size={30} />
           </div>
-          <p className="mt-3 text-[16px] ">In Escrow</p>
+          <p className="mt-3 text-[16px] ">Payment Sent</p>
           <p className="flex items-center text-[12px] flex-wrap max-w-[20rem]">
             This booking has been completed successfully. The service provider has been paid.
+          </p>
+        </div>
+      );
+    }
+    if (bookingStatus === "canceled") {
+      return (
+        <div className="bg-primaryBlue p-6 text-white rounded-md self-star">
+          <div className="flex gap-2 items-center">
+            <h4 className="text-[12px] text-[hsla(0,0%,100%,0.62)]">
+              Payment Status
+            </h4>
+            <IoCheckmarkCircle size={30} />
+          </div>
+          <p className="mt-3 text-[16px] ">Refunded</p>
+          <p className="flex items-center text-[12px] flex-wrap max-w-[20rem]">
+            This booking has been canceled. The requester has been refunded.
           </p>
         </div>
       );
