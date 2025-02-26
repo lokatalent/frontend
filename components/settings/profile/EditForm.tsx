@@ -127,7 +127,7 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
       if (!responseBio.error) {
         dispatch(setUser(responseBio.data));
       } else {
-        handleUnauthorizedError(responseBio, dispatch, showToast, router)
+        handleUnauthorizedError(responseBio, dispatch, router, showToast)
       }
     }
 
@@ -142,7 +142,7 @@ const EditForm: React.FC<EditFormProps> = ({ form, open, onOpenChange }) => {
         if (!responseBio.error) {
           dispatch(setUser(responseBio.data));
         } else {
-          handleUnauthorizedError(responseBio, dispatch, showToast, router)
+          handleUnauthorizedError(responseBio, dispatch, router, showToast)
         }
       } else {
         console.log("Invalid email");
