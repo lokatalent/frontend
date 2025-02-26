@@ -103,13 +103,7 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
         dispatch(setUser(response.data));
         dispatch(setInformation({ phoneNumber: validatedNumber.number }));
       } else {
-          handleUnauthorizedError(response, dispatch, router, showToast);
-        dispatch(
-          showToast({
-            status: "error",
-            message: response.data.message,
-          })
-        );
+        handleUnauthorizedError(response, dispatch, router, showToast);
       }
       setError("");
       handleConfirmationClose();
