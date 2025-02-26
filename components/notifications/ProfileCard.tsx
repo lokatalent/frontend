@@ -122,7 +122,7 @@ function getBookingStatus(bookingStatus: string, role: string) {
   return (
     <div className=" col-span-2 md:col-span-6 flex space-x-3  items-center m-0">
       <div>
-        <div className="p-2 rounded-full bg-white shadow-lg">
+        <div className="p-2 rounded-full">
           <Image
             src={imgSrc}
             alt="Booking Status"
