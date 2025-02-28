@@ -11,7 +11,7 @@ export default function LoginLayout({
   return (
     <section className="pt-24 pb-10 bg-bgWhite wrap relative min-h-screen flex items-center wrap justify-center w-full">
       <div className="self-start cursor-pointer absolute top-24 md:top-28 left-[5%] h-12 w-12">
-        <div onClick={() => router.back()}>
+        <div onClick={() => router.push("/")}>
           <svg
             width="35"
             height="35"
