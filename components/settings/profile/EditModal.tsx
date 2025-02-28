@@ -15,7 +15,11 @@ import EditForm from "./EditForm";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState, setEditModal } from "@/store/settings/SettingsSlice";
 import { IoWarningOutline } from "react-icons/io5";
-import { handleUnauthorizedError, securityPhoneNumberSchema } from "@/lib/utils";
+import {
+  handleUnauthorizedError,
+  securityPhoneNumberSchema,
+  getMaxDateOfBirth
+} from "@/lib/utils";
 import { setInformation } from "@/store/profile/profileSlice";
 import { useRouter } from "next/navigation";
 import { RootStateAuth, setUser } from "@/store/auth/authSlice";
@@ -52,14 +56,19 @@ const formatPhoneNumber = (phoneNumber: string) => {
   return `+234${trimmedNumber}`;
 };
 
+const isValidDate = (dateString: string): boolean => {
+  const dateRegex = /^(19|20)\d\d-(0[1-9]|1[0-2])-(0[1-9]|[12]\d|3[01])$/;
+  return dateRegex.test(dateString);
+};
+
 const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
   const [isEditModalOpen, setIsEditModalOpen] = useState(false);
   const [selectedForm, setSelectedForm] = useState<any>(null);
   const [error, setError] = useState("");
   const numberRef = useRef<HTMLInputElement>(null);
+  const birthdayRef = useRef<HTMLInputElement>(null);
   const router = useRouter();
   const user = useSelector((state: RootStateAuth) => state.auth.user);
-  
 
   const mainModal = useSelector((state: RootState) => state.settings.mainModal);
   const editModal = useSelector((state: RootState) => state.settings.editModal);
@@ -72,7 +81,6 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
   };
 
   const handleAddressForm = () => {
-    console.log("Title", title, user.service_role)
     if (title === "Address") {
       // if (user.service_role === "service_provider") {
       //   router.push("/talent/dashboard/settings/profile/address");
@@ -87,29 +95,40 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
   };
 
   const handleSubmit = async () => {
-    const number = numberRef.current?.value || "";
-
-    // try {
-      const validatedNumber = securityPhoneNumberSchema.parse({ number });
-      console.log(number, validatedNumber)
-      let temp = {
-        ...user,
-        phone_num: formatPhoneNumber(number),
-        date_of_birth: formatDate(user.date_of_birth),
-      };
-      const response = await updateProfile(temp);
-      console.log(response);
-      if (!response.error) {
-        dispatch(setUser(response.data));
-        dispatch(setInformation({ phoneNumber: validatedNumber.number }));
-      } else {
-        handleUnauthorizedError(response, dispatch, router, showToast);
+    let temp = {};
+    if (title === "Date of Birth") {
+      if (!isValidDate(birthdayRef.current?.value)) {
+        setError("Invalid date.");
+        return;
       }
-      setError("");
-      handleConfirmationClose();
-    // } catch (validationError: any) {
-    //   setError(validationError.errors[0].message);
-    // }
+      temp = {
+        date_of_birth: formatDate(birthdayRef.current?.value),
+      }
+    } else {
+      const number = numberRef.current?.value || "";
+      try {
+        const validatedNumber = securityPhoneNumberSchema.parse({ number });
+        temp = {
+          phone_num: formatPhoneNumber(number),
+        };
+      } catch(err: any) {
+        setError("Invalid phone.");
+        return;
+      }
+    }
+
+    const response = await updateProfile(temp);
+    if (!response.error) {
+      dispatch(setUser(response.data));
+      dispatch(setInformation({
+        phoneNumber: response.data.phone_num,
+        dateOfBirth: response.data.date_of_birth,
+      }));
+    } else {
+      handleUnauthorizedError(response, dispatch, router, showToast);
+    }
+    setError("");
+    handleConfirmationClose();
   };
 
   return (
@@ -123,7 +142,7 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
           Edit
         </DialogTrigger>
         {title !== "Address" && (
-          <DialogContent className="max-h-[80vh] overflow-y-auto max-w-[27rem] sm:max-w-lg w-full p-4 sm:p-6 rounded-lg">
+          <DialogContent className="max-h-[80vh] overflow-y-auto max-w-[26rem] sm:max-w-lg w-full p-4 sm:p-6 rounded-lg">
             <DialogHeader>
               <DialogTitle className="text-xl font-normal mt-2 text-center">
                 {title}
@@ -165,14 +184,42 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
                           )}
                         </>
                       ) : (
-                        <input
-                          type="text"
-                          id={`input-${index}`}
-                          value={form.text}
-                          readOnly
-                          className="border-gray-300 border text-textGray3 bg-[#FAF8F81C] rounded-md px-4 py-2 w-full"
-                        />
+                        title === "Date of Birth" && form.label === "Date of Birth" ? (
+                          <>
+                            <input
+                              type="date"
+                              id={`input-${index}`}
+                              placeholder={form.text?.split("T")?.at(0) || ""}
+                              ref={birthdayRef}
+                              max={getMaxDateOfBirth()}
+                              min={"1901-01-01"}
+                              className="border-gray-300 border text-black bg-[#FAF8F81C] rounded-md px-4 py-2 w-full"
+                            />
+                            {error && (
+                              <p
+                                className="text-red-500 text-xs flex items-center mt-1"
+                                role="alert"
+                              >
+                                <IoWarningOutline
+                                  color="red"
+                                  size={16}
+                                  className="mr-1"
+                                />
+                                {error}
+                              </p>
+                            )}
+                          </>
+                        ) : (
+                          <input
+                            type="text"
+                            id={`input-${index}`}
+                            value={form.text}
+                            readOnly
+                            className="border-gray-300 border text-textGray3 bg-[#FAF8F81C] rounded-md px-4 py-2 w-full"
+                          />
+                        )
                       )}
+                      {}
                       <Button
                         variant="link"
                         className="text-primaryBlue px-0 mt-2"
@@ -186,8 +233,8 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
                       </Button>
                     </div>
                   ))}
-                  {title === "Phone Number" && (
-                    <div className="mt-4 flex flex-col sm:flex-row gap-3">
+                  {(title === "Phone Number" || title === "Date of Birth") && (
+                    <div className="mt-4 flex flex-row sm:flex-row gap-3">
                       <DialogClose asChild>
                         <Button
                           variant="outline"

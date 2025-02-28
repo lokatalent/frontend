@@ -3,6 +3,7 @@
 import { Button } from "@/components/ui/button";
 import { useState } from "react";
 import EditModal from "./EditModal";
+import { formatDate } from "@/lib/utils";
 
 interface RoleSwitchProps {
   forms: Array<{
@@ -32,7 +33,7 @@ export default function SettingsProfileCard({ title, forms }: RoleSwitchProps) {
                 {form.label}:
               </p>
               <p className="font-bold border-gray-300 rounded-md px-4 py-2">
-                {form.text}
+                {form.label === "Date of Birth" ? formatDate(form.text) : form.text}
               </p>
             </div>
           ))}

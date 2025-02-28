@@ -21,6 +21,15 @@ function ProfileSettings() {
       type: "email",
     },
   ];
+
+  const Birthday = [
+    {
+      label: "Date of Birth",
+      text: profileAuth.date_of_birth,
+      type: "text",
+    },
+  ];
+
   const Phone = [
     {
       label: "Phone Number",
@@ -44,16 +53,6 @@ function ProfileSettings() {
       text: "Nigeria",
       type: "country",
     },
-    // {
-    //   label: "State",
-    //   text: "-",
-    //   type: "state",
-    // },
-    // {
-    //   label: "City",
-    //   text: "-",
-    //   type: "city",
-    // },
   ];
 
   return (
@@ -61,6 +60,7 @@ function ProfileSettings() {
       <div className="flex flex-wrap gap-5">
         <SettingsProfileCard title="Name and Email" forms={forms} />
         <SettingsProfileCard title="Phone Number" forms={Phone} />
+        <SettingsProfileCard title="Date of Birth" forms={Birthday} />
         <SettingsProfileCard title="Address" forms={Address} />
       </div>
     </div>
