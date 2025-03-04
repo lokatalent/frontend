@@ -167,8 +167,12 @@ export const passwordFormSchema = z
 
 export const allowedCountries = ["Nigeria", "India", "Senegal", "Australia"];
 export const profileFormSchema = z.object({
-  dateOfBirth: z.string({
-    required_error: "Date of birth is required",
+  // dateOfBirth: z.string({
+  //   required_error: "Date of birth is required",
+  // }),
+  dateOfBirth: z.object({
+    startDate: z.date({required_error: "Date of birth is required"}),
+    endDate: z.date({required_error: "Date of birth is required"}),
   }),
 
   city: z.string().min(2, "City must be at least 3 characters"),
