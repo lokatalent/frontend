@@ -240,48 +240,49 @@ const Profiles = () => {
   };
 
   const fetchService = async () => {
+    let newService = {
+      experience_years: "",
+      service_type: "",
+      service_desc: "",
+      rate_per_hour: 0,
+      availability: {
+        monday: {
+          start: "",
+          end: "",
+        },
+        tuesday: {
+          start: "",
+          end: "",
+        },
+        wednesday: {
+          start: "",
+          end: "",
+        },
+        thursday: {
+          start: "",
+          end: "",
+        },
+        friday: {
+          start: "",
+          end: "",
+        },
+        saturday: {
+          start: "",
+          end: "",
+        },
+        sunday: {
+          start: "",
+          end: "",
+        },
+      },
+      address: "",
+    };
     setLoading(true);
     const allServicesResponse = await getAllService(userId);
     if (!allServicesResponse?.data?.length) {
       handleUnauthorizedError(allServicesResponse, dispatch, router, showToast);
       dispatch(
-        setService({
-          experience_years: "",
-          service_type: "",
-          service_desc: "",
-          rate_per_hour: 0,
-          availability: {
-            monday: {
-              start: "",
-              end: "",
-            },
-            tuesday: {
-              start: "",
-              end: "",
-            },
-            wednesday: {
-              start: "",
-              end: "",
-            },
-            thursday: {
-              start: "",
-              end: "",
-            },
-            friday: {
-              start: "",
-              end: "",
-            },
-            saturday: {
-              start: "",
-              end: "",
-            },
-            sunday: {
-              start: "",
-              end: "",
-            },
-          },
-          address: "",
-        })
+        setService(newService)
       );
       showToast({
         status: "error",
@@ -294,8 +295,12 @@ const Profiles = () => {
       id: userId,
       service_type: allServicesResponse.data[0]?.service_type,
     });
-    dispatch(setService(serviceResponse.data));
-    const newService = serviceResponse.data;
+    if (!serviceResponse.error) {
+      dispatch(setService(serviceResponse.data));
+      newService = serviceResponse.data;
+    } else {
+      handleUnauthorizedError(serviceResponse, dispatch, router, showToast);
+    }
 
     setPortfolioData({
       experience: newService?.experience_years || 0,
