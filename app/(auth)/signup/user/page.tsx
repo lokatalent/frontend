@@ -14,7 +14,7 @@ const user = () => {
         required: "First Name is required",
         minLength: {
           value: 6,
-          message: "First NAme must be at least 6 characters",
+          message: "First Name must be at least 6 characters",
         },
       },
     },
@@ -53,12 +53,12 @@ const user = () => {
     {
       name: "newPassword",
       type: "password",
-      label: "New Password",
+      label: "New Password (minimum of 8 characters)",
       validation: {
         required: "Password is required",
         minLength: {
-          value: 6,
-          message: "Password must be at least 6 characters",
+          value: 8,
+          message: "Password must be at least 8 characters",
         },
         // ADD THIS IF A SYMBOL IS REQUIRED
         // pattern: {
@@ -74,8 +74,8 @@ const user = () => {
       validation: {
         required: "Password is required",
         minLength: {
-          value: 6,
-          message: "Password must be at least 6 characters",
+          value: 8,
+          message: "Password must be at least 8 characters",
         },
         // pattern: {
         //   value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
