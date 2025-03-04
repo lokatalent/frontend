@@ -8,7 +8,6 @@ let formDataConfig = {
 export const createService = async (values: any) => {
   try {
     let response = await http.post("/users/service", values);
-    console.log(response);
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
     return {
@@ -20,11 +19,14 @@ export const createService = async (values: any) => {
 };
 export const getService = async (values: any) => {
   try {
-    console.log(values);
     let response = await http.get(
-      `/users/${values.id}/service?service_type=${values.service_type}`
+      `/users/${values.id}/service`,
+      {
+        params: {
+          service_type: values.service_type,
+        }
+      }
     );
-    console.log(response);
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
     return {
@@ -37,8 +39,6 @@ export const getService = async (values: any) => {
 export const getAllService = async (id: string) => {
   try {
     let response = await http.get(`/users/${id}/service/list`);
-    console.log(id);
-    console.log(response);
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
     return {
@@ -53,7 +53,6 @@ export const getAllService = async (id: string) => {
 export const updateService = async (values: any) => {
   try {
     let response = await http.patch("/users/service", values);
-    console.log(response);
     return { error: false, data: response.data, status: response.status };
   } catch (err: any) {
     return {
@@ -81,7 +80,12 @@ export const getServiceType = async () => {
 export const getServiceImages = async (value: any) => {
   try {
     let response = await http.get(
-      `/users/${value.id}/service/images?service_type=${value.service_type}`
+      `/users/${value.id}/service/images`,
+      {
+        params: {
+          service_type: value.service_type,
+        }
+      }
     );
 
     return { error: false, data: response.data, status: response.status };
@@ -96,10 +100,9 @@ export const getServiceImages = async (value: any) => {
 
 export const uploadServiceImages = async (value: any) => {
   try {
-    console.log(value)
-    console.log(value.images);
     let response = await http.post(
-      `/users/service/images?service_type=${value.service_type}`,
+      "/users/service/images",
+      {params: { service_type: value.service_type }},
       {images: value.images}, formDataConfig
     );
     return { error: false, data: response.data, status: response.status };
@@ -115,7 +118,12 @@ export const uploadServiceImages = async (value: any) => {
 export const deleteServiceImage = async (value: any) => {
   try {
     let response = await http.delete(
-      `/users/service/images/${value.id}?service_type=${value.service_type}`
+      `/users/service/images/${value.id}`,
+      {
+        params: {
+          service_type: value.service_type,
+        }
+      }
     );
 
     return { error: false, data: response.data, status: response.status };
