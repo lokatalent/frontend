@@ -18,6 +18,7 @@ import { setProfilePics } from "@/store/profile/profileSlice";
 import { setUser, setUserAvatar } from "@/store/auth/authSlice";
 import { useRouter } from "next/navigation";
 import Spinner from "@/components/ui/Spinner";
+import { format } from "date-fns";
 
 // Define your schema
 const schema = z.object({
@@ -26,21 +27,30 @@ const schema = z.object({
   city: z.string().nonempty("Pls enter your city name"),
   state: z.string().nonempty("Pls enter your city state"),
   country: z.string().nonempty("Please select a country name"),
-  dateofbirth: z.string().nonempty("Date of birth is required"),
+  // dateofbirth: z.string().nonempty("Date of birth is required"),
+  dateofbirth: z.object({
+    startDate: z.date({required_error: "Date of birth is required"}),
+    endDate: z.date({required_error: "Date of birth is required"}),
+  }),
 });
 
 function PersonalInfo({ setActiveStep }: any) {
   const dispatch = useDispatch();
   const router = useRouter();
   const user = useSelector((state: any) => state.auth.user);
+  const defaultDateValue = user?.date_of_birth?.split("T")?.at(0) || getMaxDateOfBirth();
   const defaultFormValues = {
     gender: user?.gender || "",
-    city: user?.address?.split(",")?.at(-3) || "",
+    city: user?.address?.split(",")?.at(-3)?.trim() || "",
     country: "Nigeria",
-    state: user?.address?.split(",")?.at(-2) || "",
-    address: user?.address.split(",")?.slice(0, -3)?.join(", ") || "",
-    dateofbirth: user?.date_of_birth?.split("T")?.at(0) || getMaxDateOfBirth(),
-  }
+    state: user?.address?.split(",")?.at(-2)?.trim() || "",
+    address: user?.address.split(",")?.slice(0, -3)?.join(", ")?.trim() || "",
+    // dateofbirth: user?.date_of_birth?.split("T")?.at(0) || getMaxDateOfBirth(),
+    dateofbirth: {
+      startDate: new Date(defaultDateValue),
+      endDate: new Date(defaultDateValue),
+    },
+  };
   const { control, handleSubmit } = useForm({
     resolver: zodResolver(schema),
     values: defaultFormValues,
@@ -88,8 +98,9 @@ function PersonalInfo({ setActiveStep }: any) {
     let temp = {
       address: `${data.address}, ${data.city}, ${data.state}, ${data.country}`,
       gender: data.gender,
-      date_of_birth: data.dateofbirth,
+      date_of_birth: format(data.dateofbirth.startDate, "yyy-MM-dd"),
     };
+    console.log(temp);
     if (
       (temp.address === `${defaultFormValues.address}, ${defaultFormValues.city}, ${defaultFormValues.state}, ${defaultFormValues.country}`) &&
       (temp.gender === user?.gender) &&
@@ -180,8 +191,8 @@ function PersonalInfo({ setActiveStep }: any) {
               label="Date of Birth"
               control={control}
               className="w-full"
-              min={"1901-01-01"}
-              max={getMaxDateOfBirth()}
+              minDate={new Date("1901-01-01")}
+              maxDate={new Date(getMaxDateOfBirth())}
               required
             />
             <TalentDynamicForm

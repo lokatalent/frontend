@@ -5,6 +5,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
+import { format } from "date-fns";
 
 import ResetDialog from "@/components/auth/ResetDialog";
 import {
@@ -272,8 +273,10 @@ const DynamicForm = ({
           "," +
           data.country,
         gender: data.gender,
-        date_of_birth: data.dateOfBirth,
+        // date_of_birth: data.dateOfBirth,
+        date_of_birth: data.dateOfBirth?.startDate ? format(data.dateOfBirth?.startDate, "yyy-MM-dd") : getMaxDateOfBirth(),
       };
+      console.log(temp);
 
       // get bank name and code
       let str = data.bank_name.split("&");

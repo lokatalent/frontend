@@ -5,6 +5,7 @@ import { Controller, FieldError, FieldValues, Control } from "react-hook-form";
 import { cn } from "@/lib/utils";
 import { FormFieldError } from "@/components/ui/form/FormFieldError";
 import FileUpload from "@/components/profile/FileUpload";
+import Datepicker from "react-tailwindcss-datepicker";
 
 type BaseFieldProps = {
   name: string;
@@ -105,6 +106,23 @@ const TalentDynamicForm: React.FC<FormFieldProps> = ({
               className={inputBaseClass}
             />
             {error && <FormFieldError error={{ message: error.message }} />}
+          </div>
+        );
+      }
+
+      case "date": {
+        return (
+          <div className="w-full space-y-2">
+            <Datepicker
+            inputId="datepicker"
+            inputName="datepicker"
+            required={true}
+            useRange={false}
+            asSingle={true}
+            {...props}
+            {...field}
+          />
+          {error && <FormFieldError error={{ message: error.message }} />}
           </div>
         );
       }

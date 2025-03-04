@@ -26,6 +26,7 @@ import { RootStateAuth, setUser } from "@/store/auth/authSlice";
 import { updateProfile } from "@/services/profileService";
 import { showToast } from "@/store/auth/toastSlice";
 import { format } from "date-fns";
+import Datepicker from "react-tailwindcss-datepicker";
 
 interface RoleSwitchProps {
   forms: Array<{
@@ -70,6 +71,12 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
   const router = useRouter();
   const user = useSelector((state: RootStateAuth) => state.auth.user);
 
+  const defaultDateValue = user?.date_of_birth?.split("T")?.at(0) || getMaxDateOfBirth();
+  const [dateValue, setDateValue] = useState({
+    startDate: new Date(defaultDateValue),
+    endDate: new Date(defaultDateValue),
+  })
+
   const mainModal = useSelector((state: RootState) => state.settings.mainModal);
   const editModal = useSelector((state: RootState) => state.settings.editModal);
   const dispatch = useDispatch();
@@ -97,12 +104,15 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
   const handleSubmit = async () => {
     let temp = {};
     if (title === "Date of Birth") {
-      if (!isValidDate(birthdayRef.current?.value)) {
+      const birthday = dateValue.startDate; // birthdayRef.current?.value?;
+      console.log(birthday);
+      if (!isValidDate(format(birthday, "yyyy-MM-dd"))) {
         setError("Invalid date.");
         return;
       }
       temp = {
-        date_of_birth: formatDate(birthdayRef.current?.value),
+        // date_of_birth: formatDate(birthdayRef.current?.value),
+        date_of_birth: format(birthday, "yyyy-MM-dd"),
       }
     } else {
       const number = numberRef.current?.value || "";
@@ -186,15 +196,31 @@ const EditModal: React.FC<RoleSwitchProps> = ({ title, forms }) => {
                       ) : (
                         title === "Date of Birth" && form.label === "Date of Birth" ? (
                           <>
-                            <input
-                              type="date"
-                              id={`input-${index}`}
-                              placeholder={form.text?.split("T")?.at(0) || ""}
-                              ref={birthdayRef}
-                              max={getMaxDateOfBirth()}
-                              min={"1901-01-01"}
-                              className="border-gray-300 border text-black bg-[#FAF8F81C] rounded-md px-4 py-2 w-full"
-                            />
+                            {
+                              /*
+                              <input
+                                type="date"
+                                id={`input-${index}`}
+                                placeholder={form.text?.split("T")?.at(0) || ""}
+                                ref={birthdayRef}
+                                max={getMaxDateOfBirth()}
+                                min={"1901-01-01"}
+                                className="border-gray-300 border text-black bg-[#FAF8F81C] rounded-md px-4 py-2 w-full"
+                              />
+                              */
+                              <Datepicker
+                                inputId="datepicker"
+                                inputName="datepicker"
+                                required={true}
+                                useRange={false}
+                                asSingle={true}
+                                maxDate={new Date(getMaxDateOfBirth())}
+                                minDate={new Date("1901-01-01")}
+                                value={dateValue}
+                                onChange={(newValue) => setDateValue(newValue)}
+                                ref={birthdayRef}
+                              />
+                            }
                             {error && (
                               <p
                                 className="text-red-500 text-xs flex items-center mt-1"

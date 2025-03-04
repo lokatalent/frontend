@@ -21,6 +21,7 @@ import { Calendar as CalendarIcon } from "lucide-react";
 import { format } from "date-fns";
 import { cn } from "@/lib/utils";
 import FileUpload from "@/components/profile/FileUpload";
+import Datepicker from "react-tailwindcss-datepicker";
 
 type Option = {
   name: string;
@@ -158,39 +159,52 @@ export const FormField: React.FC<FormFieldProps> = ({
             )}
           />
         </div>
-      ) : type === "datee" ? (
+      ) : type === "date" ? (
         <Controller
           name={name}
           control={control}
           render={({ field: { onChange, value } }) => (
             <div className="flex flex-col w-full">
-              <div className="flex items-center  bg-white">
-                <div className="relative w-full">
-                  <Popover>
-                    <PopoverTrigger asChild>
-                      <Button
-                        variant={"outline"}
-                        className={cn(
-                          "w-full justify-start text-left font-normal p-6 pl-10",
-                          !value && "text-muted-foreground"
-                        )}
-                      >
-                        <CalendarIcon className="mr-2 h-4 w-4" />
-                        {value && format(value, "PPP")}
-                      </Button>
-                    </PopoverTrigger>
-                    <PopoverContent className="w-auto p-0 bg-white">
-                      <Calendar
-                        mode="single"
-                        selected={value}
-                        onSelect={onChange}
-                        initialFocus
-                      />
-                    </PopoverContent>
-                  </Popover>
+              {
+                /*
+                <div className="flex items-center  bg-white">
+                  <div className="relative w-full">
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <Button
+                          variant={"outline"}
+                          className={cn(
+                            "w-full justify-start text-left font-normal p-6 pl-10",
+                            !value && "text-muted-foreground"
+                          )}
+                        >
+                          <CalendarIcon className="mr-2 h-4 w-4" />
+                          {value && format(value, "PPP")}
+                        </Button>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0 bg-white">
+                        <Calendar
+                          mode="single"
+                          selected={value}
+                          onSelect={onChange}
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                  </div>
                 </div>
+                */
+                <Datepicker
+                  inputId="datepicker"
+                  inputName="datepicker"
+                  required={true}
+                  useRange={false}
+                  asSingle={true}
+                  value={value}
+                  onChange={onChange}
+                />
+              }
               </div>
-            </div>
           )}
         />
       ) : (
