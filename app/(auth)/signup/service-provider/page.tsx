@@ -52,15 +52,15 @@ const user = () => {
     {
       name: "newPassword",
       type: "password",
-      label: "New Password",
+      label: "New Password (minimum of 8 characters)",
       validation: {
         required: "Password is required",
         minLength: {
-          value: 6,
-          message: "Password must be at least 6 characters",
+          value: 8,
+          message: "Password must be at least 8 characters",
         },
         pattern: {
-          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
           message: "Password must contain at least one letter and one number",
         },
       },
@@ -72,11 +72,11 @@ const user = () => {
       validation: {
         required: "Password is required",
         minLength: {
-          value: 6,
+          value: 8,
           message: "Password must be at least 6 characters",
         },
         pattern: {
-          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{6,}$/,
+          value: /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/,
           message: "Password must contain at least one letter and one number",
         },
       },
